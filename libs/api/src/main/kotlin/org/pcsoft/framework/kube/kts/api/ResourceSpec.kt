@@ -1,6 +1,8 @@
 package org.pcsoft.framework.kube.kts.api
 
-sealed class ResourceSpec<M : ResourceSpecMetadata>(val metadata: M) {
+import org.pcsoft.framework.kube.kts.api.types.MetadataSpec
+
+sealed class ResourceSpec<M : MetadataSpec>(val metadata: M) {
     val header: ResourceSpecHeader
 
     init {
