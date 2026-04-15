@@ -6,7 +6,11 @@ import org.pcsoft.framework.kube.kts.api.types.PortSpec
 import org.pcsoft.framework.kube.kts.api.types.PortSpecBuilder
 
 @ResourceSpecHeader("v1", "Service")
-class ServiceSpec(metadata: MetadataSpec, val type: Type, val ports: List<PortSpec>) : ResourceSpec<MetadataSpec>(metadata) {
+class ServiceSpec(metadata: MetadataSpec, type: Type, ports: List<PortSpec>) : ResourceSpec<MetadataSpec>(metadata) {
+    val spec = Spec(type, ports)
+
+    data class Spec(val type: Type, val ports: List<PortSpec>)
+
     @Suppress("unused")
     enum class Type {
         ClusterIP, NodePort, LoadBalancer, ExternalName
