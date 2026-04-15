@@ -1,16 +1,18 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: name
   generateName: "generated-name"
   namespace: namespace
-  labels: {}
-  annotations: {}
-  finalizers: []
-  ownerReferences: []
+#  labels: {}
+#  annotations: {}
+#  finalizers: []
+#  ownerReferences: []
 spec:
   type: LoadBalancer                  # ClusterIP | NodePort | LoadBalancer | ExternalName
-  selector: {}
+  selector:
+    key: value
 
   ports:
     - name: port
@@ -20,29 +22,34 @@ spec:
       targetPort: 8888            # int oder string
       nodePort: 7777
 
-  clusterIP: ""
-  clusterIPs: []
-  ipFamilies: []                  # IPv4 | IPv6
-  ipFamilyPolicy: SingleStack     # SingleStack | PreferDualStack | RequireDualStack
+  clusterIP: "clusterIP"
+  clusterIPs:
+    - "clusterIP"
+  ipFamilies: # IPv4 | IPv6
+    - IPv4
+    - IPv6
+  ipFamilyPolicy: RequireDualStack     # SingleStack | PreferDualStack | RequireDualStack
 
-  externalIPs: []
-  externalName: ""
+  externalIPs:
+    - "externalIPs"
+  externalName: "externalName"
 
-  externalTrafficPolicy: Cluster  # Cluster | Local
-  internalTrafficPolicy: Cluster  # Cluster | Local
+  externalTrafficPolicy: Local  # Cluster | Local
+  internalTrafficPolicy: Local  # Cluster | Local
 
-  allocateLoadBalancerNodePorts: true
-  loadBalancerIP: ""
-  loadBalancerClass: ""
-  loadBalancerSourceRanges: []
+  allocateLoadBalancerNodePorts: false
+  loadBalancerIP: "loadBalancerIP"
+  loadBalancerClass: "loadBalancerClass"
+  loadBalancerSourceRanges:
+    - "loadBalancerSourceRanges"
 
   sessionAffinity: None           # None | ClientIP
   sessionAffinityConfig:
     clientIP:
-      timeoutSeconds: 10800
+      timeoutSeconds: 30000
 
-  publishNotReadyAddresses: false
+  publishNotReadyAddresses: true
 
-  healthCheckNodePort: 0
+  healthCheckNodePort: 3000
 
   trafficDistribution: ""

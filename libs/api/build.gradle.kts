@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    kotlin("plugin.noarg")
 }
 
 dependencies {
@@ -10,6 +11,10 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation("org.skyscreamer:jsonassert:1.5.3")
+}
+
+noArg {
+    annotation("org.pcsoft.framework.kube.kts.api.intern.NoArgs")
 }
 
 kotlin {

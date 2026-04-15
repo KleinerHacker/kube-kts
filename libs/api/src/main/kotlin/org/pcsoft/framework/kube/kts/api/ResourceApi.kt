@@ -1,8 +1,10 @@
 package org.pcsoft.framework.kube.kts.api
 
+import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import org.pcsoft.framework.kube.kts.api.types.MetadataSpec
 import org.pcsoft.framework.kube.kts.api.types.MetadataSpecBuilder
 
+@NoArgs
 data class ResourceApi<S>(
     val apiVersion: String,
     val kind: String,

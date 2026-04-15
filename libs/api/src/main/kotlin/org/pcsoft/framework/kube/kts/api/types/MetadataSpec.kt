@@ -1,5 +1,8 @@
 package org.pcsoft.framework.kube.kts.api.types
 
+import org.pcsoft.framework.kube.kts.api.intern.NoArgs
+
+@NoArgs
 data class MetadataSpec(val name: String, val generatedName: String?, val namespace: String)
 
 class MetadataSpecBuilder {
