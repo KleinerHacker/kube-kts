@@ -13,4 +13,5 @@ private val mapper = YAMLMapper.builder()
     .build()
 
 internal fun Any.toYaml(printer: PrintStream) = mapper.writeValue(printer, this)
+internal fun Any.toYaml() = mapper.writeValueAsString(this)
 
