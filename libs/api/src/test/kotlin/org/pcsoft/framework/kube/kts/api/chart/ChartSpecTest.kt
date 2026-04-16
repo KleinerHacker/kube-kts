@@ -53,7 +53,7 @@ class ChartSpecTest {
     @Test
     fun testMaxContent() {
         Assertions.assertEquals(ChartSpec.API_VERSION, maxChart.apiVersion)
-        Assertions.assertEquals("test", maxChart.name)
+        Assertions.assertEquals("name", maxChart.name)
         Assertions.assertEquals("1.0.0", maxChart.version)
         Assertions.assertEquals(
             KubeVersion(
