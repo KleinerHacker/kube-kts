@@ -1,4 +1,4 @@
-package org.pcsoft.framework.kube.kts.api.json
+package org.pcsoft.framework.kube.kts.api.intern.jackson
 
 import tools.jackson.core.JsonGenerator
 import tools.jackson.core.JsonParser

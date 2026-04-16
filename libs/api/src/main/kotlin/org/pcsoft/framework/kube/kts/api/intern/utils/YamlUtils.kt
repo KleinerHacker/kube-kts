@@ -1,4 +1,4 @@
-package org.pcsoft.framework.kube.kts.api.utils
+package org.pcsoft.framework.kube.kts.api.intern.utils
 
 import tools.jackson.databind.module.SimpleModule
 import tools.jackson.dataformat.yaml.YAMLMapper

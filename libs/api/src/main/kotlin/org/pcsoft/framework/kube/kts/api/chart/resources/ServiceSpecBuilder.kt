@@ -1,10 +1,10 @@
-package org.pcsoft.framework.kube.kts.api
+package org.pcsoft.framework.kube.kts.api.chart.resources
 
-import org.pcsoft.framework.kube.kts.api.ServiceSpec.*
-import org.pcsoft.framework.kube.kts.api.types.PortSpecBuilder
+import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec.*
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortSpecBuilder
 import java.time.Duration
 
-class ServiceSpecBuilder : ResourceSpecBuilder<ServiceSpec> {
+class ServiceSpecBuilder internal constructor(): ResourceSpecBuilder<ServiceSpec> {
     private val ports = mutableListOf<PortSpecBuilder>()
     private val selector: Map<String, String>? = null //TODO: replace with reference
     private var clusterIP: String? = null
@@ -41,11 +41,32 @@ class ServiceSpecBuilder : ResourceSpecBuilder<ServiceSpec> {
         this.clusterIP = this.clusterIPs!!.first()
     }
 
+    fun addClusterIPs(vararg clusterIPs: String) {
+        if (this.clusterIPs == null) {
+            this.clusterIPs = mutableListOf()
+        }
+        this.clusterIPs!!.addAll(clusterIPs.toList())
+    }
+
     fun addIpFamily(ipFamily: IPFamily) {
         if (this.ipFamilies == null) {
             this.ipFamilies = mutableSetOf()
         }
         this.ipFamilies!!.add(ipFamily)
+    }
+
+    fun addIpFamilies(vararg ipFamilies: IPFamily) {
+        if (this.ipFamilies == null) {
+            this.ipFamilies = mutableSetOf()
+        }
+        this.ipFamilies!!.addAll(ipFamilies.toSet())
+    }
+
+    fun addAllIpFamilies() {
+        if (this.ipFamilies == null) {
+            this.ipFamilies = mutableSetOf()
+        }
+        this.ipFamilies!!.addAll(IPFamily.entries.toSet())
     }
 
     fun addExternalIP(externalIP: String) {
@@ -55,11 +76,25 @@ class ServiceSpecBuilder : ResourceSpecBuilder<ServiceSpec> {
         this.externalIPs!!.add(externalIP)
     }
 
+    fun addExternalIPs(vararg externalIPs: String) {
+        if (this.externalIPs == null) {
+            this.externalIPs = mutableListOf()
+        }
+        this.externalIPs!!.addAll(externalIPs.toList())
+    }
+
     fun addLoadBalancerSourceRange(loadBalancerSourceRange: String) {
         if (this.loadBalancerSourceRanges == null) {
             this.loadBalancerSourceRanges = mutableListOf()
         }
         this.loadBalancerSourceRanges!!.add(loadBalancerSourceRange)
+    }
+
+    fun addLoadBalancerSourceRanges(vararg loadBalancerSourceRanges: String) {
+        if (this.loadBalancerSourceRanges == null) {
+            this.loadBalancerSourceRanges = mutableListOf()
+        }
+        this.loadBalancerSourceRanges!!.addAll(loadBalancerSourceRanges.toList())
     }
 
     @Suppress("DEPRECATION")
@@ -92,6 +127,3 @@ class ServiceSpecBuilder : ResourceSpecBuilder<ServiceSpec> {
         )
     }
 }
-
-fun serviceSpec(prepare: ResourceApiBuilder<ServiceSpec, ServiceSpecBuilder>.() -> Unit): ResourceApi<ServiceSpec> =
-    ResourceApiBuilder(ServiceSpec.API_VERSION, ServiceSpec.KIND, ServiceSpecBuilder()).apply(prepare).build()
