@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: name
-  generateName: "generated-name"
+  generateName: "generate-name"
   namespace: namespace
 #  labels: {}
 #  annotations: {}
@@ -11,8 +11,8 @@ metadata:
 #  ownerReferences: []
 spec:
   type: LoadBalancer                  # ClusterIP | NodePort | LoadBalancer | ExternalName
-  selector:
-    key: value
+#  selector:
+#    key: value
 
   ports:
     - name: port
@@ -31,7 +31,7 @@ spec:
   ipFamilyPolicy: RequireDualStack     # SingleStack | PreferDualStack | RequireDualStack
 
   externalIPs:
-    - "externalIPs"
+    - "externalIP"
   externalName: "externalName"
 
   externalTrafficPolicy: Local  # Cluster | Local
@@ -41,15 +41,15 @@ spec:
   loadBalancerIP: "loadBalancerIP"
   loadBalancerClass: "loadBalancerClass"
   loadBalancerSourceRanges:
-    - "loadBalancerSourceRanges"
+    - "loadBalancerSourceRange"
 
   sessionAffinity: None           # None | ClientIP
   sessionAffinityConfig:
     clientIP:
-      timeoutSeconds: 30000
+      timeoutSeconds: 30
 
   publishNotReadyAddresses: true
 
   healthCheckNodePort: 3000
 
-  trafficDistribution: ""
+  trafficDistribution: "PreferClose"

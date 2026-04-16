@@ -2,11 +2,11 @@ package org.pcsoft.framework.kube.kts.api
 
 import org.pcsoft.framework.kube.kts.api.ServiceSpec.*
 import org.pcsoft.framework.kube.kts.api.types.PortSpecBuilder
-import kotlin.time.Duration
+import java.time.Duration
 
 class ServiceSpecBuilder : ResourceSpecBuilder<ServiceSpec> {
     private val ports = mutableListOf<PortSpecBuilder>()
-    private val selector = mutableMapOf<String, String>() //TODO: replace with reference
+    private val selector: Map<String, String>? = null //TODO: replace with reference
     private var clusterIP: String? = null
     private var clusterIPs: MutableList<String>? = null
     private var ipFamilies: MutableSet<IPFamily>? = null

@@ -1,8 +1,12 @@
 package org.pcsoft.framework.kube.kts.api
 
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
+import org.pcsoft.framework.kube.kts.api.json.DurationInSecondsDeserializer
+import org.pcsoft.framework.kube.kts.api.json.DurationInSecondsSerializer
 import org.pcsoft.framework.kube.kts.api.types.PortSpec
-import kotlin.time.Duration
+import tools.jackson.databind.annotation.JsonDeserialize
+import tools.jackson.databind.annotation.JsonSerialize
+import java.time.Duration
 
 @NoArgs
 class ServiceSpec(
@@ -65,5 +69,9 @@ class ServiceSpec(
 
     data class SessionAffinityConfig(val clientIP: ClientIPConfig)
 
-    data class ClientIPConfig(val timeoutSeconds: Duration)
+    data class ClientIPConfig(
+        @field:JsonSerialize(using = DurationInSecondsSerializer::class)
+        @field:JsonDeserialize(using = DurationInSecondsDeserializer::class)
+        val timeoutSeconds: Duration
+    )
 }

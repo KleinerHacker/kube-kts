@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.types.PortSpec
 import org.pcsoft.framework.kube.kts.api.utils.convertToJson
 import org.pcsoft.framework.kube.kts.api.utils.toJson
-import org.pcsoft.framework.kube.kts.api.utils.toYaml
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.toJavaDuration
 
 @Suppress("DEPRECATION")
 class ServiceSpecTest {
@@ -17,7 +17,7 @@ class ServiceSpecTest {
         metadata {
             name = "name"
             namespace = "namespace"
-            generatedName = "generated-name"
+            generateName = "generate-name"
         }
 
         spec {
@@ -49,7 +49,7 @@ class ServiceSpecTest {
             addLoadBalancerSourceRange("loadBalancerSourceRange")
 
             sessionAffinity = ServiceSpec.SessionAffinity.None
-            sessionAffinityClientTimeout = 30.seconds
+            sessionAffinityClientTimeout = 30.seconds.toJavaDuration()
 
             publishNotReadyAddresses = true
             healthCheckNodePort = 3000
@@ -61,7 +61,7 @@ class ServiceSpecTest {
     fun testContent() {
         Assertions.assertEquals("name", apiMax.metadata.name)
         Assertions.assertEquals("namespace", apiMax.metadata.namespace)
-        Assertions.assertEquals("generated-name", apiMax.metadata.generatedName)
+        Assertions.assertEquals("generate-name", apiMax.metadata.generateName)
 
         Assertions.assertEquals(ServiceSpec.Type.LoadBalancer, apiMax.spec.type)
 
@@ -91,7 +91,7 @@ class ServiceSpecTest {
         Assertions.assertEquals(listOf("loadBalancerSourceRange"), apiMax.spec.loadBalancerSourceRanges)
 
         Assertions.assertEquals(ServiceSpec.SessionAffinity.None, apiMax.spec.sessionAffinity)
-        Assertions.assertEquals(ServiceSpec.SessionAffinityConfig(ServiceSpec.ClientIPConfig(30.seconds)), apiMax.spec.sessionAffinityConfig)
+        Assertions.assertEquals(ServiceSpec.SessionAffinityConfig(ServiceSpec.ClientIPConfig(30.seconds.toJavaDuration())), apiMax.spec.sessionAffinityConfig)
 
         Assertions.assertEquals(true, apiMax.spec.publishNotReadyAddresses)
         Assertions.assertEquals(3000, apiMax.spec.healthCheckNodePort)
@@ -104,8 +104,9 @@ class ServiceSpecTest {
         val expectedJson = convertToJson<ResourceApi<ServiceSpec>>(expectedYaml)
         val actualJson = apiMax.toJson()
 
-        println(apiMax.toYaml())
-        println(expectedJson)
+        println("Expect: $expectedJson")
+        println("Actual: $actualJson")
+
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
 
     }
