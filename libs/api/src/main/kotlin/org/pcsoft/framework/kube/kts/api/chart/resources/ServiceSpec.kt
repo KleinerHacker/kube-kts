@@ -1,9 +1,9 @@
-package org.pcsoft.framework.kube.kts.api
+package org.pcsoft.framework.kube.kts.api.chart.resources
 
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortSpec
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
-import org.pcsoft.framework.kube.kts.api.json.DurationInSecondsDeserializer
-import org.pcsoft.framework.kube.kts.api.json.DurationInSecondsSerializer
-import org.pcsoft.framework.kube.kts.api.types.PortSpec
+import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsDeserializer
+import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsSerializer
 import tools.jackson.databind.annotation.JsonDeserialize
 import tools.jackson.databind.annotation.JsonSerialize
 import java.time.Duration

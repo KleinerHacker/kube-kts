@@ -1,0 +1,11 @@
+package org.pcsoft.framework.kube.kts.api.chart.types
+
+import org.pcsoft.framework.kube.kts.api.intern.NoArgs
+import java.net.URI
+
+@NoArgs
+data class MaintainerSpec(
+    val name: String,
+    val email: String?,
+    val url: URI?
+)

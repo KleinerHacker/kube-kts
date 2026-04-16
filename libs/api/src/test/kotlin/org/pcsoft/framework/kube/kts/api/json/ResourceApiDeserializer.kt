@@ -1,9 +1,9 @@
 package org.pcsoft.framework.kube.kts.api.json
 
-import org.pcsoft.framework.kube.kts.api.TemplateSpec
-import org.pcsoft.framework.kube.kts.api.ResourceSpec
-import org.pcsoft.framework.kube.kts.api.ServiceSpec
-import org.pcsoft.framework.kube.kts.api.types.MetadataSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
+import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
+import org.pcsoft.framework.kube.kts.api.chart.template.types.MetadataSpec
 import tools.jackson.core.JsonParser
 import tools.jackson.databind.DeserializationContext
 import tools.jackson.databind.JsonNode
