@@ -1,6 +1,6 @@
 package org.pcsoft.framework.kube.kts.api.utils
 
-import org.pcsoft.framework.kube.kts.api.ResourceApi
+import org.pcsoft.framework.kube.kts.api.TemplateSpec
 import org.pcsoft.framework.kube.kts.api.json.ResourceApiDeserializer
 import tools.jackson.databind.json.JsonMapper
 import tools.jackson.databind.module.SimpleModule
@@ -8,7 +8,7 @@ import tools.jackson.dataformat.yaml.YAMLMapper
 import tools.jackson.module.kotlin.KotlinModule
 
 private val module = SimpleModule().apply {
-    addDeserializer(ResourceApi::class.java, ResourceApiDeserializer())
+    addDeserializer(TemplateSpec::class.java, ResourceApiDeserializer())
 }
 
 private val jsonMapper = JsonMapper.builder()

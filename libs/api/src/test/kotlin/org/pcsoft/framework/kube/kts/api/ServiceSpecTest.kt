@@ -101,7 +101,7 @@ class ServiceSpecTest {
     @Test
     fun testYaml() {
         val expectedYaml = IOUtils.resourceToString("/service.yaml", Charsets.UTF_8)
-        val expectedJson = convertToJson<ResourceApi<ServiceSpec>>(expectedYaml)
+        val expectedJson = convertToJson<TemplateSpec<ServiceSpec>>(expectedYaml)
         val actualJson = apiMax.toJson()
 
         println("Expect: $expectedJson")

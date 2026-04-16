@@ -93,5 +93,5 @@ class ServiceSpecBuilder : ResourceSpecBuilder<ServiceSpec> {
     }
 }
 
-fun serviceSpec(prepare: ResourceApiBuilder<ServiceSpec, ServiceSpecBuilder>.() -> Unit): ResourceApi<ServiceSpec> =
-    ResourceApiBuilder(ServiceSpec.API_VERSION, ServiceSpec.KIND, ServiceSpecBuilder()).apply(prepare).build()
+fun serviceSpec(prepare: TemplateSpecBuilder<ServiceSpec, ServiceSpecBuilder>.() -> Unit): TemplateSpec<ServiceSpec> =
+    TemplateSpecBuilder(ServiceSpec.API_VERSION, ServiceSpec.KIND, ServiceSpecBuilder()).apply(prepare).build()

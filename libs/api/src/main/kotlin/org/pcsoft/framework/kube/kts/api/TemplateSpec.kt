@@ -5,14 +5,14 @@ import org.pcsoft.framework.kube.kts.api.types.MetadataSpec
 import org.pcsoft.framework.kube.kts.api.types.MetadataSpecBuilder
 
 @NoArgs
-data class ResourceApi<S>(
+data class TemplateSpec<S>(
     val apiVersion: String,
     val kind: String,
     val metadata: MetadataSpec,
     val spec: S
 ) where S : ResourceSpec
 
-class ResourceApiBuilder<S, B>(
+class TemplateSpecBuilder<S, B>(
     val apiVersion: String,
     val kind: String,
     private val specBuilder: B
@@ -27,7 +27,7 @@ class ResourceApiBuilder<S, B>(
         specBuilder.apply(prepare)
     }
 
-    fun build(): ResourceApi<S> {
-        return ResourceApi(apiVersion, kind, metadataBuilder.build(), specBuilder.build())
+    fun build(): TemplateSpec<S> {
+        return TemplateSpec(apiVersion, kind, metadataBuilder.build(), specBuilder.build())
     }
 }
