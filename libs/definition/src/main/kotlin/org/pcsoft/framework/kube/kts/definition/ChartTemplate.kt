@@ -4,5 +4,5 @@ import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsCompilationConfi
 import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsEvaluationConfiguration
 import kotlin.script.experimental.annotations.KotlinScript
 
-@KotlinScript(fileExtension = "chart.kts", compilationConfiguration = KubeKtsCompilationConfiguration::class, evaluationConfiguration = KubeKtsEvaluationConfiguration::class, displayName = "Chart Template")
+@KotlinScript(compilationConfiguration = KubeKtsCompilationConfiguration::class, evaluationConfiguration = KubeKtsEvaluationConfiguration::class, displayName = "Chart Template")
 abstract class ChartTemplate
