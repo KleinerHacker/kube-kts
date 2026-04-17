@@ -3,3 +3,4 @@ plugins {
 }
 rootProject.name = "kube-kts"
 include("libs:api")
+include("libs:core")

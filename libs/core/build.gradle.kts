@@ -1,0 +1,27 @@
+plugins {
+    kotlin("jvm")
+}
+
+dependencies {
+    implementation(project(":libs:api"))
+
+    implementation(kotlin("reflect"))
+
+    implementation("org.jetbrains.kotlin:kotlin-scripting-jvm")
+    implementation("org.jetbrains.kotlin:kotlin-scripting-common")
+    implementation("org.jetbrains.kotlin:kotlin-scripting-jvm-host")
+    implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable")
+
+    implementation("commons-io:commons-io:2.21.0")
+
+    testImplementation(kotlin("test"))
+    testImplementation("org.skyscreamer:jsonassert:1.5.3")
+}
+
+kotlin {
+    jvmToolchain(25)
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
