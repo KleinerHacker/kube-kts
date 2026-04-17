@@ -1,5 +1,3 @@
-package helm
-
 chart("demo", "1.0.0") {
 
 }

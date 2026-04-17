@@ -4,8 +4,10 @@ plugins {
 
 dependencies {
     implementation(project(":libs:api"))
+    implementation(project(":libs:definition"))
 
     implementation(kotlin("reflect"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
 
     implementation("org.jetbrains.kotlin:kotlin-scripting-jvm")
     implementation("org.jetbrains.kotlin:kotlin-scripting-common")
