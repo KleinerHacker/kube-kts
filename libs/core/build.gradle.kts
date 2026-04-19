@@ -1,21 +1,23 @@
 plugins {
     kotlin("jvm")
-    kotlin("plugin.noarg")
 }
 
 dependencies {
-    implementation(kotlin("reflect"))
+    implementation(project(":libs:api"))
+    implementation(project(":libs:definition"))
 
-    implementation("tools.jackson.dataformat:jackson-dataformat-yaml:3.1.2")
-    implementation("tools.jackson.module:jackson-module-kotlin:3.1.2")
+    implementation(kotlin("reflect"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+
+    implementation("org.jetbrains.kotlin:kotlin-scripting-jvm")
+    implementation("org.jetbrains.kotlin:kotlin-scripting-common")
+    implementation("org.jetbrains.kotlin:kotlin-scripting-jvm-host")
+    implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable")
+
     implementation("commons-io:commons-io:2.21.0")
 
     testImplementation(kotlin("test"))
     testImplementation("org.skyscreamer:jsonassert:1.5.3")
-}
-
-noArg {
-    annotation("org.pcsoft.framework.kube.kts.api.intern.NoArgs")
 }
 
 kotlin {

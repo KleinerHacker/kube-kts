@@ -101,3 +101,6 @@ class ChartSpecBuilder internal constructor(private val name: String, private va
             annotations = annotations
         )
 }
+
+fun chart(name: String, version: String, prepare: ChartSpecBuilder.() -> Unit) =
+    ChartSpecBuilder(name, version).apply(prepare).build()
