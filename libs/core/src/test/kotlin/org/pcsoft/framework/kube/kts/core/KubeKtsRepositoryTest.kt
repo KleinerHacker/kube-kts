@@ -9,7 +9,7 @@ import java.nio.file.Paths
 class KubeKtsRepositoryTest {
 
     @Test
-    fun testRepository() {
+    fun testSuccessfully() {
         val repo = KubeKtsRepository(Paths.get(this::class.java.getResource("/helm").toURI()))
         Assertions.assertEquals(KubeKtsRepository.State.INITIALIZED, repo.state)
         repo.scan()

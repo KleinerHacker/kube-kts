@@ -16,7 +16,7 @@ class DefaultKubeKtsCompilerTest {
     }
 
     @Test
-    fun test() {
+    fun testSuccessfully() {
         val script = IOUtils.resourceToString("/helm/chart.kts", Charsets.UTF_8)
 
         val compiledScript = compiler.compile(StringKubeKzsFile(script, KubeKtsFile.Type.CHART))
