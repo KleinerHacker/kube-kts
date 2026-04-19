@@ -8,6 +8,7 @@ import org.pcsoft.framework.kube.kts.api.chart.template.types.MetadataSpec
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
 import java.io.File
 import java.net.JarURLConnection
+import java.net.URI
 import java.net.URL
 import kotlin.reflect.KClass
 import kotlin.script.experimental.api.*
@@ -15,6 +16,7 @@ import kotlin.script.experimental.jvm.dependenciesFromClassContext
 import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
 
+@Suppress("JavaIoSerializableObjectMustHaveReadResolve")
 object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports("${ChartSpec::class.java.packageName}.*")
     defaultImports("${ResourceSpec::class.java.packageName}.*")
@@ -22,6 +24,7 @@ object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports("${TemplateSpec::class.java.packageName}.*")
     defaultImports("${MetadataSpec::class.java.packageName}.*")
     defaultImports("${KubeVersion::class.java.packageName}.*")
+    defaultImports("${URI::class.java.packageName}.*")
     jvm {
         dependenciesFromCurrentContext(wholeClasspath = true)
 

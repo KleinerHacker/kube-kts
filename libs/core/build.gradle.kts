@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation(project(":libs:api"))
+    testImplementation(project(":libs:api"))
     implementation(project(":libs:definition"))
 
     implementation(kotlin("reflect"))

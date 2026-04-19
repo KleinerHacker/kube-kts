@@ -13,7 +13,7 @@ import java.net.URI
 
 class ChartSpecTest {
     companion object {
-        private val maxChart = ChartSpecBuilder("name", "1.0.0").apply {
+        private val maxChart = chart("name", "1.0.0") {
             kubeVersion {
                 minInclusive("1.0.0")
                 maxExclusive("2.0.0")
@@ -47,7 +47,7 @@ class ChartSpecTest {
             deprecated = true
 
             addAnnotation("annotation", "value")
-        }.build()
+        }
     }
 
     @Test
