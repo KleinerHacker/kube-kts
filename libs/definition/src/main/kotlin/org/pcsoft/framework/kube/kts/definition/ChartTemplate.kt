@@ -4,6 +4,7 @@ import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsCompilationConfi
 import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsEvaluationConfiguration
 import kotlin.script.experimental.annotations.KotlinScript
 
+@Suppress("unused")
 @KotlinScript(
     compilationConfiguration = KubeKtsCompilationConfiguration::class,
     evaluationConfiguration = KubeKtsEvaluationConfiguration::class,
