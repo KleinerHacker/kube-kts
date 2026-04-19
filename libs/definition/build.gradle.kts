@@ -20,3 +20,8 @@ kotlin {
 tasks.test {
     useJUnitPlatform()
 }
+
+tasks.jar {
+    archiveBaseName.set("kube-kts-${project.projectDir.name.lowercase()}")
+    archiveVersion.set(rootProject.version.toString())
+}
