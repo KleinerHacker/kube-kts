@@ -4,9 +4,9 @@ interface KubeFile {
     val subject: String
     val type: Type
 
-    enum class Type(val subject: String) {
-        CHART("chart"),
-        TEMPLATE("");
+    enum class Type(val subject: String, val relativePath: String) {
+        CHART("chart", "."),
+        TEMPLATE("", "./templates");
 
         companion object {
             fun fromPath(subject: String): Type =

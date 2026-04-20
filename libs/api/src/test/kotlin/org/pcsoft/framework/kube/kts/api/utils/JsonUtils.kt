@@ -1,7 +1,7 @@
 package org.pcsoft.framework.kube.kts.api.utils
 
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
-import org.pcsoft.framework.kube.kts.api.json.ResourceApiDeserializer
+import org.pcsoft.framework.kube.kts.api.intern.json.ResourceApiDeserializer
 import tools.jackson.databind.MapperFeature
 import tools.jackson.databind.json.JsonMapper
 import tools.jackson.databind.module.SimpleModule

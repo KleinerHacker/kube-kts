@@ -1,4 +1,4 @@
-package org.pcsoft.framework.kube.kts.api.json
+package org.pcsoft.framework.kube.kts.api.intern.json
 
 import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
