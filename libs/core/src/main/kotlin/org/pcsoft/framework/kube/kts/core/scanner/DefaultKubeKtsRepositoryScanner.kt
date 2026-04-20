@@ -26,6 +26,10 @@ internal object DefaultKubeKtsRepositoryScanner : KubeKtsRepositoryScanner {
             }
             .toList()
 
+        if (!files.any { it.type == KubeFile.Type.CHART }) {
+            throw IllegalArgumentException("No chart file found in repository: ${path.toAbsolutePath()}")
+        }
+
         return KubeKtsRepository(files)
     }
 }
