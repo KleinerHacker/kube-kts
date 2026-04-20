@@ -30,8 +30,6 @@ class DefaultKubeHelmRepositoryRenderer(
             path.toFile().mkdirs()
         else if (!path.isDirectory())
             throw IllegalArgumentException("$name path is not a directory: ${path.toAbsolutePath()}")
-        else if (Files.list(path).count() > 0)
-            throw IllegalStateException("$name path is not empty: ${path.toAbsolutePath()}")
     }
 
     private fun validateFile(path: Path, name: String) {
