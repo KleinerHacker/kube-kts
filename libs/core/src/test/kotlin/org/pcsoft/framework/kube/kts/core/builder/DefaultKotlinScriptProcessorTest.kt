@@ -1,6 +1,7 @@
-package org.pcsoft.framework.kube.kts.core.compiler
+package org.pcsoft.framework.kube.kts.core.builder
 
 import org.apache.commons.io.IOUtils
+import org.jetbrains.kotlin.incremental.util.Either
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.ChartSpec
@@ -9,27 +10,29 @@ import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
 import org.pcsoft.framework.kube.kts.api.chart.types.DependencySpec
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
-import org.pcsoft.framework.kube.kts.core.KubeKtsFile
-import org.pcsoft.framework.kube.kts.core.StringKubeKzsFile
 import java.net.URI
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
-class DefaultKubeKtsCompilerTest {
+class DefaultKotlinScriptProcessorTest {
     companion object {
-        private val compiler: KubeKtsCompiler = DefaultKubeKtsCompiler
+        private val compiler: KotlinScriptProcessor = DefaultKotlinScriptProcessor
     }
 
     @Test
     fun testChart() {
         val script = IOUtils.resourceToString("/helm/chart.kts", Charsets.UTF_8)
 
-        val compiledScript = compiler.compile(StringKubeKzsFile(script, KubeKtsFile.Type.CHART))
-        Assertions.assertNotNull(compiledScript)
+        val compiledScriptEither = compiler.compile(script)
+        Assertions.assertNotNull(compiledScriptEither)
+        Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
 
-        val chartSpec = compiler.execute<ChartSpec>(compiledScript)
-        Assertions.assertNotNull(chartSpec)
+        val compiledScript = (compiledScriptEither as Either.Success).value
+        val chartSpecEither = compiler.execute<ChartSpec>(compiledScript)
+        Assertions.assertNotNull(chartSpecEither)
+        Assertions.assertInstanceOf(Either.Success::class.java, chartSpecEither)
 
+        val chartSpec = (chartSpecEither as Either.Success).value
         Assertions.assertEquals(ChartSpec.API_VERSION, chartSpec.apiVersion)
         Assertions.assertEquals("name", chartSpec.name)
         Assertions.assertEquals("1.0.0", chartSpec.version)
@@ -94,12 +97,16 @@ class DefaultKubeKtsCompilerTest {
     fun testService() {
         val script = IOUtils.resourceToString("/helm/templates/service.kts", Charsets.UTF_8)
 
-        val compiledScript = compiler.compile(StringKubeKzsFile(script, KubeKtsFile.Type.CHART))
-        Assertions.assertNotNull(compiledScript)
+        val compiledScriptEither = compiler.compile(script)
+        Assertions.assertNotNull(compiledScriptEither)
+        Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
 
-        val serviceSpec = compiler.execute<TemplateSpec<ServiceSpec>>(compiledScript)
-        Assertions.assertNotNull(serviceSpec)
+        val compiledScript = (compiledScriptEither as Either.Success).value
+        val serviceSpecEither = compiler.execute<TemplateSpec<ServiceSpec>>(compiledScript)
+        Assertions.assertNotNull(serviceSpecEither)
+        Assertions.assertInstanceOf(Either.Success::class.java, serviceSpecEither)
 
+        val serviceSpec = (serviceSpecEither as Either.Success).value
         Assertions.assertNotNull(serviceSpec.metadata)
         Assertions.assertEquals("metadata", serviceSpec.metadata.name)
         Assertions.assertEquals("namespace", serviceSpec.metadata.namespace)

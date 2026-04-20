@@ -22,7 +22,7 @@ data class ChartSpec(
     val appVersion: String?,
     val deprecated: Boolean?,
     val annotations: Map<String, String>?
-) {
+) : KubeSpec {
     companion object {
         const val API_VERSION = "v2"
     }

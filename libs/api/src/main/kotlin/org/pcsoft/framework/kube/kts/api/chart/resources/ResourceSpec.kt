@@ -1,3 +1,5 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
-interface ResourceSpec
+import org.pcsoft.framework.kube.kts.api.chart.KubeSpec
+
+interface ResourceSpec : KubeSpec
