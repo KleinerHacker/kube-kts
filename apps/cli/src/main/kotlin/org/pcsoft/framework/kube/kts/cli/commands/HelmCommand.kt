@@ -1,22 +1,25 @@
 package org.pcsoft.framework.kube.kts.cli.commands
 
-import picocli.CommandLine.Parameters
-
-sealed class HelmCommand : BaseCommand() {
-    @Parameters(index = "0", description = ["Path to the KTS repository"])
-    protected lateinit var sourcePath: String private set
-
-    @Parameters(index = "1", description = ["Path to the YAML repository to create"])
-    protected lateinit var targetPath: String private set
+sealed class HelmCommand : KubeKtsCommand() {
+    protected abstract val helmArguments: Array<String>
 
     final override fun run() {
-        runKbeKts()
-        runHelm()
+        super.run()
+
+        if (runHelm() != 0)
+            throw IllegalStateException("Helm command failed with exit code ${runHelm()}")
     }
 
-    private fun runHelm() {
+    private fun runHelm(): Int {
+        val process = ProcessBuilder()
+            .command("helm", *helmArguments)
+            .directory(getTargetPath().toFile())
+            .redirectOutput(ProcessBuilder.Redirect.INHERIT)
+            .redirectError(ProcessBuilder.Redirect.INHERIT)
+            .start()
 
+        val exitCode = process.waitFor()
+
+        return exitCode
     }
-
-    protected abstract fun runKbeKts()
 }
