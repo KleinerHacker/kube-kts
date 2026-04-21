@@ -18,7 +18,7 @@ class DefaultKotlinScriptProcessorTest {
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     @Test
     fun testChart() {
-        val compiledScriptEither = compiler.compile(Path.of(this::class.java.getResource("/helm/chart.kts").toURI()))
+        val compiledScriptEither = compiler.compile(Path.of(this::class.java.getResource("/helm/Chart.kts").toURI()))
         Assertions.assertNotNull(compiledScriptEither)
         Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
 

@@ -19,7 +19,7 @@ class KubeRepositoryTest {
         Assertions.assertEquals(2, ktsRepo.files.size)
         Assertions.assertEquals(1, ktsRepo.files.filter { it.type == KubeFile.Type.CHART }.size)
         Assertions.assertEquals(1, ktsRepo.files.filter { it.type == KubeFile.Type.TEMPLATE }.size)
-        Assertions.assertTrue { ktsRepo.files.any { it.subject == "chart" } }
+        Assertions.assertTrue { ktsRepo.files.any { it.subject == "Chart" } }
         Assertions.assertTrue { ktsRepo.files.any { it.subject == "service" } }
 
         val helmRepo = KubeKtsRepositoryBuilder.DEFAULT.build(ktsRepo)
@@ -28,7 +28,7 @@ class KubeRepositoryTest {
         Assertions.assertEquals(1, helmRepo.files.filter { it.type == KubeFile.Type.CHART }.size)
         Assertions.assertEquals(1, helmRepo.files.filter { it.type == KubeFile.Type.TEMPLATE }.size)
 
-        Assertions.assertTrue { helmRepo.files.any { it.subject == "chart" } }
+        Assertions.assertTrue { helmRepo.files.any { it.subject == "Chart" } }
         Assertions.assertTrue { helmRepo.files.any { it.subject == "service" } }
 
         val targetPath = Files.createTempDirectory("helm")

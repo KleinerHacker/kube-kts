@@ -12,7 +12,7 @@ chart("name", "1.0.0") {
 
     home = "home"
 
-    addSource("source")
+    addSource(URI("https://source.example.com"))
 
     addDependency("dependency", "1.0.0") {
         repository = URI("https://repo.example.com")
@@ -25,11 +25,11 @@ chart("name", "1.0.0") {
     }
 
     addMaintainer("maintainer") {
-        email = "email"
+        email = MailAddress.parse("maintainer@mail.com")
         url = URI("https://url.example.com")
     }
 
-    icon = "icon"
+    icon = URI("https://icon.example.com")
     appVersion = "appVersion"
     deprecated = true
 

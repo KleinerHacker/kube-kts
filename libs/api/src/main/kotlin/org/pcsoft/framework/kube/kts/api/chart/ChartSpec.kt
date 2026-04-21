@@ -1,9 +1,11 @@
 package org.pcsoft.framework.kube.kts.api.chart
 
+import com.fasterxml.jackson.annotation.JsonValue
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import org.pcsoft.framework.kube.kts.api.chart.types.DependencySpec
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
 import org.pcsoft.framework.kube.kts.api.chart.types.MaintainerSpec
+import java.net.URI
 
 @NoArgs
 data class ChartSpec(
@@ -15,10 +17,10 @@ data class ChartSpec(
     val type: Type?,
     val keywords: Set<String>?,
     val home: String?,
-    val sources: List<String>?,
+    val sources: List<URI>?,
     val dependencies: List<DependencySpec>?,
     val maintainers: List<MaintainerSpec>?,
-    val icon: String?,
+    val icon: URI?,
     val appVersion: String?,
     val deprecated: Boolean?,
     val annotations: Map<String, String>?
@@ -29,6 +31,11 @@ data class ChartSpec(
 
     @Suppress("unused")
     enum class Type {
-        Application, Library
+        Application, Library;
+
+        @JsonValue
+        fun toJson(): String {
+            return name.lowercase()
+        }
     }
 }

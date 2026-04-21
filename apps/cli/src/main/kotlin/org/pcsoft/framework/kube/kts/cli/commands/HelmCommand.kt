@@ -13,7 +13,7 @@ sealed class HelmCommand : KubeKtsCommand() {
     private fun runHelm(): Int {
         val process = ProcessBuilder()
             .command("helm", *helmArguments)
-            .directory(getTargetPath().toFile())
+            .directory(usedTargetPath.toFile())
             .redirectOutput(ProcessBuilder.Redirect.INHERIT)
             .redirectError(ProcessBuilder.Redirect.INHERIT)
             .start()

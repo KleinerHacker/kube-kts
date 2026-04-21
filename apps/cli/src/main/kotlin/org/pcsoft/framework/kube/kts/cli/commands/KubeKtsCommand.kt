@@ -14,15 +14,14 @@ sealed class KubeKtsCommand : BaseCommand() {
     @Parameters(index = "1", description = ["Path to the YAML repository to create"], arity = "0..1")
     protected var targetPath: String? = null; private set
 
+    protected val usedTargetPath: Path =
+        if (targetPath != null) Path.of(targetPath!!) else Files.createTempDirectory("helm")
+
     override fun run() {
         val ktsRepo = KubeKtsRepositoryScanner.DEFAULT.scan(Path.of(sourcePath))
         val helmRepo = KubeKtsRepositoryBuilder.DEFAULT.build(ktsRepo)
-        val usedTargetPath = getTargetPath()
 
         KubeHelmRepositoryRenderer.DEFAULT.render(helmRepo, usedTargetPath)
         println("Rendered to: $usedTargetPath")
     }
-
-    protected fun getTargetPath(): Path =
-        if (targetPath != null) Path.of(targetPath!!) else Files.createTempDirectory("helm")
 }

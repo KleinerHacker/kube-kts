@@ -6,6 +6,7 @@ import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.types.MetadataSpec
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
+import org.pcsoft.framework.kube.kts.api.types.MailAddress
 import java.io.File
 import java.net.JarURLConnection
 import java.net.URI
@@ -24,6 +25,7 @@ object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports("${TemplateSpec::class.java.packageName}.*")
     defaultImports("${MetadataSpec::class.java.packageName}.*")
     defaultImports("${KubeVersion::class.java.packageName}.*")
+    defaultImports("${MailAddress::class.java.packageName}.*")
     defaultImports("${URI::class.java.packageName}.*")
     jvm {
         dependenciesFromCurrentContext(wholeClasspath = true)
