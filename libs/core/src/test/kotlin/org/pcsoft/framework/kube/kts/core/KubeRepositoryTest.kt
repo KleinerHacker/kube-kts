@@ -33,7 +33,7 @@ class KubeRepositoryTest {
 
         val targetPath = Files.createTempDirectory("helm")
         KubeHelmRepositoryRenderer.DEFAULT.render(helmRepo, targetPath)
-        Assertions.assertTrue { Files.exists(targetPath.resolve("chart.yaml")) }
+        Assertions.assertTrue { Files.exists(targetPath.resolve("Chart.yaml")) }
         Assertions.assertTrue { Files.exists(targetPath.resolve("templates/service.yaml")) }
     }
 
