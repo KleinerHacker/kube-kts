@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.types.DependencySpec
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
+import org.pcsoft.framework.kube.kts.api.types.MailAddress
 import org.pcsoft.framework.kube.kts.api.utils.convertToJson
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
@@ -25,7 +26,7 @@ class ChartSpecTest {
 
             home = "home"
 
-            addSource("source")
+            addSource(URI("https://source.example.com"))
 
             addDependency("dependency", "1.0.0") {
                 repository = URI("https://repo.example.com")
@@ -38,11 +39,11 @@ class ChartSpecTest {
             }
 
             addMaintainer("maintainer") {
-                email = "email"
+                email = MailAddress.parse("maintainer@mail.com")
                 url = URI("https://url.example.com")
             }
 
-            icon = "icon"
+            icon = URI("https://icon.example.com")
             appVersion = "appVersion"
             deprecated = true
 
@@ -67,7 +68,7 @@ class ChartSpecTest {
         Assertions.assertEquals(ChartSpec.Type.Library, maxChart.type)
         Assertions.assertEquals(setOf("keyword"), maxChart.keywords)
         Assertions.assertEquals("home", maxChart.home)
-        Assertions.assertEquals(listOf("source"), maxChart.sources)
+        Assertions.assertEquals(listOf(URI("https://source.example.com")), maxChart.sources)
 
         Assertions.assertNotNull(maxChart.dependencies)
         Assertions.assertEquals(1, maxChart.dependencies!!.size)
@@ -103,10 +104,10 @@ class ChartSpecTest {
         Assertions.assertNotNull(maxChart.maintainers)
         Assertions.assertEquals(1, maxChart.maintainers!!.size)
         Assertions.assertEquals("maintainer", maxChart.maintainers[0].name)
-        Assertions.assertEquals("email", maxChart.maintainers[0].email)
+        Assertions.assertEquals(MailAddress.parse("maintainer@mail.com"), maxChart.maintainers[0].email)
         Assertions.assertEquals(URI("https://url.example.com"), maxChart.maintainers[0].url)
 
-        Assertions.assertEquals("icon", maxChart.icon)
+        Assertions.assertEquals(URI("https://icon.example.com"), maxChart.icon)
         Assertions.assertEquals("appVersion", maxChart.appVersion)
         Assertions.assertEquals(true, maxChart.deprecated)
         Assertions.assertEquals(mapOf("annotation" to "value"), maxChart.annotations)

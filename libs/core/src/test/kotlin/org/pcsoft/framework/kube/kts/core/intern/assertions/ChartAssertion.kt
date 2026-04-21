@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Assertions
 import org.pcsoft.framework.kube.kts.api.chart.ChartSpec
 import org.pcsoft.framework.kube.kts.api.chart.types.DependencySpec
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
+import org.pcsoft.framework.kube.kts.api.types.MailAddress
 import java.net.URI
 
 object ChartAssertion {
@@ -24,7 +25,7 @@ object ChartAssertion {
         Assertions.assertEquals(ChartSpec.Type.Library, chartSpec.type)
         Assertions.assertEquals(setOf("keyword"), chartSpec.keywords)
         Assertions.assertEquals("home", chartSpec.home)
-        Assertions.assertEquals(listOf("source"), chartSpec.sources)
+        Assertions.assertEquals(listOf(URI("https://source.example.com")), chartSpec.sources)
 
         Assertions.assertNotNull(chartSpec.dependencies)
         Assertions.assertEquals(1, chartSpec.dependencies!!.size)
@@ -60,10 +61,10 @@ object ChartAssertion {
         Assertions.assertNotNull(chartSpec.maintainers)
         Assertions.assertEquals(1, chartSpec.maintainers!!.size)
         Assertions.assertEquals("maintainer", chartSpec.maintainers!![0].name)
-        Assertions.assertEquals("email", chartSpec.maintainers!![0].email)
+        Assertions.assertEquals(MailAddress.parse("maintainer@mail.com"), chartSpec.maintainers!![0].email)
         Assertions.assertEquals(URI("https://url.example.com"), chartSpec.maintainers!![0].url)
 
-        Assertions.assertEquals("icon", chartSpec.icon)
+        Assertions.assertEquals(URI("https://icon.example.com"), chartSpec.icon)
         Assertions.assertEquals("appVersion", chartSpec.appVersion)
         Assertions.assertEquals(true, chartSpec.deprecated)
         Assertions.assertEquals(mapOf("annotation" to "value"), chartSpec.annotations)

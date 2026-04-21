@@ -5,10 +5,11 @@ import org.pcsoft.framework.kube.kts.api.chart.types.DependencySpecBuilder
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersionBuilder
 import org.pcsoft.framework.kube.kts.api.chart.types.MaintainerSpecBuilder
+import java.net.URI
 
 class ChartSpecBuilder internal constructor(private val name: String, private val version: String) {
     private var keywords: MutableSet<String>? = null
-    private var sources: MutableList<String>? = null
+    private var sources: MutableList<URI>? = null
     private var dependencies: MutableList<DependencySpecBuilder>? = null
     private var maintainers: MutableList<MaintainerSpecBuilder>? = null
     private var annotations: MutableMap<String, String>? = null
@@ -17,7 +18,7 @@ class ChartSpecBuilder internal constructor(private val name: String, private va
     var description: String? = null
     var type: Type? = null
     var home: String? = null
-    var icon: String? = null
+    var icon: URI? = null
     var appVersion: String? = null
     var deprecated: Boolean? = null
 
@@ -35,14 +36,14 @@ class ChartSpecBuilder internal constructor(private val name: String, private va
         this.keywords!!.addAll(keywords.toSet())
     }
 
-    fun addSource(source: String) {
+    fun addSource(source: URI) {
         if (sources == null) {
             sources = mutableListOf()
         }
         sources!!.add(source)
     }
 
-    fun addSources(vararg sources: String) {
+    fun addSources(vararg sources: URI) {
         if (this.sources == null) {
             this.sources = mutableListOf()
         }
