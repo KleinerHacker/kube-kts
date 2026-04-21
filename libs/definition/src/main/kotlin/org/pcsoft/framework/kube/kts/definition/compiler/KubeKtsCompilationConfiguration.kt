@@ -30,8 +30,6 @@ object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
 
         val thisJarFile = getJarFromClass(KubeKtsCompilationConfiguration::class)
         val apiJarFile = getJarFromClass(ChartSpec::class)
-        println("This jar file: $thisJarFile")
-        println("API jar file: $apiJarFile")
         if (thisJarFile != null && apiJarFile != null) {
             dependenciesFromClassContext(
                 KubeKtsCompilationConfiguration::class,

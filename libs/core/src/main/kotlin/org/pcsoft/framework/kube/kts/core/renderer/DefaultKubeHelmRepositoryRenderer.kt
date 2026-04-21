@@ -19,9 +19,7 @@ class DefaultKubeHelmRepositoryRenderer(
             validateDirectory(subPath, "Sub")
 
             val file = targetPath.resolve(it.type.relativePath + "/" + it.subject + ".yaml")
-            validateFile(file, it.subject)
-
-            Files.writeString(file, yaml, Charsets.UTF_8, StandardOpenOption.CREATE_NEW)
+            Files.writeString(file, yaml, Charsets.UTF_8, StandardOpenOption.CREATE)
         }
     }
 
@@ -30,10 +28,5 @@ class DefaultKubeHelmRepositoryRenderer(
             path.toFile().mkdirs()
         else if (!path.isDirectory())
             throw IllegalArgumentException("$name path is not a directory: ${path.toAbsolutePath()}")
-    }
-
-    private fun validateFile(path: Path, name: String) {
-        if (path.exists())
-            throw IllegalStateException("$name file already exists: ${path.toAbsolutePath()}")
     }
 }
