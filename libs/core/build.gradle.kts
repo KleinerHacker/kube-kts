@@ -9,16 +9,18 @@ dependencies {
     implementation(kotlin("reflect"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
 
-    implementation("org.jetbrains.kotlin:kotlin-scripting-jvm")
-    implementation("org.jetbrains.kotlin:kotlin-scripting-common")
-    implementation("org.jetbrains.kotlin:kotlin-scripting-jvm-host")
-    implementation("org.jetbrains.kotlin:kotlin-compiler-embeddable")
+    implementation(kotlin("scripting-jvm"))
+    implementation(kotlin("scripting-common"))
+    implementation(kotlin("scripting-jvm-host"))
+    implementation(kotlin("compiler-embeddable"))
 
+    implementation("org.slf4j:slf4j-api:2.0.17")
     implementation("commons-io:commons-io:2.21.0")
     implementation("tools.jackson.dataformat:jackson-dataformat-yaml:3.1.2")
     implementation("tools.jackson.module:jackson-module-kotlin:3.1.2")
 
     testImplementation(kotlin("test"))
+    testImplementation("org.slf4j:slf4j-simple:2.0.17")
     testImplementation("org.skyscreamer:jsonassert:1.5.3")
 }
 

@@ -9,6 +9,6 @@ interface KotlinScriptProcessor {
         val DEFAULT: KotlinScriptProcessor = DefaultKotlinScriptProcessor
     }
 
-    fun compile(script: Path) : Either<CompiledScript>
-    fun <T>execute(script: CompiledScript) : Either<T>
+    fun compile(name: String, script: Path) : Either<CompiledScript>
+    fun <T>execute(name: String, script: CompiledScript) : Either<T>
 }
