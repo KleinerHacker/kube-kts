@@ -7,7 +7,7 @@ class LintTest {
 
     @Test
     fun testSuccessfully() {
-        val exitCode = runCli(arrayOf("lint", "src/test/resources/helm", "build/helm"))
+        val exitCode = runCli(arrayOf("-v", "lint", "src/test/resources/helm", "build/helm"))
         Assertions.assertEquals(0, exitCode)
     }
 

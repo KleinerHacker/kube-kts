@@ -7,5 +7,3 @@ fun String.red(): String = "\u001B[31m${this}\u001B[0m"
 fun String.yellow(): String = "\u001B[33m${this}\u001B[0m"
 
 fun String.blue(): String = "\u001B[34m${this}\u001B[0m"
-
-fun String.gray(): String = "\u001B[90m${this}\u001B[0m"
