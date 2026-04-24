@@ -13,7 +13,7 @@ class TemplateTest {
     @ParameterizedTest
     @EnumSource(RepoType::class)
     fun testSuccessfully(type: RepoType) {
-        val exitCode = runCli(arrayOf("template", "src/test/resources/${type.path}", "build/kts/helm", "-n", "demo"))
+        val exitCode = runCli(arrayOf("template", "src/test/resources/${type.path}", "build/${type.path}/helm", "-n", "demo"))
         Assertions.assertEquals(0, exitCode)
     }
 

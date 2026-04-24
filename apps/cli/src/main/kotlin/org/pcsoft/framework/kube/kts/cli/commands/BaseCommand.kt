@@ -2,6 +2,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 
 import org.apache.log4j.Level
 import org.apache.log4j.LogManager
+import org.pcsoft.framework.kube.kts.cli.intern.logging.KubeKtsConsoleAppender
 import org.pcsoft.framework.kube.kts.logging.failedStyle
 import org.pcsoft.framework.kube.kts.logging.logger
 import java.util.concurrent.Callable
@@ -14,6 +15,9 @@ sealed class BaseCommand : MixinCommand(), Callable<Int> {
     final override fun call(): Int {
         val level = if (isTrace) Level.TRACE else if (isDebug) Level.DEBUG else Level.INFO
         LogManager.getRootLogger().level = level
+        LogManager.getRootLogger().allAppenders.toList()
+            .filterIsInstance<KubeKtsConsoleAppender>()
+            .forEach { it.showLogLevel = showLogLevel }
 
         return try {
             run()

@@ -28,8 +28,7 @@ class KubeRepositoryTest {
         val ktsRepo = KubeKtsRepositoryScanner.DEFAULT.scan(Paths.get(this::class.java.getResource("/kts/helm").toURI()))
         Assertions.assertNotNull(ktsRepo)
         Assertions.assertEquals(2, ktsRepo.files.size)
-        Assertions.assertEquals(1, ktsRepo.files.filter { it.type == KubeFile.Type.CHART }.size)
-        Assertions.assertEquals(1, ktsRepo.files.filter { it.type == KubeFile.Type.TEMPLATE }.size)
+        Assertions.assertEquals(1, ktsRepo.files.filter { it.isChart }.size)
         Assertions.assertTrue { ktsRepo.files.any { it.subject == "Chart" } }
         Assertions.assertTrue { ktsRepo.files.any { it.subject == "service" } }
         Assertions.assertEquals(0, ktsRepo.legacyFiles.size)
@@ -37,8 +36,7 @@ class KubeRepositoryTest {
         val helmRepo = KubeKtsRepositoryBuilder.DEFAULT.build(ktsRepo)
         Assertions.assertNotNull(helmRepo)
         Assertions.assertEquals(2, helmRepo.files.size)
-        Assertions.assertEquals(1, helmRepo.files.filter { it.type == KubeFile.Type.CHART }.size)
-        Assertions.assertEquals(1, helmRepo.files.filter { it.type == KubeFile.Type.TEMPLATE }.size)
+        Assertions.assertEquals(1, helmRepo.files.filter { it.isChart }.size)
         Assertions.assertEquals(0, helmRepo.legacyFiles.size)
 
         Assertions.assertTrue { helmRepo.files.any { it.subject == "Chart" } }

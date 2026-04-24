@@ -47,10 +47,12 @@ object MainCommand {
 
 @NoArgs
 class GlobalFlags(
-    @field:Option(names = ["-d", "--debug"], description = ["Print debug information"])
+    @field:Option(names = ["-d", "--debug"], description = ["Print debug information with log level"])
     var debug: Boolean,
-    @field:Option(names = ["-v", "--verbose"], description = ["Print all information"])
+    @field:Option(names = ["-v", "--verbose"], description = ["Print all information with log level"])
     var verbose: Boolean,
+    @field:Option(names = ["--show-log-level"], description = ["Print log level of information output"])
+    var showLogLevel: Boolean,
     @field:Option(names = ["-e", "--exception"], description = ["Print exceptions in case of errors"])
     var exception: Boolean
 )

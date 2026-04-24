@@ -11,7 +11,7 @@ class RenderTest {
     @ParameterizedTest
     @EnumSource(RepoType::class)
     fun testSuccessfully(type: RepoType) {
-        val exitCode = runCli(arrayOf("render", "src/test/resources/${type.path}", "build/helm"))
+        val exitCode = runCli(arrayOf("render", "src/test/resources/${type.path}", "build/${type.path}/helm"))
         Assertions.assertEquals(0, exitCode)
     }
 
