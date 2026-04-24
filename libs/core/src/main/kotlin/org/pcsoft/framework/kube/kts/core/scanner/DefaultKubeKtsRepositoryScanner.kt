@@ -3,6 +3,7 @@ package org.pcsoft.framework.kube.kts.core.scanner
 import org.pcsoft.framework.kube.kts.core.DefaultKubeKtsFile
 import org.pcsoft.framework.kube.kts.core.KubeFile
 import org.pcsoft.framework.kube.kts.core.KubeKtsRepository
+import org.pcsoft.framework.kube.kts.core.LegacyHelmFile
 import org.pcsoft.framework.kube.kts.logging.*
 import java.nio.file.FileVisitOption
 import java.nio.file.Files
@@ -20,24 +21,37 @@ internal object DefaultKubeKtsRepositoryScanner : KubeKtsRepositoryScanner {
         require(path.toFile().isDirectory) { "Path is not a directory: ${path.toAbsolutePath()}" }
         logger.atDebug().log { "$symbolProcess Scan repository at path ${path.toAbsolutePath()}" }
 
-        val files = Files.walk(path, FileVisitOption.FOLLOW_LINKS)
+        val kubeKtsFiles = Files.walk(path, FileVisitOption.FOLLOW_LINKS)
             .filter { it.isRegularFile() }
             .filter { it.extension.equals("kts", true) }
             .map { path ->
                 val subject = path.fileName.nameWithoutExtension
                 val script = Files.readString(path)
 
-                DefaultKubeKtsFile(subject, KubeFile.Type.fromPath(subject), script)
+                DefaultKubeKtsFile(subject, KubeFile.Type.from(subject), script)
             }
             .toList()
-        logger.atDebug().log { "$symbolBullet Found ${files.size} files in repository" }
-        logger.atTrace().log { "\t$symbolArrowRight ${files.joinToString(", ") { it.subject }}" }
 
-        if (!files.any { it.type == KubeFile.Type.CHART }) {
+        val legacyHelmFiles = Files.walk(path, FileVisitOption.FOLLOW_LINKS)
+            .filter { it.isRegularFile() }
+            .filter { it.extension.equals("yaml", true) || it.extension.equals("yml", true) }
+            .map { path ->
+                val subject = path.fileName.nameWithoutExtension
+                val yaml = Files.readString(path)
+
+                LegacyHelmFile(subject, KubeFile.Type.from(subject), yaml)
+            }
+            .toList()
+
+        logger.atDebug().log { "$symbolBullet Found ${kubeKtsFiles.size} KTS files and ${legacyHelmFiles.size} legacy Helm files in repository" }
+        logger.atTrace().log { "\t$symbolArrowRight KTS : ${kubeKtsFiles.joinToString(", ") { it.subject }}" }
+        logger.atTrace().log { "\t$symbolArrowRight Helm: ${legacyHelmFiles.joinToString(", ") { it.subject }}" }
+
+        if (!kubeKtsFiles.any { it.type == KubeFile.Type.CHART }) {
             throw IllegalArgumentException("No chart file found in repository at path ${path.toAbsolutePath()}")
         }
 
         logger.atDebug().log { "Scan finished for repository at path ${path.toAbsolutePath()}".successStyle() }
-        return KubeKtsRepository(path.parent.fileName.name, files)
+        return KubeKtsRepository(path.parent.fileName.name, kubeKtsFiles, legacyHelmFiles)
     }
 }

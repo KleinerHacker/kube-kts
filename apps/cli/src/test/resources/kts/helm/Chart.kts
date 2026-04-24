@@ -1,4 +1,4 @@
-package helm
+package kts.helm
 
 chart("name", "1.0.0") {
     kubeVersion {

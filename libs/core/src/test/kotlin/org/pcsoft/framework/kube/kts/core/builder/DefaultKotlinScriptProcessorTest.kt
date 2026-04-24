@@ -27,7 +27,7 @@ class DefaultKotlinScriptProcessorTest {
     @Test
     fun testChart() {
         val compiledScriptEither =
-            compiler.compile("chart", Path.of(this::class.java.getResource("/helm/Chart.kts").toURI()))
+            compiler.compile("chart", Path.of(this::class.java.getResource("/kts/helm/Chart.kts").toURI()))
         Assertions.assertNotNull(compiledScriptEither)
         Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
 
@@ -44,7 +44,7 @@ class DefaultKotlinScriptProcessorTest {
     @Test
     fun testService() {
         val compiledScriptEither =
-            compiler.compile("service", Path.of(this::class.java.getResource("/helm/templates/service.kts").toURI()))
+            compiler.compile("service", Path.of(this::class.java.getResource("/kts/helm/templates/service.kts").toURI()))
         Assertions.assertNotNull(compiledScriptEither)
         Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
 

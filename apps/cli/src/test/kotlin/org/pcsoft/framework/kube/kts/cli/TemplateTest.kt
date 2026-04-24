@@ -3,19 +3,24 @@ package org.pcsoft.framework.kube.kts.cli
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
+import org.pcsoft.framework.kube.kts.cli.intern.RepoType
 
 @Disabled("Incomplete charts")
 class TemplateTest {
 
-    @Test
-    fun testSuccessfully() {
-        val exitCode = runCli(arrayOf("template", "src/test/resources/helm", "build/helm", "-n", "demo"))
+    @ParameterizedTest
+    @EnumSource(RepoType::class)
+    fun testSuccessfully(type: RepoType) {
+        val exitCode = runCli(arrayOf("template", "src/test/resources/${type.path}", "build/kts/helm", "-n", "demo"))
         Assertions.assertEquals(0, exitCode)
     }
 
-    @Test
-    fun testSuccessfully_Tmp() {
-        val exitCode = runCli(arrayOf("template", "src/test/resources/helm", "-n", "demo"))
+    @ParameterizedTest
+    @EnumSource(RepoType::class)
+    fun testSuccessfully_Tmp(type: RepoType) {
+        val exitCode = runCli(arrayOf("template", "src/test/resources/${type.path}", "-n", "demo"))
         Assertions.assertEquals(0, exitCode)
     }
 

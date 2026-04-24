@@ -19,9 +19,13 @@ class DefaultKubeHelmRepositoryRenderer(
         validateDirectory(targetPath, "Target")
         logger.atDebug().log { "$symbolProcess Rendering repository to YAML: ${repository.name}" }
 
-        logger.atDebug().log { "$symbolBullet Render ${repository.files.size} files..." }
+        logger.atDebug()
+            .log { "$symbolBullet Render ${repository.files.size} KTS files and ${repository.legacyFiles.size} legacy Helm files..." }
         logger.atTrace()
-            .log { "\t$symbolArrowRight ${repository.files.joinToString(", ") { it.subject }}" }
+            .log { "\t$symbolArrowRight KTS : ${repository.files.joinToString(", ") { it.subject }}" }
+        logger.atTrace()
+            .log { "\t$symbolArrowRight Helm: ${repository.legacyFiles.joinToString(", ") { it.subject }}" }
+
         repository.files.forEach {
             val yaml = renderer.render(it)
             val subPath = targetPath.resolve(it.type.relativePath)
@@ -29,6 +33,11 @@ class DefaultKubeHelmRepositoryRenderer(
 
             val file = targetPath.resolve(it.type.relativePath + "/" + it.subject + ".yaml")
             Files.writeString(file, yaml, Charsets.UTF_8, StandardOpenOption.CREATE)
+        }
+
+        repository.legacyFiles.forEach {
+            val file = targetPath.resolve(it.type.relativePath + "/" + it.subject + ".yaml")
+            Files.writeString(file, it.yaml, Charsets.UTF_8, StandardOpenOption.CREATE)
         }
 
         logger.atDebug().log { "Render finished for repository: ${repository.name}".successStyle() }

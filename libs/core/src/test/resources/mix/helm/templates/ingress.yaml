@@ -1,0 +1,60 @@
+apiVersion: networking.k8s.io/v1   # Pflicht | Default: networking.k8s.io/v1
+kind: Ingress                      # Pflicht | Default: Ingress
+
+metadata:                          # Pflicht
+  name: my-ingress                 # Pflicht
+  namespace: default              # Optional | Default: default
+  labels:                         # Optional | Default: {}
+    app: demo
+  annotations:                    # Optional | Default: {}
+    nginx.ingress.kubernetes.io/rewrite-target: /
+
+spec:                              # Pflicht
+  ingressClassName: nginx         # Optional | Default: vom Default IngressClass im Cluster
+
+  defaultBackend:                 # Optional | Default: keiner
+    service:
+      name: fallback-service      # Pflicht (wenn service genutzt wird)
+      port:                       # Pflicht
+        number: 80               # Entweder number oder name
+        # name: http
+    # resource:                  # Alternative zu service
+    #   apiGroup: example.com    # Optional | Default: ""
+    #   kind: CustomBackend      # Pflicht
+    #   name: backend1           # Pflicht
+
+  tls:                            # Optional | Default: []
+    - hosts:                      # Optional | Default: []
+        - example.com
+        - www.example.com
+      secretName: example-tls     # Optional | Default: automatisch keiner
+
+  rules:                          # Optional | Default: []
+    - host: example.com           # Optional | Default: alle Hosts
+      http:                       # Pflicht wenn rule genutzt wird
+        paths:                    # Pflicht
+          - path: /               # Optional | Default: /
+            pathType: Prefix      # Pflicht | Werte: Exact | Prefix | ImplementationSpecific
+            backend:              # Pflicht
+              service:
+                name: web-service # Pflicht
+                port:
+                  number: 80      # Entweder number oder name
+                  # name: http
+
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: api-service
+                port:
+                  name: http
+
+          # Alternative Backend Resource
+          - path: /custom
+            pathType: Prefix
+            backend:
+              resource:
+                apiGroup: example.com   # Optional | Default: ""
+                kind: StorageBucket     # Pflicht
+                name: assets-bucket     # Pflicht
