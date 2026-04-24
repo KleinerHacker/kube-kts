@@ -14,7 +14,7 @@ service {
             port = 9999
             targetPort = 8888
             nodePort = 7777
-            protocol = PortSpec.Protocol.SCTP
+            protocol = PortMappingSpec.Protocol.SCTP
             appProtocol = "https"
         }
 

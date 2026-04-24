@@ -7,6 +7,7 @@ import tools.jackson.databind.json.JsonMapper
 import tools.jackson.databind.module.SimpleModule
 import tools.jackson.dataformat.yaml.YAMLMapper
 import tools.jackson.module.kotlin.KotlinModule
+import java.io.ByteArrayOutputStream
 
 private val module = SimpleModule().apply {
     addDeserializer(TemplateSpec::class.java, ResourceApiDeserializer())
@@ -26,9 +27,11 @@ private val yamlMapper = YAMLMapper.builder()
 
 internal fun Any.toJson() = jsonMapper.writeValueAsString(this)
 
-internal inline fun <reified T> convertToJson(yaml: String) : String {
-    val obj = fromYaml<T>(yaml)
-    return obj!!.toJson()
-}
+internal fun convertToJson(yaml: String) : String {
+    val jsonNode = yamlMapper.readTree(yaml)
 
-private inline fun <reified T> fromYaml(yaml: String): T = yamlMapper.readValue(yaml, T::class.java)
+    return ByteArrayOutputStream().use {
+        jsonMapper.writeTree(jsonMapper.createGenerator(it), jsonNode)
+        it.toString("UTF-8")
+    }
+}

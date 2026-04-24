@@ -116,11 +116,9 @@ class ChartSpecTest {
     @Test
     fun testMaxYaml() {
         val expectedYaml = IOUtils.resourceToString("/chart.yaml", Charsets.UTF_8)
-        val expectedJson = convertToJson<ChartSpec>(expectedYaml)
+        val expectedJson = convertToJson(expectedYaml)
         val actualJson = maxChart.toJson()
 
-        println("Expect: $expectedJson")
-        println("Actual: $actualJson")
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
