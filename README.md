@@ -22,8 +22,8 @@ compile and render it to classic YAML files, 100% compatible with Helm.
 #### Legacy Support
 
 Kube KTS also supports the classic Helm Go-Templates. All files with the `.yaml` or `.yml`
-extension are used as classic Helm Go-Templates. Additionally, all files with the `.tpl`
-extension are compiled to YAML files, too.
+extension are used as classic Helm Go-Templates. Additionally, all other file types
+are copied to the YAML repository, too.
 
 ## Examples
 
