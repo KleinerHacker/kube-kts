@@ -1,8 +1,9 @@
 package org.pcsoft.framework.kube.kts.cli.commands
 
-import org.pcsoft.framework.kube.kts.cli.intern.utils.green
-import org.pcsoft.framework.kube.kts.cli.intern.utils.logger
 import org.pcsoft.framework.kube.kts.core.scanner.KubeKtsRepositoryScanner
+import org.pcsoft.framework.kube.kts.logging.logger
+import org.pcsoft.framework.kube.kts.logging.successStyle
+import org.pcsoft.framework.kube.kts.logging.symbolMainProcess
 import picocli.CommandLine.Command
 import picocli.CommandLine.Parameters
 import java.nio.file.Path
@@ -15,8 +16,8 @@ object ValidateCommand : BaseCommand() {
     private lateinit var path: String
 
     override fun run() {
-        logger.atInfo().log { "Start scanning repository at $path" }
+        logger.atInfo().log { "$symbolMainProcess Start scanning repository at $path" }
         KubeKtsRepositoryScanner.DEFAULT.scan(Path.of(path))
-        logger.atInfo().log { "Repository scanned".green() }
+        logger.atInfo().log { "Repository scanned".successStyle() }
     }
 }

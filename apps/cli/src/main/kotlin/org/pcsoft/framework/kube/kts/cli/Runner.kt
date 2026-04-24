@@ -2,17 +2,9 @@ package org.pcsoft.framework.kube.kts.cli
 
 import org.apache.log4j.Level
 import org.apache.log4j.LogManager
-import org.pcsoft.framework.kube.kts.cli.commands.CompileCommand
-import org.pcsoft.framework.kube.kts.cli.commands.InstallCommand
-import org.pcsoft.framework.kube.kts.cli.commands.LintCommand
-import org.pcsoft.framework.kube.kts.cli.commands.RenderCommand
-import org.pcsoft.framework.kube.kts.cli.commands.TemplateCommand
-import org.pcsoft.framework.kube.kts.cli.commands.UninstallCommand
-import org.pcsoft.framework.kube.kts.cli.commands.ValidateCommand
+import org.pcsoft.framework.kube.kts.cli.commands.*
 import picocli.CommandLine
-import picocli.CommandLine.Command
-import picocli.CommandLine.HelpCommand
-import picocli.CommandLine.Option
+import picocli.CommandLine.*
 
 fun main(args: Array<String>) {
     runCli(args)
@@ -20,7 +12,7 @@ fun main(args: Array<String>) {
 
 fun runCli(args: Array<String>): Int {
     val commandLine = CommandLine(MainCommand)
-        .setExecutionStrategy(CommandLine.RunAll())
+        .setExecutionStrategy(RunAll())
 
     if (args.isEmpty()) {
         commandLine.usage(System.out)

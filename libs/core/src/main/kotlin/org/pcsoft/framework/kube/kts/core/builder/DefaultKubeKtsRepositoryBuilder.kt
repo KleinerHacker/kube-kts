@@ -3,7 +3,11 @@ package org.pcsoft.framework.kube.kts.core.builder
 import org.jetbrains.kotlin.incremental.util.Either
 import org.pcsoft.framework.kube.kts.api.chart.KubeSpec
 import org.pcsoft.framework.kube.kts.core.*
-import org.pcsoft.framework.kube.kts.core.intern.utils.*
+import org.pcsoft.framework.kube.kts.core.intern.utils.map
+import org.pcsoft.framework.kube.kts.core.intern.utils.thenCollect
+import org.pcsoft.framework.kube.kts.core.intern.utils.thenMap
+import org.pcsoft.framework.kube.kts.core.intern.utils.thenMapWithError
+import org.pcsoft.framework.kube.kts.logging.*
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -18,15 +22,17 @@ class DefaultKubeKtsRepositoryBuilder(
     }
 
     override fun build(repository: KubeKtsRepository): KubeHelmRepository {
-        logger.atDebug().log { "Building Helm repository from KubeKts repository: ${repository.name}" }
+        logger.atDebug().log { "$symbolProcess Building Helm repository from Kube KTS repository: ${repository.name}" }
 
-        logger.atDebug().log { "> Build ${repository.files.size} files..." }
+        logger.atDebug().log { "$symbolBullet Build ${repository.files.size} files..." }
         logger.atTrace().log {
-            "Files: ${repository.files.joinToString(", ") { it.subject }}"
+            "\t$symbolArrowRight ${repository.files.joinToString(", ") { it.subject }}"
         }
         val helmFiles = repository.files
             .map { file -> withTempFile(file) { processor.compile(file.subject, it).map { file to it } } }
-            .thenMapWithError { pair -> processor.execute<KubeSpec>(pair.first.subject, pair.second).map { pair.first to it } }
+            .thenMapWithError { pair ->
+                processor.execute<KubeSpec>(pair.first.subject, pair.second).map { pair.first to it }
+            }
             .thenMap { helmFileMapper(it.first, it.second) }
             .thenCollect {
                 Either.Error(
@@ -38,11 +44,12 @@ class DefaultKubeKtsRepositoryBuilder(
 
         require(helmFiles !is Either.Error) {
             val reason = (helmFiles as Either.Error).reason
-            logger.atTrace().log { "Errors during processing: $reason" }
+            logger.atTrace().log { "Errors during processing: $reason".failedStyle() }
 
             reason
         }
 
+        logger.atDebug().log { "Build Helm repository finished: ${repository.name}".successStyle() }
         return KubeHelmRepository(repository.name, (helmFiles as Either.Success<Iterable<KubeHelmFile>>).value.toList())
     }
 

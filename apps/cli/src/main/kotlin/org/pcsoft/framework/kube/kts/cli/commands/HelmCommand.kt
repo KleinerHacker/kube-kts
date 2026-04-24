@@ -1,9 +1,7 @@
 package org.pcsoft.framework.kube.kts.cli.commands
 
-import org.pcsoft.framework.kube.kts.cli.intern.utils.blue
-import org.pcsoft.framework.kube.kts.cli.intern.utils.green
-import org.pcsoft.framework.kube.kts.cli.intern.utils.logger
-import org.pcsoft.framework.kube.kts.cli.intern.utils.red
+import org.pcsoft.framework.kube.kts.logging.*
+
 
 sealed class HelmCommand : KubeKtsCommand() {
     companion object {
@@ -20,34 +18,36 @@ sealed class HelmCommand : KubeKtsCommand() {
     }
 
     private fun runHelm(): Int {
-        logger.atInfo().log { "Run helm..." }
-        logger.atDebug().log { "> with arguments: ${helmArguments.joinToString(" ")}" }
+        logger.atInfo().log { "$symbolMainProcess Run helm..." }
+        logger.atDebug().log { "$symbolBullet with arguments: ${helmArguments.joinToString(" ")}" }
         
-        logger.atDebug().log { "> Start process..." }
+        logger.atDebug().log { "$symbolBullet Start process..." }
         val process = ProcessBuilder()
             .command("helm", *helmArguments)
             .directory(usedTargetPath.toFile())
             .start()
-        logger.atTrace().log { "> Process started" }
+        logger.atTrace().log { "$symbolArrowRight Process started" }
 
         process.inputStream.bufferedReader().use { reader ->
             reader.lines().forEach { line ->
-                logger.atInfo().log { "[HELM EXECUTION]".blue() + " $line" }
+                logger.atInfo().log { "[HELM EXECUTION]".subProcessTitleStyle() + " ${line.subProcessInfoStyle()}" }
             }
         }
 
         process.errorStream.bufferedReader().use { reader ->
             reader.lines().forEach { line ->
-                logger.atError().log { "[HELM EXECUTION]".blue() + " $line".red() }
+                logger.atError().log { "[HELM EXECUTION]".subProcessTitleStyle() + " $line".subProcessErrorStyle() }
             }
         }
 
-        logger.atTrace().log { "> Wait for process to finish..." }
+        logger.atTrace().log { "$symbolBullet Wait for process to finish..." }
         val exitCode = process.waitFor()
-        logger.atDebug().log { "> Process finished with exit code $exitCode" }
+        logger.atDebug().log { "$symbolArrowRight Process finished with exit code $exitCode" }
 
         if (exitCode == 0) {
-            logger.atInfo().log { "Helm command finished successfully".green() }
+            logger.atInfo().log { "Helm command finished successfully".successStyle() }
+        } else {
+            logger.atError().log { "Helm command failed with exit code $exitCode".failedStyle() }
         }
 
         return exitCode
