@@ -6,10 +6,16 @@ import org.apache.log4j.Priority
 import org.apache.log4j.spi.LoggingEvent
 import org.pcsoft.framework.kube.kts.cli.intern.utils.*
 
-class KubeKtsConsoleAppender : AppenderSkeleton() {
+class KubeKtsConsoleAppender(
+    var showLogLevel: Boolean = false
+) : AppenderSkeleton() {
     @Suppress("DEPRECATION")
     override fun append(event: LoggingEvent) {
-        println("[${event.level.toColoredString()}] ${event.message}")
+        if (showLogLevel) {
+            print("[${event.level.toColoredString()}] ")
+        }
+
+        println(event.message)
     }
 
     override fun close() {

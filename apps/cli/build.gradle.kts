@@ -13,6 +13,7 @@ dependencies {
     implementation("info.picocli:picocli:4.7.7")
 
     testImplementation(kotlin("test"))
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.11.4")
 }
 
 kotlin {

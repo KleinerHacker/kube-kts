@@ -28,18 +28,25 @@ class DefaultKubeKtsRepositoryBuilder(
         logger.atTrace().log {
             "\t$symbolArrowRight ${repository.files.joinToString(", ") { it.subject }}"
         }
+
         val helmFiles = repository.files
-            .map { file -> withTempFile(file) { processor.compile(file.subject, it).map { file to it } } }
+            .map { file ->
+                withTempFile(file) {
+                    processor.compile(file.subject, it)
+                        .map { file to it }
+                }
+            }
             .thenMapWithError { pair ->
-                processor.execute<KubeSpec>(pair.first.subject, pair.second).map { pair.first to it }
+                processor.execute<KubeSpec>(pair.first.subject, pair.second)
+                    .map { pair.first to it }
             }
             .thenMap { helmFileMapper(it.first, it.second) }
             .thenCollect {
-                Either.Error(
-                    "Multiple errors occurred during processing: ${System.lineSeparator()}" + it.joinToString(
-                        System.lineSeparator()
-                    ) { it.reason }
-                )
+                val collectedReasons = it.joinToString(System.lineSeparator()) {
+                    it.reason
+                }
+
+                Either.Error("Multiple errors occurred during processing: ${System.lineSeparator()}$collectedReasons")
             }
 
         require(helmFiles !is Either.Error) {
@@ -50,7 +57,11 @@ class DefaultKubeKtsRepositoryBuilder(
         }
 
         logger.atDebug().log { "Build Helm repository finished: ${repository.name}".successStyle() }
-        return KubeHelmRepository(repository.name, (helmFiles as Either.Success<Iterable<KubeHelmFile>>).value.toList())
+        return KubeHelmRepository(
+            repository.name,
+            (helmFiles as Either.Success<Iterable<KubeHelmFile>>).value.toList(),
+            repository.legacyFiles
+        )
     }
 
     private fun <T> withTempFile(file: KubeKtsFile, action: (Path) -> T): T {

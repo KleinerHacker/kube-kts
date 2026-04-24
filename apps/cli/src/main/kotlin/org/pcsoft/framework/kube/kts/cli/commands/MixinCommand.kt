@@ -17,6 +17,9 @@ sealed class MixinCommand {
     protected val isTrace: Boolean
         get() = globalFlags.verbose || parent.globalFlags.verbose
 
+    protected val showLogLevel: Boolean
+        get() = globalFlags.showLogLevel || parent.globalFlags.showLogLevel || isDebug || isTrace
+
     protected val exception: Boolean
         get() = globalFlags.exception || parent.globalFlags.exception
 }
