@@ -7,6 +7,7 @@ import org.pcsoft.framework.kube.kts.core.intern.utils.map
 import org.pcsoft.framework.kube.kts.core.intern.utils.thenCollect
 import org.pcsoft.framework.kube.kts.core.intern.utils.thenMap
 import org.pcsoft.framework.kube.kts.core.intern.utils.thenMapWithError
+import org.pcsoft.framework.kube.kts.logging.*
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -16,10 +17,22 @@ class DefaultKubeKtsRepositoryBuilder(
         DefaultKubeHelmFile(file, spec)
     }
 ) : KubeKtsRepositoryBuilder {
+    companion object {
+        private val logger = logger()
+    }
+
     override fun build(repository: KubeKtsRepository): KubeHelmRepository {
+        logger.atDebug().log { "$symbolProcess Building Helm repository from Kube KTS repository: ${repository.name}" }
+
+        logger.atDebug().log { "$symbolBullet Build ${repository.files.size} files..." }
+        logger.atTrace().log {
+            "\t$symbolArrowRight ${repository.files.joinToString(", ") { it.subject }}"
+        }
         val helmFiles = repository.files
-            .map { file -> withTempFile(file) { processor.compile(it).map { file to it } } }
-            .thenMapWithError { pair -> processor.execute<KubeSpec>(pair.second).map { pair.first to it } }
+            .map { file -> withTempFile(file) { processor.compile(file.subject, it).map { file to it } } }
+            .thenMapWithError { pair ->
+                processor.execute<KubeSpec>(pair.first.subject, pair.second).map { pair.first to it }
+            }
             .thenMap { helmFileMapper(it.first, it.second) }
             .thenCollect {
                 Either.Error(
@@ -29,9 +42,15 @@ class DefaultKubeKtsRepositoryBuilder(
                 )
             }
 
-        require(helmFiles !is Either.Error) { (helmFiles as Either.Error).reason }
+        require(helmFiles !is Either.Error) {
+            val reason = (helmFiles as Either.Error).reason
+            logger.atTrace().log { "Errors during processing: $reason".failedStyle() }
 
-        return KubeHelmRepository((helmFiles as Either.Success<Iterable<KubeHelmFile>>).value.toList())
+            reason
+        }
+
+        logger.atDebug().log { "Build Helm repository finished: ${repository.name}".successStyle() }
+        return KubeHelmRepository(repository.name, (helmFiles as Either.Success<Iterable<KubeHelmFile>>).value.toList())
     }
 
     private fun <T> withTempFile(file: KubeKtsFile, action: (Path) -> T): T {
