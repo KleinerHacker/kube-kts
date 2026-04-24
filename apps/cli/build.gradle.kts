@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    kotlin("plugin.noarg")
 }
 
 dependencies {
@@ -16,6 +17,11 @@ dependencies {
 
 kotlin {
     jvmToolchain(25)
+}
+
+noArg {
+    annotation("org.pcsoft.framework.kube.kts.cli.intern.NoArgs")
+    invokeInitializers = true
 }
 
 tasks.test {
