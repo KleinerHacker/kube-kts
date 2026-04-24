@@ -46,7 +46,7 @@ class DependencySpecBuilder internal constructor(private val name: String, priva
         this.tags!!.addAll(tags.toSet())
     }
 
-    internal fun build() : DependencySpec =
+    internal fun build(): DependencySpec =
         DependencySpec(
             name = name,
             version = version,

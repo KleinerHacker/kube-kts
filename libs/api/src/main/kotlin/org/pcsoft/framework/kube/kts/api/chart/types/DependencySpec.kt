@@ -45,8 +45,8 @@ internal class ImportValueSerializer : ValueSerializer<DependencySpec.ImportValu
             is DependencySpec.PathImportValue -> gen.writeString(value.path)
             is DependencySpec.MappingImportValue -> {
                 gen.writeStartObject()
-                gen.writeStringProperty("child",value.child)
-                gen.writeStringProperty("parent",value.parent)
+                gen.writeStringProperty("child", value.child)
+                gen.writeStringProperty("parent", value.parent)
                 gen.writeEndObject()
             }
         }
