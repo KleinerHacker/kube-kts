@@ -5,17 +5,23 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 @NoArgs
-data class RulesSpec(
+class RulesSpec private constructor(
     val host: String?,
-    @get:JsonIgnore
-    val http: List<HttpPathConfig>
+    @field:JsonProperty("http")
+    private val httpConfig: HttpConfig
 ) {
-    /**
-     * Only for JSON serialization/deserialization
-     */
-    @get:JsonProperty("http")
-    private val httpWrapper: Map<String, List<HttpPathConfig>>
-        get() = mapOf("paths" to http)
+    constructor(
+        host: String?,
+        http: List<HttpPathConfig>
+    ) : this(host, HttpConfig(http))
+
+    @get:JsonIgnore
+    val http: List<HttpPathConfig> by httpConfig::paths
+
+    @NoArgs
+    private data class HttpConfig(
+        val paths: List<HttpPathConfig>
+    )
 
     @NoArgs
     data class HttpPathConfig(
