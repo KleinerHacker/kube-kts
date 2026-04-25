@@ -5,5 +5,5 @@ import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 @NoArgs
 data class PortSpec(
     val name: String?,
-    val port: Int?
+    val number: Int?
 )

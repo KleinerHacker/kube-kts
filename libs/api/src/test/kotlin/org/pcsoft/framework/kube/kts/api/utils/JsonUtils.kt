@@ -1,5 +1,6 @@
 package org.pcsoft.framework.kube.kts.api.utils
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
 import org.pcsoft.framework.kube.kts.api.intern.json.ResourceApiDeserializer
 import tools.jackson.databind.MapperFeature
@@ -17,6 +18,9 @@ private val jsonMapper = JsonMapper.builder()
     .addModule(KotlinModule.Builder().build())
     .addModule(module)
     .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
+    .changeDefaultPropertyInclusion {
+        it.withValueInclusion(JsonInclude.Include.NON_NULL)
+    }
     .build()
 
 private val yamlMapper = YAMLMapper.builder()

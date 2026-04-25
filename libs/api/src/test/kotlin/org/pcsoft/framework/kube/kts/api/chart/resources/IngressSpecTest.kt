@@ -31,7 +31,7 @@ class IngressSpecTest {
                 host = "rule.example.com"
                 addHttpPath(RulesSpec.HttpPathConfig.PathType.Exact) {
                     path = "path"
-                    serviceBackend("rule-service") {
+                    serviceBackend("ruleService") {
                         port(7777)
                     }
                 }
@@ -55,7 +55,7 @@ class IngressSpecTest {
         KotlinAssertions.assertInstanceOf<ServiceBackendSpec>(maxSpec.defaultBackend!!) {
             Assertions.assertEquals("service", it.name)
             Assertions.assertNotNull(it.port)
-            Assertions.assertEquals(9999, it.port.port)
+            Assertions.assertEquals(9999, it.port.number)
             Assertions.assertNull(it.port.name)
         }
 
@@ -76,9 +76,9 @@ class IngressSpecTest {
                 Assertions.assertEquals(RulesSpec.HttpPathConfig.PathType.Exact, it.pathType)
                 Assertions.assertNotNull(it.backend)
                 KotlinAssertions.assertInstanceOf<ServiceBackendSpec>(it.backend) {
-                    Assertions.assertEquals("rule-service", it.name)
+                    Assertions.assertEquals("ruleService", it.name)
                     Assertions.assertNotNull(it.port)
-                    Assertions.assertEquals(7777, it.port.port)
+                    Assertions.assertEquals(7777, it.port.number)
                     Assertions.assertNull(it.port.name)
                 }
             }
@@ -90,9 +90,6 @@ class IngressSpecTest {
         val expectedYaml = IOUtils.resourceToString("/ingress.yaml", Charsets.UTF_8)
         val expectedJson = convertToJson(expectedYaml)
         val actualJson = maxTemplate.toJson()
-
-        println("Actual: $actualJson")
-        println("Expect: $expectedJson")
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
 

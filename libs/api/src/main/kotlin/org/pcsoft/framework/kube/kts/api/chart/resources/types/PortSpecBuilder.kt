@@ -1,8 +1,8 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
-class PortSpecBuilder internal constructor(private val name: String?, private val port: Int?) {
+class PortSpecBuilder internal constructor(private val name: String?, private val number: Int?) {
     constructor(name: String) : this(name, null)
-    constructor(port: Int) : this(null, port)
+    constructor(number: Int) : this(null, number)
 
-    internal fun build(): PortSpec = PortSpec(name, port)
+    internal fun build(): PortSpec = PortSpec(name, number)
 }
