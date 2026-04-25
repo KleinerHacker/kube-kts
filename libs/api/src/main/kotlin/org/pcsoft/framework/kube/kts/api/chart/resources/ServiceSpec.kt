@@ -1,6 +1,6 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortMappingSpec
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsDeserializer
 import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsSerializer
@@ -9,10 +9,10 @@ import tools.jackson.databind.annotation.JsonSerialize
 import java.time.Duration
 
 @NoArgs
-class ServiceSpec(
+data class ServiceSpec(
     val type: Type?,
     val selector: Map<String, String>?, //TODO: replace with reference
-    val ports: List<PortSpec>,
+    val ports: List<PortMappingSpec>,
     val clusterIP: String?,
     val clusterIPs: List<String>?,
     val ipFamilies: Set<IPFamily>?,

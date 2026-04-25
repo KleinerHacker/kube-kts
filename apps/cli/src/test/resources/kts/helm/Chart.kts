@@ -1,5 +1,3 @@
-package kts.helm
-
 chart("name", "1.0.0") {
     kubeVersion {
         minInclusive("1.0.0")

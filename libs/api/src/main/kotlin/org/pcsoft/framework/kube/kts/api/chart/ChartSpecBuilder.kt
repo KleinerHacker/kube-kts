@@ -83,7 +83,7 @@ class ChartSpecBuilder internal constructor(private val name: String, private va
         kubeVersion = KubeVersionBuilder().apply(prepare)
     }
 
-    internal fun build() : ChartSpec =
+    internal fun build(): ChartSpec =
         ChartSpec(
             apiVersion = ChartSpec.API_VERSION,
             name = name,

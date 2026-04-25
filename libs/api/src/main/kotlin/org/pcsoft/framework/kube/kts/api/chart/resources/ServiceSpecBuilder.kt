@@ -1,13 +1,13 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec.*
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortSpecBuilder
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortMappingSpecBuilder
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpecBuilder
 import java.time.Duration
 
-class ServiceSpecBuilder internal constructor(): ResourceSpecBuilder<ServiceSpec> {
-    private val ports = mutableListOf<PortSpecBuilder>()
+class ServiceSpecBuilder internal constructor() : ResourceSpecBuilder<ServiceSpec> {
+    private val ports = mutableListOf<PortMappingSpecBuilder>()
     private val selector: Map<String, String>? = null //TODO: replace with reference
     private var clusterIP: String? = null
     private var clusterIPs: MutableList<String>? = null
@@ -21,6 +21,7 @@ class ServiceSpecBuilder internal constructor(): ResourceSpecBuilder<ServiceSpec
     var externalTrafficPolicy: TrafficPolicy? = null
     var internalTrafficPolicy: TrafficPolicy? = null
     var allocateLoadBalancerNodePorts: Boolean? = null
+
     @Deprecated("This field was under-specified and its meaning varies across implementations. Using it is non-portable and it may not support dual-stack. Users are encouraged to use implementation-specific annotations when available.")
     var loadBalancerIP: String? = null
     var loadBalancerClass: String? = null
@@ -30,8 +31,8 @@ class ServiceSpecBuilder internal constructor(): ResourceSpecBuilder<ServiceSpec
     var healthCheckNodePort: Int? = null
     var trafficDistribution: TrafficDistribution? = null
 
-    fun addPort(name: String, prepare: PortSpecBuilder.() -> Unit) {
-        val portSpec = PortSpecBuilder(name).apply(prepare)
+    fun addPort(name: String, prepare: PortMappingSpecBuilder.() -> Unit) {
+        val portSpec = PortMappingSpecBuilder(name).apply(prepare)
         ports.add(portSpec)
     }
 
@@ -101,7 +102,7 @@ class ServiceSpecBuilder internal constructor(): ResourceSpecBuilder<ServiceSpec
 
     @Suppress("DEPRECATION")
     override fun build(): ServiceSpec {
-        require(ports.isNotEmpty()) { "At least one port is required" }
+        require(ports.isNotEmpty()) { "At least one port is required at ${ServiceSpec::class.simpleName}" }
 
         return ServiceSpec(
             type,

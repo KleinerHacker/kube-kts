@@ -1,10 +1,10 @@
 package org.pcsoft.framework.kube.kts.api.chart
 
 import com.fasterxml.jackson.annotation.JsonValue
-import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import org.pcsoft.framework.kube.kts.api.chart.types.DependencySpec
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
 import org.pcsoft.framework.kube.kts.api.chart.types.MaintainerSpec
+import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import java.net.URI
 
 @NoArgs

@@ -2,7 +2,7 @@ package org.pcsoft.framework.kube.kts.core.intern.assertions
 
 import org.junit.jupiter.api.Assertions
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortMappingSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
@@ -23,7 +23,7 @@ object ServiceAssertion {
         Assertions.assertEquals(9999, serviceSpec.spec.ports[0].port)
         Assertions.assertEquals(8888, serviceSpec.spec.ports[0].targetPort)
         Assertions.assertEquals(7777, serviceSpec.spec.ports[0].nodePort)
-        Assertions.assertEquals(PortSpec.Protocol.SCTP, serviceSpec.spec.ports[0].protocol)
+        Assertions.assertEquals(PortMappingSpec.Protocol.SCTP, serviceSpec.spec.ports[0].protocol)
         Assertions.assertEquals("https", serviceSpec.spec.ports[0].appProtocol)
 
         Assertions.assertEquals("clusterIP", serviceSpec.spec.clusterIP)

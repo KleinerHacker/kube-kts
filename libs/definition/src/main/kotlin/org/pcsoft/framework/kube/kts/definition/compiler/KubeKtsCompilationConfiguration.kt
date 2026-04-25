@@ -2,14 +2,14 @@ package org.pcsoft.framework.kube.kts.definition.compiler
 
 import org.pcsoft.framework.kube.kts.api.chart.ChartSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortMappingSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.types.MetadataSpec
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
 import org.pcsoft.framework.kube.kts.api.types.MailAddress
 import java.io.File
 import java.net.JarURLConnection
-import java.net.URI
 import java.net.URL
 import kotlin.reflect.KClass
 import kotlin.script.experimental.api.*
@@ -21,12 +21,15 @@ import kotlin.script.experimental.jvm.jvm
 object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports("${ChartSpec::class.java.packageName}.*")
     defaultImports("${ResourceSpec::class.java.packageName}.*")
-    defaultImports("${PortSpec::class.java.packageName}.*")
+    defaultImports("${PortMappingSpec::class.java.packageName}.*")
     defaultImports("${TemplateSpec::class.java.packageName}.*")
     defaultImports("${MetadataSpec::class.java.packageName}.*")
     defaultImports("${KubeVersion::class.java.packageName}.*")
     defaultImports("${MailAddress::class.java.packageName}.*")
-    defaultImports("${URI::class.java.packageName}.*")
+    defaultImports("${ServiceSpec::class.qualifiedName}.*")
+    defaultImports("${PortMappingSpec::class.qualifiedName}.*")
+    defaultImports("java.net.*")
+    defaultImports("kotlin.time.*", "kotlin.time.Duration.Companion.*")
     jvm {
         dependenciesFromCurrentContext(wholeClasspath = true)
 
