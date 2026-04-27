@@ -2,6 +2,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 
 import org.pcsoft.framework.kube.kts.cli.GlobalFlags
 import org.pcsoft.framework.kube.kts.cli.MainCommand
+import org.pcsoft.framework.kube.kts.cli.types.YamlMergingType
 import picocli.CommandLine.Mixin
 import picocli.CommandLine.ParentCommand
 
@@ -22,4 +23,10 @@ sealed class MixinCommand {
 
     protected val exception: Boolean
         get() = globalFlags.exception || parent.globalFlags.exception
+
+    protected val experimental: Boolean
+        get() = globalFlags.experimentalMode || parent.globalFlags.experimentalMode
+
+    protected val yamlMergeAlgorithm: YamlMergingType
+        get() = globalFlags.yamlMergeAlgorithm ?: parent.globalFlags.yamlMergeAlgorithm ?: YamlMergingType.HELM
 }

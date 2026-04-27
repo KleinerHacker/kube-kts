@@ -1,12 +1,12 @@
 package org.pcsoft.framework.kube.kts.logging
 
-val symbolSuccess = "\u2713"
-val symbolFailed = "\u2717"
-val symbolWarning = "\u26A0"
+const val symbolSuccess = "\u2713"
+const val symbolFailed = "\u2717"
+const val symbolWarning = "\u26A0"
 
-val symbolArrowRight = "\u2192"
-val symbolBullet = "\u2022"
+const val symbolArrowRight = "\u2192"
+const val symbolBullet = "\u2022"
 
-val symbolProcess = "\u27F3"
-val symbolSubProcess = "\u21BB"
-val symbolMainProcess = "\u25CC"
+const val symbolProcess = "\u27F3"
+const val symbolSubProcess = "\u21BB"
+const val symbolMainProcess = "\u25CC"

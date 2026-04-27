@@ -7,12 +7,14 @@ import org.pcsoft.framework.kube.kts.core.intern.utils.map
 import org.pcsoft.framework.kube.kts.core.intern.utils.thenCollect
 import org.pcsoft.framework.kube.kts.core.intern.utils.thenMap
 import org.pcsoft.framework.kube.kts.core.intern.utils.thenMapWithError
+import org.pcsoft.framework.kube.kts.core.merge.YamlMerging
 import org.pcsoft.framework.kube.kts.logging.*
 import java.nio.file.Files
 import java.nio.file.Path
 
 class DefaultKubeKtsRepositoryBuilder(
     val processor: KotlinScriptProcessor = KotlinScriptProcessor.DEFAULT,
+    val merging: YamlMerging = YamlMerging.HELM,
     private val helmFileMapper: (KubeKtsFile, KubeSpec) -> KubeHelmFile = { file, spec ->
         DefaultKubeHelmFile(file, spec)
     }
@@ -21,8 +23,14 @@ class DefaultKubeKtsRepositoryBuilder(
         private val logger = logger()
     }
 
-    override fun build(repository: KubeKtsRepository): KubeHelmRepository {
+    override fun build(repository: KubeKtsRepository, valueFiles: Array<Path>): KubeHelmRepository {
         logger.atDebug().log { "$symbolProcess Building Helm repository from Kube KTS repository: ${repository.name}" }
+
+        logger.atDebug().log { "$symbolBullet Merge ${valueFiles.size} value files..." }
+        logger.atTrace().log { "\t$symbolArrowRight ${valueFiles.joinToString(", ") { it.fileName.toString() }}" }
+        val baseValue = repository.files.firstOrNull { it.isChart }
+
+        //merging.merge(baseValue, valueFiles)
 
         logger.atDebug().log { "$symbolBullet Build ${repository.files.size} files..." }
         logger.atTrace().log {

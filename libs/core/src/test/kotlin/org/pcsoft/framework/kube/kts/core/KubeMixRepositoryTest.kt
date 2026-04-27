@@ -36,7 +36,7 @@ class KubeMixRepositoryTest {
         Assertions.assertTrue { ktsRepo.legacyFiles.any { it.subject == "ingress" } }
         Assertions.assertTrue { ktsRepo.legacyFiles.any { it.subject == "helper" } }
 
-        val helmRepo = KubeKtsRepositoryBuilder.DEFAULT.build(ktsRepo)
+        val helmRepo = KubeKtsRepositoryBuilder.DEFAULT.build(ktsRepo, arrayOf())
         Assertions.assertNotNull(helmRepo)
         Assertions.assertEquals(2, helmRepo.files.size)
         Assertions.assertEquals(1, helmRepo.files.filter { it.isChart }.size)

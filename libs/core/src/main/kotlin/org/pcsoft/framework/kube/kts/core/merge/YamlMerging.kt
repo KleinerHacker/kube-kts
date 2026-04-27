@@ -1,16 +1,17 @@
 package org.pcsoft.framework.kube.kts.core.merge
 
+import java.nio.file.Path
+
 interface YamlMerging {
     companion object {
         fun createDefault(
-            arrayMergeStrategy: YamlArrayMergeStrategy = YamlArrayMergeStrategy.AddLast,
-            objectMergeStrategy: YamlObjectMergeStrategy = YamlObjectMergeStrategy.Merge,
-            newObjectStrategy: YamlNewObjectStrategy = YamlNewObjectStrategy.AddAlways,
-            valueMergeStrategy: YamlValueMergeStrategy = YamlValueMergeStrategy.Replace
+            arrayMergeStrategy: YamlArrayMergeStrategy = YamlArrayMergeStrategy.Replace
         ): YamlMerging {
-            return DefaultYamlMerging(arrayMergeStrategy, objectMergeStrategy, newObjectStrategy, valueMergeStrategy)
+            return DefaultYamlMerging(arrayMergeStrategy)
         }
+
+        val HELM: YamlMerging = HelmYamlMerging()
     }
 
-    fun merge(baseYaml: String, vararg overlayYaml: String): String
+    fun merge(baseYamlIn: Path?, vararg overlayYamlIn: Path): String?
 }
