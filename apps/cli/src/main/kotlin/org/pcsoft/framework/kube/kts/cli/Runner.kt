@@ -11,6 +11,7 @@ fun runCli(args: Array<String>): Int {
         commandName = "kube-kts"
         colorScheme = CommandLine.Help.defaultColorScheme(CommandLine.Help.Ansi.ON)
         usageHelpWidth = 120
+        usageHelpLongOptionsMaxWidth = 80
     }
 
     if (args.isEmpty()) {

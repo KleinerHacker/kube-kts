@@ -20,7 +20,9 @@ sealed class BaseCommand : MixinCommand(), Callable<Int> {
             .forEach { it.showLogLevel = showLogLevel }
 
         return try {
+            validateGlobalFalgs()
             run()
+
             0
         } catch (e: Exception) {
             if (exception)

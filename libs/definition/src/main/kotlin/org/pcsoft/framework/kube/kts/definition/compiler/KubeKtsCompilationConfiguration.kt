@@ -8,6 +8,7 @@ import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.types.MetadataSpec
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
 import org.pcsoft.framework.kube.kts.api.types.MailAddress
+import org.pcsoft.framework.kube.kts.api.values.ValueAccess
 import java.io.File
 import java.net.JarURLConnection
 import java.net.URL
@@ -26,10 +27,14 @@ object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports("${MetadataSpec::class.java.packageName}.*")
     defaultImports("${KubeVersion::class.java.packageName}.*")
     defaultImports("${MailAddress::class.java.packageName}.*")
+    defaultImports("${ValueAccess::class.java.packageName}.*")
+
     defaultImports("${ServiceSpec::class.qualifiedName}.*")
     defaultImports("${PortMappingSpec::class.qualifiedName}.*")
+
     defaultImports("java.net.*")
     defaultImports("kotlin.time.*", "kotlin.time.Duration.Companion.*")
+
     jvm {
         dependenciesFromCurrentContext(wholeClasspath = true)
 
@@ -44,9 +49,12 @@ object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
             dependenciesFromClassContext(KubeKtsCompilationConfiguration::class, wholeClasspath = true)
         }
     }
+
     ide {
         acceptedLocations(ScriptAcceptedLocation.Everywhere)
     }
+
+    implicitReceivers(KotlinType(ValueAccess::class))
 })
 
 internal fun getJarFromClass(clazz: KClass<*>): File? {

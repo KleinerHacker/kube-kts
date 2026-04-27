@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.ChartSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
+import org.pcsoft.framework.kube.kts.api.values.ValueAccess
 import org.pcsoft.framework.kube.kts.core.intern.assertions.ChartAssertion
 import org.pcsoft.framework.kube.kts.core.intern.assertions.ServiceAssertion
 import org.pcsoft.framework.kube.kts.core.intern.setupTestLogger
+import tools.jackson.dataformat.yaml.YAMLMapper
 import java.nio.file.Path
 
 class DefaultKotlinScriptProcessorTest {
@@ -27,12 +29,13 @@ class DefaultKotlinScriptProcessorTest {
     @Test
     fun testChart() {
         val compiledScriptEither =
-            compiler.compile("chart", Path.of(this::class.java.getResource("/kts/helm/Chart.kts").toURI()))
+            compiler.compile("chart", Path.of(this::class.java.getResource("/kts/helm/Chart.kts").toURI()), false)
         Assertions.assertNotNull(compiledScriptEither)
         Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
 
         val compiledScript = (compiledScriptEither as Either.Success).value
-        val chartSpecEither = compiler.execute<ChartSpec>("chart", compiledScript)
+        val chartSpecEither =
+            compiler.execute<ChartSpec>("chart", compiledScript, ValueAccess(YAMLMapper().createObjectNode()))
         Assertions.assertNotNull(chartSpecEither)
         Assertions.assertInstanceOf(Either.Success::class.java, chartSpecEither)
 
@@ -44,12 +47,20 @@ class DefaultKotlinScriptProcessorTest {
     @Test
     fun testService() {
         val compiledScriptEither =
-            compiler.compile("service", Path.of(this::class.java.getResource("/kts/helm/templates/service.kts").toURI()))
+            compiler.compile(
+                "service",
+                Path.of(this::class.java.getResource("/kts/helm/templates/service.kts").toURI()),
+                false
+            )
         Assertions.assertNotNull(compiledScriptEither)
         Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
 
         val compiledScript = (compiledScriptEither as Either.Success).value
-        val serviceSpecEither = compiler.execute<TemplateSpec<ServiceSpec>>("service", compiledScript)
+        val serviceSpecEither = compiler.execute<TemplateSpec<ServiceSpec>>(
+            "service",
+            compiledScript,
+            ValueAccess(YAMLMapper().createObjectNode())
+        )
         Assertions.assertNotNull(serviceSpecEither)
         Assertions.assertInstanceOf(Either.Success::class.java, serviceSpecEither)
 

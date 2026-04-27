@@ -2,7 +2,8 @@ package org.pcsoft.framework.kube.kts.cli.commands
 
 import org.pcsoft.framework.kube.kts.cli.GlobalFlags
 import org.pcsoft.framework.kube.kts.cli.MainCommand
-import org.pcsoft.framework.kube.kts.cli.types.YamlMergingType
+import org.pcsoft.framework.kube.kts.cli.types.YamlMergingAlgorithm
+import org.pcsoft.framework.kube.kts.core.merge.YamlArrayMergeStrategy
 import picocli.CommandLine.Mixin
 import picocli.CommandLine.ParentCommand
 
@@ -24,9 +25,24 @@ sealed class MixinCommand {
     protected val exception: Boolean
         get() = globalFlags.exception || parent.globalFlags.exception
 
-    protected val experimental: Boolean
+    protected val experimentalMode: Boolean
         get() = globalFlags.experimentalMode || parent.globalFlags.experimentalMode
 
-    protected val yamlMergeAlgorithm: YamlMergingType
-        get() = globalFlags.yamlMergeAlgorithm ?: parent.globalFlags.yamlMergeAlgorithm ?: YamlMergingType.HELM
+    protected val unsafeMode: Boolean
+        get() = globalFlags.unsafeMode || parent.globalFlags.unsafeMode
+
+    protected val yamlMergeAlgorithm: YamlMergingAlgorithm
+        get() = globalFlags.yamlMergeAlgorithm ?: parent.globalFlags.yamlMergeAlgorithm ?: YamlMergingAlgorithm.HELM
+
+    protected val yamlArrayMergeStrategy: YamlArrayMergeStrategy
+        get() = globalFlags.yamlArrayMergeStrategy ?: parent.globalFlags.yamlArrayMergeStrategy ?: YamlArrayMergeStrategy.Replace
+
+    protected fun validateGlobalFalgs() {
+        if (!experimentalMode) {
+            if (globalFlags.yamlMergeAlgorithm != null || parent.globalFlags.yamlMergeAlgorithm != null)
+                throw IllegalStateException("Yaml merge algorithm is not supported in non experimental mode")
+            if (globalFlags.yamlArrayMergeStrategy != null || parent.globalFlags.yamlArrayMergeStrategy != null)
+                throw IllegalStateException("Yaml array merge strategy is not supported in non experimental mode")
+        }
+    }
 }

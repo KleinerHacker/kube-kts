@@ -1,6 +1,8 @@
 package org.pcsoft.framework.kube.kts.cli.commands
 
+import org.pcsoft.framework.kube.kts.cli.types.YamlMergingAlgorithm
 import org.pcsoft.framework.kube.kts.core.builder.KubeKtsRepositoryBuilder
+import org.pcsoft.framework.kube.kts.core.merge.YamlMerging
 import org.pcsoft.framework.kube.kts.core.renderer.KubeHelmRepositoryRenderer
 import org.pcsoft.framework.kube.kts.core.scanner.KubeKtsRepositoryScanner
 import org.pcsoft.framework.kube.kts.logging.logger
@@ -31,7 +33,11 @@ sealed class KubeKtsCommand : BaseCommand() {
         logger.atInfo().log { "Repository scanned".successStyle() }
 
         logger.atInfo().log { "$symbolMainProcess Start compiling Helm repository from Kube Kts repository: ${ktsRepo.name}" }
-        val helmRepo = KubeKtsRepositoryBuilder.DEFAULT.build(ktsRepo)
+        val yamlMerging = when (yamlMergeAlgorithm) {
+            YamlMergingAlgorithm.INTERNAL -> YamlMerging.createDefault(yamlArrayMergeStrategy)
+            YamlMergingAlgorithm.HELM -> YamlMerging.HELM
+        }
+        val helmRepo = KubeKtsRepositoryBuilder.createDefault(unsafe = unsafeMode, merging = yamlMerging).build(ktsRepo, arrayOf())
         logger.atInfo().log { "Helm repository compiled".successStyle() }
 
         logger.atInfo().log { "$symbolMainProcess Start rendering Helm repository to $usedTargetPath" }
