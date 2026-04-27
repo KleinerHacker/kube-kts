@@ -31,7 +31,7 @@ internal object DefaultKotlinScriptProcessor : KotlinScriptProcessor {
         logger.atDebug().log { "$symbolSubProcess Compile script: $name" }
 
         if (!unsafe) {
-            require(!Files.readString(script).matches(importRegex)) {
+            require(importRegex.find(Files.readString(script)) == null) {
                 "Import statements are not allowed in Kube KTS scripts"
             }
         }
