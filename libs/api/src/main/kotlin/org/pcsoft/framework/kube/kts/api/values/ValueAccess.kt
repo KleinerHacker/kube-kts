@@ -7,7 +7,7 @@ class ValueAccess(val node: JsonNode) {
 
     companion object {
         fun findNode(node: JsonNode, key: String): JsonNode? {
-            val pathSegments = key.split('.')
+            val pathSegments = "values.$key".split('.')
 
             var currentNode: JsonNode? = node
             for (segment in pathSegments) {

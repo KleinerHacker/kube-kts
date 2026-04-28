@@ -32,8 +32,10 @@ object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports("${ServiceSpec::class.qualifiedName}.*")
     defaultImports("${PortMappingSpec::class.qualifiedName}.*")
 
-    defaultImports("java.net.*")
+    defaultImports("java.net.URL", "java.net.URI")
+    defaultImports("java.time.*")
     defaultImports("kotlin.time.*", "kotlin.time.Duration.Companion.*")
+
 
     jvm {
         dependenciesFromCurrentContext(wholeClasspath = true)
@@ -49,6 +51,8 @@ object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
             dependenciesFromClassContext(KubeKtsCompilationConfiguration::class, wholeClasspath = true)
         }
     }
+
+    compilerOptions.put(listOf("-jvm-target", "25"))
 
     ide {
         acceptedLocations(ScriptAcceptedLocation.Everywhere)

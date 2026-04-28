@@ -11,9 +11,11 @@ ingress {
             port(9999)
         }
 
-        addTls {
-            secretName = "secretName"
-            addHost("host.example.com")
+        if (exists("security.tls")) {
+            addTls {
+                secretName = value<String>("security.tls.secretName")
+                addHost(value<String>("security.tls.host"))
+            }
         }
 
         addRule {
