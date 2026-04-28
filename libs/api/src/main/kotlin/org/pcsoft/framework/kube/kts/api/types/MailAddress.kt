@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonValue
 
 data class MailAddress(val name: String, val provider: String) {
     companion object {
-        private val MAIL_PATTERN = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")
+        private val MAIL_PATTERN = Regex("^[A-Za-z0-9_]+([+-.][A-Za-z0-9_]+)*@[A-Za-z0-9]+([.-][A-Za-z0-9]+)+$")
 
         @JvmStatic
         @JsonCreator

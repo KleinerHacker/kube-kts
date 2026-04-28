@@ -1,0 +1,22 @@
+object:
+  child:
+    value1: 123
+    value2: "test"
+
+array:
+  items1:
+    - 1
+    - 2
+    - 3
+  items2:
+    - "test1"
+    - "test2"
+    - "test3"
+
+map:
+  items1:
+    key1: 1
+    key2: 2
+  items2:
+    key1: "test1"
+    key2: "test2"

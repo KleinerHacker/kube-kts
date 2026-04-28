@@ -18,4 +18,9 @@ object KotlinAssertions {
 
     fun <T> assertList(expectedSize: Int, actual: Iterable<T>, visitor: (T) -> Unit) =
         assertList(expectedSize, actual.asIterable()) { item, _ -> visitor(item) }
+
+    fun <T> assertNotNull(actual: T?, andThen: (T) -> Unit) {
+        Assertions.assertNotNull(actual)
+        andThen(actual!!)
+    }
 }

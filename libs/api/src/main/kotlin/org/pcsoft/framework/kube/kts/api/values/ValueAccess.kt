@@ -18,6 +18,24 @@ class ValueAccess(val node: JsonNode) {
             }
             return currentNode
         }
+
+        inline fun <reified T> JsonNode.asValue(): T = when (T::class) {
+            String::class -> asString() as? T ?: throw IllegalArgumentException("Cannot convert to String")
+            Int::class -> asInt() as? T ?: throw IllegalArgumentException("Cannot convert to Int")
+            Long::class -> asLong() as? T ?: throw IllegalArgumentException("Cannot convert to Long")
+            Double::class -> asDouble() as? T ?: throw IllegalArgumentException("Cannot convert to Double")
+            Short::class -> asInt().toShort() as? T ?: throw IllegalArgumentException("Cannot convert to Short")
+            Float::class -> asDouble().toFloat() as? T ?: throw IllegalArgumentException("Cannot convert to Float")
+            Byte::class -> asInt().toByte() as? T ?: throw IllegalArgumentException("Cannot convert to Byte")
+            Boolean::class -> asBoolean() as? T ?: throw IllegalArgumentException("Cannot convert to Boolean")
+            else -> throw IllegalArgumentException("Unsupported type ${T::class.qualifiedName}")
+        }
+
+        inline fun <reified T> JsonNode.asArray(): Array<T> =
+            (0 until size()).map { i -> this[i].asValue<T>() }.toTypedArray()
+
+        inline fun <reified T> JsonNode.asMap(): Map<String, T> =
+            propertyNames().associateWith { this[it].asValue<T>() }
     }
 
     inline fun <reified T : Any> value(key: String, optional: Boolean = false): T? {
@@ -27,33 +45,7 @@ class ValueAccess(val node: JsonNode) {
         if (!currentNode.isValueNode)
             throw IllegalArgumentException("Key '$key' is not a value node")
 
-        return when (T::class) {
-            String::class -> currentNode.asString() as? T
-                ?: throw IllegalArgumentException("Key '$key' is not a string")
-
-            Int::class -> currentNode.asInt() as? T
-                ?: throw IllegalArgumentException("Key '$key' is not an integer")
-
-            Long::class -> currentNode.asLong() as? T
-                ?: throw IllegalArgumentException("Key '$key' is not a long")
-
-            Double::class -> currentNode.asDouble() as? T
-                ?: throw IllegalArgumentException("Key '$key' is not a double")
-
-            Short::class -> currentNode.asInt().toShort() as? T
-                ?: throw IllegalArgumentException("Key '$key' is not a short")
-
-            Float::class -> currentNode.asDouble().toFloat() as? T
-                ?: throw IllegalArgumentException("Key '$key' is not a float")
-
-            Byte::class -> currentNode.asInt().toByte() as? T
-                ?: throw IllegalArgumentException("Key '$key' is not a byte")
-
-            Boolean::class -> currentNode.asBoolean() as? T
-                ?: throw IllegalArgumentException("Key '$key' is not a boolean")
-
-            else -> throw IllegalArgumentException("Unsupported type ${T::class.qualifiedName}")
-        }
+        return currentNode.asValue<T>()
     }
 
     inline fun <reified T : Any> array(key: String, optional: Boolean = false): Array<T>? {
@@ -65,19 +57,17 @@ class ValueAccess(val node: JsonNode) {
 
         val jsonArray = currentNode.asArray()
 
-        return Array(jsonArray.size()) {
-            when (T::class) {
-                String::class -> jsonArray[it].asString() as T
-                Int::class -> jsonArray[it].asInt() as T
-                Long::class -> jsonArray[it].asLong() as T
-                Double::class -> jsonArray[it].asDouble() as T
-                Short::class -> jsonArray[it].asInt().toShort() as T
-                Float::class -> jsonArray[it].asDouble().toFloat() as T
-                Byte::class -> jsonArray[it].asInt().toByte() as T
-                Boolean::class -> jsonArray[it].asBoolean() as T
-                else -> throw IllegalArgumentException("Unsupported type ${T::class.qualifiedName}")
-            }
-        }
+        return jsonArray.asArray<T>()
+    }
+
+    inline fun <reified T : Any> map(key: String, optional: Boolean = false): Map<String, T>? {
+        val currentNode = findNode(node, key)
+            ?: if (optional) return null else throw IllegalArgumentException("Key '$key' not found")
+
+        if (currentNode.isArray)
+            throw IllegalArgumentException("Key '$key' is an array")
+
+        return currentNode.asMap()
     }
 
 }
