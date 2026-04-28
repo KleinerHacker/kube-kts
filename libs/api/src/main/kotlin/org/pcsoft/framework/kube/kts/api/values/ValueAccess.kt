@@ -38,9 +38,8 @@ class ValueAccess(val node: JsonNode) {
             propertyNames().associateWith { this[it].asValue<T>() }
     }
 
-    inline fun <reified T : Any> value(key: String, optional: Boolean = false): T? {
-        val currentNode = findNode(node, key)
-            ?: if (optional) return null else throw IllegalArgumentException("Key '$key' not found")
+    inline fun <reified T : Any> valueOrNull(key: String): T? {
+        val currentNode = findNode(node, key) ?: return null
 
         if (!currentNode.isValueNode)
             throw IllegalArgumentException("Key '$key' is not a value node")
@@ -48,9 +47,17 @@ class ValueAccess(val node: JsonNode) {
         return currentNode.asValue<T>()
     }
 
-    inline fun <reified T : Any> array(key: String, optional: Boolean = false): Array<T>? {
-        val currentNode = findNode(node, key)
-            ?: if (optional) return null else throw IllegalArgumentException("Key '$key' not found")
+    inline fun <reified T : Any> value(key: String): T {
+        val currentNode = findNode(node, key) ?: throw IllegalArgumentException("Key '$key' not found")
+
+        if (!currentNode.isValueNode)
+            throw IllegalArgumentException("Key '$key' is not a value node")
+
+        return currentNode.asValue<T>()
+    }
+
+    inline fun <reified T : Any> arrayOrNull(key: String): Array<T>? {
+        val currentNode = findNode(node, key) ?: return null
 
         if (!currentNode.isArray)
             throw IllegalArgumentException("Key '$key' is not an array")
@@ -60,14 +67,35 @@ class ValueAccess(val node: JsonNode) {
         return jsonArray.asArray<T>()
     }
 
-    inline fun <reified T : Any> map(key: String, optional: Boolean = false): Map<String, T>? {
-        val currentNode = findNode(node, key)
-            ?: if (optional) return null else throw IllegalArgumentException("Key '$key' not found")
+    inline fun <reified T : Any> array(key: String): Array<T> {
+        val currentNode = findNode(node, key) ?: throw IllegalArgumentException("Key '$key' not found")
+
+        if (!currentNode.isArray)
+            throw IllegalArgumentException("Key '$key' is not an array")
+
+        val jsonArray = currentNode.asArray()
+
+        return jsonArray.asArray<T>()
+    }
+
+    inline fun <reified T : Any> mapOrNull(key: String): Map<String, T>? {
+        val currentNode = findNode(node, key) ?: return null
 
         if (currentNode.isArray)
             throw IllegalArgumentException("Key '$key' is an array")
 
         return currentNode.asMap()
     }
+
+    inline fun <reified T : Any> map(key: String): Map<String, T> {
+        val currentNode = findNode(node, key) ?: throw IllegalArgumentException("Key '$key' not found")
+
+        if (currentNode.isArray)
+            throw IllegalArgumentException("Key '$key' is an array")
+
+        return currentNode.asMap()
+    }
+
+    fun exists(key: String): Boolean = findNode(node, key) != null
 
 }

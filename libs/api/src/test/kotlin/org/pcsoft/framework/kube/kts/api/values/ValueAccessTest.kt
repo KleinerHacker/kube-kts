@@ -32,12 +32,19 @@ class ValueAccessTest {
         Assertions.assertThrows(IllegalArgumentException::class.java) {
             access.value<Int>("object.child.value3")
         }
-        Assertions.assertNull(access.value<String>("object.child.value3", true))
+        Assertions.assertNull(access.valueOrNull<String>("object.child.value3"))
+
         Assertions.assertThrows(JsonNodeException::class.java) {
             access.value<Int>("object.child.value2")
         }
         Assertions.assertThrows(IllegalArgumentException::class.java) {
             access.value<String>("array.items1")
+        }
+        Assertions.assertThrows(JsonNodeException::class.java) {
+            access.valueOrNull<Int>("object.child.value2")
+        }
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            access.valueOrNull<String>("array.items1")
         }
     }
 
@@ -56,12 +63,19 @@ class ValueAccessTest {
         Assertions.assertThrows(IllegalArgumentException::class.java) {
             access.array<Int>("array.items3")
         }
-        Assertions.assertNull(access.array<String>("array.items3", true))
+        Assertions.assertNull(access.arrayOrNull<String>("array.items3"))
+
         Assertions.assertThrows(JsonNodeException::class.java) {
             access.array<Int>("array.items2")
         }
         Assertions.assertThrows(IllegalArgumentException::class.java) {
             access.array<String>("object.child.value2")
+        }
+        Assertions.assertThrows(JsonNodeException::class.java) {
+            access.arrayOrNull<Int>("array.items2")
+        }
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            access.arrayOrNull<String>("object.child.value2")
         }
     }
 
@@ -80,13 +94,30 @@ class ValueAccessTest {
         Assertions.assertThrows(IllegalArgumentException::class.java) {
             access.map<Int>("map.items3")
         }
-        Assertions.assertNull(access.map<String>("map.items3", true))
+        Assertions.assertNull(access.mapOrNull<String>("map.items3"))
+
         Assertions.assertThrows(JsonNodeException::class.java) {
             access.map<Int>("map.items2")
         }
         Assertions.assertThrows(IllegalArgumentException::class.java) {
             access.map<String>("array.items1")
         }
+        Assertions.assertThrows(JsonNodeException::class.java) {
+            access.mapOrNull<Int>("map.items2")
+        }
+        Assertions.assertThrows(IllegalArgumentException::class.java) {
+            access.mapOrNull<String>("array.items1")
+        }
+    }
+
+    @Test
+    fun testExists() {
+        Assertions.assertTrue(access.exists("object.child.value1"))
+        Assertions.assertTrue(access.exists("array.items1"))
+        Assertions.assertTrue(access.exists("map.items1"))
+        Assertions.assertFalse(access.exists("map.items3"))
+        Assertions.assertFalse(access.exists("array.items3"))
+        Assertions.assertFalse(access.exists("object.child.value3"))
     }
 
 }
