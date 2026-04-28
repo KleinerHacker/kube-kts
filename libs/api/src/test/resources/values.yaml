@@ -13,6 +13,9 @@ values:
       - "test1"
       - "test2"
       - "test3"
+    items3:
+      - name: "name"
+        value: 123
 
   map:
     items1:
@@ -21,3 +24,7 @@ values:
     items2:
       key1: "test1"
       key2: "test2"
+    items3:
+      key1:
+        name: "name"
+        value: 123

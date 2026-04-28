@@ -11,5 +11,5 @@ class KubeKtsEvaluationConfiguration(private val valueAccess: ValueAccess) : Scr
     this.implicitReceivers(valueAccess)
 }) {
     @Suppress("unused")
-    constructor() : this(ValueAccess(YAMLMapper().createObjectNode()))
+    constructor() : this(ValueAccess.ofRoot(YAMLMapper().createObjectNode()))
 }

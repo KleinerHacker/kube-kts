@@ -35,7 +35,7 @@ class DefaultKotlinScriptProcessorTest {
 
         val compiledScript = (compiledScriptEither as Either.Success).value
         val chartSpecEither =
-            compiler.execute<ChartSpec>("chart", compiledScript, ValueAccess(YAMLMapper().createObjectNode()))
+            compiler.execute<ChartSpec>("chart", compiledScript, ValueAccess.ofRoot(YAMLMapper().createObjectNode()))
         Assertions.assertNotNull(chartSpecEither)
         Assertions.assertInstanceOf(Either.Success::class.java, chartSpecEither)
 
@@ -59,7 +59,7 @@ class DefaultKotlinScriptProcessorTest {
         val serviceSpecEither = compiler.execute<TemplateSpec<ServiceSpec>>(
             "service",
             compiledScript,
-            ValueAccess(YAMLMapper().createObjectNode())
+            ValueAccess.ofRoot(YAMLMapper().createObjectNode())
         )
         Assertions.assertNotNull(serviceSpecEither)
         Assertions.assertInstanceOf(Either.Success::class.java, serviceSpecEither)

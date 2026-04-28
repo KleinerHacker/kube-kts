@@ -37,7 +37,7 @@ internal class DefaultKubeKtsRepositoryBuilder(
 
         val mergedValueFile = merging.merge(baseValue, *valueFiles)
         val valueNode = mergedValueFile?.let { YAMLMapper().readTree(it) } ?: YAMLMapper().createObjectNode()
-        val valueAccess = ValueAccess(valueNode)
+        val valueAccess = ValueAccess.ofRoot(valueNode)
 
         logger.atDebug().log { "$symbolBullet Build ${repository.files.size} files..." }
         logger.atTrace().log {

@@ -14,7 +14,7 @@ class ValueAccessTest {
         private val node: JsonNode = YAMLMapper().readTree(
             Path.of(ValueAccessTest::class.java.getResource("/values.yaml").toURI())
         )
-        private val access = ValueAccess(node)
+        private val access = ValueAccess.ofRoot(node)
     }
 
     @Test
@@ -50,20 +50,30 @@ class ValueAccessTest {
 
     @Test
     fun testArraySuccessfully() {
-        KotlinAssertions.assertNotNull(access.array<Int>("array.items1")) {
-            Assertions.assertArrayEquals(arrayOf(1,2,3), it)
+        access.array<Int>("array.items1") { index, value ->
+            Assertions.assertEquals(arrayOf(1,2,3)[index], value)
         }
-        KotlinAssertions.assertNotNull(access.array<String>("array.items2")) {
-            Assertions.assertArrayEquals(arrayOf("test1", "test2", "test3"), it)
+        access.array<String>("array.items2") { index, value ->
+            Assertions.assertEquals(arrayOf("test1", "test2", "test3")[index], value)
+        }
+        access.array("array.items3") { value ->
+            Assertions.assertEquals("name", value.value<String>("name"))
+            Assertions.assertEquals(123, value.value<Int>("value"))
         }
     }
 
     @Test
     fun testArrayFailed() {
         Assertions.assertThrows(IllegalArgumentException::class.java) {
-            access.array<Int>("array.items3")
+            access.array<Int>("array.items99")
         }
-        Assertions.assertNull(access.arrayOrNull<String>("array.items3"))
+        Assertions.assertNull(access.arrayOrNull<String>("array.items99"))
+        access.arrayOrNull<String>("array.items99") { _, _ ->
+            Assertions.fail("Should not be called")
+        }
+        access.arrayOrNull("array.items99") { _, _ ->
+            Assertions.fail("Should not be called")
+        }
 
         Assertions.assertThrows(JsonNodeException::class.java) {
             access.array<Int>("array.items2")
@@ -81,20 +91,30 @@ class ValueAccessTest {
 
     @Test
     fun testMapSuccessfully() {
-        KotlinAssertions.assertNotNull(access.map<Int>("map.items1")) {
-            Assertions.assertEquals(mapOf("key1" to 1, "key2" to 2), it)
+        access.map<Int>("map.items1") { key, value ->
+            Assertions.assertEquals(mapOf("key1" to 1, "key2" to 2)[key], value)
         }
-        KotlinAssertions.assertNotNull(access.map<String>("map.items2")) {
-            Assertions.assertEquals(mapOf("key1" to "test1", "key2" to "test2"), it)
+        access.map<String>("map.items2") { key, value ->
+            Assertions.assertEquals(mapOf("key1" to "test1", "key2" to "test2")[key], value)
+        }
+        access.map("map.items3") { _, value ->
+            Assertions.assertEquals("name", value.value<String>("name"))
+            Assertions.assertEquals(123, value.value<Int>("value"))
         }
     }
 
     @Test
     fun testMapFailed() {
         Assertions.assertThrows(IllegalArgumentException::class.java) {
-            access.map<Int>("map.items3")
+            access.map<Int>("map.items99")
         }
-        Assertions.assertNull(access.mapOrNull<String>("map.items3"))
+        Assertions.assertNull(access.mapOrNull<String>("map.items99"))
+        access.mapOrNull<String>("map.items99") { _, _ ->
+            Assertions.fail("Should not be called")
+        }
+        access.mapOrNull("map.items99") { _, _ ->
+            Assertions.fail("Should not be called")
+        }
 
         Assertions.assertThrows(JsonNodeException::class.java) {
             access.map<Int>("map.items2")
@@ -115,9 +135,19 @@ class ValueAccessTest {
         Assertions.assertTrue(access.exists("object.child.value1"))
         Assertions.assertTrue(access.exists("array.items1"))
         Assertions.assertTrue(access.exists("map.items1"))
-        Assertions.assertFalse(access.exists("map.items3"))
-        Assertions.assertFalse(access.exists("array.items3"))
-        Assertions.assertFalse(access.exists("object.child.value3"))
+        Assertions.assertFalse(access.exists("map.items99"))
+        Assertions.assertFalse(access.exists("array.items99"))
+        Assertions.assertFalse(access.exists("object.child.value99"))
+
+        KotlinAssertions.assertCalled {
+            access.exists("object.child.value1") {
+                it.set(true)
+            }
+        }
+
+        access.exists("object.child.value99") {
+            Assertions.fail("Should not be called")
+        }
     }
 
 }

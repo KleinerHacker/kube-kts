@@ -32,23 +32,27 @@ class KubeRepositoryTest {
         Assertions.assertTrue { ktsRepo.files.any { it.subject == "Chart" } }
         Assertions.assertTrue { ktsRepo.files.any { it.subject == "service" } }
         Assertions.assertTrue { ktsRepo.files.any { it.subject == "ingress" } }
-        Assertions.assertEquals(0, ktsRepo.legacyFiles.size)
+        Assertions.assertEquals(1, ktsRepo.legacyFiles.size)
+        Assertions.assertEquals(1, ktsRepo.legacyFiles.filter { it.isValues }.size)
 
         val helmRepo = KubeKtsRepositoryBuilder.createDefault().build(ktsRepo, arrayOf())
         Assertions.assertNotNull(helmRepo)
         Assertions.assertEquals(3, helmRepo.files.size)
         Assertions.assertEquals(1, helmRepo.files.filter { it.isChart }.size)
-        Assertions.assertEquals(0, helmRepo.legacyFiles.size)
+        Assertions.assertEquals(1, helmRepo.legacyFiles.size)
+        Assertions.assertEquals(1, helmRepo.legacyFiles.filter { it.isValues }.size)
 
         Assertions.assertTrue { helmRepo.files.any { it.subject == "Chart" } }
         Assertions.assertTrue { helmRepo.files.any { it.subject == "service" } }
         Assertions.assertTrue { helmRepo.files.any { it.subject == "ingress" } }
+        Assertions.assertTrue { helmRepo.legacyFiles.any { it.subject == "values" } }
 
         val targetPath = Files.createTempDirectory("helm")
         KubeHelmRepositoryRenderer.DEFAULT.render(helmRepo, targetPath)
         Assertions.assertTrue { Files.exists(targetPath.resolve("Chart.yaml")) }
         Assertions.assertTrue { Files.exists(targetPath.resolve("templates/service.yaml")) }
         Assertions.assertTrue { Files.exists(targetPath.resolve("templates/ingress.yaml")) }
+        Assertions.assertTrue { Files.exists(targetPath.resolve("values.yaml")) }
     }
 
 }
