@@ -5,13 +5,20 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.pcsoft.framework.kube.kts.cli.intern.RepoType
+import java.nio.file.Path
 
+@Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class CompileTest {
 
     @ParameterizedTest
     @EnumSource(RepoType::class)
     fun testSuccessfully(type: RepoType) {
-        val exitCode = runCli(arrayOf("compile", "src/test/resources/${type.path}", "--exception"))
+        val exitCode = runCli(
+            arrayOf(
+                "compile", "src/test/resources/${type.path}", "-f",
+                Path.of(this::class.java.getResource("/values-overlay.yaml").toURI()).toString()
+            )
+        )
         Assertions.assertEquals(0, exitCode)
     }
 

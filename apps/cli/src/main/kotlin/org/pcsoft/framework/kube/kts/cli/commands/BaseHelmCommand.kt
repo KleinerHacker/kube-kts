@@ -22,8 +22,13 @@ sealed class BaseHelmCommand : BaseRenderCommand() {
         logger.atDebug().log { "$symbolBullet with arguments: ${helmArguments.joinToString(" ")}" }
         
         logger.atDebug().log { "$symbolBullet Start process..." }
+        val args = arrayOf(
+            *helmArguments,
+            *values.flatMap { listOf("-f", it.toString()) }.toTypedArray()
+        )
+        logger.atTrace().log { "\t$symbolArrowRight Arguments: ${args.joinToString(" ")}" }
         val process = ProcessBuilder()
-            .command("helm", *helmArguments)
+            .command("helm", *args)
             .directory(targetPath.toFile())
             .start()
         logger.atTrace().log { "$symbolArrowRight Process started" }
