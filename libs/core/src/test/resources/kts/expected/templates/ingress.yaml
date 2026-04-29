@@ -1,0 +1,39 @@
+---
+apiVersion: "networking.k8s.io/v1"
+kind: "Ingress"
+metadata:
+  name: "metadata"
+  generateName: "generateName"
+  namespace: "namespace"
+spec:
+  ingressClassName: "className"
+  defaultBackend:
+    service:
+      name: "service"
+      port:
+        number: 9999
+  tls:
+    - hosts:
+        - "host.example.com"
+      secretName: "secretName"
+  rules:
+    - host: "rule1.example.com"
+      http:
+        paths:
+          - path: "path1"
+            pathType: "Exact"
+            backend:
+              service:
+                name: "ruleService"
+                port:
+                  number: 9999
+    - host: "rule2.example.com"
+      http:
+        paths:
+          - path: "path2"
+            pathType: "Exact"
+            backend:
+              service:
+                name: "ruleService"
+                port:
+                  number: 8888

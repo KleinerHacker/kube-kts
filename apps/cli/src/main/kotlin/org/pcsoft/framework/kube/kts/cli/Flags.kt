@@ -9,9 +9,9 @@ import picocli.CommandLine.Option
 @NoArgs
 class GlobalFlags(
     @field:ArgGroup(heading = "@|bold Global Flags|@%n", exclusive = false, multiplicity = "0..1")
-    val default: DefaultFlags = DefaultFlagsImpl(),
+    val default: DefaultFlagsImpl = DefaultFlagsImpl(),
     @field:ArgGroup(heading = "@|italic Experimental Flags|@%n", exclusive = false, multiplicity = "0..1")
-    val experimental: ExperimentalFlags = ExperimentalFlagsImpl()
+    val experimental: ExperimentalFlagsImpl = ExperimentalFlagsImpl()
 ) : DefaultFlags by default, ExperimentalFlags by experimental
 
 interface DefaultFlags {
@@ -24,7 +24,7 @@ interface DefaultFlags {
 }
 
 @NoArgs
-private class DefaultFlagsImpl(
+class DefaultFlagsImpl(
     @field:Option(names = ["--debug"], description = ["Print debug information with log level"])
     override var debug: Boolean = false,
     @field:Option(names = ["--verbose"], description = ["Print all information with log level"])
@@ -54,7 +54,7 @@ interface ExperimentalFlags {
 }
 
 @NoArgs
-private class ExperimentalFlagsImpl(
+class ExperimentalFlagsImpl(
     @field:Option(
         names = ["--yaml-merge"],
         description = [

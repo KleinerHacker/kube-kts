@@ -29,7 +29,7 @@ internal class DefaultKubeKtsRepositoryBuilder(
 
         logger.atDebug().log { "$symbolBullet Merge ${valueFiles.size} value files..." }
         logger.atTrace().log { "\t$symbolArrowRight ${valueFiles.joinToString(", ") { it.fileName.toString() }}" }
-        val baseValue = repository.legacyFiles.firstOrNull { it.isChart }?.let {
+        val baseValue = repository.legacyFiles.firstOrNull { it.isValues }?.let {
             Files.createTempFile("base", ".${it.extension}").apply {
                 Files.writeString(this, it.content, Charsets.UTF_8)
             }

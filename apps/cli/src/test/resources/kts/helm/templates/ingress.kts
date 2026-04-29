@@ -13,7 +13,7 @@ ingress {
 
         if (exists("security.tls")) {
             addTls {
-                secretName = value<String>("security.tls.secretName")
+                secretName = value<String>("security.tls.secret")
                 addHost(value<String>("security.tls.host"))
             }
         }

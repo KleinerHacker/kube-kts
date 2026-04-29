@@ -1,31 +1,21 @@
 package org.pcsoft.framework.kube.kts.core
 
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.core.builder.KubeKtsRepositoryBuilder
-import org.pcsoft.framework.kube.kts.core.intern.setupTestLogger
 import org.pcsoft.framework.kube.kts.core.renderer.KubeHelmRepositoryRenderer
 import org.pcsoft.framework.kube.kts.core.scanner.KubeKtsRepositoryScanner
 import java.nio.file.Files
 import java.nio.file.Paths
 
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class KubeRepositoryTest {
-
-    companion object {
-        @BeforeAll
-        @JvmStatic
-        fun setup() {
-            setupTestLogger()
-        }
-    }
-
+class KubeRepositoryTest : RepositoryTest() {
 
     @Suppress("UNCHECKED_CAST")
     @Test
     fun testSuccessfully() {
-        val ktsRepo = KubeKtsRepositoryScanner.DEFAULT.scan(Paths.get(this::class.java.getResource("/kts/helm").toURI()))
+        val ktsRepo =
+            KubeKtsRepositoryScanner.DEFAULT.scan(Paths.get(this::class.java.getResource("/kts/helm").toURI()))
         Assertions.assertNotNull(ktsRepo)
         Assertions.assertEquals(3, ktsRepo.files.size)
         Assertions.assertEquals(1, ktsRepo.files.filter { it.isChart }.size)
@@ -49,10 +39,22 @@ class KubeRepositoryTest {
 
         val targetPath = Files.createTempDirectory("helm")
         KubeHelmRepositoryRenderer.DEFAULT.render(helmRepo, targetPath)
-        Assertions.assertTrue { Files.exists(targetPath.resolve("Chart.yaml")) }
-        Assertions.assertTrue { Files.exists(targetPath.resolve("templates/service.yaml")) }
-        Assertions.assertTrue { Files.exists(targetPath.resolve("templates/ingress.yaml")) }
-        Assertions.assertTrue { Files.exists(targetPath.resolve("values.yaml")) }
+        assertYaml(
+            targetPath.resolve("Chart.yaml"),
+            Paths.get(this::class.java.getResource("/kts/expected/Chart.yaml").toURI())
+        )
+        assertYaml(
+            targetPath.resolve("templates/service.yaml"),
+            Paths.get(this::class.java.getResource("/kts/expected/templates/service.yaml").toURI())
+        )
+        assertYaml(
+            targetPath.resolve("templates/ingress.yaml"),
+            Paths.get(this::class.java.getResource("/kts/expected/templates/ingress.yaml").toURI())
+        )
+        assertYaml(
+            targetPath.resolve("values.yaml"),
+            Paths.get(this::class.java.getResource("/kts/expected/values.yaml").toURI())
+        )
     }
 
 }

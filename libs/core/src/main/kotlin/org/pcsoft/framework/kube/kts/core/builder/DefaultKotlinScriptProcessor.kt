@@ -17,6 +17,7 @@ import kotlin.script.experimental.api.ResultValue
 import kotlin.script.experimental.api.valueOrThrow
 import kotlin.script.experimental.host.toScriptSource
 import kotlin.script.experimental.jvm.util.isError
+import kotlin.script.experimental.jvm.util.renderError
 import kotlin.script.experimental.jvmhost.BasicJvmScriptingHost
 
 internal object DefaultKotlinScriptProcessor : KotlinScriptProcessor {
@@ -53,8 +54,11 @@ internal object DefaultKotlinScriptProcessor : KotlinScriptProcessor {
         val evaluationConfiguration = KubeKtsEvaluationConfiguration(valueAccess)
         val result = scriptingHost.evaluator.invoke(script, evaluationConfiguration)
         if (result.isError()) {
-            logger.atTrace().log { "Detect execution errors for script: $name".failedStyle() }
+            logger.atTrace().log { "Detect errors for script: $name".failedStyle() }
             Either.Error(result.reports.toEffectiveString())
+        } else if (result.valueOrThrow().returnValue is ResultValue.Error) {
+            logger.atTrace().log { "Detect execution errors for script: $name".successStyle() }
+            Either.Error((result.valueOrThrow().returnValue as ResultValue.Error).renderError())
         } else {
             logger.atTrace().log { "No execution errors for script: $name".successStyle() }
             Either.Success((result.valueOrThrow().returnValue as ResultValue.Value).value as T)

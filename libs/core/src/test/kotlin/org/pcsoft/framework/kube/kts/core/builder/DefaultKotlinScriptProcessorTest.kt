@@ -5,12 +5,14 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.ChartSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.IngressSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
 import org.pcsoft.framework.kube.kts.api.values.ValueAccess
 import org.pcsoft.framework.kube.kts.core.intern.assertions.ChartAssertion
 import org.pcsoft.framework.kube.kts.core.intern.assertions.ServiceAssertion
 import org.pcsoft.framework.kube.kts.core.intern.setupTestLogger
+import tools.jackson.databind.JsonNode
 import tools.jackson.dataformat.yaml.YAMLMapper
 import java.nio.file.Path
 
@@ -59,7 +61,7 @@ class DefaultKotlinScriptProcessorTest {
         val serviceSpecEither = compiler.execute<TemplateSpec<ServiceSpec>>(
             "service",
             compiledScript,
-            ValueAccess.ofRoot(YAMLMapper().createObjectNode())
+            ValueAccess.ofRoot(getValuesNode())
         )
         Assertions.assertNotNull(serviceSpecEither)
         Assertions.assertInstanceOf(Either.Success::class.java, serviceSpecEither)
@@ -67,5 +69,35 @@ class DefaultKotlinScriptProcessorTest {
         val serviceSpec = (serviceSpecEither as Either.Success).value
         ServiceAssertion.assertMax(serviceSpec)
     }
+
+    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    @Test
+    fun testIngress() {
+        val compiledScriptEither =
+            compiler.compile(
+                "ingress",
+                Path.of(this::class.java.getResource("/kts/helm/templates/ingress.kts").toURI()),
+                false
+            )
+        Assertions.assertNotNull(compiledScriptEither)
+        Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
+
+        val compiledScript = (compiledScriptEither as Either.Success).value
+        val ingressSpecEither = compiler.execute<TemplateSpec<IngressSpec>>(
+            "ingress",
+            compiledScript,
+            ValueAccess.ofRoot(getValuesNode())
+        )
+        Assertions.assertNotNull(ingressSpecEither)
+        Assertions.assertInstanceOf(Either.Success::class.java, ingressSpecEither)
+
+        //val ingressSpec = (ingressSpecEither as Either.Success).value
+        //ServiceAssertion.assertMax(ingressSpec)
+        //TODO: Assertions
+    }
+
+    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    private fun getValuesNode(): JsonNode =
+        YAMLMapper().readTree(Path.of(this::class.java.getResource("/kts/helm/values.yaml").toURI()))
 
 }

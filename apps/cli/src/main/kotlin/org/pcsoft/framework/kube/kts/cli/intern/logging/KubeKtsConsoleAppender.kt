@@ -16,6 +16,7 @@ class KubeKtsConsoleAppender(
         }
 
         println(event.message)
+        event.throwableInformation?.throwable?.printStackTrace()
     }
 
     override fun close() {

@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":libs:api"))
     implementation(project(":libs:logging"))
     implementation(project(":libs:core"))
 
