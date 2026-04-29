@@ -13,11 +13,11 @@ object ValidateCommand : BaseCommand() {
     private val logger = logger()
 
     @Parameters(index = "0", description = ["Path to the repository"])
-    private lateinit var path: String
+    private lateinit var sourcePath: String
 
     override fun run() {
-        logger.atInfo().log { "$symbolMainProcess Start scanning repository at $path" }
-        KubeKtsRepositoryScanner.DEFAULT.scan(Path.of(path))
+        logger.atInfo().log { "$symbolMainProcess Start scanning repository at $sourcePath" }
+        KubeKtsRepositoryScanner.DEFAULT.scan(Path.of(sourcePath))
         logger.atInfo().log { "Repository scanned".successStyle() }
     }
 }

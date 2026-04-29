@@ -11,7 +11,7 @@ class CompileTest {
     @ParameterizedTest
     @EnumSource(RepoType::class)
     fun testSuccessfully(type: RepoType) {
-        val exitCode = runCli(arrayOf("compile", "src/test/resources/${type.path}"))
+        val exitCode = runCli(arrayOf("compile", "src/test/resources/${type.path}", "--exception"))
         Assertions.assertEquals(0, exitCode)
     }
 

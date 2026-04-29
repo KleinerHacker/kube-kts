@@ -16,11 +16,11 @@ object CompileCommand : BaseCommand() {
     private val logger = logger()
 
     @Parameters(index = "0", description = ["Path to the repository"])
-    private lateinit var path: String
+    private lateinit var sourcePath: String
 
     override fun run() {
-        logger.atInfo().log { "$symbolMainProcess Start scanning repository at $path" }
-        val repository = KubeKtsRepositoryScanner.DEFAULT.scan(Path.of(path))
+        logger.atInfo().log { "$symbolMainProcess Start scanning repository at $sourcePath" }
+        val repository = KubeKtsRepositoryScanner.DEFAULT.scan(Path.of(sourcePath))
         logger.atInfo().log { "Repository scanned".successStyle() }
 
         logger.atInfo().log { "$symbolMainProcess Start compiling Helm repository from Kube Kts repository: ${repository.name}" }
