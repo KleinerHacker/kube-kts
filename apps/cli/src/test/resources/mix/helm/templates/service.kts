@@ -17,8 +17,11 @@ service {
 
         addClusterIP("clusterIP")
 
-        addIpFamily(IPFamily.IPv4)
-        addIpFamily(IPFamily.IPv6)
+        if (valueOrNull<Boolean>("service.ip.useIpV6") == true) {
+            addIpFamily(IPFamily.IPv6)
+        } else {
+            addIpFamily(IPFamily.IPv4)
+        }
         ipFamilyPolicy = FamilyPolicy.RequireDualStack
 
         addExternalIP("externalIP")

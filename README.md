@@ -3,6 +3,11 @@
 Kube KTS is a solution and wrapper for Helm to change from classic Go-Templating
 to Kotlin Scripts. 
 
+---
+
+IMPORTANT HINT: This is a work in progress. The complete documentation will follow
+with the help of MK Docs in future times.
+
 ## Overview
 
 ### Motivation
@@ -24,6 +29,15 @@ compile and render it to classic YAML files, 100% compatible with Helm.
 Kube KTS also supports the classic Helm Go-Templates. All files with the `.yaml` or `.yml`
 extension are used as classic Helm Go-Templates. Additionally, all other file types
 are copied to the YAML repository, too.
+
+### Values
+
+The values.yaml file is usable like in classic Helm Go-Templates. Multiple values
+would be combined into one map.
+
+In KTS you do not need to set the root key `values`. This is done automatically. In
+the case of complex objects, it is required to use lambda functions to use the new root
+node from the values.yaml file at this position. 
 
 ## Examples
 
@@ -116,5 +130,68 @@ service {
         trafficDistribution = ServiceSpec.TrafficDistribution.PreferClose
     }
 }
+```
+
+### ingress.yaml > ingress.kts
+
+This is a complete example of an ingress.yaml file.
+
+```kotlin
+ingress {
+    metadata("metadata") {
+        namespace = "namespace"
+        generateName = "generateName"
+    }
+
+    spec {
+        ingressClassName = "className"
+
+        defaultServiceBackend("service") {
+            port(9999)
+        }
+
+        exists("security.tls") { // values
+            addTls {
+                secretName = value<String>("security.tls.secret")
+                addHost(value<String>("security.tls.host"))
+            }
+        }
+
+        exists("routes.rules") { // values
+            array("routes.rules") { // values
+                addRule {
+                    host = it.value<String>("host")
+                    addHttpPath(RulesSpec.HttpPathConfig.PathType.Exact) {
+                        path = it.value<String>("path")
+                        serviceBackend("ruleService") {
+                            port(it.value<Int>("port"))
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+### values.yaml
+
+This is a complete example of a values.yaml file.
+
+```yaml
+values:
+    security:
+      tls:
+        secret: "secretName"
+        host: "host.example.com"
+    
+    routes:
+      rules:
+        - host: "rule1.example.com"
+          path: "path1"
+          port: 9999
+        - host: "rule2.example.com"
+          path: "path2"
+          port: 8888
 ```
 

@@ -10,6 +10,8 @@ dependencies {
     // coroutines dependency is required for this particular definition
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
 
+    implementation("tools.jackson.dataformat:jackson-dataformat-yaml:3.1.2")
+
     implementation(project(":libs:api"))
 }
 

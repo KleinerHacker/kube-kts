@@ -7,12 +7,16 @@ service {
     spec {
         type = Type.LoadBalancer
 
-        addPort("port") {
-            port = 9999
-            targetPort = 8888
-            nodePort = 7777
-            protocol = Protocol.SCTP
-            appProtocol = "https"
+        exists("ports") {
+            array("ports") {
+                addPort(it.value<String>("name")) {
+                    port = it.value<Int>("port")
+                    targetPort = it.value<Int>("targetPort")
+                    nodePort = it.valueOrNull<Int>("nodePort")
+                    protocol = Protocol.SCTP
+                    appProtocol = "https"
+                }
+            }
         }
 
         addClusterIP("clusterIP")

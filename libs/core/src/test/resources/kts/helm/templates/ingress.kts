@@ -11,17 +11,23 @@ ingress {
             port(9999)
         }
 
-        addTls {
-            secretName = "secretName"
-            addHost("host.example.com")
+        exists("security.tls") {
+            addTls {
+                secretName = value<String>("security.tls.secret")
+                addHost(value<String>("security.tls.host"))
+            }
         }
 
-        addRule {
-            host = "rule.example.com"
-            addHttpPath(RulesSpec.HttpPathConfig.PathType.Exact) {
-                path = "path"
-                serviceBackend("ruleService") {
-                    port(7777)
+        exists("routes.rules") {
+            array("routes.rules") {
+                addRule {
+                    host = it.value<String>("host")
+                    addHttpPath(RulesSpec.HttpPathConfig.PathType.Exact) {
+                        path = it.value<String>("path")
+                        serviceBackend("ruleService") {
+                            port(it.value<Int>("port"))
+                        }
+                    }
                 }
             }
         }

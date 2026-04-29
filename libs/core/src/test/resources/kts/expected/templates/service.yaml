@@ -1,0 +1,40 @@
+---
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "metadata"
+  generateName: "generateName"
+  namespace: "namespace"
+spec:
+  type: "LoadBalancer"
+  ports:
+    - name: "port"
+      port: 9999
+      targetPort: 8888
+      protocol: "SCTP"
+      appProtocol: "https"
+      nodePort: 7777
+  clusterIP: "clusterIP"
+  clusterIPs:
+    - "clusterIP"
+  ipFamilies:
+    - "IPv4"
+    - "IPv6"
+  ipFamilyPolicy: "RequireDualStack"
+  externalIPs:
+    - "externalIP"
+  externalName: "externalName"
+  externalTrafficPolicy: "Local"
+  internalTrafficPolicy: "Local"
+  allocateLoadBalancerNodePorts: false
+  loadBalancerIP: "loadBalancerIP"
+  loadBalancerClass: "loadBalancerClass"
+  loadBalancerSourceRanges:
+    - "loadBalancerSourceRange"
+  sessionAffinity: "None"
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 30
+  publishNotReadyAddresses: true
+  healthCheckNodePort: 3000
+  trafficDistribution: "PreferClose"

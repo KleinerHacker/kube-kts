@@ -3,7 +3,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.logging.*
 
 
-sealed class HelmCommand : KubeKtsCommand() {
+sealed class BaseHelmCommand : BaseRenderCommand() {
     companion object {
         private val logger = logger()
     }
@@ -22,9 +22,14 @@ sealed class HelmCommand : KubeKtsCommand() {
         logger.atDebug().log { "$symbolBullet with arguments: ${helmArguments.joinToString(" ")}" }
         
         logger.atDebug().log { "$symbolBullet Start process..." }
+        val args = arrayOf(
+            *helmArguments,
+            *values.flatMap { listOf("-f", it.toString()) }.toTypedArray()
+        )
+        logger.atTrace().log { "\t$symbolArrowRight Arguments: ${args.joinToString(" ")}" }
         val process = ProcessBuilder()
-            .command("helm", *helmArguments)
-            .directory(usedTargetPath.toFile())
+            .command("helm", *args)
+            .directory(targetPath.toFile())
             .start()
         logger.atTrace().log { "$symbolArrowRight Process started" }
 
