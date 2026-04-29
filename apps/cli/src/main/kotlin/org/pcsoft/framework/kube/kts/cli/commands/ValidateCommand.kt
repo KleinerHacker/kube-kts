@@ -5,19 +5,16 @@ import org.pcsoft.framework.kube.kts.logging.logger
 import org.pcsoft.framework.kube.kts.logging.successStyle
 import org.pcsoft.framework.kube.kts.logging.symbolMainProcess
 import picocli.CommandLine.Command
-import picocli.CommandLine.Parameters
-import java.nio.file.Path
 
 @Command(name = "validate", description = ["Validate a KTS based chart repository"])
-object ValidateCommand : BaseCommand() {
-    private val logger = logger()
-
-    @Parameters(index = "0", description = ["Path to the repository"])
-    private lateinit var sourcePath: String
+class ValidateCommand : BaseRootCommand() {
+    companion object {
+        private val logger = logger()
+    }
 
     override fun run() {
         logger.atInfo().log { "$symbolMainProcess Start scanning repository at $sourcePath" }
-        KubeKtsRepositoryScanner.DEFAULT.scan(Path.of(sourcePath))
+        KubeKtsRepositoryScanner.DEFAULT.scan(sourcePath)
         logger.atInfo().log { "Repository scanned".successStyle() }
     }
 }
