@@ -11,3 +11,12 @@ allprojects {
         mavenCentral()
     }
 }
+
+tasks {
+    register<Exec>("run") {
+        group = "MKDocs"
+        description = "Run mkdocs serve and open browser"
+        workingDir = file("docs")
+        commandLine("mkdocs", "serve", "-o", "-w", ".")
+    }
+}
