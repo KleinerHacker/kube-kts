@@ -9,6 +9,30 @@ import java.nio.file.StandardOpenOption
 import kotlin.io.path.exists
 import kotlin.io.path.isDirectory
 
+/**
+ * Default implementation of the [KubeHelmRepositoryRenderer] interface.
+ *
+ * This class renders a [KubeHelmRepository] into YAML files and writes the output to a specified
+ * target directory. It supports rendering both modern Helm files (KTS) and legacy Helm templates,
+ * ensuring compatibility with various Helm-based workflows.
+ *
+ * The rendering process involves the following steps:
+ * - Validating and ensuring the target directory structure exists.
+ * - Processing each modern Helm file in the repository, rendering it into a YAML file via the
+ *   configured [KubeHelmRenderer].
+ * - Writing the rendered YAML files to the appropriate locations within the target directory.
+ * - Processing each legacy Helm template, writing its content to the corresponding file in the
+ *   target directory.
+ *
+ * This implementation leverages [KubeHelmRenderer.DEFAULT] to handle the rendering of modern
+ * Helm files unless a custom renderer is explicitly provided.
+ *
+ * Logging is used throughout the process to provide detailed traceability of the rendering
+ * operations, including debug and trace-level logs for file rendering activities.
+ *
+ * @property renderer The [KubeHelmRenderer] instance used to render modern Helm files into YAML format.
+ *                    Defaults to [KubeHelmRenderer.DEFAULT].
+ */
 class DefaultKubeHelmRepositoryRenderer(
     val renderer: KubeHelmRenderer = KubeHelmRenderer.DEFAULT
 ) : KubeHelmRepositoryRenderer {

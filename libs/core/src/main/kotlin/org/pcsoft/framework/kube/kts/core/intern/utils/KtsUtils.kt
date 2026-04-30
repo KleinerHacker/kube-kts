@@ -4,7 +4,7 @@ import org.apache.commons.io.FilenameUtils
 import kotlin.script.experimental.api.ScriptDiagnostic
 import kotlin.script.experimental.api.SourceCode
 
-fun Iterable<ScriptDiagnostic>.toEffectiveString(): String =
+internal fun Iterable<ScriptDiagnostic>.toEffectiveString(): String =
     filter { it.severity == ScriptDiagnostic.Severity.ERROR }
         .joinToString("\n") {
             "${it.message} (at ${toSubject(it.sourcePath)}.kts:${it.location?.toEffectiveString()})"

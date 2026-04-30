@@ -10,7 +10,17 @@ import tools.jackson.dataformat.yaml.YAMLMapper
 import tools.jackson.module.kotlin.KotlinModule
 import java.nio.file.Path
 
-
+/**
+ * Responsible for merging multiple YAML files with a base YAML file using a specified array merge strategy.
+ *
+ * This class provides an implementation of the merging logic and extends the base functionality
+ * defined in [YamlMergingBase]. The process involves recursively merging nodes of YAML structures,
+ * supporting both object and array merging. Array merging behavior is determined by the provided
+ * [arrayMergeStrategy].
+ *
+ * @constructor Creates an instance with a specified array merge strategy.
+ * @property arrayMergeStrategy The strategy to use when merging YAML array nodes.
+ */
 internal class DefaultYamlMerging(
     val arrayMergeStrategy: YamlArrayMergeStrategy
 ) : YamlMergingBase() {

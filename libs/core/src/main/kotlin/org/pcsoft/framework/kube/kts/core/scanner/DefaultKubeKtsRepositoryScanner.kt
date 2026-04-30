@@ -9,6 +9,27 @@ import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.*
 
+/**
+ * Default implementation of the [KubeKtsRepositoryScanner] interface.
+ *
+ * This object scans a specified directory path to identify Kubernetes-related files,
+ * including both modern Kubernetes Kotlin Script (KTS) files and legacy Helm YAML templates.
+ * It processes the directory structure, filters for supported file types, and organizes
+ * the results into a [KubeKtsRepository] instance.
+ *
+ * The scanning process includes the following steps:
+ * - Validating that the provided path exists and is a directory.
+ * - Searching for `.kts` files, extracting their content, and encapsulating them
+ *   as [DefaultKubeKtsFile] instances.
+ * - Searching for legacy `.yaml`, `.yml`, and `.tpl` files, reading their content,
+ *   and representing them as [LegacyHelmFile] instances.
+ * - Logging details about the files discovered during the scan.
+ * - Verifying the presence of at least one chart file in the repository.
+ * - Creating and returning a [KubeKtsRepository] object to represent the scanned repository.
+ *
+ * In case of missing required chart files or if the provided path is invalid (non-existent
+ * or not a directory), the scanner will throw an [IllegalArgumentException].
+ */
 internal object DefaultKubeKtsRepositoryScanner : KubeKtsRepositoryScanner {
     private val logger = logger()
 

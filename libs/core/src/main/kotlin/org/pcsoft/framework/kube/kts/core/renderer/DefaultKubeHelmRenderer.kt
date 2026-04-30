@@ -5,6 +5,17 @@ import org.pcsoft.framework.kube.kts.logging.logger
 import org.pcsoft.framework.kube.kts.logging.successStyle
 import org.pcsoft.framework.kube.kts.logging.symbolSubProcess
 
+/**
+ * Default renderer for Kubernetes Helm files, converting their specifications into YAML string format.
+ *
+ * This implementation extends the [KubeHelmRendererBase] class, leveraging its preconfigured [tools.jackson.dataformat.yaml.YAMLMapper]
+ * for serializing the specifications of [KubeHelmFile] instances. The rendered YAML output can be used
+ * for deployment or other downstream processes.
+ *
+ * The renderer logs debugging information during the rendering process, including the subject of the file
+ * being rendered and the resulting output. Trace-level logging is also applied to indicate successful rendering,
+ * with styling applied to the logged messages.
+ */
 internal object DefaultKubeHelmRenderer : KubeHelmRendererBase() {
     private val logger = logger()
 

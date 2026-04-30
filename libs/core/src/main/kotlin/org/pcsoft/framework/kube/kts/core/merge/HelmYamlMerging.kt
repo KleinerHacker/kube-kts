@@ -5,6 +5,22 @@ import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.name
 
+/**
+ * Implements YAML merging logic using Helm's templating engine.
+ *
+ * This class extends `YamlMergingBase` and provides a concrete implementation of the Helm-based merging
+ * algorithm for YAML files. It relies on the Helm CLI to merge the base and overlay YAML files into a
+ * single resulting YAML structure. The process involves creating a temporary Helm chart, adding the YAML
+ * files as values files, rendering the templates, and returning the merged output.
+ *
+ * Key features of the Helm-based merging algorithm include:
+ * - Rendering templates using Helm's template engine.
+ * - Support for merging multiple YAML files by applying overlays on top of a base file.
+ * - Creation of temporary Helm charts during the merging process, with minimal configuration.
+ *
+ * This implementation is suitable for scenarios where Helm-specific logic is required, such as merging
+ * configurations for Helm charts or maintaining compatibility with Helm's values.yaml structure.
+ */
 internal class HelmYamlMerging : YamlMergingBase() {
     companion object {
         private val logger = logger()
