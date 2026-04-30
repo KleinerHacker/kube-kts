@@ -11,3 +11,53 @@ allprojects {
         mavenCentral()
     }
 }
+
+tasks {
+    register<Exec>("installMkDocs") {
+        group = null
+        description = "Install mkdocs"
+        workingDir = file("docs")
+        commandLine("python", "-m", "pip", "install", "mkdocs")
+    }
+
+    register<Exec>("installMkDocsMaterial") {
+        group = null
+        description = "Install mkdocs-material"
+        workingDir = file("docs")
+        commandLine("python", "-m", "pip", "install", "mkdocs-material")
+    }
+
+    register<Exec>("installGitHubPages") {
+        group = null
+        description = "Install mkdocs-material"
+        workingDir = file("docs")
+        commandLine("python", "-m", "pip", "install", "ghp-import")
+    }
+
+    register("installDocs") {
+        group = "MKDocs"
+        description = "Install mkdocs"
+
+        dependsOn("installMkDocs")
+        dependsOn("installMkDocsMaterial")
+        dependsOn("installGitHubPages")
+    }
+
+    register<Exec>("runDocs") {
+        group = "MKDocs"
+        description = "Run mkdocs serve and open browser"
+        workingDir = file("docs")
+        commandLine("python", "-m", "mkdocs", "serve", "-o", "-w", ".", "-w", "./docs/kts")
+
+        dependsOn("installDocs")
+    }
+
+    register<Exec>("deployDocs") {
+        group = "MKDocs"
+        description = "Deploy mkdocs to gh-pages"
+        workingDir = file("docs")
+        commandLine("python", "-m", "mkdocs", "gh-deploy", "--force")
+
+        dependsOn("installDocs")
+    }
+}

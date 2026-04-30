@@ -59,6 +59,11 @@ class ValueAccess private constructor(val node: JsonNode, val basePath: String?)
         return currentNode.asValue<T>()
     }
 
+    fun valueOrNull(key: String, action: (ValueAccess) -> Unit) {
+        val currentNode = findNode(node, basePath, key) ?: return
+        action(ValueAccess(currentNode, basePath))
+    }
+
     inline fun <reified T : Any> value(key: String): T {
         val currentNode = findNode(node, basePath, key) ?: throw IllegalArgumentException("Key '$key' not found")
 
@@ -66,6 +71,11 @@ class ValueAccess private constructor(val node: JsonNode, val basePath: String?)
             throw IllegalArgumentException("Key '$key' is not a value node")
 
         return currentNode.asValue<T>()
+    }
+
+    fun value(key: String, action: (ValueAccess) -> Unit) {
+        val currentNode = findNode(node, basePath, key) ?: throw IllegalArgumentException("Key '$key' not found")
+        action(ValueAccess(currentNode, basePath))
     }
 
     inline fun <reified T : Any> arrayOrNull(key: String): Array<T>? {

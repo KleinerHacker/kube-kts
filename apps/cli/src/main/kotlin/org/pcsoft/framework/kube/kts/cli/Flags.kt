@@ -71,7 +71,6 @@ class ExperimentalFlagsImpl(
             "Strategy to use for merging YAML arrays (@|italic requires experimental mode|@)",
             "\t@|cyan None|@ Do not change array in base YAML",
             "\t@|cyan Replace|@ Replace array in base YAML with overlay array (@|bold default|@)",
-            "\t@|cyan Merge|@ Merge arrays in base YAML with overlay array (@|italic experimental|@)",
             "\t@|cyan AddFirst|@ Add overlay array to beginning of base array",
             "\t@|cyan AddLast|@ Add overlay array to end of base array"
         ],
