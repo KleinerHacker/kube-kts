@@ -4,6 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
+/**
+ * Represents the ingress rules specification.
+ *
+ * @property host The host for which the rules apply.
+ */
 @NoArgs
 class RulesSpec private constructor(
     val host: String?,
@@ -15,6 +20,9 @@ class RulesSpec private constructor(
         http: List<HttpPathConfig>
     ) : this(host, HttpConfig(http))
 
+    /**
+     * The list of HTTP paths and their backends.
+     */
     @get:JsonIgnore
     val http: List<HttpPathConfig> by httpConfig::paths
 
@@ -23,15 +31,38 @@ class RulesSpec private constructor(
         val paths: List<HttpPathConfig>
     )
 
+    /**
+     * Represents an HTTP path configuration.
+     *
+     * @property path The path pattern.
+     * @property pathType The type of path matching.
+     * @property backend The backend for this path.
+     */
     @NoArgs
     data class HttpPathConfig(
         val path: String?,
         val pathType: PathType,
         val backend: BackendSpec
     ) {
+        /**
+         * Represents the type of path matching.
+         */
         @Suppress("unused")
         enum class PathType {
-            Prefix, Exact, ImplementationSpecific
+            /**
+             * Matches based on a URL path prefix.
+             */
+            Prefix,
+
+            /**
+             * Matches the URL path exactly.
+             */
+            Exact,
+
+            /**
+             * Matching depends on the IngressClass.
+             */
+            ImplementationSpecific
         }
     }
 }

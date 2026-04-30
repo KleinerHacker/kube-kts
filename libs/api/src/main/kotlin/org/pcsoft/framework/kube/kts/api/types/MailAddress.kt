@@ -3,10 +3,23 @@ package org.pcsoft.framework.kube.kts.api.types
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 
+/**
+ * Represents an email address.
+ *
+ * @property name The user name part of the email address (before the '@').
+ * @property provider The domain/provider part of the email address (after the '@').
+ */
 data class MailAddress(val name: String, val provider: String) {
     companion object {
         private val MAIL_PATTERN = Regex("^[A-Za-z0-9_]+([+-.][A-Za-z0-9_]+)*@[A-Za-z0-9]+([.-][A-Za-z0-9]+)+$")
 
+        /**
+         * Parses a given email address string into a MailAddress object.
+         *
+         * @param address The email address string to be parsed. It should be in the format "name@provider".
+         * @return A MailAddress object containing the parsed name and provider components.
+         * @throws IllegalArgumentException if the input string is not in a valid email address format.
+         */
         @JvmStatic
         @JsonCreator
         fun parse(address: String): MailAddress {
@@ -25,6 +38,11 @@ data class MailAddress(val name: String, val provider: String) {
         }
     }
 
+    /**
+     * Returns the string representation of the email address in the format "name@provider".
+     *
+     * @return A string combining the name and provider, separated by '@'.
+     */
     @JsonValue
     override fun toString(): String {
         return "$name@$provider"

@@ -7,6 +7,25 @@ import org.pcsoft.framework.kube.kts.api.chart.types.MaintainerSpec
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import java.net.URI
 
+/**
+ * Represents the specification of a Helm chart.
+ *
+ * @property apiVersion Specifies the API version being used.
+ * @property name The name of the chart.
+ * @property version The version of the chart.
+ * @property kubeVersion The compatible Kubernetes version(s) for the chart.
+ * @property description A brief description of the chart.
+ * @property type The type of chart, which can be either Application or Library.
+ * @property keywords A set of keywords associated with the chart.
+ * @property home The URL of the chart's homepage.
+ * @property sources A list of URLs associated with the chart's source repository.
+ * @property dependencies A list of dependencies required by the chart.
+ * @property maintainers A list of maintainers for the chart along with their contact information.
+ * @property icon The URI of the chart's icon.
+ * @property appVersion The version of the application the chart installs.
+ * @property deprecated Indicates if the chart is deprecated.
+ * @property annotations A map of annotations or metadata related to the chart.
+ */
 @NoArgs
 data class ChartSpec(
     val apiVersion: String,

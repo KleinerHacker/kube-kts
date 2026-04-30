@@ -9,6 +9,17 @@ import tools.jackson.databind.annotation.JsonDeserialize
 import tools.jackson.databind.annotation.JsonSerialize
 import java.net.URI
 
+/**
+ * Represents a dependency for a Helm chart.
+ *
+ * @property name The name of the chart you want to depend on.
+ * @property version The version of the chart you want to depend on.
+ * @property repository The repository URL or alias for the chart.
+ * @property alias The alias for the chart (if you want to use a different name).
+ * @property condition A yaml path that resolves to a boolean, used to enable/disable the chart.
+ * @property tags A list of tags that can be used to enable/disable the chart.
+ * @property importValues A list of values to import from the sub-chart.
+ */
 @NoArgs
 data class DependencySpec(
     val name: String,
@@ -20,13 +31,27 @@ data class DependencySpec(
     @field:JsonProperty("import-values")
     val importValues: List<ImportValue>?,
 ) {
+    /**
+     * Represents a value to import from a sub-chart.
+     */
     @JsonSerialize(using = ImportValueSerializer::class)
     @JsonDeserialize(using = ImportValueDeserializer::class)
     sealed interface ImportValue
 
+    /**
+     * Imports values by path.
+     *
+     * @property path The path to import.
+     */
     @NoArgs
     data class PathImportValue(val path: String) : ImportValue
 
+    /**
+     * Imports values with a mapping between child and parent.
+     *
+     * @property child The path in the sub-chart.
+     * @property parent The path in the parent chart.
+     */
     @NoArgs
     data class MappingImportValue(val child: String, val parent: String) : ImportValue
 }
