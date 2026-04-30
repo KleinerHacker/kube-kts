@@ -1,66 +1,72 @@
 # Kube KTS CLI
 
-Kube KTS is a command line tool. You can run it with `kube-kts` command. To
-handle repository you must define the path to the repository.
+Kube KTS is a command-line tool that can be executed with the `kube-kts` command.
+
+To process a repository, provide the path to the repository. If no source path is
+provided, the current working directory is used.
 
 ## Global Options
 
-- `--debug`: Enable debug output.
-- `--exception`: Enable complete exception output.
-- `--experimental`: Enable experimental features.
-- `--show-log-level`: Show log level in output.
-- `--unsafe`: Enable unsafe mode. It means that allows to use imports in Kotlin Scripts.
-- `--verbose`: Enable verbose output.
+- `--debug`: Enables debug output.
+- `--exception`: Enables full exception output.
+- `--experimental`: Enables experimental features.
+- `--show-log-level`: Shows the log level in the output.
+- `--unsafe`: Enables unsafe mode. This allows imports in Kotlin scripts.
+- `--verbose`: Enables verbose output.
 
-##### Experimental Features
+## Experimental Features
 
-These features are not stable and may change in the future. To use them you must enable
-via the `--experimental` flag.
+Experimental features are not stable and may change in future versions. To use them,
+enable the `--experimental` flag.
 
-- `--yaml-array-merge`: Merge strategy for arrays in value files overlays.
-    - `None`: The array is untouched.
-    - `Replace`: Replace the array with the overlay array.
-    - `AddFirst`: Add overlay array to beginning of base array
-    - `AddLast`: Add overlay array to end of base array
+- `--yaml-array-merge`: Defines the merge strategy for arrays in value file overlays.
+    - `None`: Keeps the array unchanged.
+    - `Replace`: Replaces the base array with the overlay array.
+    - `AddFirst`: Adds the overlay array to the beginning of the base array.
+    - `AddLast`: Adds the overlay array to the end of the base array.
 
 ## Validate
 
-The command `kube-kts validate` validates the repository. It checks if the repository
-is valid and if it contains all the required files.
+The `kube-kts validate` command validates the repository. It checks whether the
+repository is valid and contains all required files.
 
-##### Parameters
-1. `source path` Path to the repository. If not provided, the current directory is used.
+### Parameters
+
+1. `source path`: Path to the repository. If not provided, the current directory is used.
 
 ## Compile
 
-The command `kube-kts compile` compiles the repository. It generates the object instances
-from the repository to render the templates in next step.
+The `kube-kts compile` command compiles the repository. It generates object instances
+from the repository, which are used to render the templates in the next step.
 
-##### Parameters
-1. `source path` Path to the repository. If not provided, the current directory is used.
+### Parameters
+
+1. `source path`: Path to the repository. If not provided, the current directory is used.
 
 ## Render
 
-The command `kube-kts render` renders the repository. It generates the Helm files 
-from the repository to use with Helm.
+The `kube-kts render` command renders the repository. It generates Helm files from the
+repository so they can be used with Helm.
 
-##### Parameters
-1. `source path` Path to the repository. If not provided, the current directory is used.
-2. `target path` Path to the target directory to render the Helm files.
+### Parameters
+
+1. `source path`: Path to the repository. If not provided, the current directory is used.
+2. `target path`: Path to the target directory where the Helm files are rendered.
 
 ## Lint
 
-The command `kube-kts lint` lints the repository. It checks if the repository
-is valid and if it contains all the required files. This command is running over Helm.
+The `kube-kts lint` command lints the repository by using Helm. It checks whether the
+rendered Helm output is valid.
 
-##### Parameters
-1. `source path` Path to the repository. If not provided, the current directory is used.
-2. `target path` Path to the target directory to render the Helm files.
+### Parameters
+
+1. `source path`: Path to the repository. If not provided, the current directory is used.
+2. `target path`: Path to the target directory where the Helm files are rendered before linting.
 
 ## Install
 
-coming soon...
+Coming soon.
 
-## Uninstgall
+## Uninstall
 
-coming soon...
+Coming soon.

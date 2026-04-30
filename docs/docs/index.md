@@ -1,23 +1,34 @@
 # Overview
 
-Kube KTS is a Helm wrapper for Kubernetes, 100% compatible with legacy Helm.
-Instead to use YAML files and Go templates you can use Kotlin Script files to
-describe your Kubernetes resources.
+Kube KTS is a Helm wrapper for Kubernetes that is **fully compatible with legacy Helm**.  
+Instead of using YAML files with Go templates, you define your Kubernetes resources using **Kotlin Script (KTS)**.
 
-This make it able to use Kotlin features like type safety, null safety, 
-and functional programming constructs. Additionally, you can use debugging
-features and have full IDE support by IntelliJ IDEA.
+This enables the use of modern language features such as:
+
+- Type safety
+- Null safety
+- Functional programming constructs
+
+In addition, you benefit from:
+
+- Full IDE support (e.g., IntelliJ IDEA, VS Code)
+- Debugging capabilities
+- Improved developer ergonomics compared to template-based approaches
+
+---
 
 # Getting Started
 
-After you install Kube KTS and add it to PATH you can start developing your
-Kubernetes resources. Basically, you must create a classic helm repository. 
-To use IDE support you must add all KTS files in folder `helm`. You can use
-the known structure from legacy Helm repository.
+After installing Kube KTS and adding it to your `PATH`, you can start developing Kubernetes resources immediately.
+
+Kube KTS operates on a **standard Helm repository structure**.  
+For proper IDE support, all `.kts` files must be located inside the `helm` directory.
+
+---
 
 ## Project Structure
 
-The project structure is the same as legacy Helm repository:
+The project structure mirrors a classic Helm repository:
 
 ```
 ─ helm
@@ -29,7 +40,7 @@ The project structure is the same as legacy Helm repository:
       └── ...
 ```
 
-The resulting repository used with helm looks like this:
+During processing, Kube KTS generates a Helm-compatible output:
 
 ```
 ─ helm
@@ -41,19 +52,34 @@ The resulting repository used with helm looks like this:
       └── ...
 ```
 
+
+---
+
 ## Legacy Support
 
-Kube KTS is fully compatible with legacy Helm. This means that you can use
-existing legacy Helm files (YAML) together with KTS files. The legaxy files 
-will be copied in final structure without any changes.
+Kube KTS is fully compatible with legacy Helm setups.
 
-## Value Files
+- Existing YAML files can be used alongside `.kts` files
+- Legacy files are **copied unchanged** into the final output
+- Mixed environments (YAML + KTS) are fully supported
 
-Kube KTS supports value files. You can use them to override values in your
-KTS files. The overlay support works the same way as in legacy Helm.
+---
 
-## Run Kube KTS
+## Values Files
 
-Kube KTS is a command line tool. You can run it with `kube-kts` command. To
-handle repository you must define the path to the repository. See more in 
-part of "How to use Kube KTS CLI".  
+Kube KTS supports Helm-style values files.
+
+- Values can be defined in `values.yaml`
+- Overrides behave identically to standard Helm
+- Values are accessible within KTS scripts
+
+---
+
+## Running Kube KTS
+
+Kube KTS is a command-line tool that processes your Helm repository.
+
+Run it via:
+`kube-kts`
+To process a repository, provide the path to your Helm project.  
+See **"How to Use Kube KTS CLI"** for detailed usage instructions.

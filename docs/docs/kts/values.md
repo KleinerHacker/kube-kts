@@ -1,239 +1,126 @@
 # Values Handling
 
+In Kube KTS, values are managed similarly to Helm. This allows you to externalize configuration and use overlays to customize your deployments for different environments.
+
 ## Values Overlay
 
-The values overlay (merging) works like Helm. For KTS scripts the merging happens
-in Kube KTS itself via Helm. For legacy YAML files the running Helm command is
-merging the values.
+The values overlay mechanism works just like in Helm.
+- **KTS Scripts**: Merging is handled internally by Kube KTS via Helm-compatible logic.
+- **Legacy YAML**: Standard Helm commands perform the merging before processing.
 
-## How to use in Kube KTS (Kotlin Scripts)
+## Working with Values in KTS
 
-There are a lot of basic functions to work with values. At the end these following 
-function groups exist:
-
-- `exists`: Check that a value exists (path exists)
-- `value`: Get a value from given path
-- `array`: Get an array from given path
-- `map`: Get a key value map of given path. Key is always a String.
-
-Basically, all of these methods require a JSON Path to handle values.
+In Kotlin scripts, you have access to several built-in functions to retrieve and validate values. These functions use a **dot-separated path** to navigate your values structure.
 
 !!! note "Important"
-    The values YAML must start with `values:` always. In KTS you do not need to
-    include this in the given path. This is used as a prefix for the JSON Path.
+    By default, all paths are relative to the `values:` root element of your YAML file. You do not need to include `values.` at the beginning of your paths.
+
+### Supported Types
+
+The following native types are supported for direct value retrieval:
+- `String`, `Boolean`
+- `Int`, `Long`, `Short`, `Byte`
+- `Double`, `Float`
+
+If a value in the YAML does not match the requested type, an exception will be thrown.
 
 ---
 
-The JSON Path is a string that describes the location of a value in a JSON document. It uses a 
-dot notation to specify the path to the value. For example, `$.spec.replicas` 
-refers to the `replicas` field in the `spec` object.
+## Core Functions
 
-### General Notices
+### `exists`
+Checks if a value or structure exists at the given path.
 
-If the type for the value you want is not equal to the type in YAML, you will get an exception.
+**Check and use:**
+```kotlin
+if (exists("spec.replicas")) {
+    // ...
+}
+```
+
+**Conditional execution (Lambda):**
+```kotlin
+exists("spec.replicas") {
+    // This block only runs if the path exists
+}
+```
+
+### `value` & `valueOrNull`
+Retrieves a single value of a specific type.
+
+**Must exist (throws exception if missing):**
+```kotlin
+val replicas = value<Int>("spec.replicas")
+```
+
+**Optional value (returns `null` if missing):**
+```kotlin
+val replicas = valueOrNull<Int>("spec.replicas")
+```
+
+### `array` & `arrayOrNull`
+Handles lists of values or objects.
+
+**Direct retrieval:**
+```kotlin
+val tags = array<String>("metadata.tags")
+```
+
+**Iteration (Lambda):**
+```kotlin
+array("metadata.tags") { tag ->
+    println("Found tag: $tag")
+}
+
+// With index
+array("metadata.tags") { index, tag ->
+    println("Tag #$index: $tag")
+}
+```
+
+### `map` & `mapOrNull`
+Handles key-value pairs (dictionaries).
+
+**Direct retrieval:**
+```kotlin
+val labels = map<String>("metadata.labels")
+```
+
+**Iteration (Lambda):**
+```kotlin
+map<String>("metadata.labels") { key, value ->
+    println("$key = $value")
+}
+```
 
 ---
 
-Basically, only these native types are supported:
-- String
-- Byte
-- Short
-- Int
-- Long
-- Float
-- Double
-- Boolean
+## Complex Structures (Nested Access)
 
-These types you can use with all methods, `array`, too.
+If you need to access nested values within a complex object or array, you can use the lambda variants without specifying a type. This provides a new `ValueAccess` scope (available as `it`).
 
-If the value you want is a complex structure, all methods provide a way
-to handle it via lambda. See the examples below.
-
-### Method `exists`
-
-This method checks if a value exists at the given path.
-
-There are two variants:
-
-**Direct Usage**
-
+### Nested Objects
 ```kotlin
-val valExists = exists("$.spec.replicas")
-if (valExists) {
-    // do something
+value("spec.resources") {
+    // 'it' now refers to 'spec.resources'
+    val cpu = it.value<String>("limits.cpu")
+    val memory = it.value<String>("limits.memory")
 }
 ```
 
-or like this in direct way:
-
+### Arrays of Objects
 ```kotlin
-if (exists("$.spec.replicas")) {
-    // do something
+array("spec.containers") {
+    // 'it' is a ValueAccess for the current container object in the list
+    val name = it.value<String>("name")
+    val image = it.value<String>("image")
 }
 ```
 
-In this case the value is returned by the method.
-
-**Indirect Usage**
-
+### Maps of Objects
 ```kotlin
-exists("$.spec.replicas") {
-    // do something
-}
-```
-
-Here the "body" of the method is executed only if the value exists.
-
-### Method `value`
-
-The `value` method returns the value at the given path.
-
-There are two basic variants:
-
-**Null Allowed**
-
-```kotlin
-val replicas = valueOrNull<Int>("$.spec.replicas")
-```
-
-Here you get an Integer or, if not exists, null. Please remember that 
-Kotlin Script is null safety. See [Kotlin Null Safety](https://kotlinlang.org/docs/null-safety.html)
-for more information.
-
-This is the usage for native types. If you want to get a complex value
-like a structure, you need to use the `value` method in this way:
-
-```kotlin
-valueOrNull("$.spec.replicas") {
-    // do something
-}
-```
-
-In this case you get a new value named `it` that contains the sub path
-of the values YAML. You can call all known methods from here to access 
-the values of the substructure.
-
-**Must Exist (Null Forbidden)**
-
-```kotlin
-val replicas = value<Int>("$.spec.replicas")
-```
-
-In this case the value must exist. If it is not, an exception is thrown
-and the script is aborted. This follows in Kube KTS command fails.
-
-Alternatively, for more complex values, you can use the `value` method in this way:
-
-```kotlin
-value("$.spec.replicas") {
-    // do something
-}
-```
-
-You get a new value named `it` that contains the sub path of the values YAML.
-You can call all known methods from here to access the values of the substructure.
-
-### Method `array`
-
-The `array` method returns the array at the given path.
-
-There are two basic variants:
-
-**Null Allowed**
-
-```kotlin
-val valArray = arrayOrNull<String>("$.spec.replicas")
-```
-
-Here you get an array or, if not exists, null. Please remember that 
-Kotlin Script is null safety. See [Kotlin Null Safety](https://kotlinlang.org/docs/null-safety.html)
-for more information.
-
-Alternatively, you can use the `array` method in this way:
-
-```kotlin
-arrayOrNull("$.spec.replicas") {
-    // do something
-}
-```
-
-In this case you get a new value named `it` that contains one element
-of the array. It means internally it loops over the array and commits 
-each element. If the array is empty or null, the body is not executed.
-
-If it is required, you can get the index value, too:
-
-```kotlin
-arrayOrNull("$.spec.replicas") { index, value ->
-    // do something
-}
-```
-
-Here you get both, the index and the value of the array.
-
-**Must Exist (Null Forbidden)**
-
-The methods works like `array` methods above. But if the path does 
-not exists, an exception is thrown. The command will fail.
-
-```kotlin
-val valArray = array<String>("$.spec.replicas")
-array("$.spec.replicas") {
-    // do something
-}
-array("$.spec.replicas") { index, value ->
-    // do something
-}
-```
-
-### Method `map`
-
-The `map` method returns the map at the given path.
-
-**Null Allowed**
-
-```kotlin
-val valMap = mapOrNull<Int>("$.spec.replicas")
-```
-
-You get the map or, if not exists, null. Please remember that 
-Kotlin Script is null safety. See [Kotlin Null Safety](https://kotlinlang.org/docs/null-safety.html)
-for more information.
-
-Alternatively, you can use the direct way:
-
-```kotlin
-mapOrNull<Int>("$.spec.replicas") { key, value -> 
-    // do something
-}
-```
-
-In this case the map is looped internally over all keys and commits 
-each key and its value to the lambda. If the map is empty or null, 
-the body is not executed.
-
-For more complex values, you can use this way:
-
-```kotlin
-mapOrNull("$.spec.replicas") { key, value ->
-    // do something
-}
-```
-
-In this case you get a new value of the substructure in parameter 
-`value`. Here you can call all known methods from here to access 
-the values of the substructure.
-
-**Must Exist (Null Forbidden)**
-
-The methods works like `map` methods above.
-
-```kotlin
-val valMap = map<Int>("$.spec.replicas")
-map<Int>("$.spec.replicas") { key, value ->
-    // do something
-}
-map("$.spec.replicas") { key, value ->
-    // do something
+map("spec.services") { name, config ->
+    // 'config' is a ValueAccess for the object associated with the key 'name'
+    val port = config.value<Int>("port")
 }
 ```
