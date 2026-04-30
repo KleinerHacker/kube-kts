@@ -4,8 +4,11 @@ Kube KTS is a powerful wrapper for Helm that allows you to transition from tradi
 
 ---
 
-!!! note "Work in Progress"
-    This project is a work in progress. Comprehensive documentation is available via [MK Docs](https://kleinerhacker.github.io/kube-kts/).
+**"Work in Progress"**
+    
+This project is a work in progress. Comprehensive documentation is available via [MK Docs](https://kleinerhacker.github.io/kube-kts/).
+
+---
 
 ## Overview
 
