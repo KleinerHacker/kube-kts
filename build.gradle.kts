@@ -56,7 +56,7 @@ tasks {
         group = "MKDocs"
         description = "Deploy mkdocs to gh-pages"
         workingDir = file("docs")
-        commandLine("python", "-m", "mkdocs", "gh-deploy")
+        commandLine("python", "-m", "mkdocs", "gh-deploy", "--force")
 
         dependsOn("installDocs")
     }
