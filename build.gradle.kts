@@ -13,14 +13,34 @@ allprojects {
 }
 
 tasks {
-    register<Exec>("installDocs") {
-        group = "MKDocs"
+    register<Exec>("installMkDocs") {
+        group = null
         description = "Install mkdocs"
         workingDir = file("docs")
         commandLine("python", "-m", "pip", "install", "mkdocs")
+    }
+
+    register<Exec>("installMkDocsMaterial") {
+        group = null
+        description = "Install mkdocs-material"
+        workingDir = file("docs")
         commandLine("python", "-m", "pip", "install", "mkdocs-material")
-        commandLine("python", "-m", "pip", "install", "mkdocs", "ghp-import")
-        //commandLine("python", "-m", "pip", "install", "mkdocs", "pymdown-extensions")
+    }
+
+    register<Exec>("installGitHubPages") {
+        group = null
+        description = "Install mkdocs-material"
+        workingDir = file("docs")
+        commandLine("python", "-m", "pip", "install", "ghp-import")
+    }
+
+    register("installDocs") {
+        group = "MKDocs"
+        description = "Install mkdocs"
+
+        dependsOn("installMkDocs")
+        dependsOn("installMkDocsMaterial")
+        dependsOn("installGitHubPages")
     }
 
     register<Exec>("runDocs") {
