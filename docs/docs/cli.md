@@ -47,3 +47,20 @@ from the repository to use with Helm.
 ##### Parameters
 1. `source path` Path to the repository. If not provided, the current directory is used.
 2. `target path` Path to the target directory to render the Helm files.
+
+## Lint
+
+The command `kube-kts lint` lints the repository. It checks if the repository
+is valid and if it contains all the required files. This command is running over Helm.
+
+##### Parameters
+1. `source path` Path to the repository. If not provided, the current directory is used.
+2. `target path` Path to the target directory to render the Helm files.
+
+## Install
+
+coming soon...
+
+## Uninstgall
+
+coming soon...

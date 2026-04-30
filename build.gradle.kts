@@ -13,10 +13,21 @@ allprojects {
 }
 
 tasks {
+    register<Exec>("install") {
+        group = "MKDocs"
+        description = "Install mkdocs"
+        workingDir = file("docs")
+        commandLine("python", "-m", "pip", "install", "mkdocs")
+        commandLine("python", "-m", "pip", "install", "mkdocs-material")
+        //commandLine("python", "-m", "pip", "install", "mkdocs", "pymdown-extensions")
+    }
+
     register<Exec>("run") {
         group = "MKDocs"
         description = "Run mkdocs serve and open browser"
         workingDir = file("docs")
-        commandLine("mkdocs", "serve", "-o", "-w", ".")
+        commandLine("python", "-m", "mkdocs", "serve", "-o", "-w", ".", "-w", "./docs/kts")
+
+        dependsOn("install")
     }
 }

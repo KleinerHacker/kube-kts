@@ -1,5 +1,22 @@
 site_name: Kube KTS User Guide
 
+markdown_extensions:
+  - admonition
+  - toc:
+      toc_depth: 3
+#  - pymdownx.snippets
+#  - pymdownx.highlight
+
+theme:
+  name: material
+  language: de
+  features:
+    - navigation.sections
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+
 nav:
   - Home: index.md
   - CLI: cli.md
