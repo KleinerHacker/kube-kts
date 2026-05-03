@@ -1,3 +1,5 @@
+import com.github.jk1.license.render.ReportRenderer
+
 /*
  * Copyright (c) KleinerHacker alias pcsoft 2026.
  * This work is licensed under the Apache License, Version 2.0.
@@ -14,6 +16,7 @@ plugins {
     kotlin("jvm") version "2.3.20" apply false
     kotlin("plugin.noarg") version "2.3.20" apply false
     id("org.jetbrains.dokka") version "2.2.0"
+    id("com.github.jk1.dependency-license-report") version "2.5"
 }
 
 group = "org.pcsoft.tooling"
@@ -40,7 +43,19 @@ dokka {
     }
 }
 
+licenseReport {
+    outputDir = layout.buildDirectory.dir("licences").get().asFile.absolutePath
+
+    configurations = arrayOf("runtimeClasspath")
+
+    renderers = arrayOf<ReportRenderer>(
+        com.github.jk1.license.render.JsonReportRenderer(),
+        com.github.jk1.license.render.SimpleHtmlReportRenderer()
+    )
+}
+
 tasks {
+    //region Dokka
     register<Copy>("copyDokka") {
         group = "dokka"
         description = "Copy all Dokka to MkDocs"
@@ -56,7 +71,26 @@ tasks {
         description = "Delete Dokka"
         delete(File("docs/docs/dokka"))
     }
+    //endregion
 
+    //region Licencing
+    register<Copy>("copyLicenceReport") {
+        group = "licencing"
+        description = "copy licence report to MK Docs"
+        from(File("build/licences"))
+        into(File("docs/docs/licences"))
+
+        dependsOn("generateLicenseReport")
+    }
+
+    register<Delete>("deleteLicenceReport") {
+        group = "licencing"
+        description = "Delete licence report"
+        delete(File("docs/docs/licences"))
+    }
+    //endregion
+
+    //region MK Docs
     register<Exec>("installMkDocs") {
         group = null
         description = "Install mkdocs"
@@ -95,8 +129,10 @@ tasks {
 
         dependsOn("installDocs")
         dependsOn("copyDokka")
+        dependsOn("copyLicenceReport")
 
         finalizedBy("deleteDokka")
+        finalizedBy("deleteLicenceReport")
     }
 
     register<Exec>("deployDocs") {
@@ -107,7 +143,10 @@ tasks {
 
         dependsOn("installDocs")
         dependsOn("copyDokka")
+        dependsOn("copyLicenceReport")
 
         finalizedBy("deleteDokka")
+        finalizedBy("deleteLicenceReport")
     }
+    //endregion
 }
