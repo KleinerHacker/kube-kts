@@ -25,3 +25,4 @@ nav:
       - Service: kts/service.md
       - Ingress: kts/ingress.md
       - Values Handling: kts/values.md
+  - API Docs: dokka/html/index.html

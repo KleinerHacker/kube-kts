@@ -1,3 +1,15 @@
+/*
+ * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * This work is licensed under the Apache License, Version 2.0.
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, this software is distributed on an “AS IS” BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations.
+ */
+
 package org.pcsoft.framework.kube.kts.api.chart.types
 
 import com.fasterxml.jackson.annotation.JsonProperty
@@ -9,6 +21,17 @@ import tools.jackson.databind.annotation.JsonDeserialize
 import tools.jackson.databind.annotation.JsonSerialize
 import java.net.URI
 
+/**
+ * Represents a dependency for a Helm chart.
+ *
+ * @property name The name of the chart you want to depend on.
+ * @property version The version of the chart you want to depend on.
+ * @property repository The repository URL or alias for the chart.
+ * @property alias The alias for the chart (if you want to use a different name).
+ * @property condition A yaml path that resolves to a boolean, used to enable/disable the chart.
+ * @property tags A list of tags that can be used to enable/disable the chart.
+ * @property importValues A list of values to import from the sub-chart.
+ */
 @NoArgs
 data class DependencySpec(
     val name: String,
@@ -20,13 +43,27 @@ data class DependencySpec(
     @field:JsonProperty("import-values")
     val importValues: List<ImportValue>?,
 ) {
+    /**
+     * Represents a value to import from a sub-chart.
+     */
     @JsonSerialize(using = ImportValueSerializer::class)
     @JsonDeserialize(using = ImportValueDeserializer::class)
     sealed interface ImportValue
 
+    /**
+     * Imports values by path.
+     *
+     * @property path The path to import.
+     */
     @NoArgs
     data class PathImportValue(val path: String) : ImportValue
 
+    /**
+     * Imports values with a mapping between child and parent.
+     *
+     * @property child The path in the sub-chart.
+     * @property parent The path in the parent chart.
+     */
     @NoArgs
     data class MappingImportValue(val child: String, val parent: String) : ImportValue
 }

@@ -1,3 +1,15 @@
+/*
+ * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * This work is licensed under the Apache License, Version 2.0.
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, this software is distributed on an “AS IS” BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations.
+ */
+
 package org.pcsoft.framework.kube.kts.core.builder
 
 import org.jetbrains.kotlin.incremental.util.Either
@@ -14,6 +26,20 @@ import tools.jackson.dataformat.yaml.YAMLMapper
 import java.nio.file.Files
 import java.nio.file.Path
 
+/**
+ * Implementation of the `KubeKtsRepositoryBuilder` interface responsible for building
+ * a Helm repository from a given KubeKTS repository configuration.
+ *
+ * This builder processes KubeKTS files, applies YAML merging strategies for value files,
+ * and compiles and executes scripts to generate Helm-compatible files. The result is a
+ * constructed Helm repository that includes Helm-specific files and any legacy files.
+ *
+ * @property processor The `KotlinScriptProcessor` used to compile and execute Kotlin scripts.
+ * @property merging The `YamlMerging` strategy to merge multiple YAML value files into a unified structure.
+ * @property unsafeMode Indicates if unsafe mode is enabled during script processing and execution.
+ * @property helmFileMapper A functional mapping that transforms a `KubeKtsFile` and its
+ * corresponding `KubeSpec` into a `KubeHelmFile`.
+ */
 internal class DefaultKubeKtsRepositoryBuilder(
     val processor: KotlinScriptProcessor,
     val merging: YamlMerging,

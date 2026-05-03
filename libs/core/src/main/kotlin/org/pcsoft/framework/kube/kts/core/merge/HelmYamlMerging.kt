@@ -1,3 +1,15 @@
+/*
+ * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * This work is licensed under the Apache License, Version 2.0.
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, this software is distributed on an “AS IS” BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations.
+ */
+
 package org.pcsoft.framework.kube.kts.core.merge
 
 import org.pcsoft.framework.kube.kts.logging.*
@@ -5,6 +17,22 @@ import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.name
 
+/**
+ * Implements YAML merging logic using Helm's templating engine.
+ *
+ * This class extends `YamlMergingBase` and provides a concrete implementation of the Helm-based merging
+ * algorithm for YAML files. It relies on the Helm CLI to merge the base and overlay YAML files into a
+ * single resulting YAML structure. The process involves creating a temporary Helm chart, adding the YAML
+ * files as values files, rendering the templates, and returning the merged output.
+ *
+ * Key features of the Helm-based merging algorithm include:
+ * - Rendering templates using Helm's template engine.
+ * - Support for merging multiple YAML files by applying overlays on top of a base file.
+ * - Creation of temporary Helm charts during the merging process, with minimal configuration.
+ *
+ * This implementation is suitable for scenarios where Helm-specific logic is required, such as merging
+ * configurations for Helm charts or maintaining compatibility with Helm's values.yaml structure.
+ */
 internal class HelmYamlMerging : YamlMergingBase() {
     companion object {
         private val logger = logger()

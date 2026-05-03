@@ -1,3 +1,15 @@
+/*
+ * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * This work is licensed under the Apache License, Version 2.0.
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, this software is distributed on an “AS IS” BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations.
+ */
+
 package org.pcsoft.framework.kube.kts.core.renderer
 
 import org.pcsoft.framework.kube.kts.core.KubeHelmRepository
@@ -9,6 +21,30 @@ import java.nio.file.StandardOpenOption
 import kotlin.io.path.exists
 import kotlin.io.path.isDirectory
 
+/**
+ * Default implementation of the [KubeHelmRepositoryRenderer] interface.
+ *
+ * This class renders a [KubeHelmRepository] into YAML files and writes the output to a specified
+ * target directory. It supports rendering both modern Helm files (KTS) and legacy Helm templates,
+ * ensuring compatibility with various Helm-based workflows.
+ *
+ * The rendering process involves the following steps:
+ * - Validating and ensuring the target directory structure exists.
+ * - Processing each modern Helm file in the repository, rendering it into a YAML file via the
+ *   configured [KubeHelmRenderer].
+ * - Writing the rendered YAML files to the appropriate locations within the target directory.
+ * - Processing each legacy Helm template, writing its content to the corresponding file in the
+ *   target directory.
+ *
+ * This implementation leverages [KubeHelmRenderer.DEFAULT] to handle the rendering of modern
+ * Helm files unless a custom renderer is explicitly provided.
+ *
+ * Logging is used throughout the process to provide detailed traceability of the rendering
+ * operations, including debug and trace-level logs for file rendering activities.
+ *
+ * @property renderer The [KubeHelmRenderer] instance used to render modern Helm files into YAML format.
+ *                    Defaults to [KubeHelmRenderer.DEFAULT].
+ */
 class DefaultKubeHelmRepositoryRenderer(
     val renderer: KubeHelmRenderer = KubeHelmRenderer.DEFAULT
 ) : KubeHelmRepositoryRenderer {

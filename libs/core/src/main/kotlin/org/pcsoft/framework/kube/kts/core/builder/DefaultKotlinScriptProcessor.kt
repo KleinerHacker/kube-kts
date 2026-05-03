@@ -1,3 +1,15 @@
+/*
+ * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * This work is licensed under the Apache License, Version 2.0.
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, this software is distributed on an “AS IS” BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations.
+ */
+
 package org.pcsoft.framework.kube.kts.core.builder
 
 import kotlinx.coroutines.runBlocking
@@ -20,6 +32,37 @@ import kotlin.script.experimental.jvm.util.isError
 import kotlin.script.experimental.jvm.util.renderError
 import kotlin.script.experimental.jvmhost.BasicJvmScriptingHost
 
+/**
+ * Default implementation of the [KotlinScriptProcessor] interface.
+ *
+ * The `DefaultKotlinScriptProcessor` object provides functionality for compiling
+ * Kotlin scripts into executable artifacts and executing those scripts with a specified
+ * set of parameters and a value access strategy. It restricts the usage of certain script
+ * features, like import statements, based on the `unsafe` flag during the compilation phase.
+ *
+ * It relies on a JVM scripting host, a predefined compilation configuration, and detailed logging
+ * to ensure robust feedback during both script compilation and execution steps.
+ *
+ * ## Responsibilities:
+ * - Validates and compiles Kotlin scripts into executable formats.
+ * - Executes compiled scripts within a configurable execution context.
+ *
+ * ## Behavior:
+ * - Compilation:
+ *     - Denies the usage of `import` statements in scripts unless the `unsafe` flag is set to true.
+ *     - Reports detailed errors in case of compilation failures.
+ *
+ * - Execution:
+ *     - Executes scripts with an evaluation configuration tailored to the provided parameters.
+ *     - Reports and processes errors encountered during execution.
+ *
+ * ## Properties:
+ * - Utilizes a regex for matching and detecting import statements.
+ * - Leverages a JVM scripting host for compiling and executing scripts.
+ * - Uses a logging mechanism to trace script processing steps.
+ *
+ * This implementation ensures a secure and traceable scripting environment by adhering to the above behaviors.
+ */
 internal object DefaultKotlinScriptProcessor : KotlinScriptProcessor {
     private val importRegex = Regex("""(?m)^\s*import\s+""")
 

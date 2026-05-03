@@ -1,8 +1,29 @@
+/*
+ * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * This work is licensed under the Apache License, Version 2.0.
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, this software is distributed on an “AS IS” BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations.
+ */
+
 package org.pcsoft.framework.kube.kts.cli
 
 import org.pcsoft.framework.kube.kts.cli.commands.*
 import picocli.CommandLine.*
 
+/**
+ * Main command for the Kube KTS CLI tool.
+ *
+ * This command serves as the entry point for managing Kubernetes deployments using Kotlin-based chart repositories.
+ * It provides access to various subcommands for validating, compiling, rendering, and interacting with Helm charts.
+ *
+ * The main command includes global flags that can be used across all subcommands, such as debug mode,
+ * verbose output, and experimental features. These flags are grouped into default and experimental categories.
+ */
 @Command(
     subcommands = [
         HelpCommand::class,

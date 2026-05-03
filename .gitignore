@@ -4,6 +4,7 @@
 *.iml
 out/
 .kotlin
+docs/docs/dokka
 
 ### Gradle ###
 !gradle/wrapper/gradle-wrapper.jar
