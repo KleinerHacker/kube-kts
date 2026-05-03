@@ -1,6 +1,0 @@
-values:
-  ports:
-    - name: "port"
-      port: 9999
-      targetPort: 8888
-      nodePort: 7777

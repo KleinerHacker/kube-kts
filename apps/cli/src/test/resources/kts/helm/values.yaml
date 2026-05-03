@@ -1,5 +1,0 @@
-values:
-  security:
-    tls:
-      secret: "secretName"
-      host: "host.example.com"
