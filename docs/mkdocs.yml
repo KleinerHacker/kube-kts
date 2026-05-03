@@ -1,4 +1,5 @@
 site_name: Kube KTS User Guide
+copyright: "Copyright (c) KleinerHacker alias pcsoft 2026."
 
 markdown_extensions:
   - admonition
@@ -26,3 +27,4 @@ nav:
       - Ingress: kts/ingress.md
       - Values Handling: kts/values.md
   - API Docs: dokka/html/index.html
+  - Licences: licences/index.html

@@ -14,7 +14,7 @@ This project is a work in progress. Comprehensive documentation is available via
 
 ### Motivation
 
-Traditional Helm Go-templates often break YAML structure, making them difficult to read, maintain, and debug. By leveraging Kotlin Scripts (KTS), similar to Gradle, you benefit from a declarative "look and feel" while retaining the full programmatic power of Kotlin. 
+Traditional Helm Go-Templates often break the YAML structure, making them difficult to read, maintain, and debug. By leveraging Kotlin Scripts (KTS), similar to Gradle, you benefit from a declarative "look and feel" while retaining the full programmatic power of Kotlin. 
 
 Key advantages include:
 - **Type Safety:** Catch errors during compilation rather than at runtime.
@@ -37,4 +37,6 @@ In KTS, the root `values` key is handled automatically. For complex objects, lam
 
 ---
 
-For more details, visit the [official documentation](https://kleinerhacker.github.io/kube-kts/).
+For more details, visit the [official documentation](https://kleinerhacker.github.io/kube-kts/) or [API Doc](https://kleinerhacker.github.io/kube-kts/dokka/html).
+
+For licence information see [here](https://kleinerhacker.github.io/kube-kts/licences).
