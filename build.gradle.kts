@@ -17,6 +17,7 @@ plugins {
     kotlin("plugin.noarg") version "2.3.20" apply false
     id("org.jetbrains.dokka") version "2.2.0"
     id("com.github.jk1.dependency-license-report") version "2.5"
+    id("app.cash.licensee") version "1.14.1" apply false
 }
 
 group = "org.pcsoft.tooling"
@@ -52,6 +53,45 @@ licenseReport {
         com.github.jk1.license.render.JsonReportRenderer(),
         com.github.jk1.license.render.SimpleHtmlReportRenderer()
     )
+}
+
+subprojects {
+    plugins.withId("org.jetbrains.kotlin.jvm") {
+        apply(plugin = "app.cash.licensee")
+        plugins.withId("app.cash.licensee") {
+            extensions.configure<app.cash.licensee.LicenseeExtension> {
+                listOf(
+                    // permissive
+                    "Apache-2.0",
+                    "MIT",
+                    "BSD-2-Clause",
+                    "BSD-3-Clause",
+                    "ISC",
+
+                    // weitere permissive
+                    "Unlicense",
+                    "Zlib",
+                    "0BSD",
+
+                    // bewusst erlaubte weak copyleft
+                    "MPL-2.0",
+                    "LGPL-2.1",
+                    "LGPL-3.0",
+
+                    // ecosystem
+                    "CDDL-1.0",
+                    "CDDL-1.1",
+                    "EPL-1.0",
+                    "EPL-2.0",
+
+                    "Unlicense",
+                    "CC0-1.0",
+                ).forEach(::allow)
+
+                allowUrl("https://opensource.org/license/mit")
+            }
+        }
+    }
 }
 
 tasks {
