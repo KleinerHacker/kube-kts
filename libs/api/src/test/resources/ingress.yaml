@@ -1,0 +1,66 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: name
+  namespace: namespace
+  generateName: generateName
+#  labels:
+#    app.kubernetes.io/name: my-app
+#    app.kubernetes.io/instance: my-app-prod
+#    app.kubernetes.io/version: "1.0.0"
+#    app.kubernetes.io/component: web
+#    app.kubernetes.io/part-of: platform
+#    app.kubernetes.io/managed-by: helm
+#  annotations:
+#    kubernetes.io/ingress.class: nginx
+#    nginx.ingress.kubernetes.io/rewrite-target: /
+#    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+#    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+#  finalizers:
+#    - example.com/finalizer
+#  ownerReferences:
+#    - apiVersion: apps/v1
+#      kind: Deployment
+#      name: my-app
+#      uid: 11111111-2222-3333-4444-555555555555
+#      controller: true
+#      blockOwnerDeletion: true
+spec:
+  ingressClassName: className
+
+  defaultBackend:
+    service:
+      name: service
+      port:
+        number: 9999
+  # Alternative:
+  #   defaultBackend:
+  #     resource:
+  #       apiGroup: example.com
+  #       kind: StorageBucket
+  #       name: fallback-assets
+
+  tls:
+    - hosts:
+        - host.example.com
+      secretName: secretName
+
+  rules:
+    - host: rule.example.com
+      http:
+        paths:
+          - path: path
+            pathType: Exact
+            backend:
+              service:
+                name: ruleService
+                port:
+                  number: 7777
+    # Alternative:
+    #         - path: /assets
+    #           pathType: Prefix
+    #           backend:
+    #             resource:
+    #               apiGroup: example.com
+    #               kind: StorageBucket
+    #               name: assets-bucket

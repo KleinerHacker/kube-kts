@@ -1,0 +1,3 @@
+values:
+  service.ip:
+    useIpV6: true
