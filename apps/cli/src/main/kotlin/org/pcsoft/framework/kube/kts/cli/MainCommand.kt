@@ -3,6 +3,15 @@ package org.pcsoft.framework.kube.kts.cli
 import org.pcsoft.framework.kube.kts.cli.commands.*
 import picocli.CommandLine.*
 
+/**
+ * Main command for the Kube KTS CLI tool.
+ *
+ * This command serves as the entry point for managing Kubernetes deployments using Kotlin-based chart repositories.
+ * It provides access to various subcommands for validating, compiling, rendering, and interacting with Helm charts.
+ *
+ * The main command includes global flags that can be used across all subcommands, such as debug mode,
+ * verbose output, and experimental features. These flags are grouped into default and experimental categories.
+ */
 @Command(
     subcommands = [
         HelpCommand::class,
