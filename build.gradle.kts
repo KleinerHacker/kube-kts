@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.3.20" apply false
     kotlin("plugin.noarg") version "2.3.20" apply false
+    id("org.jetbrains.dokka") version "2.2.0"
 }
 
 group = "org.pcsoft.tooling"
@@ -12,7 +13,38 @@ allprojects {
     }
 }
 
+dokka {
+    dokkaSourceSets {
+        allprojects {
+            if (name == "libs" || name == "apps")
+                return@allprojects
+
+            register(name) {
+                sourceRoots.from(
+                    "$projectDir/src/main/kotlin",
+                )
+            }
+        }
+    }
+}
+
 tasks {
+    register<Copy>("copyDokka") {
+        group = "dokka"
+        description = "Copy all Dokka to MkDocs"
+
+        from(File("build/dokka"))
+        into(File("docs/docs/dokka"))
+
+        dependsOn("dokkaGeneratePublicationHtml")
+    }
+
+    register<Delete>("deleteDokka") {
+        group = "dokka"
+        description = "Delete Dokka"
+        delete(File("docs/docs/dokka"))
+    }
+
     register<Exec>("installMkDocs") {
         group = null
         description = "Install mkdocs"
@@ -50,6 +82,9 @@ tasks {
         commandLine("python", "-m", "mkdocs", "serve", "-o", "-w", ".", "-w", "./docs/kts")
 
         dependsOn("installDocs")
+        dependsOn("copyDokka")
+
+        finalizedBy("deleteDokka")
     }
 
     register<Exec>("deployDocs") {
@@ -59,5 +94,8 @@ tasks {
         commandLine("python", "-m", "mkdocs", "gh-deploy", "--force")
 
         dependsOn("installDocs")
+        dependsOn("copyDokka")
+
+        finalizedBy("deleteDokka")
     }
 }
