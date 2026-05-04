@@ -175,7 +175,8 @@ class DependencySpecBuilder internal constructor(private val name: String, priva
      * @param prepare A lambda with receiver of `TagListBuilder` used to configure 
      * the list of tags.
      */
-    fun tags(prepare: TagListBuilder.() -> Unit) = TagListBuilder().apply(prepare)
+    fun tags(prepare: TagListBuilder.() -> Unit) =
+        TagListBuilder().apply(prepare)
 
     internal fun build(): DependencySpec =
         DependencySpec(

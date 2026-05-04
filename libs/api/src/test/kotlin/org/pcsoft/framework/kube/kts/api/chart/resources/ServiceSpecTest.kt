@@ -21,6 +21,7 @@ import org.pcsoft.framework.kube.kts.api.utils.convertToJson
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
+import java.util.UUID
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
@@ -67,6 +68,22 @@ class ServiceSpecTest {
         private val maxTemplate = TemplateSpecBuilder(ServiceSpec.API_VERSION, ServiceSpec.KIND, maxSpecBuilder).apply {
             metadata("name") {
                 namespace = "namespace"
+                generateName = "generateName"
+                labels {
+                    label("key", "value")
+                }
+                annotations {
+                    annotation("key", "value")
+                }
+                finalizers {
+                    finalizer("finalizer")
+                }
+                ownerReferences {
+                    ownerReference("apiVersion", "kind", "name", UUID.fromString("2fade68b-1f49-403a-b5e8-4e640d3c6594")) {
+                        blockOwnerDeletion = true
+                        controller = true
+                    }
+                }
             }
         }.build()
     }
@@ -116,6 +133,9 @@ class ServiceSpecTest {
         val expectedYaml = IOUtils.resourceToString("/service.yaml", Charsets.UTF_8)
         val expectedJson = convertToJson(expectedYaml)
         val actualJson = maxTemplate.toJson()
+
+        println(actualJson)
+        println(expectedJson)
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
 

@@ -18,12 +18,19 @@ import org.pcsoft.framework.kube.kts.api.chart.resources.types.TlsSpec
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 /**
- * Represents the specification for a Kubernetes Ingress.
+ * Represents the specification for a Kubernetes Ingress resource.
  *
- * @property ingressClassName The name of the IngressClass cluster resource that this Ingress should be associated with.
- * @property defaultBackend The default backend for all requests that do not match any rule.
- * @property tls The TLS configuration for the Ingress.
- * @property rules The list of host rules used to configure the Ingress.
+ * This data class defines the configuration structure for ingress resources, including
+ * the ingress class name, default backend, TLS settings, and routing rules. It is
+ * primarily used to describe how external traffic is directed to services within
+ * a Kubernetes cluster.
+ *
+ * @property ingressClassName The name of the ingress class to use for this resource.
+ *                            Can be null to allow the default ingress class to be applied.
+ * @property defaultBackend   An optional default backend to be used when no rules apply.
+ * @property tls              An optional list of TLS configurations for securing specific hosts.
+ * @property rules            An optional list of rules for routing external traffic to
+ *                            appropriate services or backends based on hostnames and paths.
  */
 @NoArgs
 data class IngressSpec(

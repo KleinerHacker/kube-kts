@@ -15,10 +15,14 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 /**
- * Represents the TLS configuration for an Ingress.
+ * Defines the TLS configuration for a resource, including the associated hosts and secret.
  *
- * @property hosts The list of hosts included in the TLS certificate.
- * @property secretName The name of the secret that contains the TLS certificate and private key.
+ * This class is used to specify Transport Layer Security (TLS) settings,
+ * such as the domains to be secured and the name of the Kubernetes secret
+ * containing the required TLS certificates and keys.
+ *
+ * @property hosts A list of hostnames for which TLS is configured. Can be null if no specific hosts are defined.
+ * @property secretName The name of the Kubernetes secret that stores the TLS certificate and private key.
  */
 @NoArgs
 data class TlsSpec(

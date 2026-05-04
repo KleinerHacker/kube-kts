@@ -4,6 +4,20 @@ kind: Service
 metadata:
   name: name
   namespace: namespace
+  generateName: generateName
+  labels:
+    key: value
+  annotations:
+    key: value
+  finalizers:
+    - finalizer
+  ownerReferences:
+    - apiVersion: apiVersion
+      kind: kind
+      name: name
+      uid: 2fade68b-1f49-403a-b5e8-4e640d3c6594
+      controller: true
+      blockOwnerDeletion: true
 spec:
   type: LoadBalancer                  # ClusterIP | NodePort | LoadBalancer | ExternalName
 #  selector:

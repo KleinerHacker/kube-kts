@@ -1,10 +1,10 @@
 # Ingress DSL
 
-The `ingress` DSL is used to configure Kubernetes Ingress resources, which manage external access to services in a cluster, typically HTTP.
+Die `ingress` DSL wird verwendet, um Kubernetes Ingress-Ressourcen zu konfigurieren, die den externen Zugriff auf Dienste in einem Cluster verwalten, normalerweise über HTTP.
 
-## Basic Usage
+## Grundlegende Verwendung
 
-A minimal Ingress configuration requires `metadata` and at least one rule in the `spec`.
+Eine minimale Ingress-Konfiguration erfordert `metadata` und mindestens eine Regel im `spec`.
 
 ```kotlin
 ingress {
@@ -13,12 +13,16 @@ ingress {
     }
 
     spec {
-        addRule {
-            host = "example.com"
-            addHttpPath(RulesSpec.HttpPathConfig.PathType.Prefix) {
-                path = "/"
-                serviceBackend("my-service") {
-                    port(80)
+        rules {
+            rule {
+                host = "example.com"
+                httpPaths {
+                    httpPath(RulesSpec.HttpPathConfig.PathType.Prefix) {
+                        path = "/"
+                        serviceBackend("my-service") {
+                            port(80)
+                        }
+                    }
                 }
             }
         }
@@ -26,9 +30,9 @@ ingress {
 }
 ```
 
-## Detailed Example
+## Detailliertes Beispiel
 
-Below is a comprehensive example demonstrating various configuration options, including TLS and multiple rules.
+Unten findest du ein umfassendes Beispiel, das verschiedene Konfigurationsoptionen zeigt, einschließlich TLS und mehrerer Regeln.
 
 ```kotlin
 ingress {
@@ -39,42 +43,54 @@ ingress {
     spec {
         ingressClassName = "nginx"
 
-        // Default backend if no rules match
+        // Standard-Backend, wenn keine Regeln zutreffen
         defaultServiceBackend("default-service") {
             port(8080)
         }
 
-        // TLS Configuration
-        addTls {
-            secretName = "example-tls-secret"
-            addHost("example.com")
-            addHost("api.example.com")
-        }
-
-        // Rule for main website
-        addRule {
-            host = "example.com"
-            addHttpPath(RulesSpec.HttpPathConfig.PathType.Exact) {
-                path = "/home"
-                serviceBackend("web-service") {
-                    port("http") // Reference port by name
+        // TLS-Konfiguration
+        tlsList {
+            tls {
+                secretName = "example-tls-secret"
+                hosts {
+                    host("example.com")
+                    host("api.example.com")
                 }
             }
         }
 
-        // Rule for API with multiple paths
-        addRule {
-            host = "api.example.com"
-            addHttpPath(RulesSpec.HttpPathConfig.PathType.Prefix) {
-                path = "/v1"
-                serviceBackend("api-v1-service") {
-                    port(8081)
+        // Regel für die Hauptwebsite
+        rules {
+            rule {
+                host = "example.com"
+                httpPaths {
+                    httpPath(RulesSpec.HttpPathConfig.PathType.Exact) {
+                        path = "/home"
+                        serviceBackend("web-service") {
+                            port("http") // Port über Namen referenzieren
+                        }
+                    }
                 }
             }
-            addHttpPath(RulesSpec.HttpPathConfig.PathType.Prefix) {
-                path = "/v2"
-                serviceBackend("api-v2-service") {
-                    port(8082)
+        }
+
+        // Regel für API mit mehreren Pfaden
+        rules {
+            rule {
+                host = "api.example.com"
+                httpPaths {
+                    httpPath(RulesSpec.HttpPathConfig.PathType.Prefix) {
+                        path = "/v1"
+                        serviceBackend("api-v1-service") {
+                            port(8081)
+                        }
+                    }
+                    httpPath(RulesSpec.HttpPathConfig.PathType.Prefix) {
+                        path = "/v2"
+                        serviceBackend("api-v2-service") {
+                            port(8082)
+                        }
+                    }
                 }
             }
         }
@@ -82,51 +98,51 @@ ingress {
 }
 ```
 
-## Configuration Reference
+## Konfigurationsreferenz
 
-### Metadata (`metadata`)
+### Metadaten (`metadata`)
 
-| Property | Type | Description |
+| Eigenschaft | Typ | Beschreibung |
 | :--- | :--- | :--- |
-| `name` | `String` | The name of the Ingress resource (passed as first argument). |
-| `namespace` | `String?` | The namespace for the resource. |
-| `generateName` | `String?` | An optional prefix to generate a unique name. |
+| `name` | `String` | Der Name der Ingress-Ressource (als erstes Argument übergeben). |
+| `namespace` | `String?` | Der Namespace für die Ressource. |
+| `generateName` | `String?` | Ein optionales Präfix zur Generierung eines eindeutigen Namens. |
 
-### Ingress Spec (`spec`)
+### Ingress-Spezifikation (`spec`)
 
-| Property / Method | Description |
+| Eigenschaft / Methode | Beschreibung |
 | :--- | :--- |
-| `ingressClassName` | Name of the IngressClass cluster resource. |
-| `defaultServiceBackend(name) { ... }` | Sets the default backend for a service. |
-| `defaultResourceBackend(name, kind) { ... }` | Sets the default backend for a custom resource. |
-| `addTls { ... }` | Adds a TLS configuration block. |
-| `addRule { ... }` | Adds an Ingress rule. |
+| `ingressClassName` | Name der IngressClass-Clusterressource. |
+| `defaultServiceBackend(name) { ... }` | Legt das Standard-Backend für einen Dienst fest. |
+| `defaultResourceBackend(name, kind) { ... }` | Legt das Standard-Backend für eine benutzerdefinierte Ressource fest. |
+| `tlsList { tls { ... } }` | Fügt einen TLS-Konfigurationsblock hinzu. (Alternativ: `addTls`) |
+| `rules { rule { ... } }` | Fügt eine Ingress-Regel hinzu. (Alternativ: `addRule`) |
 
-### TLS Configuration (`addTls`)
+### TLS-Konfiguration (`tls`)
 
-| Property / Method | Description |
+| Eigenschaft / Methode | Beschreibung |
 | :--- | :--- |
-| `secretName` | The name of the secret containing the TLS certificate and key. |
-| `addHost(String)` | Adds a host to be included in the TLS certificate. |
+| `secretName` | Der Name des Secrets, das das TLS-Zertifikat und den Schlüssel enthält. |
+| `hosts { host(String) }` | Fügt einen Host hinzu, der in das TLS-Zertifikat aufgenommen werden soll. (Alternativ: `addHost`) |
 
-### Rules (`addRule`)
+### Regeln (`rule`)
 
-| Property / Method | Description |
+| Eigenschaft / Methode | Beschreibung |
 | :--- | :--- |
-| `host` | The fully qualified domain name of a network host. |
-| `addHttpPath(type) { ... }` | Adds an HTTP path to the rule. |
+| `host` | Der vollqualifizierte Domänenname eines Netzwerk-Hosts. |
+| `httpPaths { httpPath(type) { ... } }` | Fügt der Regel einen HTTP-Pfad hinzu. (Alternativ: `addHttpPath`) |
 
-### HTTP Path (`addHttpPath`)
+### HTTP-Pfad (`httpPath`)
 
-| Property / Method | Description |
+| Eigenschaft / Methode | Beschreibung |
 | :--- | :--- |
-| `path` | The path which is matched against the path of an incoming request. |
-| `type` | The type of path matching: `Exact`, `Prefix`, or `ImplementationSpecific`. |
-| `serviceBackend(name) { ... }` | Points to a service backend. |
-| `resourceBackend(name, kind) { ... }` | Points to a custom resource backend. |
+| `path` | Der Pfad, der gegen den Pfad einer eingehenden Anfrage geprüft wird. |
+| `type` | Der Typ des Pfad-Matchings: `Exact`, `Prefix` oder `ImplementationSpecific`. |
+| `serviceBackend(name) { ... }` | Verweist auf ein Service-Backend. |
+| `resourceBackend(name, kind) { ... }` | Verweist auf ein Backend einer benutzerdefinierten Ressource. |
 
-### Backend Configuration
+### Backend-Konfiguration
 
-When using `serviceBackend`, you must specify the port:
-- `port(Int)`: Use a numeric port.
-- `port(String)`: Use a named port.
+Wenn `serviceBackend` verwendet wird, muss der Port angegeben werden:
+- `port(Int)`: Verwendet einen numerischen Port.
+- `port(String)`: Verwendet einen benannten Port.

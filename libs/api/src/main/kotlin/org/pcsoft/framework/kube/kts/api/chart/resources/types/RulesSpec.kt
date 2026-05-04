@@ -17,9 +17,14 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 /**
- * Represents the ingress rules specification.
+ * Defines specifications for ingress rules, including host and HTTP path configurations.
  *
- * @property host The host for which the rules apply.
+ * This class encapsulates the rules for routing external traffic to specific services
+ * or backends based on the defined paths and hostnames.
+ *
+ * @property host The hostname for the ingress rule. Can be null to allow all hostnames.
+ * @constructor Creates an instance of `RulesSpec` by either directly providing the host
+ *              and HTTP path configuration or by using a private configuration structure.
  */
 @NoArgs
 class RulesSpec private constructor(
@@ -33,7 +38,10 @@ class RulesSpec private constructor(
     ) : this(host, HttpConfig(http))
 
     /**
-     * The list of HTTP paths and their backends.
+     * Provides the HTTP path configurations for the ingress rule.
+     *
+     * This property contains a list of HTTP path configurations (`HttpPathConfig`) which define
+     * how traffic is routed to the appropriate backends based on specified path patterns and matching types.
      */
     @get:JsonIgnore
     val http: List<HttpPathConfig> by httpConfig::paths
@@ -44,11 +52,14 @@ class RulesSpec private constructor(
     )
 
     /**
-     * Represents an HTTP path configuration.
+     * Defines the configuration for an HTTP path within ingress rules.
      *
-     * @property path The path pattern.
-     * @property pathType The type of path matching.
-     * @property backend The backend for this path.
+     * This data class is utilized to map incoming HTTP requests to specific backend services
+     * or resources by specifying path patterns and path-matching types.
+     *
+     * @property path The URL path pattern to match. Can be null to match all paths.
+     * @property pathType The type of path matching to apply, as defined by `PathType`.
+     * @property backend The backend configuration to route the matching requests.
      */
     @NoArgs
     data class HttpPathConfig(
@@ -57,7 +68,10 @@ class RulesSpec private constructor(
         val backend: BackendSpec
     ) {
         /**
-         * Represents the type of path matching.
+         * Defines the available types for matching HTTP request paths within an ingress configuration.
+         *
+         * This enum is used to specify how the path attribute in ingress rules should be interpreted.
+         * It provides flexibility for handling different path matching strategies based on specific use cases.
          */
         @Suppress("unused")
         enum class PathType {

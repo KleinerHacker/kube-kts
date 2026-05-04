@@ -87,13 +87,25 @@ class RulesSpecBuilder internal constructor() {
     }
 
     /**
-     * Builder for [RulesSpec.HttpPathConfig].
+     * A builder class for configuring HTTP path rules within ingress specifications.
+     *
+     * This class allows defining HTTP path configurations such as path patterns
+     * and the corresponding backend services or resources. It provides methods
+     * to specify service or resource backends, which determine where the incoming
+     * requests are routed based on the provided path and matching type.
+     *
+     * @constructor Creates an instance of `HttpPathConfigBuilder` with the specified path matching type.
+     * @param type The type of path matching to be applied (e.g., Prefix, Exact, or ImplementationSpecific).
      */
     class HttpPathConfigBuilder internal constructor(private val type: RulesSpec.HttpPathConfig.PathType) {
         private var backend: BackendSpecBuilder? = null
 
         /**
-         * The path pattern.
+         * Represents the HTTP path pattern for the configuration.
+         *
+         * This property specifies the URL path that incoming requests should match in order
+         * to route traffic to the appropriate backend. A null value implies that all paths
+         * should be matched.
          */
         var path: String? = null
 

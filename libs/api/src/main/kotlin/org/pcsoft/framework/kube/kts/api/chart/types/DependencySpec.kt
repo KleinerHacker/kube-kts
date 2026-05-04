@@ -22,15 +22,15 @@ import tools.jackson.databind.annotation.JsonSerialize
 import java.net.URI
 
 /**
- * Represents a dependency for a Helm chart.
+ * Represents a dependency specification for a software module or component.
  *
- * @property name The name of the chart you want to depend on.
- * @property version The version of the chart you want to depend on.
- * @property repository The repository URL or alias for the chart.
- * @property alias The alias for the chart (if you want to use a different name).
- * @property condition A yaml path that resolves to a boolean, used to enable/disable the chart.
- * @property tags A list of tags that can be used to enable/disable the chart.
- * @property importValues A list of values to import from the sub-chart.
+ * @property name The name of the dependency.
+ * @property version The version of the dependency.
+ * @property repository The URI of the repository hosting the dependency, or null if unspecified.
+ * @property alias An optional alias for the dependency, allowing it to be referred to by a different name.
+ * @property condition An optional condition that determines when the dependency should be included.
+ * @property tags A set of optional tags categorizing or describing the dependency.
+ * @property importValues A list of values to import from a sub-chart, allowing custom configuration mappings.
  */
 @NoArgs
 data class DependencySpec(
@@ -44,30 +44,59 @@ data class DependencySpec(
     val importValues: List<ImportValue>?,
 ) {
     /**
-     * Represents a value to import from a sub-chart.
+     * Represents a value to be imported from a sub-chart in a dependency specification.
+     *
+     * This is a sealed interface with two concrete implementations:
+     * - `PathImportValue`: Specifies a path to be imported.
+     * - `MappingImportValue`: Specifies a mapping between a child path in the sub-chart and a parent path.
+     *
+     * This interface supports custom serialization and deserialization through the
+     * `ImportValueSerializer` and `ImportValueDeserializer` classes, allowing the instances
+     * to be represented as either strings or objects in JSON, depending on the implementation.
      */
     @JsonSerialize(using = ImportValueSerializer::class)
     @JsonDeserialize(using = ImportValueDeserializer::class)
     sealed interface ImportValue
 
     /**
-     * Imports values by path.
+     * Represents a specific import value in the form of a path within a dependency specification.
      *
-     * @property path The path to import.
+     * A `PathImportValue` defines a single path to be imported from a sub-chart in a dependency setup.
+     * It is a concrete implementation of the `ImportValue` interface and is utilized for scenarios
+     * where importing a specific path suffices without requiring additional mapping.
+     *
+     * This class is marked with the `@NoArgs` annotation, ensuring it can be instantiated
+     * without arguments, which may be required by frameworks or serialization mechanisms.
+     *
+     * @property path Defines the import path as a string. This is used to locate the target
+     * resource in the context of a sub-chart or dependency.
      */
     @NoArgs
     data class PathImportValue(val path: String) : ImportValue
 
     /**
-     * Imports values with a mapping between child and parent.
+     * Represents a mapping between a child path and a parent path in an import value.
      *
-     * @property child The path in the sub-chart.
-     * @property parent The path in the parent chart.
+     * This class is a concrete implementation of the `ImportValue` interface and is primarily
+     * used within dependency specifications to define how a value from a child chart is mapped
+     * to a location within the parent chart.
+     *
+     * @property child The path or key in the sub-chart that is to be referenced.
+     * @property parent The path or key in the parent where the value from the child should be applied.
      */
     @NoArgs
     data class MappingImportValue(val child: String, val parent: String) : ImportValue
 }
 
+/**
+ * A serializer for serializing instances of `DependencySpec.ImportValue` into JSON.
+ *
+ * This serializer handles the different concrete types of the `ImportValue` sealed interface:
+ * - For `PathImportValue`, it writes the path value as a JSON string.
+ * - For `MappingImportValue`, it writes the child and parent values as a JSON object with properties `child` and `parent`.
+ *
+ * If the provided value is null, no action is performed.
+ */
 internal class ImportValueSerializer : ValueSerializer<DependencySpec.ImportValue>() {
     override fun serialize(
         value: DependencySpec.ImportValue?,
@@ -90,6 +119,18 @@ internal class ImportValueSerializer : ValueSerializer<DependencySpec.ImportValu
     }
 }
 
+/**
+ * A custom deserializer for converting JSON input into instances of `DependencySpec.ImportValue`.
+ *
+ * This deserializer handles different JSON structures to create the appropriate implementation
+ * of the `DependencySpec.ImportValue` sealed interface. The following JSON structures are supported:
+ *
+ * 1. A string value is deserialized into a `PathImportValue`.
+ * 2. An object with `child` and `parent` fields is deserialized into a `MappingImportValue`.
+ * 3. A null value is deserialized as `null`.
+ *
+ * If the input JSON does not conform to any of these structures, a `NotImplementedError` is thrown.
+ */
 internal class ImportValueDeserializer : ValueDeserializer<DependencySpec.ImportValue>() {
     override fun deserialize(
         p: JsonParser,

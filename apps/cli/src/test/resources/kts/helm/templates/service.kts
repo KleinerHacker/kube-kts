@@ -7,21 +7,29 @@ service {
     spec {
         type = Type.LoadBalancer
 
-        addPort("port") {
-            port = 9999
-            targetPort = 8888
-            nodePort = 7777
-            protocol = Protocol.SCTP
-            appProtocol = "https"
+        ports {
+            port("port") {
+                port = 9999
+                targetPort = 8888
+                nodePort = 7777
+                protocol = Protocol.SCTP
+                appProtocol = "https"
+            }
         }
 
-        addClusterIP("clusterIP")
+        clusterIPs {
+            clusterIP("clusterIP")
+        }
 
-        addIpFamily(IPFamily.IPv4)
-        addIpFamily(IPFamily.IPv6)
+        ipFamilies {
+            ipFamily(IPFamily.IPv4)
+            ipFamily(IPFamily.IPv6)
+        }
         ipFamilyPolicy = FamilyPolicy.RequireDualStack
 
-        addExternalIP("externalIP")
+        externalIPs {
+            externalIP("externalIP")
+        }
         externalName = "externalName"
 
         externalTrafficPolicy = TrafficPolicy.Local
@@ -30,7 +38,9 @@ service {
         allocateLoadBalancerNodePorts = false
         loadBalancerIP = "loadBalancerIP"
         loadBalancerClass = "loadBalancerClass"
-        addLoadBalancerSourceRange("loadBalancerSourceRange")
+        loadBalancerSourceRanges {
+            loadBalancerSourceRange("loadBalancerSourceRange")
+        }
 
         sessionAffinity = SessionAffinity.None
         sessionAffinityClientTimeout = 30.seconds.toJavaDuration()

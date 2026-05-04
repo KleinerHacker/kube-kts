@@ -103,12 +103,8 @@ class ChartSpecBuilder internal constructor(private val name: String, private va
      * }
      * ```
      */
-    fun keywords(prepare: MutableSet<String>.() -> Unit) {
-        if (keywords == null) {
-            keywords = mutableSetOf()
-        }
-        keywords!!.apply(prepare)
-    }
+    fun keywords(prepare: KeywordListBuilder.() -> Unit) =
+        KeywordListBuilder().apply(prepare)
 
     /**
      * Adds a source URI to the chart metadata.
@@ -147,12 +143,8 @@ class ChartSpecBuilder internal constructor(private val name: String, private va
      *
      * @param prepare A lambda block for configuring the list of source URIs.
      */
-    fun sources(prepare: MutableList<URI>.() -> Unit) {
-        if (sources == null) {
-            sources = mutableListOf()
-        }
-        sources!!.apply(prepare)
-    }
+    fun sources(prepare: SourceListBuilder.() -> Unit) =
+        SourceListBuilder().apply(prepare)
 
     /**
      * Adds a sub-chart dependency.
@@ -404,6 +396,53 @@ class ChartSpecBuilder internal constructor(private val name: String, private va
          */
         fun annotation(key: String, value: String) =
             addAnnotation(key, value)
+    }
+
+    /**
+     * A builder class for managing keywords in the chart metadata using DSL syntax.
+     *
+     * This class allows you to define and add individual keywords to the chart metadata
+     * through a fluent and concise API. Keywords are typically used to describe the nature
+     * and purpose of a chart, aiding in discovery and categorization.
+     *
+     * This builder is not intended to be instantiated directly but is configured via the
+     * containing class's DSL entry point.
+     */
+    inner class KeywordListBuilder internal constructor() {
+        /**
+         * Adds a keyword to the list of keywords for the chart metadata.
+         *
+         * @param keyword The keyword to be added. This is typically a descriptive term
+         *                used to categorize or tag the chart for purposes such as
+         *                discovery and classification.
+         */
+        fun keyword(keyword: String) =
+            addKeyword(keyword)
+    }
+
+    /**
+     * Builder for adding source URIs to the chart metadata.
+     *
+     * This builder provides a DSL for specifying source repositories associated with the chart.
+     * Source URIs represent links to the chart's source code, typically hosted in platforms like
+     * GitHub, GitLab, or a custom source control repository.
+     *
+     * This builder is intended to be used internally within the [ChartSpecBuilder].
+     *
+     * @constructor Creates a new instance of [SourceListBuilder]. This should not be instantiated
+     * externally, as it is designed for internal use only.
+     */
+    inner class SourceListBuilder internal constructor() {
+        /**
+         * Adds a source URI to the list of sources for the chart metadata.
+         *
+         * This method allows specifying a URI that points to the source repository of the chart,
+         * such as a GitHub or GitLab repository.
+         *
+         * @param source A [URI] representing the source repository of the chart to be added.
+         */
+        fun source(source: URI) =
+            addSource(source)
     }
 }
 

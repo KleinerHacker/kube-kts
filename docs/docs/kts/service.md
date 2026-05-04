@@ -1,10 +1,10 @@
 # Service DSL
 
-The `service` DSL is used to configure Kubernetes Service resources, which define a logical set of Pods and a policy by which to access them.
+Die `service` DSL wird verwendet, um Kubernetes Service-Ressourcen zu konfigurieren, die einen logischen Satz von Pods und eine Richtlinie für den Zugriff darauf definieren.
 
-## Basic Usage
+## Grundlegende Verwendung
 
-A minimal Service configuration requires `metadata` and at least one port in the `spec`.
+Eine minimale Service-Konfiguration erfordert `metadata` und mindestens einen Port im `spec`.
 
 ```kotlin
 service {
@@ -14,17 +14,19 @@ service {
 
     spec {
         type = ServiceSpec.Type.ClusterIP
-        addPort("http") {
-            port = 80
-            targetPort = 8080
+        ports {
+            port("http") {
+                port = 80
+                targetPort = 8080
+            }
         }
     }
 }
 ```
 
-## Detailed Example
+## Detailliertes Beispiel
 
-Below is a comprehensive example demonstrating various configuration options for a Service.
+Unten findest du ein umfassendes Beispiel, das verschiedene Konfigurationsoptionen für einen Service zeigt.
 
 ```kotlin
 service {
@@ -35,82 +37,92 @@ service {
     spec {
         type = ServiceSpec.Type.LoadBalancer
         
-        addPort("https") {
-            port = 443
-            targetPort = 8443
-            protocol = PortMappingSpec.Protocol.TCP
-            appProtocol = "https"
+        ports {
+            port("https") {
+                port = 443
+                targetPort = 8443
+                protocol = PortMappingSpec.Protocol.TCP
+                appProtocol = "https"
+            }
         }
 
-        // IP Configuration
-        addClusterIP("10.0.0.1")
-        addIpFamily(ServiceSpec.IPFamily.IPv4)
+        // IP-Konfiguration
+        clusterIPs {
+            clusterIP("10.0.0.1")
+        }
+        ipFamilies {
+            ipFamily(ServiceSpec.IPFamily.IPv4)
+        }
         ipFamilyPolicy = ServiceSpec.FamilyPolicy.SingleStack
 
-        // External Access
-        addExternalIP("1.2.3.4")
+        // Externer Zugriff
+        externalIPs {
+            externalIP("1.2.3.4")
+        }
         externalTrafficPolicy = ServiceSpec.TrafficPolicy.Local
         
-        // Load Balancer Settings
+        // Load Balancer Einstellungen
         allocateLoadBalancerNodePorts = true
         loadBalancerClass = "example.com/internal-lb"
-        addLoadBalancerSourceRange("192.168.0.0/24")
+        loadBalancerSourceRanges {
+            loadBalancerSourceRange("192.168.0.0/24")
+        }
 
-        // Session Affinity
+        // Sitzungsaffinität
         sessionAffinity = ServiceSpec.SessionAffinity.ClientIP
         sessionAffinityClientTimeout = 60.seconds.toJavaDuration()
 
-        // Traffic Management
+        // Verkehrsmanagement
         publishNotReadyAddresses = false
         trafficDistribution = ServiceSpec.TrafficDistribution.PreferClose
     }
 }
 ```
 
-## Configuration Reference
+## Konfigurationsreferenz
 
-### Metadata (`metadata`)
+### Metadaten (`metadata`)
 
-| Property | Type | Description |
+| Eigenschaft | Typ | Beschreibung |
 | :--- | :--- | :--- |
-| `name` | `String` | The name of the Service (passed as first argument). |
-| `namespace` | `String?` | The namespace for the resource. |
-| `generateName` | `String?` | An optional prefix to generate a unique name. |
+| `name` | `String` | Der Name des Service (als erstes Argument übergeben). |
+| `namespace` | `String?` | Der Namespace für die Ressource. |
+| `generateName` | `String?` | Ein optionales Präfix zur Generierung eines eindeutigen Namens. |
 
-### Service Spec (`spec`)
+### Service-Spezifikation (`spec`)
 
-| Property / Method | Description |
+| Eigenschaft / Methode | Beschreibung |
 | :--- | :--- |
-| `type` | The type of the Service (e.g., `ClusterIP`, `LoadBalancer`). |
-| `addPort(name) { ... }` | Adds a port mapping configuration. |
-| `addClusterIP(ip)` / `addClusterIPs(vararg ip)` | Sets cluster IP addresses. |
-| `addIpFamily(family)` / `addIpFamilies(vararg family)` | Adds IP families (IPv4/IPv6). |
-| `ipFamilyPolicy` | Sets the IP family policy. |
-| `addExternalIP(ip)` / `addExternalIPs(vararg ip)` | Adds external IP addresses. |
-| `externalName` | The external name for `ExternalName` type services. |
-| `externalTrafficPolicy` | Traffic policy for external traffic. |
-| `internalTrafficPolicy` | Traffic policy for internal traffic. |
-| `allocateLoadBalancerNodePorts` | Whether to allocate node ports for LoadBalancer services. |
-| `loadBalancerIP` | **Deprecated.** Use implementation-specific annotations instead. |
-| `loadBalancerClass` | The class of the load balancer. |
-| `addLoadBalancerSourceRange(range)` | Adds allowed CIDR ranges for the load balancer. |
-| `sessionAffinity` | The session affinity policy. |
-| `sessionAffinityClientTimeout` | Timeout for client IP session affinity. |
-| `publishNotReadyAddresses` | Whether to publish addresses of pods that are not ready. |
-| `healthCheckNodePort` | The port for health checks (for Type=LoadBalancer). |
-| `trafficDistribution` | The traffic distribution policy. |
+| `type` | Der Typ des Service (z. B. `ClusterIP`, `LoadBalancer`). |
+| `ports { port(name) { ... } }` | Fügt eine Port-Mapping-Konfiguration hinzu. (Alternativ: `addPort`) |
+| `clusterIPs { clusterIP(ip) }` | Legt Cluster-IP-Adressen fest. (Alternativ: `addClusterIP`, `addClusterIPs`) |
+| `ipFamilies { ipFamily(family) }` | Fügt IP-Familien hinzu (IPv4/IPv6). (Alternativ: `addIpFamily`, `addIpFamilies`) |
+| `ipFamilyPolicy` | Legt die IP-Familien-Richtlinie fest. |
+| `externalIPs { externalIP(ip) }` | Fügt externe IP-Adressen hinzu. (Alternativ: `addExternalIP`, `addExternalIPs`) |
+| `externalName` | Der externe Name für Services vom Typ `ExternalName`. |
+| `externalTrafficPolicy` | Verkehrsrichtlinie für externen Verkehr. |
+| `internalTrafficPolicy` | Verkehrsrichtlinie für internen Verkehr. |
+| `allocateLoadBalancerNodePorts` | Ob Node-Ports für LoadBalancer-Services zugewiesen werden sollen. |
+| `loadBalancerIP` | **Veraltet.** Verwende stattdessen implementierungsspezifische Annotationen. |
+| `loadBalancerClass` | Die Klasse des Load Balancers. |
+| `loadBalancerSourceRanges { loadBalancerSourceRange(range) }` | Fügt erlaubte CIDR-Bereiche für den Load Balancer hinzu. (Alternativ: `addLoadBalancerSourceRange`) |
+| `sessionAffinity` | Die Richtlinie für die Sitzungsaffinität. |
+| `sessionAffinityClientTimeout` | Zeitüberschreitung für die Sitzungsaffinität basierend auf der Client-IP. |
+| `publishNotReadyAddresses` | Ob Adressen von Pods veröffentlicht werden sollen, die nicht bereit sind. |
+| `healthCheckNodePort` | Der Port für Gesundheitsprüfungen (für Type=LoadBalancer). |
+| `trafficDistribution` | Die Richtlinie für die Verkehrsverteilung. |
 
-### Port Mapping (`addPort`)
+### Port-Mapping (`port`)
 
-| Property | Type | Description |
+| Eigenschaft | Typ | Beschreibung |
 | :--- | :--- | :--- |
-| `port` | `Int` | The port that will be exposed by the service. |
-| `targetPort` | `Int?` | The port on the pods that the service should forward traffic to. |
-| `nodePort` | `Int?` | The port on each node where the service is exposed. |
-| `protocol` | `Protocol?` | The IP protocol (TCP, UDP, SCTP). |
-| `appProtocol` | `String?` | The application protocol (e.g., http, https). |
+| `port` | `Int` | Der Port, der durch den Service exponiert wird. |
+| `targetPort` | `Int?` | Der Port auf den Pods, an den der Service den Verkehr weiterleiten soll. |
+| `nodePort` | `Int?` | Der Port an jedem Knoten, an dem der Service exponiert wird. |
+| `protocol` | `Protocol?` | Das IP-Protokoll (TCP, UDP, SCTP). |
+| `appProtocol` | `String?` | Das Anwendungsprotokoll (z. B. http, https). |
 
-## Special Types
+## Spezielle Typen
 
 - `ServiceSpec.Type`: `ClusterIP`, `NodePort`, `LoadBalancer`, `ExternalName`.
 - `PortMappingSpec.Protocol`: `TCP`, `UDP`, `SCTP`.

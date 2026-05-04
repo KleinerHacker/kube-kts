@@ -20,23 +20,25 @@ import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import java.net.URI
 
 /**
- * Represents the specification of a Helm chart.
+ * Represents the specification for a Helm chart including metadata, dependencies, and configuration details.
  *
- * @property apiVersion Specifies the API version being used.
+ * @constructor Creates an instance of [ChartSpec] with the specified properties.
+ *
+ * @property apiVersion The API version of the chart specification. This defaults to "v2".
  * @property name The name of the chart.
  * @property version The version of the chart.
- * @property kubeVersion The compatible Kubernetes version(s) for the chart.
+ * @property kubeVersion The Kubernetes version constraints required by this chart.
  * @property description A brief description of the chart.
- * @property type The type of chart, which can be either Application or Library.
- * @property keywords A set of keywords associated with the chart.
- * @property home The URL of the chart's homepage.
- * @property sources A list of URLs associated with the chart's source repository.
- * @property dependencies A list of dependencies required by the chart.
- * @property maintainers A list of maintainers for the chart along with their contact information.
- * @property icon The URI of the chart's icon.
- * @property appVersion The version of the application the chart installs.
- * @property deprecated Indicates if the chart is deprecated.
- * @property annotations A map of annotations or metadata related to the chart.
+ * @property type The type of the chart, specifying whether it is an application or a library.
+ * @property keywords A set of keywords associated with the chart for categorization purposes.
+ * @property home The URL to the homepage or documentation of the chart.
+ * @property sources A list of source URLs related to the chart, such as code repositories.
+ * @property dependencies A list of dependencies required by this chart.
+ * @property maintainers A list of maintainers responsible for this chart.
+ * @property icon The URI of the icon associated with the chart.
+ * @property appVersion The version of the application for which this chart is built.
+ * @property deprecated A flag indicating whether the chart is deprecated.
+ * @property annotations A map of additional metadata annotations associated with the chart.
  */
 @NoArgs
 data class ChartSpec(
