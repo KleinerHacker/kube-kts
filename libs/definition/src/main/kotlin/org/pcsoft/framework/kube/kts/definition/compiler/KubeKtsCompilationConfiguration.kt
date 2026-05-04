@@ -27,9 +27,30 @@ import java.net.URL
 import kotlin.reflect.KClass
 import kotlin.script.experimental.api.*
 import kotlin.script.experimental.jvm.dependenciesFromClassContext
-import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
 
+/**
+ * Defines the compilation configuration for Kotlin scripts tailored to Kubernetes resource specifications.
+ *
+ * This configuration object is utilized to customize the behavior of the Kotlin scripting engine when
+ * compiling scripts that interact with Kubernetes resources. It sets up the default imports, JVM dependencies,
+ * compiler options, and Integrated Development Environment (IDE) settings to enable seamless scripting
+ * for Kubernetes resource definitions.
+ *
+ * The configuration includes:
+ * - Default imports for common Kubernetes-specification-related classes such as `ChartSpec`, `ResourceSpec`,
+ *   `PortMappingSpec`, and others.
+ * - Support for additional imports from standard Java libraries (e.g., `java.net.URL`, `java.time.*`) and Kotlin
+ *   libraries (e.g., `kotlin.time.*`).
+ * - JVM runtime dependencies derived from the context of the current application, ensuring that all necessary
+ *   classes and libraries are available for script resolution.
+ * - Compiler options to specify the target JVM version for script execution.
+ * - IDE settings to accept scripts in all locations.
+ * - Implicit receivers to provide access to higher-level abstractions like `ValueAccess`.
+ *
+ * This configuration serves as a foundational setup for scripts defining Kubernetes resources and their
+ * respective configurations in a Kotlin Domain Specific Language (DSL).
+ */
 @Suppress("JavaIoSerializableObjectMustHaveReadResolve")
 object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports("${ChartSpec::class.java.packageName}.*")
@@ -48,19 +69,16 @@ object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports("java.time.*")
     defaultImports("kotlin.time.*", "kotlin.time.Duration.Companion.*")
 
-
     jvm {
-        dependenciesFromCurrentContext(wholeClasspath = true)
-
         val thisJarFile = getJarFromClass(KubeKtsCompilationConfiguration::class)
         val apiJarFile = getJarFromClass(ChartSpec::class)
         if (thisJarFile != null && apiJarFile != null) {
             dependenciesFromClassContext(
                 KubeKtsCompilationConfiguration::class,
-                thisJarFile.name, "kotlin-stdlib", "kotlin-reflect", "kotlin-scripting-dependencies", apiJarFile.name
+                thisJarFile.name, "kotlin-stdlib", apiJarFile.name
             )
         } else {
-            dependenciesFromClassContext(KubeKtsCompilationConfiguration::class, wholeClasspath = true)
+            dependenciesFromClassContext(KubeKtsCompilationConfiguration::class, "kotlin-stdlib")
         }
     }
 
