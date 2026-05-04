@@ -12,18 +12,26 @@ ingress {
         }
 
         if (exists("security.tls")) {
-            addTls {
-                secretName = value<String>("security.tls.secret")
-                addHost(value<String>("security.tls.host"))
+            tlsList {
+                tls {
+                    secretName = value<String>("security.tls.secret")
+                    hosts {
+                        host(value<String>("security.tls.host"))
+                    }
+                }
             }
         }
 
-        addRule {
-            host = "rule.example.com"
-            addHttpPath(RulesSpec.HttpPathConfig.PathType.Exact) {
-                path = "path"
-                serviceBackend("ruleService") {
-                    port(7777)
+        rules {
+            rule {
+                host = "rule.example.com"
+                httpPaths {
+                    httpPath(RulesSpec.HttpPathConfig.PathType.Exact) {
+                        path = "path"
+                        serviceBackend("ruleService") {
+                            port(7777)
+                        }
+                    }
                 }
             }
         }

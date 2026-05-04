@@ -13,7 +13,10 @@
 package org.pcsoft.framework.kube.kts.api.chart.types
 
 /**
- * Builder for [KubeVersion].
+ * A builder class for creating and configuring instances of [KubeVersion].
+ *
+ * Allows setting version constraints, such as minimum or maximum versions
+ * (inclusive or exclusive), and building a [KubeVersion] from the specified constraints.
  */
 class KubeVersionBuilder {
     private val items = mutableListOf<ItemBuilder>()

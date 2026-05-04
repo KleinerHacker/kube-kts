@@ -18,12 +18,18 @@ import org.pcsoft.framework.kube.kts.api.chart.template.types.MetadataSpec
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 /**
- * Represents a Kubernetes resource template.
+ * Represents a template specification for defining Kubernetes resources.
  *
- * @property apiVersion The API version of the resource.
- * @property kind The kind of the resource.
- * @property metadata The metadata for the resource.
- * @property spec The specification for the resource.
+ * This class encapsulates the core structure required for Kubernetes resource configuration,
+ * including API version, resource kind, metadata, and specification details. It acts as
+ * a container for combining metadata and resource-specific configuration into a single
+ * declarative representation.
+ *
+ * @param S The type of the resource specification contained within the template. Must extend [ResourceSpec].
+ * @property apiVersion The API version of the Kubernetes resource (e.g., "v1", "apps/v1").
+ * @property kind The kind of Kubernetes resource (e.g., ConfigMap, Service, Deployment).
+ * @property metadata The metadata definition for the resource, including name, labels, and annotations.
+ * @property spec The resource-specific configuration that defines the behavior and structure of the resource.
  */
 @NoArgs
 data class TemplateSpec<S>(

@@ -23,8 +23,10 @@ nav:
   - CLI: cli.md
   - Kotlin Scripts Repository:
       - Chart: kts/chart.md
-      - Service: kts/service.md
-      - Ingress: kts/ingress.md
+      - Templates:
+          - Metadata: kts/metadata.md
+          - Service: kts/service.md
+          - Ingress: kts/ingress.md
       - Values Handling: kts/values.md
   - API Docs: dokka/html/index.html
   - Licences: licences/index.html

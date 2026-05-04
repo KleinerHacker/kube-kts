@@ -281,6 +281,7 @@ class ServiceSpecBuilder internal constructor() : ResourceSpecBuilder<ServiceSpe
             this.clusterIPs = mutableListOf()
         }
         this.clusterIPs!!.addAll(clusterIPs.toList())
+        this.clusterIP = this.clusterIPs!!.first()
     }
 
     /**
@@ -301,7 +302,8 @@ class ServiceSpecBuilder internal constructor() : ResourceSpecBuilder<ServiceSpe
      * @param prepare A lambda with receiver that provides a [ClusterIpListBuilder] 
      *                to configure the ClusterIP addresses for the Kubernetes service.
      */
-    fun clusterIPs(prepare: ClusterIpListBuilder.() -> Unit) = ClusterIpListBuilder().apply(prepare)
+    fun clusterIPs(prepare: ClusterIpListBuilder.() -> Unit) =
+        ClusterIpListBuilder().apply(prepare)
 
     /**
      * Adds an IP family to the service specification.
@@ -371,7 +373,8 @@ class ServiceSpecBuilder internal constructor() : ResourceSpecBuilder<ServiceSpe
      * @param prepare A lambda with receiver that provides an [IpFamilyListBuilder] to define 
      *                and configure the IP families for the Kubernetes service.
      */
-    fun ipFamilies(prepare: IpFamilyListBuilder.() -> Unit) = IpFamilyListBuilder().apply(prepare)
+    fun ipFamilies(prepare: IpFamilyListBuilder.() -> Unit) =
+        IpFamilyListBuilder().apply(prepare)
 
     /**
      * Adds an external IP address to the service specification.
@@ -426,7 +429,8 @@ class ServiceSpecBuilder internal constructor() : ResourceSpecBuilder<ServiceSpe
      * @param prepare A lambda with receiver that provides an [ExternalIpListBuilder] to define 
      *                and configure the external IPs for the Kubernetes service.
      */
-    fun externalIPs(prepare: ExternalIpListBuilder.() -> Unit) = ExternalIpListBuilder().apply(prepare)
+    fun externalIPs(prepare: ExternalIpListBuilder.() -> Unit) =
+        ExternalIpListBuilder().apply(prepare)
 
     /**
      * Adds a new source range to the load balancer's source ranges.

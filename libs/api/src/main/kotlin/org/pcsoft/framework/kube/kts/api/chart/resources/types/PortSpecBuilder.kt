@@ -19,8 +19,20 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
  * but not both simultaneously.
  */
 class PortSpecBuilder private constructor(private val name: String?, private val number: Int?) {
+    /**
+     * Secondary constructor for `PortSpecBuilder` that initializes
+     * an instance based on the given port name without a port number.
+     *
+     * @param name The name of the port.
+     */
     internal constructor(name: String) : this(name, null)
 
+    /**
+     * Secondary constructor for `PortSpecBuilder` that initializes an instance
+     * based on the given port number without a port name.
+     *
+     * @param number The number of the port.
+     */
     internal constructor(number: Int) : this(null, number)
 
     internal fun build(): PortSpec = PortSpec(name, number)
