@@ -14,7 +14,7 @@ package org.pcsoft.framework.kube.kts.api.chart.template
 
 import org.pcsoft.framework.kube.kts.api.chart.KubeSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpec
-import org.pcsoft.framework.kube.kts.api.chart.template.types.MetadataSpec
+import org.pcsoft.framework.kube.kts.api.chart.types.MetadataTemplateSpec
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 /**
@@ -35,6 +35,6 @@ import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 data class TemplateSpec<S>(
     val apiVersion: String,
     val kind: String,
-    val metadata: MetadataSpec,
+    val metadata: MetadataTemplateSpec,
     val spec: S
 ) : KubeSpec where S : ResourceSpec

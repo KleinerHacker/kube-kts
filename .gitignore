@@ -6,6 +6,7 @@ out/
 .kotlin
 docs/docs/dokka
 docs/docs/licences
+.junie
 
 ### Gradle ###
 !gradle/wrapper/gradle-wrapper.jar

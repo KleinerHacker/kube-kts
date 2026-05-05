@@ -14,7 +14,7 @@ package org.pcsoft.framework.kube.kts.api.chart.template
 
 import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpecBuilder
-import org.pcsoft.framework.kube.kts.api.chart.template.types.MetadataSpecBuilder
+import org.pcsoft.framework.kube.kts.api.chart.types.MetadataTemplateSpecBuilder
 
 /**
  * Builder class for creating instances of [TemplateSpec]. This class provides methods to
@@ -33,7 +33,7 @@ class TemplateSpecBuilder<S, B> internal constructor(
     private val kind: String,
     private val specBuilder: B
 ) where S : ResourceSpec, B : ResourceSpecBuilder<S> {
-    private var metadataBuilder: MetadataSpecBuilder? = null
+    private var metadataBuilder: MetadataTemplateSpecBuilder? = null
 
     /**
      * Configures the metadata for the Kubernetes resource template.
@@ -47,10 +47,10 @@ class TemplateSpecBuilder<S, B> internal constructor(
      * ```
      *
      * @param name The name of the resource being configured.
-     * @param prepare A lambda with a receiver of [MetadataSpecBuilder] to further customize the metadata.
+     * @param prepare A lambda with a receiver of [MetadataTemplateSpecBuilder] to further customize the metadata.
      */
-    fun metadata(name: String, prepare: MetadataSpecBuilder.() -> Unit) {
-        metadataBuilder = MetadataSpecBuilder(name).apply(prepare)
+    fun metadata(name: String, prepare: MetadataTemplateSpecBuilder.() -> Unit) {
+        metadataBuilder = MetadataTemplateSpecBuilder(name).apply(prepare)
     }
 
     /**
