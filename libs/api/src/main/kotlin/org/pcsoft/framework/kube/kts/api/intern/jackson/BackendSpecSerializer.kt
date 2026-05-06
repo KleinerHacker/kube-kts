@@ -63,9 +63,7 @@ internal class BackendSpecSerializer : ValueSerializer<BackendSpec>() {
                 gen.writeObjectPropertyStart("resource")
                 gen.writeStringProperty("name", value.name)
                 gen.writeStringProperty("kind", value.kind)
-                if (value.apiGroup == null) {
-                    gen.writeNullProperty("apiGroup")
-                } else {
+                if (value.apiGroup != null) {
                     gen.writeStringProperty("apiGroup", value.apiGroup)
                 }
                 gen.writeEndObject()

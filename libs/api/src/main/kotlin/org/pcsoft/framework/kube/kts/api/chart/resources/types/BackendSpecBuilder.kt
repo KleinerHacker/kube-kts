@@ -88,7 +88,7 @@ class ResourceBackendSpecBuilder internal constructor(private val name: String, 
     /**
      * The API group of the resource.
      */
-    val apiGroup: String? = null
+    var apiGroup: String? = null
 
     override fun build(): BackendSpec {
         require(name.isNotBlank()) { "Resource name is required for resource backend" }

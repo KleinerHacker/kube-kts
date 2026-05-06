@@ -12,6 +12,8 @@
 
 package org.pcsoft.framework.kube.kts.api.types
 
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonValue
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 /**
@@ -40,24 +42,51 @@ interface RelativeValue<T, R> {
          */
         fun ofAbsolute(value: Int): AbsoluteValue = AbsoluteValue(value)
 
-        /**
-         * Converts the current Float value into a PercentageValue instance.
-         *
-         * This function interprets the Float value as a percentage, where a value of 1.0 represents 100%.
-         *
-         * @return A PercentageValue instance wrapping the current Float value as a percentage.
-         */
-        fun Float.percent(): PercentageValue = ofPercentage(this)
+        @JsonCreator
+        fun of(value: Any): RelativeValue<*,*> {
+            return when (value) {
+                is Number -> ofAbsolute(value.toInt())
+                is String -> {
+                    require(value.endsWith("%")) { "Invalid percentage value: $value" }
+                    ofPercentage(value.dropLast(1).toFloat())
+                }
+                else -> throw IllegalArgumentException("Unsupported type for RelativeValue creation: ${value::class.simpleName}")
+            }
+        }
 
         /**
-         * Converts the current integer into an `AbsoluteValue` instance.
+         * Converts the number into a PercentageValue representation.
          *
-         * This function wraps the integer into an absolute representation, enabling it
-         * to be used in contexts where absolute values are required.
+         * This property interprets the numeric value as a percentage, where 1.0 corresponds to 100%.
+         * The resulting PercentageValue can be used in relative value computations or serialized
+         * into formats such as YAML for configuration purposes.
          *
-         * @return An `AbsoluteValue` instance representing the current integer.
+         * Example usage:
+         * ```kotlin
+         * val percentValue = 75.percent  // Represents 75%
+         * println(percentValue.toYamlValue()) // Output: "75%"
+         * ```
+         *
+         * @return A PercentageValue instance that represents this number as a percentage.
          */
-        fun Int.absolute(): AbsoluteValue = ofAbsolute(this)
+        val Number.percent: PercentageValue get() = ofPercentage(this.toFloat() / 100f)
+
+        /**
+         * Computes the absolute value of this numeric instance.
+         *
+         * This property converts the current number into its absolute representation,
+         * encapsulated in an [AbsoluteValue] object. The absolute value is the non-negative
+         * magnitude of a number, regardless of its original sign.
+         *
+         * Example usage:
+         * ```kotlin
+         * val absValue = 42.absolute  // Represents absolute value 42
+         * println(absValue.toYamlValue()) // Output: 42
+         * ```
+         *
+         * @return An instance of [AbsoluteValue] representing the absolute value of this number.
+         */
+        val Number.absolute: AbsoluteValue get() = ofAbsolute(this.toInt())
     }
 
     /**
@@ -72,6 +101,7 @@ interface RelativeValue<T, R> {
      *
      * @return A value of type `R` that represents the current instance in YAML format.
      */
+    @JsonValue
     fun toYamlValue(): R
 }
 

@@ -39,6 +39,9 @@ private val yamlMapper = YAMLMapper.builder()
     .addModule(KotlinModule.Builder().build())
     .addModule(module)
     .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS)
+    .changeDefaultPropertyInclusion {
+        it.withValueInclusion(JsonInclude.Include.NON_NULL)
+    }
     .build()
 
 internal fun Any.toJson() = jsonMapper.writeValueAsString(this)
