@@ -15,7 +15,7 @@ package org.pcsoft.framework.kube.kts.api.intern.json
 import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
-import org.pcsoft.framework.kube.kts.api.chart.types.MetadataBaseSpec
+import org.pcsoft.framework.kube.kts.api.chart.types.MetadataTemplateSpec
 import tools.jackson.core.JsonParser
 import tools.jackson.databind.DeserializationContext
 import tools.jackson.databind.JsonNode
@@ -31,7 +31,7 @@ class ResourceApiDeserializer : ValueDeserializer<TemplateSpec<*>>() {
 
         val apiVersion = tree["apiVersion"].asString()
         val kind = tree["kind"].asString()
-        val metadata = ctxt.readValue(TreeTraversingParser(tree["metadata"]), MetadataBaseSpec::class.java)
+        val metadata = ctxt.readValue(TreeTraversingParser(tree["metadata"]), MetadataTemplateSpec::class.java)
 
         val targetType = when (kind) {
             ServiceSpec.KIND -> ServiceSpec::class.java

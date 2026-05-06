@@ -14,6 +14,10 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.pcsoft.framework.kube.kts.api.chart.types.MetadataPodSpec
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
+import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsDeserializer
+import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsSerializer
+import tools.jackson.databind.annotation.JsonDeserialize
+import tools.jackson.databind.annotation.JsonSerialize
 
 @NoArgs
 data class PodSpec(
@@ -22,7 +26,11 @@ data class PodSpec(
     val serviceAccountName: String?,
     val nodeSelector: Map<String, String>?,
     val imagePullSecrets: List<String>?,
-    val volumes: List<VolumeSpec>?
+    val volumes: List<VolumeSpec>?,
+    @field:JsonSerialize(using = DurationInSecondsSerializer::class)
+    @field:JsonDeserialize(using = DurationInSecondsDeserializer::class)
+    val terminationGracePeriodSeconds: Int?,
+    val readinessGates: List<String>?,
 ) {
     @Suppress("unused")
     enum class RestartPolicy {

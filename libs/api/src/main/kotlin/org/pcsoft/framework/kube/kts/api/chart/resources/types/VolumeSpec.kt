@@ -196,3 +196,19 @@ data class VolumeMountSpec(
     val mountPath: String,
     val readOnly: Boolean?
 )
+
+/**
+ * Represents the specification for a volume device.
+ *
+ * This class is used to define a volume device configuration, including the device's name
+ * and the path where the device is mounted inside the container. It is typically used
+ * in scenarios involving persistent storage or attaching block devices to containers.
+ *
+ * @property name The name of the volume device.
+ * @property devicePath The path inside the container where the device is exposed.
+ */
+@NoArgs
+data class VolumeDeviceSpec(
+    val name: String,
+    val devicePath: String
+)

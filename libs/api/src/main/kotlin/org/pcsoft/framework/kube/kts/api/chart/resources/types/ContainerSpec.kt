@@ -21,13 +21,20 @@ data class ContainerSpec(
     val imagePullPolicy: ImagePullPolicy?,
     val ports: List<PortSpec>?,
     val env: Map<String, String>?, //TODO
-    val envFrom: Map<String, String>?, //TODO
+    val envFrom: EnvironmentSpec?,
     val resources: Any?, //TODO
+    val volumeMounts: List<VolumeMountSpec>?,
+    val volumeDevices: List<VolumeDeviceSpec>?, //TODO
     val livenessProbe: Any?, //TODO
     val readinessProbe: Any?, //TODO
     val startupProbe: Any?, //TODO
     val lifecycle: Any?, //TODO
-    val volumeMounts: List<VolumeMountSpec>?,
+    val terminationMessagePath: String?,
+    val terminationMessagePolicy: TerminationMessagePolicy?,
+    val stdin: Boolean?,
+    val stdinOnce: Boolean?,
+    val tty: Boolean?,
+    val securityContext: Any?, //TODO
     val command: List<String>?,
     val args: List<String>?,
     val workingDir: String?,
@@ -37,6 +44,12 @@ data class ContainerSpec(
         Always,
         IfNotPresent,
         Never
+    }
+
+    @Suppress("unused")
+    enum class TerminationMessagePolicy {
+        File,
+        FallbackToLogsOnError
     }
 
     @NoArgs

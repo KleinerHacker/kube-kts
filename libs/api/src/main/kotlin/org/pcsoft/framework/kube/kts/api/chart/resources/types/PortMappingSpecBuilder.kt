@@ -35,7 +35,7 @@ class PortMappingSpecBuilder internal constructor(private val name: String) {
     /**
      * The IP protocol for this port.
      */
-    var protocol: PortMappingSpec.Protocol? = null
+    var protocol: Protocol? = null
 
     /**
      * The application protocol for this port.

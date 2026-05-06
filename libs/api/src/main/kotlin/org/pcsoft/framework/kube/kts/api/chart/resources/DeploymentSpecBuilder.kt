@@ -12,43 +12,19 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
-import org.pcsoft.framework.kube.kts.api.chart.resources.DeploymentSpec.*
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpecBuilder
 
 class DeploymentSpecBuilder internal constructor() : ResourceSpecBuilder<DeploymentSpec> {
-    private val selector = LabelSelectorSpecBuilder()
-    private val template = PodTemplateSpecBuilder()
-    private var strategy: DeploymentStrategySpecBuilder? = null
-
     var replicas: Int? = null
     var minReadySeconds: Int? = null
     var revisionHistoryLimit: Int? = null
     var paused: Boolean? = null
     var progressDeadlineSeconds: Int? = null
 
-    fun selector(prepare: LabelSelectorSpecBuilder.() -> Unit) {
-        selector.apply(prepare)
+    override fun build(): DeploymentSpec {
+        TODO("Not yet implemented")
     }
-
-    fun template(prepare: PodTemplateSpecBuilder.() -> Unit) {
-        template.apply(prepare)
-    }
-
-    fun strategy(prepare: DeploymentStrategySpecBuilder.() -> Unit) {
-        strategy = DeploymentStrategySpecBuilder().apply(prepare)
-    }
-
-    override fun build(): DeploymentSpec = DeploymentSpec(
-        replicas = replicas,
-        selector = selector.build(),
-        template = template.build(),
-        strategy = strategy?.build(),
-        minReadySeconds = minReadySeconds,
-        revisionHistoryLimit = revisionHistoryLimit,
-        paused = paused,
-        progressDeadlineSeconds = progressDeadlineSeconds
-    )
 }
 
 fun deployment(prepare: TemplateSpecBuilder<DeploymentSpec, DeploymentSpecBuilder>.() -> Unit): TemplateSpec<DeploymentSpec> =
