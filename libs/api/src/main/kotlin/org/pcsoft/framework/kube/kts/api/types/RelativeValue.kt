@@ -119,6 +119,14 @@ interface RelativeValue<T, R> {
  */
 @NoArgs
 data class PercentageValue(override val value: Float) : RelativeValue<Float, String> {
+
+    /**
+     * Validates that the percentage value is within the range of 0.0f to 1.0f.
+     */
+    init {
+        require(value in 0f..1f) { "Percentage value must be between 0f and 1f" }
+    }
+
     /**
      * Converts the percentage value represented by this instance into its YAML-compatible string format.
      *
@@ -145,6 +153,14 @@ data class PercentageValue(override val value: Float) : RelativeValue<Float, Str
  */
 @NoArgs
 data class AbsoluteValue(override val value: Int) : RelativeValue<Int, Int> {
+
+    /**
+     * Validates that the absolute value is non-negative.
+     */
+    init {
+        require(value >= 0) { "Absolute value must be non-negative" }
+    }
+
     /**
      * Converts the internal absolute value into a YAML-compatible integer representation.
      *
