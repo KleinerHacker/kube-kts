@@ -12,7 +12,6 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.types
 
-import org.pcsoft.framework.kube.kts.api.chart.template.types.OwnerReferenceSpecBuilder
 import java.util.UUID
 
 /**
@@ -246,7 +245,7 @@ class MetadataTemplateSpecBuilder internal constructor(private val name: String)
     /**
      * Adds an owner reference to the metadata specification.
      *
-     * This method creates and configures an [org.pcsoft.framework.kube.kts.api.chart.template.types.OwnerReferenceSpec] that represents a reference to another Kubernetes resource,
+     * This method creates and configures an [OwnerReferenceSpec] that represents a reference to another Kubernetes resource,
      * indicating ownership or control relationship. The owner reference is used by Kubernetes for garbage collection and
      * dependency management, allowing resources to be automatically deleted when their owner is deleted (if configured).
      *
@@ -263,7 +262,7 @@ class MetadataTemplateSpecBuilder internal constructor(private val name: String)
         kind: String,
         name: String,
         uid: UUID,
-        prepare: OwnerReferenceSpecBuilder.() -> Unit
+        prepare: OwnerReferenceSpecBuilder.() -> Unit = {}
     ) {
         if (ownerReferences == null) {
             ownerReferences = mutableListOf()
@@ -293,7 +292,7 @@ class MetadataTemplateSpecBuilder internal constructor(private val name: String)
      *                is an instance of [OwnerReferenceListBuilder], allowing you to call its methods (e.g., `ownerReference`)
      *                directly within the lambda.
      */
-    fun ownerReferences(prepare: OwnerReferenceListBuilder.() -> Unit) =
+    fun ownerReferences(prepare: OwnerReferenceListBuilder.() -> Unit = {}) =
         OwnerReferenceListBuilder().prepare()
 
     /**
@@ -348,7 +347,7 @@ class MetadataTemplateSpecBuilder internal constructor(private val name: String)
     }
 
     /**
-     * Builder for creating a list of [org.pcsoft.framework.kube.kts.api.chart.template.types.OwnerReferenceSpec] instances.
+     * Builder for creating a list of [OwnerReferenceSpec] instances.
      *
      * This builder allows configuration of multiple owner references that can be attached to Kubernetes resources.
      * Each owner reference defines a relationship where one resource "owns" another, which is used for garbage
@@ -359,7 +358,7 @@ class MetadataTemplateSpecBuilder internal constructor(private val name: String)
         /**
          * Adds an owner reference to the metadata of a Kubernetes resource.
          *
-         * This method creates and configures an [org.pcsoft.framework.kube.kts.api.chart.template.types.OwnerReferenceSpec] using the provided parameters and additional settings
+         * This method creates and configures an [OwnerReferenceSpec] using the provided parameters and additional settings
          * defined in the [prepare] lambda. The owner reference establishes a relationship where one resource "owns" another,
          * which is used for garbage collection and dependency management in Kubernetes.
          *

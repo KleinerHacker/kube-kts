@@ -24,6 +24,8 @@ import org.pcsoft.framework.kube.kts.api.chart.resources.types.LabelSelectorRequ
  * The `matchLabels` is a key-value pair map, where the key is the label name and the value
  * is the required label value. The `matchExpressions` is a list of conditions, each defined
  * using a key, an operator, and, optionally, a set of values.
+ *
+ * Some values are required.
  */
 class LabelSelectorSpecBuilder internal constructor() {
     private var matchLabels: MutableMap<String, String>? = null
@@ -100,8 +102,11 @@ class LabelSelectorSpecBuilder internal constructor() {
      *
      * @return A new `LabelSelectorSpec` instance containing the configured `matchLabels` and `matchExpressions`.
      */
-    internal fun build(): LabelSelectorSpec =
-        LabelSelectorSpec(matchLabels, matchExpressions?.map { it.build() })
+    internal fun build(): LabelSelectorSpec {
+        require(matchLabels != null && matchLabels!!.isNotEmpty()) { "Match labels must be set" }
+
+        return LabelSelectorSpec(matchLabels, matchExpressions?.map { it.build() })
+    }
 
     /**
      * A builder class for defining and constructing label selector requirements.

@@ -21,6 +21,8 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
  * be built. Supported sources include static values, Kubernetes field references,
  * resource field references, ConfigMap keys, and Secret keys.
  *
+ * Some values are required.
+ *
  * @constructor Creates a builder for the given environment variable name. This constructor is
  * internally controlled by the DSL and is not intended to be called directly by users.
  * @param name The name of the environment variable represented by the resulting specification.

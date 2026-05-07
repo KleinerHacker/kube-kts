@@ -26,6 +26,8 @@ import java.net.URI
  * dependencies, maintainers, keywords, and Kubernetes version compatibility.
  * It is typically used via the top-level [chart] function.
  *
+ * All values are optional.
+ *
  * @param name The unique name of the Helm chart.
  * @param version The semantic version of the chart.
  */

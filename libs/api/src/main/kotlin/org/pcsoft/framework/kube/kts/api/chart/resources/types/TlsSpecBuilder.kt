@@ -19,6 +19,8 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
  * This builder supports the dynamic configuration of hosts and secret names. It also provides
  * an internal nested [HostListBuilder] class for a more structured way to add multiple hosts.
  *
+ * All values are optional.
+ *
  * @constructor Internal constructor to initialize the builder.
  *              Instance creation is restricted to internal usage.
  */

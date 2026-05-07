@@ -37,6 +37,8 @@ import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpecBuilder
  * Note: This builder is intended for internal use and ensures `IngressSpec` 
  * objects are built in a controlled and validated manner.
  *
+ * All values are optional.
+ *
  * @constructor Creates an instance of `IngressSpecBuilder` for internal usage.
  */
 class IngressSpecBuilder internal constructor() : ResourceSpecBuilder<IngressSpec> {

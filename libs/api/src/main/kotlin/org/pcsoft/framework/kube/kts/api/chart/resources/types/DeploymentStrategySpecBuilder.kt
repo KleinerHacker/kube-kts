@@ -26,6 +26,8 @@ import org.pcsoft.framework.kube.kts.api.types.RelativeValue
  * - `RollingUpdate`: Resources are updated incrementally, allowing a controlled and gradual
  *   replacement process.
  *
+ * All values are optional.
+ *
  * @constructor Creates an instance of `DeploymentStrategySpecBuilder`.
  */
 class DeploymentStrategySpecBuilder internal constructor(){

@@ -21,6 +21,8 @@ import org.pcsoft.framework.kube.kts.api.chart.types.MetadataTemplateSpecBuilder
  * configure the metadata and specification of a Kubernetes resource template while ensuring
  * that all necessary components are set before the final build.
  *
+ * Some values are required.
+ *
  * @param S The type of the resource specification contained within the template. Must extend [ResourceSpec].
  * @param B The type of the builder used to configure the resource specification. Must implement [ResourceSpecBuilder].
  * @constructor Creates an instance of the builder with the specified API version, kind, and specification builder.

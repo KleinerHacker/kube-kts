@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations.
  */
 
-package org.pcsoft.framework.kube.kts.api.chart.template.types
+package org.pcsoft.framework.kube.kts.api.chart.types
 
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import java.util.UUID

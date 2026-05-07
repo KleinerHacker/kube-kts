@@ -17,6 +17,8 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
  *
  * This builder allows for specifying a port either by its name or by its number,
  * but not both simultaneously.
+ *
+ * There are no more fields inside.
  */
 class PortSpecBuilder private constructor(private val name: String?, private val number: Int?) {
     /**

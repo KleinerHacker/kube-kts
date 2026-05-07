@@ -21,6 +21,8 @@ import java.net.URI
  * This builder provides properties to set the email address and URL for a maintainer.
  * The maintainer's name must be provided when the builder is created.
  *
+ * All values are optional.
+ *
  * @constructor Creates a builder with the specified maintainer name.
  * @param name The full name of the maintainer.
  */

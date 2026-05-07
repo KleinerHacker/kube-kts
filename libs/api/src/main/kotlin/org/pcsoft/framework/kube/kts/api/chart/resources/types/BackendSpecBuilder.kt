@@ -76,6 +76,8 @@ class ServiceBackendSpecBuilder internal constructor(private val name: String) :
  * group configuration. The resulting `ResourceBackendSpec` object can be used to represent
  * Kubernetes resources as backends in various configurations.
  *
+ * All values are optional.
+ *
  * @constructor Creates a new instance of the builder with the specified resource name and kind.
  * @param name The name of the resource.
  * @param kind The kind of the resource to be referenced in the backend.

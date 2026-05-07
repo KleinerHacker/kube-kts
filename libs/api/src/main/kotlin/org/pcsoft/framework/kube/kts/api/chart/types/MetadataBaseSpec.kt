@@ -12,7 +12,6 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.types
 
-import org.pcsoft.framework.kube.kts.api.chart.template.types.OwnerReferenceSpec
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 /**

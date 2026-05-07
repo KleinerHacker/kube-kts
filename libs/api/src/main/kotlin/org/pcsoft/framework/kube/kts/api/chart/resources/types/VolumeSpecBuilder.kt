@@ -21,6 +21,8 @@ import org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeSpec.Source
  * Secrets, and HostPaths. The constructed volume specification can be integrated into Kubernetes pod
  * configurations.
  *
+ * Some values are required.
+ *
  * @constructor Creates a builder for a volume specification with the specified name.
  * @param name The name of the volume being constructed.
  */
@@ -93,6 +95,21 @@ class VolumeSpecBuilder internal constructor(private val name: String) {
      */
     fun from(prepare: FromBuilder.() -> Unit) {
         FromBuilder().apply(prepare)
+    }
+
+    /**
+     * Builds a `VolumeSpec` object using the current configuration of the `VolumeSpecBuilder`.
+     *
+     * The method ensures that the `source` field is set before creating the `VolumeSpec` instance.
+     * If the `source` field is null, an `IllegalArgumentException` is thrown.
+     *
+     * @return A `VolumeSpec` instance containing the configured name, source, and emptyDir properties.
+     * @throws IllegalArgumentException if the source field is not set.
+     */
+    internal fun build(): VolumeSpec {
+        require(source != null) { "Source must be set" }
+
+        return VolumeSpec(name, source!!, emptyDir)
     }
 
     /**

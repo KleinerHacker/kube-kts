@@ -8,6 +8,8 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
  * This builder is designed to simplify the creation of `CompleteEnvironmentSpec` instances while allowing
  * for customization and configuration of the source via a functional block.
  *
+ * Some values are required.
+ *
  * @constructor This class is internally constructed and is not intended to be instantiated directly by users.
  */
 class CompleteEnvironmentSpecBuilder internal constructor() {

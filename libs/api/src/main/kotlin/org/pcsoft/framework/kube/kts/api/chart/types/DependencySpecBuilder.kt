@@ -18,6 +18,8 @@ import java.net.URI
 /**
  * Builds and configures a specification for defining a Helm chart dependency.
  *
+ * All values are optional.
+ *
  * @constructor Creates a DependencySpecBuilder instance with the specified chart name and version.
  * @property name The name of the chart you want to depend on.
  * @property version The version of the chart you want to depend on.

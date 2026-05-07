@@ -18,6 +18,8 @@ import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
  * Builder class for constructing instances of [PortMappingSpec]. This class provides a set of
  * configurable properties to define the port mapping for a Kubernetes Service.
  *
+ * Some values are required.
+ *
  * @constructor Creates an instance of the builder with the specified port name.
  * @param name The name of the port mapping. This value must not be blank.
  */

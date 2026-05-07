@@ -26,6 +26,8 @@ import java.time.Duration
  *
  * The builder enforces the creation of at least one port mapping as part of the service specification.
  *
+ * Some values are required.
+ *
  * @constructor Creates an instance of `ServiceSpecBuilder`. This constructor is intended for internal use.
  */
 class ServiceSpecBuilder internal constructor() : ResourceSpecBuilder<ServiceSpec> {
