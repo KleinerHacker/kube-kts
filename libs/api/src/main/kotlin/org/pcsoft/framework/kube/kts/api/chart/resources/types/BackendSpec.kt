@@ -41,7 +41,7 @@ sealed class BackendSpec(
  * @property port The port configuration for the service backend.
  */
 @NoArgs
-class ServiceBackendSpec(
+class ServiceBackendSpec internal constructor(
     name: String,
     val port: PortSpec
 ) : BackendSpec(name)
@@ -54,7 +54,7 @@ class ServiceBackendSpec(
  * @property apiGroup The API group of the resource, if applicable.
  */
 @NoArgs
-class ResourceBackendSpec(
+class ResourceBackendSpec internal constructor(
     name: String,
     val kind: String,
     val apiGroup: String?

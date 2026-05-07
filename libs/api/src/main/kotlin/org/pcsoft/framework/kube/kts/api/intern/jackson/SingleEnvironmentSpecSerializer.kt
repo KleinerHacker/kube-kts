@@ -12,7 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.api.intern.jackson
 
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.EnvironmentSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.SingleEnvironmentSpec
 import org.pcsoft.framework.kube.kts.api.intern.utils.writeObject
 import org.pcsoft.framework.kube.kts.api.intern.utils.writeObjectProperty
 import tools.jackson.core.JsonGenerator
@@ -44,9 +44,9 @@ import tools.jackson.databind.ValueSerializer
  * This class extends `ValueSerializer` and overrides the `serialize` method to provide
  * custom serialization logic specific to the `EnvironmentSpec` class.
  */
-class EnvironmentSpecSerializer : ValueSerializer<EnvironmentSpec>() {
+class SingleEnvironmentSpecSerializer : ValueSerializer<SingleEnvironmentSpec>() {
     override fun serialize(
-        value: EnvironmentSpec?,
+        value: SingleEnvironmentSpec?,
         gen: JsonGenerator,
         ctxt: SerializationContext
     ) {
@@ -58,27 +58,27 @@ class EnvironmentSpecSerializer : ValueSerializer<EnvironmentSpec>() {
         gen.writeObject {
             gen.writeStringProperty("name", value.name)
             when (value.source) {
-                is EnvironmentSpec.ValueSource -> gen.writeStringProperty("value", value.source.value)
-                is EnvironmentSpec.FieldReferenceSource -> gen.writeObjectProperty("valueFrom") {
+                is SingleEnvironmentSpec.ValueSource -> gen.writeStringProperty("value", value.source.value)
+                is SingleEnvironmentSpec.FieldReferenceSource -> gen.writeObjectProperty("valueFrom") {
                     gen.writeObjectProperty("fieldRef") {
                         gen.writeStringProperty("fieldPath", value.source.fieldPath)
                     }
                 }
 
-                is EnvironmentSpec.ResourceFieldReferenceSource -> gen.writeObjectProperty("valueFrom") {
+                is SingleEnvironmentSpec.ResourceFieldReferenceSource -> gen.writeObjectProperty("valueFrom") {
                     gen.writeObjectProperty("resourceFieldRef") {
                         gen.writeStringProperty("resource", value.source.resource)
                     }
                 }
 
-                is EnvironmentSpec.ConfigMapKeyReferenceSource -> gen.writeObjectProperty("valueFrom") {
+                is SingleEnvironmentSpec.ConfigMapKeyReferenceSource -> gen.writeObjectProperty("valueFrom") {
                     gen.writeObjectProperty("configMapKeyRef") {
                         gen.writeStringProperty("name", value.source.name)
                         gen.writeStringProperty("key", value.source.key)
                     }
                 }
 
-                is EnvironmentSpec.SecretKeyReferenceSource -> gen.writeObjectProperty("valueFrom") {
+                is SingleEnvironmentSpec.SecretKeyReferenceSource -> gen.writeObjectProperty("valueFrom") {
                     gen.writeObjectProperty("secretKeyRef") {
                         gen.writeStringProperty("name", value.source.name)
                         gen.writeStringProperty("key", value.source.key)
@@ -113,17 +113,17 @@ class EnvironmentSpecSerializer : ValueSerializer<EnvironmentSpec>() {
  * - Throws `IllegalArgumentException` if neither `value` nor `valueFrom` is found in the input.
  * - Throws `IllegalArgumentException` if an unknown source type is specified within `valueFrom`.
  */
-class EnvironmentSpecDeserializer : ValueDeserializer<EnvironmentSpec>() {
+class SingleEnvironmentSpecDeserializer : ValueDeserializer<SingleEnvironmentSpec>() {
     override fun deserialize(
         p: JsonParser,
         ctxt: DeserializationContext
-    ): EnvironmentSpec {
+    ): SingleEnvironmentSpec {
         val node: JsonNode = p.readValueAsTree()
         val name = node.get("name").asString()
 
         val source = when {
             node.has("value") -> {
-                EnvironmentSpec.ValueSource(node.get("value").asString())
+                SingleEnvironmentSpec.ValueSource(node.get("value").asString())
             }
 
             node.has("valueFrom") -> {
@@ -131,17 +131,17 @@ class EnvironmentSpecDeserializer : ValueDeserializer<EnvironmentSpec>() {
                 when {
                     valueFrom.has("fieldRef") -> {
                         val fieldRef = valueFrom.get("fieldRef")
-                        EnvironmentSpec.FieldReferenceSource(fieldRef.get("fieldPath").asString())
+                        SingleEnvironmentSpec.FieldReferenceSource(fieldRef.get("fieldPath").asString())
                     }
 
                     valueFrom.has("resourceFieldRef") -> {
                         val resourceFieldRef = valueFrom.get("resourceFieldRef")
-                        EnvironmentSpec.ResourceFieldReferenceSource(resourceFieldRef.get("resource").asString())
+                        SingleEnvironmentSpec.ResourceFieldReferenceSource(resourceFieldRef.get("resource").asString())
                     }
 
                     valueFrom.has("configMapKeyRef") -> {
                         val configMapKeyRef = valueFrom.get("configMapKeyRef")
-                        EnvironmentSpec.ConfigMapKeyReferenceSource(
+                        SingleEnvironmentSpec.ConfigMapKeyReferenceSource(
                             configMapKeyRef.get("name").asString(),
                             configMapKeyRef.get("key").asString()
                         )
@@ -149,7 +149,7 @@ class EnvironmentSpecDeserializer : ValueDeserializer<EnvironmentSpec>() {
 
                     valueFrom.has("secretKeyRef") -> {
                         val secretKeyRef = valueFrom.get("secretKeyRef")
-                        EnvironmentSpec.SecretKeyReferenceSource(
+                        SingleEnvironmentSpec.SecretKeyReferenceSource(
                             secretKeyRef.get("name").asString(),
                             secretKeyRef.get("key").asString()
                         )
@@ -162,6 +162,6 @@ class EnvironmentSpecDeserializer : ValueDeserializer<EnvironmentSpec>() {
             else -> throw IllegalArgumentException("Either value or valueFrom must be present")
         }
 
-        return EnvironmentSpec(name, source)
+        return SingleEnvironmentSpec(name, source)
     }
 }

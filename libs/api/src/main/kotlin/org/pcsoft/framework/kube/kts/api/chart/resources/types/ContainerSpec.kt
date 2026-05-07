@@ -20,8 +20,8 @@ data class ContainerSpec(
     val image: String,
     val imagePullPolicy: ImagePullPolicy?,
     val ports: List<PortSpec>?,
-    val env: Map<String, String>?, //TODO
-    val envFrom: EnvironmentSpec?,
+    val env: SingleEnvironmentSpec?,
+    val envFrom: CompleteEnvironmentSpec?,
     val resources: Any?, //TODO
     val volumeMounts: List<VolumeMountSpec>?,
     val volumeDevices: List<VolumeDeviceSpec>?, //TODO

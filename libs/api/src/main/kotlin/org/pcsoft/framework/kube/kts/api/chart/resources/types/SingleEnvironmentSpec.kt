@@ -13,31 +13,28 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
-import org.pcsoft.framework.kube.kts.api.intern.jackson.EnvironmentSpecDeserializer
-import org.pcsoft.framework.kube.kts.api.intern.jackson.EnvironmentSpecSerializer
+import org.pcsoft.framework.kube.kts.api.intern.jackson.SingleEnvironmentSpecDeserializer
+import org.pcsoft.framework.kube.kts.api.intern.jackson.SingleEnvironmentSpecSerializer
 import tools.jackson.databind.annotation.JsonDeserialize
 import tools.jackson.databind.annotation.JsonSerialize
 
 /**
- * Represents the specification for an environment variable, including its name
- * and the source from which its value is obtained.
+ * Represents a specification for a single environment variable, including its name
+ * and the method by which its value is sourced.
  *
- * This class is often used in configurations that involve defining environment
- * variables, such as Kubernetes manifests. The value of the environment variable
- * can be retrieved from various sources including static values, fields, ConfigMaps,
- * Secrets, or resource fields.
- *
- * This class uses custom Jackson serialization and deserialization via
- * [EnvironmentSpecSerializer] and [EnvironmentSpecDeserializer] to handle
- * the polymorphic nature of the Source implementations.
+ * This data class serves as a configuration model to define environment variables
+ * for applications, particularly in scenarios such as Kubernetes configuration
+ * or other deployment contexts where environment variables are dynamically managed.
  *
  * @property name The name of the environment variable.
- * @property source The source from which the value of the environment variable is derived.
+ * @property source The method or source from which the value of the environment variable is derived.
+ *                  The type of source determines whether the value is static, field-based, or references
+ *                  external objects like ConfigMaps or Secrets.
  */
 @NoArgs
-@JsonSerialize(using = EnvironmentSpecSerializer::class)
-@JsonDeserialize(using = EnvironmentSpecDeserializer::class)
-data class EnvironmentSpec(
+@JsonSerialize(using = SingleEnvironmentSpecSerializer::class)
+@JsonDeserialize(using = SingleEnvironmentSpecDeserializer::class)
+data class SingleEnvironmentSpec(
     val name: String,
     val source: Source
 ) {

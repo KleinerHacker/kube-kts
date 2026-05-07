@@ -12,19 +12,21 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
+
 /**
- * Builder class for constructing `EnvironmentSpec` objects with various sources.
+ * Builder for creating a `SingleEnvironmentSpec` for one named environment variable.
  *
- * This class assists in defining environment variable specifications by providing
- * methods to set the source of the environment variable's value. The source can
- * be a static value, a field reference, a resource field reference, or a key reference
- * from a ConfigMap or a Secret.
+ * The builder stores the environment variable name supplied by the surrounding DSL and
+ * requires exactly one value source to be configured before the final specification can
+ * be built. Supported sources include static values, Kubernetes field references,
+ * resource field references, ConfigMap keys, and Secret keys.
  *
- * @constructor Initializes the builder for a specific environment variable name.
- * @param name The name of the environment variable being configured.
+ * @constructor Creates a builder for the given environment variable name. This constructor is
+ * internally controlled by the DSL and is not intended to be called directly by users.
+ * @param name The name of the environment variable represented by the resulting specification.
  */
-class EnvironmentSpecBuild internal constructor(private val name: String) {
-    private var source: EnvironmentSpec.Source? = null
+class SingleEnvironmentSpecBuild internal constructor(private val name: String) {
+    private var source: SingleEnvironmentSpec.Source? = null
 
     /**
      * Configures the `source` field of an environment specification with a static value.
@@ -40,7 +42,7 @@ class EnvironmentSpecBuild internal constructor(private val name: String) {
      * @param value The static value to be used as the environment variable's value.
      */
     fun fromValue(value: String) {
-        source = EnvironmentSpec.ValueSource(value)
+        source = SingleEnvironmentSpec.ValueSource(value)
     }
 
     /**
@@ -57,7 +59,7 @@ class EnvironmentSpecBuild internal constructor(private val name: String) {
      * @param fieldPath The path to the field within the resource from which the environment variable's value is sourced.
      */
     fun fromFieldReference(fieldPath: String) {
-        source = EnvironmentSpec.FieldReferenceSource(fieldPath)
+        source = SingleEnvironmentSpec.FieldReferenceSource(fieldPath)
     }
 
     /**
@@ -74,7 +76,7 @@ class EnvironmentSpecBuild internal constructor(private val name: String) {
      * @param fieldPath The path to the field within the resource from which the environment variable's value is sourced.
      */
     fun fromResourceFieldReference(fieldPath: String) {
-        source = EnvironmentSpec.ResourceFieldReferenceSource(fieldPath)
+        source = SingleEnvironmentSpec.ResourceFieldReferenceSource(fieldPath)
     }
 
     /**
@@ -92,7 +94,7 @@ class EnvironmentSpecBuild internal constructor(private val name: String) {
      * @param key The key within the ConfigMap whose value is being referenced.
      */
     fun fromConfigMapKeyReference(name: String, key: String) {
-        source = EnvironmentSpec.ConfigMapKeyReferenceSource(name, key)
+        source = SingleEnvironmentSpec.ConfigMapKeyReferenceSource(name, key)
     }
 
     /**
@@ -110,7 +112,7 @@ class EnvironmentSpecBuild internal constructor(private val name: String) {
      * @param key The key within the Secret whose value is being referenced.
      */
     fun fromSecretKeyReference(name: String, key: String) {
-        source = EnvironmentSpec.SecretKeyReferenceSource(name, key)
+        source = SingleEnvironmentSpec.SecretKeyReferenceSource(name, key)
     }
 
     /**
@@ -133,10 +135,10 @@ class EnvironmentSpecBuild internal constructor(private val name: String) {
         FromBuilder().apply(prepare)
     }
     
-    internal fun build(): EnvironmentSpec {
+    internal fun build(): SingleEnvironmentSpec {
         require(source != null) { "Source must be set" }
         
-        return EnvironmentSpec(name, source!!)
+        return SingleEnvironmentSpec(name, source!!)
     }
 
     /**
