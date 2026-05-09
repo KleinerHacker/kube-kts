@@ -118,7 +118,7 @@ class SingleEnvironmentSpecDeserializer : ValueDeserializer<SingleEnvironmentSpe
         p: JsonParser,
         ctxt: DeserializationContext
     ): SingleEnvironmentSpec {
-        val node: JsonNode = p.readValueAsTree()
+        val node = p.readValueAsTree<JsonNode>()
         val name = node.get("name").asString()
 
         val source = when {

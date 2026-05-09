@@ -2,8 +2,6 @@ package org.pcsoft.framework.kube.kts.api.types
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.pcsoft.framework.kube.kts.api.types.RelativeValue.Companion.absolute
-import org.pcsoft.framework.kube.kts.api.types.RelativeValue.Companion.percent
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 

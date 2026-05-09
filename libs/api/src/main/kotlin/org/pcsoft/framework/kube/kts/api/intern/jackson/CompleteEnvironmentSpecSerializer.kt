@@ -5,6 +5,7 @@ import org.pcsoft.framework.kube.kts.api.intern.utils.writeObject
 import tools.jackson.core.JsonGenerator
 import tools.jackson.core.JsonParser
 import tools.jackson.databind.DeserializationContext
+import tools.jackson.databind.JsonNode
 import tools.jackson.databind.SerializationContext
 import tools.jackson.databind.ValueDeserializer
 import tools.jackson.databind.ValueSerializer
@@ -38,7 +39,7 @@ class CompleteEnvironmentSpecSerializer : ValueSerializer<CompleteEnvironmentSpe
 
 class CompleteEnvironmentSpecDeserializer : ValueDeserializer<CompleteEnvironmentSpec>() {
     override fun deserialize(p: JsonParser, ctxt: DeserializationContext): CompleteEnvironmentSpec? {
-        val node = p.readValueAsTree<tools.jackson.databind.JsonNode>()
+        val node = p.readValueAsTree<JsonNode>()
         if (node == null || !node.isObject) {
             return null
         }

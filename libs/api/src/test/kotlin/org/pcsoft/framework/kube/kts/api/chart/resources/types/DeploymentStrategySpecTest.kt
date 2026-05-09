@@ -1,8 +1,8 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.junit.jupiter.api.Test
-import org.pcsoft.framework.kube.kts.api.types.RelativeValue.Companion.absolute
-import org.pcsoft.framework.kube.kts.api.types.RelativeValue.Companion.percent
+import org.pcsoft.framework.kube.kts.api.types.absolute
+import org.pcsoft.framework.kube.kts.api.types.percent
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode

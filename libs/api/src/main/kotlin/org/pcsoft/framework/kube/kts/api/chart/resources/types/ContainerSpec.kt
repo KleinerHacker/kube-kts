@@ -22,7 +22,7 @@ data class ContainerSpec(
     val ports: List<PortSpec>?,
     val env: SingleEnvironmentSpec?,
     val envFrom: CompleteEnvironmentSpec?,
-    val resources: Any?, //TODO
+    val resources: HardwareResourceSpec?,
     val volumeMounts: List<VolumeMountSpec>?,
     val volumeDevices: List<VolumeDeviceSpec>?, //TODO
     val livenessProbe: Any?, //TODO
