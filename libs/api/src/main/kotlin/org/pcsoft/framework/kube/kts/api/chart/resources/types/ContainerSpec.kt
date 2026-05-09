@@ -24,7 +24,7 @@ data class ContainerSpec(
     val envFrom: CompleteEnvironmentSpec?,
     val resources: HardwareResourceSpec?,
     val volumeMounts: List<VolumeMountSpec>?,
-    val volumeDevices: List<VolumeDeviceSpec>?, //TODO
+    val volumeDevices: List<VolumeDeviceSpec>?,
     val livenessProbe: Any?, //TODO
     val readinessProbe: Any?, //TODO
     val startupProbe: Any?, //TODO

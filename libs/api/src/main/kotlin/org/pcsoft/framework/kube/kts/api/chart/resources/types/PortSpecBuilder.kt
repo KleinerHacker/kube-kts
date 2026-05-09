@@ -37,5 +37,16 @@ class PortSpecBuilder private constructor(private val name: String?, private val
      */
     internal constructor(number: Int) : this(null, number)
 
-    internal fun build(): PortSpec = PortSpec(name, number)
+    internal fun build(): PortSpec {
+        require(name != null || number != null) { "Port must have either name or number" }
+        if (name != null) {
+            require(name.isNotBlank()) { "Port name must not be blank" }
+        }
+        if (number != null) {
+            require(number > 0) { "Port number must be positive" }
+            require(number <= 65535) { "Port number must be less or equals to 65535" }
+        }
+
+        return PortSpec(name, number)
+    }
 }

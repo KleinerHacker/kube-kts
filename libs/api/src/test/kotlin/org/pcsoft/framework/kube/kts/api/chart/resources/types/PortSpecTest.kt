@@ -1,6 +1,7 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
@@ -43,6 +44,21 @@ class PortSpecTest {
 
         val actualJson = portSpec.toJson()
         JSONAssert.assertEquals("{\"number\":8080}", actualJson, JSONCompareMode.LENIENT)
-    }   
+    }
+
+    @Test
+    fun testEmptyNameContent() {
+        assertThrows<IllegalArgumentException> { PortSpecBuilder("").build() }
+    }
+
+    @Test
+    fun testNegativePortNumber() {
+        assertThrows<IllegalArgumentException> { PortSpecBuilder(-1).build() }
+    }
+
+    @Test
+    fun testPortNumberExceedsMaximum() {
+        assertThrows<IllegalArgumentException> { PortSpecBuilder(65536).build() }
+    }
 
 }
