@@ -31,8 +31,7 @@ class ServiceSpecTest {
         private val maxSpecBuilder = ServiceSpecBuilder().apply {
             type = ServiceSpec.Type.LoadBalancer
 
-            addPort("port") {
-                port = 9999
+            addPort("port", 9999) {
                 targetPort = 8888
                 nodePort = 7777
                 protocol = Protocol.SCTP

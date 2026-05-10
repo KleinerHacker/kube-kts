@@ -22,12 +22,9 @@ import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
  *
  * @constructor Creates an instance of the builder with the specified port name.
  * @param name The name of the port mapping. This value must not be blank.
+ * @param port The port number for the port mapping. This value must be a positive integer.
  */
-class PortMappingSpecBuilder internal constructor(private val name: String) {
-    /**
-     * The port that the service will serve on.
-     */
-    var port: Int = 0
+class PortMappingSpecBuilder internal constructor(private val name: String, private val port: Int) {
 
     /**
      * The port on the pods that the service should forward traffic to.
@@ -49,6 +46,16 @@ class PortMappingSpecBuilder internal constructor(private val name: String) {
      */
     var nodePort: Int? = null
 
+    /**
+     * Builds an instance of [PortMappingSpec] using the current configuration of the builder.
+     *
+     * @param type The type of the Kubernetes Service. If the service type is [ServiceSpec.Type.NodePort],
+     *             the `nodePort` property must not be null.
+     * @return A configured instance of [PortMappingSpec] based on the builder's properties.
+     * @throws IllegalArgumentException If the `name` property is blank.
+     * @throws IllegalArgumentException If the `port` property is not a positive value.
+     * @throws IllegalArgumentException If the `nodePort` property is null when `type` is [ServiceSpec.Type.NodePort].
+     */
     internal fun build(type: ServiceSpec.Type?): PortMappingSpec {
         require(name.isNotBlank()) { "Name is required" }
         require(port > 0) { "Port must be positive" }

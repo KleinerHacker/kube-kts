@@ -9,8 +9,7 @@ service {
 
         exists("ports") {
             array("ports") {
-                addPort(it.value<String>("name")) {
-                    port = it.value<Int>("port")
+                addPort(it.value<String>("name"), it.value<Int>("port")) {
                     targetPort = it.value<Int>("targetPort")
                     nodePort = it.valueOrNull<Int>("nodePort")
                     protocol = Protocol.SCTP

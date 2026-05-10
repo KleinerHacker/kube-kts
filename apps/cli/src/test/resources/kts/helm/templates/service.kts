@@ -8,8 +8,7 @@ service {
         type = Type.LoadBalancer
 
         ports {
-            port("port") {
-                port = 9999
+            port("port", 9999) {
                 targetPort = 8888
                 nodePort = 7777
                 protocol = Protocol.SCTP

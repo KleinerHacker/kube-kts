@@ -25,9 +25,9 @@ data class ContainerSpec(
     val resources: HardwareResourceSpec?,
     val volumeMounts: List<VolumeMountSpec>?,
     val volumeDevices: List<VolumeDeviceSpec>?,
-    val livenessProbe: Any?, //TODO
-    val readinessProbe: Any?, //TODO
-    val startupProbe: Any?, //TODO
+    val livenessProbe: ProbeSpec?,
+    val readinessProbe: ProbeSpec?,
+    val startupProbe: ProbeSpec?,
     val lifecycle: Any?, //TODO
     val terminationMessagePath: String?,
     val terminationMessagePolicy: TerminationMessagePolicy?,
