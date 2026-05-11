@@ -106,7 +106,7 @@ data class ProbeSpec(
         val path: String?,
         val port: Int,
         val host: String?,
-        val scheme: Scheme?,
+        val scheme: ProtocolScheme?,
         val httpHeaders: Map<String, String>?
     ) : ProbeAction
 
@@ -146,39 +146,4 @@ data class ProbeSpec(
         val port: Int,
         val service: String?
     ) : ProbeAction
-
-    /**
-     * Represents HTTP or HTTPS schemes.
-     *
-     * Scheme is used to define the protocol scheme for URLs or
-     * network requests, typically in the context of ingress rules,
-     * service endpoints, or API clients.
-     *
-     * It is often used for distinguishing between unsecured (HTTP)
-     * and secured (HTTPS) communication.
-     */
-    enum class Scheme {
-        /**
-         * Represents the HTTP protocol scheme.
-         *
-         * HTTP is a widely used protocol for transferring hypertext and other resources
-         * on the web. It operates over a connectionless and stateless model. Commonly used
-         * for unsecured (non-encrypted) communication in network configurations.
-         */
-        HTTP,
-
-        /**
-         * Represents the HTTPS protocol scheme.
-         *
-         * HTTPS is a secured version of the Hypertext Transfer Protocol (HTTP),
-         * often used for encrypted communication over the web. It leverages
-         * Transport Layer Security (TLS) or Secure Sockets Layer (SSL) protocols
-         * to ensure secure data exchange between clients and servers by providing
-         * authentication, data integrity, and encryption.
-         *
-         * Commonly used in scenarios requiring secure communication, such as
-         * API interactions, web applications, and service endpoints.
-         */
-        HTTPS
-    }
 }

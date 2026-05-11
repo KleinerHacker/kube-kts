@@ -28,7 +28,7 @@ data class ContainerSpec(
     val livenessProbe: ProbeSpec?,
     val readinessProbe: ProbeSpec?,
     val startupProbe: ProbeSpec?,
-    val lifecycle: Any?, //TODO
+    val lifecycle: LifecycleSpec?,
     val terminationMessagePath: String?,
     val terminationMessagePolicy: TerminationMessagePolicy?,
     val stdin: Boolean?,

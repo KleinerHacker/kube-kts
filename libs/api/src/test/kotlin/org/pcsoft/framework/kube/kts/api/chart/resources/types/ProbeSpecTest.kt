@@ -32,7 +32,7 @@ class ProbeSpecTest {
             httpGet(9999) {
                 path = "/path"
                 host = "example.com"
-                scheme = ProbeSpec.Scheme.HTTPS
+                scheme = ProtocolScheme.HTTPS
                 httpHeaders {
                     httpHeader("header", "value")
                 }
@@ -50,7 +50,7 @@ class ProbeSpecTest {
         assertEquals(9999, spec.action.port)
         assertEquals("/path", spec.action.path)
         assertEquals("example.com", spec.action.host)
-        assertEquals(ProbeSpec.Scheme.HTTPS, spec.action.scheme)
+        assertEquals(ProtocolScheme.HTTPS, spec.action.scheme)
         assertNotNull(spec.action.httpHeaders)
         assertEquals(mapOf("header" to "value"), spec.action.httpHeaders)
         assertNotNull(spec.initialDelaySeconds)
@@ -73,7 +73,7 @@ class ProbeSpecTest {
             httpGet(9999) {
                 path = "/path"
                 host = "example.com"
-                scheme = ProbeSpec.Scheme.HTTPS
+                scheme = ProtocolScheme.HTTPS
                 httpHeaders {
                     httpHeader("header", "value")
                 }

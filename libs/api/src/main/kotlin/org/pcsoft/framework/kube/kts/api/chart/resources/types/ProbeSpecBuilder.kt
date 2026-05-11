@@ -13,7 +13,6 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.ProbeSpec.ProbeAction
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.ProbeSpec.Scheme
 import java.time.Duration
 
 /**
@@ -297,7 +296,7 @@ class ProbeSpecBuilder internal constructor() {
          *
          * By default, this variable is null, indicating that no scheme is explicitly set.
          */
-        var scheme: Scheme? = null
+        var scheme: ProtocolScheme? = null
 
         /**
          * Adds a custom HTTP header to the current set of HTTP headers.
