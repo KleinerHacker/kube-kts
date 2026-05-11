@@ -34,7 +34,7 @@ data class ContainerSpec(
     val stdin: Boolean?,
     val stdinOnce: Boolean?,
     val tty: Boolean?,
-    val securityContext: Any?, //TODO
+    val securityContext: SecurityContextSpec?,
     val command: List<String>?,
     val args: List<String>?,
     val workingDir: String?,
