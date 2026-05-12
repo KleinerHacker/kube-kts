@@ -157,3 +157,64 @@ class VolumeSpecBuilder internal constructor(private val name: String) {
         fun hostPath(path: String, type: VolumeSpec.HostPathSourceSpec.Type) = fromHostPath(path, type)
     }
 }
+
+/**
+ * Builder class for constructing instances of `VolumeMountSpec`.
+ *
+ * This class provides a fluent interface to configure the properties of a volume mount,
+ * including the volume name, its mount path inside the container, and optional read-only mode.
+ *
+ * @constructor Initializes the builder with the required `name` and `mountPath` values.
+ *
+ * @param name The name of the volume to be mounted.
+ * @param mountPath The file system path inside the container where the volume will be mounted.
+ *
+ * @property readOnly Specifies whether the volume should be mounted as read-only.
+ *                     If set to `null`, the default behavior is determined by the container runtime or orchestrator.
+ */
+class VolumeMountSpecBuilder internal constructor(private val name: String, private val mountPath: String) {
+    /**
+     * Indicates whether the associated volume should be mounted as read-only.
+     *
+     * If set to `true`, the volume is mounted in a mode that prevents write operations.
+     * If set to `false`, the volume is mounted with read-write access.
+     * A value of `null` allows the behavior to be determined by the container runtime
+     * or orchestrator's default configuration.
+     */
+    var readOnly: Boolean? = null
+
+    /**
+     * Constructs and returns an instance of `VolumeMountSpec` using the configured properties.
+     *
+     * This method finalizes the build process for a `VolumeMountSpec`, applying the values
+     * for the volume name, mount path, and read-only flag as set on the builder instance.
+     *
+     * @return An instance of `VolumeMountSpec` initialized with the builder's properties.
+     */
+    internal fun build() = VolumeMountSpec(name, mountPath, readOnly)
+}
+
+/**
+ * Builder class for constructing instances of `VolumeDeviceSpec`.
+ *
+ * This builder is used to create and configure a `VolumeDeviceSpec` object, which defines
+ * the specification of a volume device in Kubernetes. The specification includes the name
+ * of the device and the path where it will be accessible inside the container.
+ *
+ * @constructor Creates a `VolumeDeviceSpecBuilder` with the given name and device path.
+ * @param name The name of the volume device.
+ * @param devicePath The path inside the container where the volume device will be mounted.
+ */
+class VolumeDeviceSpecBuilder internal constructor(private val name: String, private val devicePath: String) {
+    /**
+     * Builds a `VolumeDeviceSpec` instance using the configured name and device path.
+     *
+     * This method constructs and returns a new instance of the `VolumeDeviceSpec` class
+     * based on the values provided to the `VolumeDeviceSpecBuilder`. The resulting object
+     * represents the specification for a volume device, which includes its name and
+     * the path where the device will be mounted inside the container.
+     *
+     * @return A new instance of `VolumeDeviceSpec` with the configured properties.
+     */
+    internal fun build() = VolumeDeviceSpec(name, devicePath)
+}

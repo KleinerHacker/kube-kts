@@ -23,7 +23,7 @@ class SingleEnvironmentSpecTest {
 
     @Test
     fun testValueContent() {
-        val envSpec = SingleEnvironmentSpecBuild("MY_VAR").apply {
+        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
             from {
                 value("my-static-value")
             }
@@ -36,7 +36,7 @@ class SingleEnvironmentSpecTest {
 
     @Test
     fun testValueYaml() {
-        val envSpec = SingleEnvironmentSpecBuild("MY_VAR").apply {
+        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
             from {
                 value("my-static-value")
             }
@@ -50,7 +50,7 @@ class SingleEnvironmentSpecTest {
 
     @Test
     fun testFromFieldContent() {
-        val envSpec = SingleEnvironmentSpecBuild("MY_VAR").apply {
+        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
             from {
                 fieldReference("my-field")
             }
@@ -63,7 +63,7 @@ class SingleEnvironmentSpecTest {
 
     @Test
     fun testFromResourceFieldContentYaml() {
-        val envSpec = SingleEnvironmentSpecBuild("MY_VAR").apply {
+        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
             from {
                 resourceFieldReference("my-field")
             }
@@ -84,7 +84,7 @@ class SingleEnvironmentSpecTest {
 
     @Test
     fun testFromResourceFieldContent() {
-        val envSpec = SingleEnvironmentSpecBuild("MY_VAR").apply {
+        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
             from {
                 resourceFieldReference("my-field")
             }
@@ -97,7 +97,7 @@ class SingleEnvironmentSpecTest {
 
     @Test
     fun testFromResourceFieldYaml() {
-        val envSpec = SingleEnvironmentSpecBuild("MY_VAR").apply {
+        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
             from {
                 resourceFieldReference("my-field")
             }
@@ -118,7 +118,7 @@ class SingleEnvironmentSpecTest {
 
     @Test
     fun testFromSecretContent() {
-        val envSpec = SingleEnvironmentSpecBuild("MY_VAR").apply {
+        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
             from {
                 secretKeyReference("my-secret", "my-key")
             }
@@ -132,7 +132,7 @@ class SingleEnvironmentSpecTest {
 
     @Test
     fun testFromSecretYaml() {
-        val envSpec = SingleEnvironmentSpecBuild("MY_VAR").apply {
+        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
             from {
                 secretKeyReference("my-secret", "my-key")
             }
@@ -154,7 +154,7 @@ class SingleEnvironmentSpecTest {
 
     @Test
     fun testFromConfigMapContent() {
-        val envSpec = SingleEnvironmentSpecBuild("MY_VAR").apply {
+        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
             from {
                 configMapKeyReference("my-config-map", "my-key")
             }
@@ -168,7 +168,7 @@ class SingleEnvironmentSpecTest {
 
     @Test
     fun testFromConfigMapYaml() {
-        val envSpec = SingleEnvironmentSpecBuild("MY_VAR").apply {
+        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
             from {
                 configMapKeyReference("my-config-map", "my-key")
             }

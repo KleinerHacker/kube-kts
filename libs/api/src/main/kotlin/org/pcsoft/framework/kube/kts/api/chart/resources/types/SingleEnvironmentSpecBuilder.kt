@@ -27,7 +27,7 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
  * internally controlled by the DSL and is not intended to be called directly by users.
  * @param name The name of the environment variable represented by the resulting specification.
  */
-class SingleEnvironmentSpecBuild internal constructor(private val name: String) {
+class SingleEnvironmentSpecBuilder internal constructor(private val name: String) {
     private var source: SingleEnvironmentSpec.Source? = null
 
     /**
