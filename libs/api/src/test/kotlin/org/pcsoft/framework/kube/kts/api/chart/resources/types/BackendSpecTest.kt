@@ -2,6 +2,8 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.utils.toJson
+import org.skyscreamer.jsonassert.JSONAssert
+import org.skyscreamer.jsonassert.JSONCompareMode
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNull
@@ -26,8 +28,16 @@ class BackendSpecTest {
             port("name")
         }.build()
 
+        val expectedJson = """{
+          |  "service": {
+          |    "name": "service",
+          |    "port": {
+          |      "name": "name"
+          |    }
+          |  }
+          |}""".trimMargin()
         val actualJson = backendSpec.toJson()
-        assertEquals("""{"service":{"name":"service","port":{"name":"name"}}}""", actualJson)
+        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
     @Test
@@ -48,8 +58,15 @@ class BackendSpecTest {
             apiGroup = "group"
         }.build()
 
+        val expectedJson = """{
+          |  "resource": {
+          |    "name": "resource",
+          |    "kind": "kind",
+          |    "apiGroup": "group"
+          |  }
+          |}""".trimMargin()
         val actualJson = backendSpec.toJson()
-        assertEquals("""{"resource":{"name":"resource","kind":"kind","apiGroup":"group"}}""", actualJson)
+        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
     @Test
@@ -66,8 +83,14 @@ class BackendSpecTest {
     fun testResourceBackendMinYaml() {
         val backendSpec = ResourceBackendSpecBuilder("resource", "kind").build()
 
+        val expectedJson = """{
+          |  "resource": {
+          |    "name": "resource",
+          |    "kind": "kind"
+          |  }
+          |}""".trimMargin()
         val actualJson = backendSpec.toJson()
-        assertEquals("""{"resource":{"name":"resource","kind":"kind"}}""", actualJson)
+        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
 }

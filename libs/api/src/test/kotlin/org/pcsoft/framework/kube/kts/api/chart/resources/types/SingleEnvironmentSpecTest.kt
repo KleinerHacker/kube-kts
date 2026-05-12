@@ -70,7 +70,14 @@ class SingleEnvironmentSpecTest {
         }.build()
 
         val actualJson = envSpec.toJson()
-        val expectedJson = """{"name":"MY_VAR","valueFrom":{"resourceFieldRef":{"resource":"my-field"}}}"""
+        val expectedJson = """{
+          |  "name": "MY_VAR",
+          |  "valueFrom": {
+          |    "resourceFieldRef": {
+          |      "resource": "my-field"
+          |    }
+          |  }
+          |}""".trimMargin()
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
@@ -97,7 +104,14 @@ class SingleEnvironmentSpecTest {
         }.build()
 
         val actualJson = envSpec.toJson()
-        val expectedJson = """{"name":"MY_VAR","valueFrom":{"resourceFieldRef":{"resource":"my-field"}}}"""
+        val expectedJson = """{
+          |  "name": "MY_VAR",
+          |  "valueFrom": {
+          |    "resourceFieldRef": {
+          |      "resource": "my-field"
+          |    }
+          |  }
+          |}""".trimMargin()
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
@@ -125,7 +139,15 @@ class SingleEnvironmentSpecTest {
         }.build()
 
         val actualJson = envSpec.toJson()
-        val expectedJson = """{"name":"MY_VAR","valueFrom":{"secretKeyRef":{"key":"my-key","name":"my-secret"}}}"""
+        val expectedJson = """{
+          |  "name": "MY_VAR",
+          |  "valueFrom": {
+          |    "secretKeyRef": {
+          |      "key": "my-key",
+          |      "name": "my-secret"
+          |    }
+          |  }
+          |}""".trimMargin()
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
@@ -153,7 +175,15 @@ class SingleEnvironmentSpecTest {
         }.build()
 
         val actualJson = envSpec.toJson()
-        val expectedJson = """{"name":"MY_VAR","valueFrom":{"configMapKeyRef":{"key":"my-key","name":"my-config-map"}}}"""
+        val expectedJson = """{
+          |  "name": "MY_VAR",
+          |  "valueFrom": {
+          |    "configMapKeyRef": {
+          |      "key": "my-key",
+          |      "name": "my-config-map"
+          |    }
+          |  }
+          |}""".trimMargin()
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }

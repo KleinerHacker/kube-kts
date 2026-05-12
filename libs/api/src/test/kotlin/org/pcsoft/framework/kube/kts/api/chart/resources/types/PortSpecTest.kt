@@ -25,7 +25,9 @@ class PortSpecTest {
             .build()
 
         val actualJson = portSpec.toJson()
-        JSONAssert.assertEquals("{\"name\":\"demo\"}", actualJson, JSONCompareMode.LENIENT)
+        val expectedJson = "{\"name\":\"demo\"}"
+
+        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
     @Test
@@ -43,7 +45,9 @@ class PortSpecTest {
             .build()
 
         val actualJson = portSpec.toJson()
-        JSONAssert.assertEquals("{\"number\":8080}", actualJson, JSONCompareMode.LENIENT)
+        val expectedJson = "{\"number\":8080}"
+
+        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
     @Test

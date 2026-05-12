@@ -62,7 +62,15 @@ class HardwareResourceSpecTest {
         }.build()
 
         val actualJson = spec.toJson()
-        val expectedJson = """{"limits":{"cpu":"10m","memory":"256Mi","ephemeral-storage":"1Gi","nvidia.com/gpu":"1"},"requests":{}}"""
+        val expectedJson = """{
+          |  "limits": {
+          |    "cpu": "10m",
+          |    "memory": "256Mi",
+          |    "ephemeral-storage": "1Gi",
+          |    "nvidia.com/gpu": "1"
+          |  },
+          |  "requests": {}
+          |}""".trimMargin()
 
         println(actualJson)
         println(expectedJson)

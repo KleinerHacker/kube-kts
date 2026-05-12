@@ -34,7 +34,13 @@ class CompleteEnvironmentSpecTest {
         }.build()
 
         val actualJson = spec.toJson()
-        val expectedJson = """{"prefix":"prefix","configMapRef":{"name":"config-map","optional":true}}"""
+        val expectedJson = """{
+          |  "prefix": "prefix",
+          |  "configMapRef": {
+          |    "name": "config-map",
+          |    "optional": true
+          |  }
+          |}""".trimMargin()
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
@@ -88,7 +94,13 @@ class CompleteEnvironmentSpecTest {
         }.build()
 
         val actualJson = spec.toJson()
-        val expectedJson = """{"prefix":"prefix","secretRef":{"name":"secret","optional":true}}"""
+        val expectedJson = """{
+          |  "prefix": "prefix",
+          |  "secretRef": {
+          |    "name": "secret",
+          |    "optional": true
+          |  }
+          |}""".trimMargin()
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }

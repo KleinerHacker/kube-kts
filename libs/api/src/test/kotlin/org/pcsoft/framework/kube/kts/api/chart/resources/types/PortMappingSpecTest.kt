@@ -50,7 +50,14 @@ class PortMappingSpecTest {
         }.build(ServiceSpec.Type.NodePort)
 
         val actualJson = spec.toJson()
-        val expectedJson = """{"name":"name","port":9999,"targetPort":8888,"nodePort":7777,"appProtocol":"http","protocol":"UDP"}"""
+        val expectedJson = """{
+          |  "name": "name",
+          |  "port": 9999,
+          |  "targetPort": 8888,
+          |  "nodePort": 7777,
+          |  "appProtocol": "http",
+          |  "protocol": "UDP"
+          |}""".trimMargin()
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }

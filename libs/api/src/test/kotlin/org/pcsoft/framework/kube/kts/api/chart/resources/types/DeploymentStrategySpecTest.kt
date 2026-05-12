@@ -39,7 +39,13 @@ class DeploymentStrategySpecTest {
         }.build()
 
         val actualJson = deploymentStrategySpec.toJson()
-        val expectedJson = """{"type":"RollingUpdate","rollingUpdate":{"maxSurge":"10%","maxUnavailable":3}}"""
+        val expectedJson = """{
+          |  "type": "RollingUpdate",
+          |  "rollingUpdate": {
+          |    "maxSurge": "10%",
+          |    "maxUnavailable": 3
+          |  }
+          |}""".trimMargin()
 
         println(actualJson)
         println(expectedJson)
