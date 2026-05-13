@@ -13,6 +13,10 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
+import org.pcsoft.framework.kube.kts.api.intern.jackson.NodeSelectorDeserializer
+import org.pcsoft.framework.kube.kts.api.intern.jackson.NodeSelectorSerializer
+import tools.jackson.databind.annotation.JsonDeserialize
+import tools.jackson.databind.annotation.JsonSerialize
 
 /**
  * Defines the specifications for affinity and anti-affinity rules that influence
@@ -60,6 +64,8 @@ data class AffinitySpec(
  */
 @NoArgs
 data class NodeAffinitySpec(
+    @field:JsonSerialize(using = NodeSelectorSerializer::class)
+    @field:JsonDeserialize(using = NodeSelectorDeserializer::class)
     val requiredDuringSchedulingIgnoredDuringExecution: List<NodeSelectorTermSpec>? = null,
     val preferredDuringSchedulingIgnoredDuringExecution: List<PreferredSchedulingTermSpec>? = null
 )

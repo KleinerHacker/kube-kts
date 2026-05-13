@@ -55,8 +55,34 @@ internal fun JsonGenerator.writeObjectProperty(propertyName: String, action: () 
     }
 }
 
+/**
+ * Writes a JSON array construct to the output using the provided action to define the array's content.
+ *
+ * This method simplifies the process of writing JSON arrays by wrapping the start and end of the
+ * array in appropriate actions (`writeStartArray` and `writeEndArray`). The provided `action` is
+ * executed to populate the array's content.
+ *
+ * @param action A lambda expression that defines the content of the JSON array. This is executed
+ * between the calls to `writeStartArray` and `writeEndArray`.
+ */
 internal fun JsonGenerator.writeArray(action: () -> Unit) {
     writeStartArray()
+    try {
+        action()
+    } finally {
+        writeEndArray()
+    }
+}
+
+/**
+ * Writes the array property with the specified name, executing the provided action
+ * to populate the contents of the array.
+ *
+ * @param propertyName The name of the JSON property to write as an array.
+ * @param action The lambda function that specifies the elements of the array.
+ */
+internal fun JsonGenerator.writeArrayProperty(propertyName: String, action: () -> Unit) {
+    writeArrayPropertyStart(propertyName)
     try {
         action()
     } finally {
