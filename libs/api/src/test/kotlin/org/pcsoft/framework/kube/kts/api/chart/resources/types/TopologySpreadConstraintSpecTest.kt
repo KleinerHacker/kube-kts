@@ -13,6 +13,7 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.TopologySpreadConstraintSpec.*
+import org.pcsoft.framework.kube.kts.api.chart.types.MatchLabelKeySpec
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
@@ -63,7 +64,7 @@ class TopologySpreadConstraintSpecTest {
         assertEquals(98, maxSpec.minDomains)
         assertEquals(NodePolicy.Honor, maxSpec.nodeAffinityPolicy)
         assertEquals(NodePolicy.Ignore, maxSpec.nodeTaintsPolicy)
-        assertEquals(listOf("key"), maxSpec.matchLabelKeys)
+        assertEquals(MatchLabelKeySpec(listOf("key")), maxSpec.matchLabelKeys)
 
         // Label Selector assertions
         assertNotNull(maxSpec.labelSelector)

@@ -51,6 +51,10 @@ data class NodeSelectorTermSpec(
         val operator: Operator,
         val values: List<String>?
     ) {
+        init {
+            require(key.isNotBlank()) { "Key must not be blank" }
+        }
+
         /**
          * Defines the set of operators used to specify matching criteria
          * in node selector requirements.

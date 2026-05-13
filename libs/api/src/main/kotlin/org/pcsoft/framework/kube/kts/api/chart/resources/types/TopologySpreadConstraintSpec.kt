@@ -12,7 +12,6 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped
 import org.pcsoft.framework.kube.kts.api.chart.types.MatchLabelKeySpec
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
@@ -51,7 +50,6 @@ data class TopologySpreadConstraintSpec(
     val minDomains: Int?,
     val nodeAffinityPolicy: NodePolicy?,
     val nodeTaintsPolicy: NodePolicy?,
-    @field:JsonUnwrapped
     val matchLabelKeys: MatchLabelKeySpec?
 ) {
     /**

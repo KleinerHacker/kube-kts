@@ -12,7 +12,8 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.types
 
-import org.pcsoft.framework.kube.kts.api.intern.NoArgs
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonValue
 
 /**
  * Represents a specification for matching label keys.
@@ -24,7 +25,7 @@ import org.pcsoft.framework.kube.kts.api.intern.NoArgs
  *
  * @property keys A list of string keys to be matched, or null if no keys are specified.
  */
-@NoArgs
-data class MatchLabelKeySpec(
-    val keys: List<String>?
+data class MatchLabelKeySpec @JsonCreator constructor(
+    @get:JsonValue
+    val keys: List<String>
 )

@@ -125,7 +125,7 @@ class TopologySpreadConstraintSpecBuilder internal constructor(
      *
      * This method allows you to specify multiple key-value pairs that will be used to match labels 
      * applicable to the topology spread constraint. The provided `block` is invoked with a 
-     * `MatchLabelKeyListBuilder` receiver, enabling configuration of the desired match label keys.
+     * `MatchLabelKeySpecBuilder` receiver, enabling configuration of the desired match label keys.
      *
      * Example:
      * ```kotlin
@@ -135,11 +135,12 @@ class TopologySpreadConstraintSpecBuilder internal constructor(
      * }
      * ```
      *
-     * @param block A lambda with receiver of type `MatchLabelKeyListBuilder` that provides 
+     * @param block A lambda with receiver of type `MatchLabelKeySpecBuilder` that provides
      *              functionality to add match label keys.
      */
-    fun matchLabelKeys(block: MatchLabelKeySpecBuilder.() -> Unit) =
-        MatchLabelKeySpecBuilder().apply(block)
+    fun matchLabelKeys(block: MatchLabelKeySpecBuilder.() -> Unit) {
+        matchLabelKeys = MatchLabelKeySpecBuilder().apply(block)
+    }
 
     /**
      * Builds a `TopologySpreadConstraintSpec` instance using the current state of the builder’s properties.

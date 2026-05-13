@@ -18,7 +18,7 @@ package org.pcsoft.framework.kube.kts.api.chart.types
  * It is designed for internal use and provides controlled access to label key configurations.
  */
 class MatchLabelKeySpecBuilder internal constructor() {
-    private var keys: MutableList<String>? = null
+    private val keys: MutableList<String> = mutableListOf()
 
     /**
      * Adds a match label key to the builder. If the keys list is uninitialized, it initializes it first.
@@ -26,10 +26,7 @@ class MatchLabelKeySpecBuilder internal constructor() {
      * @param key The match label key to be added.
      */
     fun key(key: String) {
-        if (this.keys == null)
-            this.keys = mutableListOf()
-
-        this.keys!!.add(key)
+        this.keys.add(key)
     }
 
     /**
@@ -38,10 +35,7 @@ class MatchLabelKeySpecBuilder internal constructor() {
      * @param keys The match label keys to be added.
      */
     fun keys(vararg keys: String) {
-        if (this.keys == null)
-            this.keys = mutableListOf()
-
-        this.keys!!.addAll(keys)
+        this.keys.addAll(keys)
     }
 
     /**
