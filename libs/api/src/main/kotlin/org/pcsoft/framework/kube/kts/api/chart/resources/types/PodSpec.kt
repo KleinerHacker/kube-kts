@@ -21,6 +21,50 @@ import org.pcsoft.framework.kube.kts.api.types.MemoryValue
 import tools.jackson.databind.annotation.JsonDeserialize
 import tools.jackson.databind.annotation.JsonSerialize
 
+/**
+ * Represents the specification of a Pod in Kubernetes.
+ *
+ * A Pod is the smallest deployable unit in Kubernetes, consisting of one or more containers
+ * that share storage, network resources, and a specification for how to run the containers.
+ *
+ * @property containers List of containers that are part of the Pod. Each container runs an application.
+ * @property initContainers List of initialization containers that run before the main containers start.
+ *                          These containers are used for setup tasks and run to completion sequentially.
+ * @property ephemeralContainers List of ephemeral containers that can be added to a running Pod for debugging purposes.
+ * @property restartPolicy The restart policy for all containers within the Pod. Defines when containers should be restarted.
+ * @property dnsPolicy The DNS policy for the Pod. Determines how DNS resolution is handled for containers.
+ * @property dnsConfig Custom DNS configuration settings for the Pod, including nameservers, search domains, and options.
+ * @property serviceAccountName The name of the ServiceAccount to use for running the Pod. ServiceAccounts provide identity for processes running in the Pod.
+ * @property automountServiceAccountToken Indicates whether the ServiceAccount token should be automatically mounted into the Pod.
+ * @property nodeName The name of the node where the Pod should be scheduled. Used for direct node assignment.
+ * @property hostNetwork If true, the Pod uses the host's network namespace instead of creating a separate network namespace.
+ * @property hostPID If true, the Pod uses the host's PID namespace, allowing containers to see all processes on the host.
+ * @property hostIPC If true, the Pod uses the host's IPC namespace for inter-process communication.
+ * @property shareProcessNamespace If true, containers in the Pod share a single process namespace, making all processes visible to each other.
+ * @property hostname The hostname to set for the Pod. If not specified, the Pod name is used.
+ * @property subdomain The subdomain to set for the Pod. Combined with the hostname, this forms the fully qualified domain name.
+ * @property setHostnameAsFQDN If true, sets the Pod's hostname to its fully qualified domain name (FQDN).
+ * @property priorityClassName The name of the PriorityClass to use for the Pod. Determines scheduling priority.
+ * @property priority The priority value for the Pod. Higher values indicate higher priority in scheduling decisions.
+ * @property preemptionPolicy The preemption policy for the Pod. Determines whether lower-priority Pods can be evicted to make room for this Pod.
+ * @property schedulerName The name of the scheduler to use for placing the Pod on a node.
+ * @property runtimeClassName The name of the RuntimeClass to use for running the Pod. Defines the container runtime configuration.
+ * @property os The operating system required by the Pod (Linux or Windows). Used for scheduling on compatible nodes.
+ * @property overhead Resource overhead required by the Pod infrastructure, in addition to container resource requirements.
+ * @property nodeSelector Map of key-value pairs used to select nodes for Pod placement based on node labels.
+ * @property imagePullSecrets List of names of Secrets containing credentials for pulling container images from private registries.
+ * @property volumes List of volumes that can be mounted by containers in the Pod. Volumes provide storage that persists across container restarts.
+ * @property enableServiceLinks If true, environment variables containing service connection information are injected into containers.
+ * @property topologySpreadConstraints List of constraints that control how Pods are spread across topology domains like zones and nodes.
+ * @property affinity Affinity and anti-affinity rules that influence Pod scheduling decisions based on node or Pod characteristics.
+ * @property tolerations List of tolerations that allow the Pod to be scheduled on nodes with matching taints.
+ * @property securityContext Security settings applied at the Pod level, such as user IDs, SELinux options, and sysctls.
+ * @property terminationGracePeriodSeconds Duration in seconds the Pod needs to terminate gracefully after receiving a termination signal.
+ * @property activeDeadlineSeconds Duration in seconds relative to Pod start time after which the Pod is terminated if still running.
+ * @property readinessGates List of additional conditions that must be met before the Pod is considered ready.
+ * @property hostAliases List of host aliases that add entries to the Pod's /etc/hosts file for custom hostname resolution.
+ * @property resourceClaims List of resource claims that allow Pods to request dynamically allocated resources.
+ */
 @NoArgs
 data class PodSpec(
     val containers: List<ContainerSpec>,
@@ -51,8 +95,8 @@ data class PodSpec(
     val volumes: List<VolumeSpec>?,
     val enableServiceLinks: Boolean?,
     val topologySpreadConstraints: List<TopologySpreadConstraintSpec>?,
-    val affinity: Any?, //TODO
-    val tolerations: List<Any>?, //TODO
+    val affinity: AffinitySpec?,
+    val tolerations: List<TolerationSpec>?,
     val securityContext: PodSecurityContextSpec?,
     @field:JsonSerialize(using = DurationInSecondsSerializer::class)
     @field:JsonDeserialize(using = DurationInSecondsDeserializer::class)

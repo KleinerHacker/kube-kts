@@ -14,6 +14,7 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.TopologySpreadConstraintSpec.NodePolicy
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.TopologySpreadConstraintSpec.WhenUnsatisfiable
+import org.pcsoft.framework.kube.kts.api.chart.types.MatchLabelKeySpecBuilder
 
 /**
  * A builder class for configuring and creating a `TopologySpreadConstraintSpec` instance.
@@ -37,7 +38,7 @@ class TopologySpreadConstraintSpecBuilder internal constructor(
     private val whenUnsatisfiable: WhenUnsatisfiable
 ) {
     private var labelSelector: LabelSelectorSpecBuilder? = null
-    private var matchLabelKeys: MutableList<String>? = null
+    private var matchLabelKeys: MatchLabelKeySpecBuilder? = null
 
     /**
      * The minimum number of domains that must have pods satisfying the spread constraint.
@@ -98,9 +99,25 @@ class TopologySpreadConstraintSpecBuilder internal constructor(
      */
     fun addMatchLabelKey(key: String) {
         if (matchLabelKeys == null) {
-            matchLabelKeys = mutableListOf()
+            matchLabelKeys = MatchLabelKeySpecBuilder()
         }
-        matchLabelKeys!!.add(key)
+        matchLabelKeys!!.key(key)
+    }
+
+    /**
+     * Adds one or more match label keys to the `matchLabelKeys` property of the builder.
+     *
+     * This method appends the provided keys to the internal `MatchLabelKeySpecBuilder` instance,
+     * creating the builder if it is uninitialized. The keys are used as part of the topology
+     * spread constraint configuration to match labels that determine pod placement.
+     *
+     * @param keys The match label keys to be added.
+     */
+    fun addMatchLabelKeys(vararg keys: String) {
+        if (matchLabelKeys == null) {
+            matchLabelKeys = MatchLabelKeySpecBuilder()
+        }
+        matchLabelKeys!!.keys(*keys)
     }
 
     /**
@@ -113,17 +130,16 @@ class TopologySpreadConstraintSpecBuilder internal constructor(
      * Example:
      * ```kotlin
      * matchLabelKeys {
-     *     match("app", "my-app")
-     *     match("version", "v1.0")
-     *     match("environment", "production")
+     *     match("app")
+     *     matches("version", "v1.0")
      * }
      * ```
      *
      * @param block A lambda with receiver of type `MatchLabelKeyListBuilder` that provides 
      *              functionality to add match label keys.
      */
-    fun matchLabelKeys(block: MatchLabelKeyListBuilder.() -> Unit) = 
-        MatchLabelKeyListBuilder().apply(block)
+    fun matchLabelKeys(block: MatchLabelKeySpecBuilder.() -> Unit) =
+        MatchLabelKeySpecBuilder().apply(block)
 
     /**
      * Builds a `TopologySpreadConstraintSpec` instance using the current state of the builder’s properties.
@@ -152,29 +168,6 @@ class TopologySpreadConstraintSpecBuilder internal constructor(
         minDomains,
         nodeAffinityPolicy,
         nodeTaintsPolicy,
-        matchLabelKeys
+        matchLabelKeys?.build()
     )
-
-    /**
-     * A builder class used to configure match label keys for topology spread constraints.
-     *
-     * This class provides functionality to add keys representing label keys, which are used to match labels
-     * as part of configuring the topology spread constraints.
-     *
-     * Instances of this class are meant to be used via the `matchLabelKeys` method in the containing
-     * `TopologySpreadConstraintSpecBuilder` class.
-     *
-     * @constructor Internal constructor. This class is not intended to be instantiated directly.
-     */
-    inner class MatchLabelKeyListBuilder internal constructor() {
-        /**
-         * Adds a key to the match label keys for topology spread constraints.
-         *
-         * This method is used to configure a label key to match labels
-         * in the context of topology spread constraints.
-         *
-         * @param key The key of the match label to be added.
-         */
-        fun key(key: String) = addMatchLabelKey(key)
-    }
 }

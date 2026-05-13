@@ -12,6 +12,8 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped
+import org.pcsoft.framework.kube.kts.api.chart.types.MatchLabelKeySpec
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 /**
@@ -37,7 +39,7 @@ import org.pcsoft.framework.kube.kts.api.intern.NoArgs
  *                              node affinity.
  * @property nodeTaintsPolicy Configures whether the constraint should honor or ignore
  *                            node taints.
- * @property matchLabelKeys An optional list of specific label keys used to define additional
+ * @property matchLabelKeys An optional specification for matching label keys used to define additional
  *                          constraints when selecting topology domains.
  */
 @NoArgs
@@ -49,7 +51,8 @@ data class TopologySpreadConstraintSpec(
     val minDomains: Int?,
     val nodeAffinityPolicy: NodePolicy?,
     val nodeTaintsPolicy: NodePolicy?,
-    val matchLabelKeys: List<String>?
+    @field:JsonUnwrapped
+    val matchLabelKeys: MatchLabelKeySpec?
 ) {
     /**
      * Defines the behavior to apply when a constraint cannot be satisfied.
