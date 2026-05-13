@@ -50,7 +50,7 @@ data class PodSpec(
     val imagePullSecrets: List<String>?,
     val volumes: List<VolumeSpec>?,
     val enableServiceLinks: Boolean?,
-    val topologySpreadConstraints: List<Any>?, //TODO
+    val topologySpreadConstraints: List<TopologySpreadConstraintSpec>?,
     val affinity: Any?, //TODO
     val tolerations: List<Any>?, //TODO
     val securityContext: PodSecurityContextSpec?,
