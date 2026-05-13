@@ -44,7 +44,7 @@ import tools.jackson.databind.ValueSerializer
  * This class extends `ValueSerializer` and overrides the `serialize` method to provide
  * custom serialization logic specific to the `EnvironmentSpec` class.
  */
-class SingleEnvironmentSpecSerializer : ValueSerializer<SingleEnvironmentSpec>() {
+internal class SingleEnvironmentSpecSerializer : ValueSerializer<SingleEnvironmentSpec>() {
     override fun serialize(
         value: SingleEnvironmentSpec?,
         gen: JsonGenerator,
@@ -113,7 +113,7 @@ class SingleEnvironmentSpecSerializer : ValueSerializer<SingleEnvironmentSpec>()
  * - Throws `IllegalArgumentException` if neither `value` nor `valueFrom` is found in the input.
  * - Throws `IllegalArgumentException` if an unknown source type is specified within `valueFrom`.
  */
-class SingleEnvironmentSpecDeserializer : ValueDeserializer<SingleEnvironmentSpec>() {
+internal class SingleEnvironmentSpecDeserializer : ValueDeserializer<SingleEnvironmentSpec>() {
     override fun deserialize(
         p: JsonParser,
         ctxt: DeserializationContext

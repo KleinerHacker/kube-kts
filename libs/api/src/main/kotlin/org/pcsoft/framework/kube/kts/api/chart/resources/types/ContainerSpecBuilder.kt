@@ -43,7 +43,7 @@ class ContainerSpecBuilder internal constructor(private var name: String, privat
     private var readinessProbe: ProbeSpecBuilder? = null
     private var startupProbe: ProbeSpecBuilder? = null
     private var lifecycle: LifecycleSpecBuilder? = null
-    private var securityContext: SecurityContextSpecBuilder? = null
+    private var securityContext: ContainerSecurityContextSpecBuilder? = null
     private var command: MutableList<String>? = null
     private var args: MutableList<String>? = null
 
@@ -443,10 +443,10 @@ class ContainerSpecBuilder internal constructor(private var name: String, privat
      * }
      * ```
      *
-     * @param prepare A lambda receiver to configure the security context using the `SecurityContextSpecBuilder`.
+     * @param prepare A lambda receiver to configure the security context using the `ContainerSecurityContextSpecBuilder`.
      */
-    fun securityContext(prepare: SecurityContextSpecBuilder.() -> Unit) {
-        securityContext = SecurityContextSpecBuilder().apply(prepare)
+    fun securityContext(prepare: ContainerSecurityContextSpecBuilder.() -> Unit) {
+        securityContext = ContainerSecurityContextSpecBuilder().apply(prepare)
     }
 
     /**

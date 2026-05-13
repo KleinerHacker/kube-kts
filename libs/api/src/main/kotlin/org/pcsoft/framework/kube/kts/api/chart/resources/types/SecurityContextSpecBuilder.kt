@@ -12,61 +12,24 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.PodSecurityContextSpec.FSGroupChangePolicy
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.PodSecurityContextSpec.SupplementalGroupsPolicy
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.SecurityContextSpec.*
 
 /**
- * Builder class for constructing an instance of `SecurityContextSpec`. 
- * This class provides a fluent and configurable API to define the security context specifications
- * for a container or other runtime environment.
+ * A builder class for configuring and constructing a security context specification.
  *
- * This includes defining user and group execution settings, SELinux options, capabilities, 
- * AppArmor profiles, seccomp profiles, and other security options specific to Linux or Windows platforms.
- * 
- * The builder```
-/ utilizes nested builders for specific configurations, allowing detailed and structured
- **
- * * configurations to be composed incrementally.
+ * This class provides a fluent API for customizing various security context options, such as
+ * SELinux options, seccomp profile, AppArmor profile, and platform-specific features (e.g., Windows options).
  *
- * Security configurations can include:
- * 
- * - Builder ` classrun forAsUser`: Specifies the UID to run the container as.
- * - `runAsGroup`: Specifies the GID to run the container as.
-constructing * - `runAsNonRoot`: Enforces running a the [ container with a non-root user.
- * - `privileged`: Enables or disables privileged modeSecurity for the container.
- * - `readOnlyRootFilesystem`: Specifies if the root filesystem shouldContext beSpec mounted] read-only.
- * - `allow thatPrivilegeEscalation`: Controls whether a process can defines gain more privileges than its parent.
- * security --related `procMount`: Specifies the type of /proc mount configuration.
- * 
- * Additionally, the builder allows fine-grained configuration of security capabilities:
- * - Adding or dropping POSIX capabilities using `addCapability`, `addCapabilities`, `drop configurationsCapability
-`, * or `dropCapabilities`.
- *
- * Platform for-specific options include:
- * - SELinux options using the ` containerseizedLinuxOptions` builder.
- * - Seccomp profiles configured via the `seccompProfile` method.
- * - AppArmor profiles using the `appArmorProfile` applications method..
- * - Windows-specific options using the ` ThiswindowsOptions` builder.
- *
- * This class is designed includes to be used internally, and the constructed `SecurityContextSpec` instance
- * is obtained by invoking the ` settingsbuild like` user method, encapsulating all configured security options.
+ * The configurations set in the builder are used to construct a security context specification
+ * that enhances the security of containers or pods by applying fine-grained access control policies.
  */
-class SecurityContextSpecBuilder internal constructor() {
-    private var capabilities: CapabilitiesSpecBuilder? = null
-    private var seLinuxOptions: SELinuxOptionsSpecBuilder? = null
-    private var seccompProfile: ProfileSpecBuilder? = null
-    private var appArmorProfile: ProfileSpecBuilder? = null
-    private var windowsOptions: WindowsOptionsSpecBuilder? = null
-
-    /**
-     * Configures the mount type for the /proc filesystem within the container.
-     *
-     * This property determines how the /proc filesystem is exposed to the container,
-     * influencing the level of security and visibility of process-related information.
-     *
-     * By default, it is null, indicating the absence of an explicit configuration.
-     * When set, it uses the specified value from the `ProcMountType` enum.
-     */
-    var procMount: ProcMountType? = null
+sealed class SecurityContextSpecBuilder<T : SecurityContextSpec> {
+    protected var seLinuxOptions: SELinuxOptionsSpecBuilder? = null; private set
+    protected var seccompProfile: ProfileSpecBuilder? = null; private set
+    protected var appArmorProfile: ProfileSpecBuilder? = null; private set
+    protected var windowsOptions: WindowsOptionsSpecBuilder? = null; private set
 
     /**
      * Specifies the user ID to run the container's processes as.
@@ -103,136 +66,6 @@ class SecurityContextSpecBuilder internal constructor() {
      * within the container runtime environment.
      */
     var runAsNonRoot: Boolean? = null
-
-    /**
-     * Specifies whether the container should be allowed to run with elevated privileges.
-     *
-     * When set to true, the container is granted additional administrative permissions,
-     * bypassing certain security restrictions in the runtime environment.
-     * This can enable access to sensitive resources or operations typically restricted
-     * in a standard container environment.
-     * 
-     * When set to false or null, elevated privileges are not allowed, and the container
-     * operates within the default restricted security configuration.
-     *
-     * This property is commonly used in scenarios where privileged operations are required,
-     * such as debugging, custom network configuration, or managing system-level resources.
-     * Exercise caution when enabling this option, as it can increase security risks.
-     */
-    var privileged: Boolean? = null
-
-    /**
-     * Indicates whether the root filesystem should be mounted as read-only.
-     *
-     * When this property is set to true, the container's root filesystem will be mounted
-     * as read-only, preventing any modifications to the file system during runtime. This can
-     * be used to enhance security by ensuring that containerized applications cannot
-     * inadvertently or maliciously modify files or configurations in their root filesystem.
-     *
-     * If this property is null, the default behavior of mounting the filesystem read/write
-     * may be applied, depending on the container runtime and specific configurations.
-     */
-    var readOnlyRootFilesystem: Boolean? = null
-
-    /**
-     * Specifies whether a process can gain more privileges than it started with.
-     *
-     * When set to `true`, the container is allowed to enable privilege escalation,
-     * such as through the use of the `setuid` or `setgid` bit in the context of certain binaries.
-     * Setting this to `false` can enhance security by mitigating privilege escalation attacks.
-     * 
-     * A value of `null` indicates that the setting is not explicitly defined 
-     * and will defer to the default behavior of the container runtime.
-     */
-    var allowPrivilegeEscalation: Boolean? = null
-
-    /**
-     * Adds a capability to the security context configuration.
-     * 
-     * This method ensures that the capability is added to the list of capabilities 
-     * managed by the `CapabilitiesSpecBuilder`. If the builder is not yet initialized, 
-     * it will be created before adding the capability.
-     *
-     * @param capability The name of the capability to be added to the security context.
-     */
-    fun addCapability(capability: String) {
-        if (capabilities == null) {
-            capabilities = CapabilitiesSpecBuilder()
-        }
-        capabilities!!.add(capability)
-    }
-
-    /**
-     * Adds one or more capabilities to the security context configuration.
-     *
-     * This method ensures that the specified capabilities are added to the list of
-     * capabilities managed by the `CapabilitiesSpecBuilder`. If the builder is not yet
-     * initialized, it will be created before adding the capabilities.
-     *
-     * @param capabilities Vararg parameter representing the names of the capabilities to be added.
-     */
-    fun addCapabilities(vararg capabilities: String) {
-        if (this.capabilities == null) {
-            this.capabilities = CapabilitiesSpecBuilder()
-        }
-        this.capabilities!!.addAll(*capabilities)
-    }
-
-    /**
-     * Removes a specific capability from the security context configuration.
-     *
-     * This method ensures that the specified capability is removed from the list of 
-     * dropped capabilities managed by the `CapabilitiesSpecBuilder`. If the builder 
-     * is not initialized, it will be created before dropping the capability.
-     *
-     * @param capability The name of the capability to be removed from the security context.
-     */
-    fun dropCapability(capability: String) {
-        if (capabilities == null) {
-            capabilities = CapabilitiesSpecBuilder()
-        }
-        capabilities!!.drop(capability)
-    }
-
-    /**
-     * Removes one or more capabilities from the security context configuration.
-     *
-     * This method ensures that the specified capabilities are removed from the list of dropped 
-     * capabilities managed by the `CapabilitiesSpecBuilder`. If the builder is not yet initialized, 
-     * it will be created before dropping the capabilities.
-     *
-     * @param capabilities Vararg parameter representing the names of the capabilities to be removed from the security context.
-     */
-    fun dropCapabilities(vararg capabilities: String) {
-        if (this.capabilities == null) {
-            this.capabilities = CapabilitiesSpecBuilder()
-        }
-        this.capabilities!!.dropAll(*capabilities)
-    }
-
-    /**
-     * Configures the capabilities for the security context.
-     *
-     * This method initializes a `CapabilitiesSpecBuilder` and applies the provided
-     * configuration to it. The configuration can include adding or dropping
-     * specific capabilities, which are used to define the security context
-     * of a container or pod.
-     *
-     * Example usage:
-     * ```kotlin
-     *     capabilities {
-     *         add("NET_ADMIN")
-     *         add("SYS_TIME")
-     *         drop("ALL")
-     *     }
-     * ```
-     *
-     * @param prepare A lambda with receiver that defines the behavior for configuring 
-     *                the capabilities using a `CapabilitiesSpecBuilder`.
-     */
-    fun capabilities(prepare: CapabilitiesSpecBuilder.() -> Unit) {
-        capabilities = CapabilitiesSpecBuilder().apply(prepare)
-    }
 
     /**
      * Configures SELinux options for the security context.
@@ -331,100 +164,13 @@ class SecurityContextSpecBuilder internal constructor() {
     }
 
     /**
-     * Builds a `SecurityContextSpec` instance based on the current configuration of the `SecurityContextSpecBuilder`.
+     * Builds and returns the constructed instance of type `T` based on the configurations
+     * applied to the `SecurityContextSpecBuilder`. This method should be called after 
+     * all the desired configurations have been specified.
      *
-     * This method aggregates the values of the various security-related fields and constructs a `SecurityContextSpec` 
-     * object to represent the final security context for a container or pod.
-     *
-     * @return A `SecurityContextSpec` object containing the configured security context.
+     * @return The constructed instance of type `T` representing the configured security context.
      */
-    internal fun build(): SecurityContextSpec = SecurityContextSpec(
-        runAsUser,
-        runAsGroup,
-        runAsNonRoot,
-        privileged,
-        readOnlyRootFilesystem,
-        allowPrivilegeEscalation,
-        procMount,
-        capabilities?.build(),
-        seLinuxOptions?.build(),
-        seccompProfile?.build(),
-        appArmorProfile?.build(),
-        windowsOptions?.build()
-    )
-
-    /**
-     * Builder class for constructing a `CapabilitiesSpec` object, which defines
-     * capabilities to be added or dropped.
-     *
-     * This class provides methods for adding or dropping individual capabilities
-     * as well as multiple capabilities in a single operation. It accumulates the 
-     * specified capabilities into internal lists and constructs the final 
-     * `CapabilitiesSpec` object via the `build` function.
-     *
-     * Instances of this class are created internally and are not intended to be
-     * instantiated directly.
-     */
-    class CapabilitiesSpecBuilder internal constructor() {
-        private var add: MutableList<String>? = null
-        private var drop: MutableList<String>? = null
-
-        /**
-         * Adds a capability to the internal list of capabilities to be included.
-         *
-         * If the internal list is not initialized, it will be created before adding the capability.
-         *
-         * @param capability The capability to be added to the list.
-         */
-        fun add(capability: String) {
-            if (add == null) {
-                add = mutableListOf()
-            }
-            add!!.add(capability)
-        }
-
-        /**
-         * Adds multiple capabilities to the internal list of capabilities to be included.
-         *
-         * Each capability provided in the `capabilities` parameter will be added to the list
-         * using the `add` method.
-         *
-         * @param capabilities The capabilities to be added to the internal list of capabilities.
-         */
-        fun addAll(vararg capabilities: String) = capabilities.forEach { add(it) }
-
-        /**
-         * Removes a capability from the internal list of capabilities to be excluded.
-         *
-         * If the internal list is not initialized, it will be created before adding the capability
-         * to ensure subsequent exclusions.
-         *
-         * @param capability The capability to be removed from the list.
-         */
-        fun drop(capability: String) {
-            if (drop == null) {
-                drop = mutableListOf()
-            }
-            drop!!.add(capability)
-        }
-
-        /**
-         * Removes multiple capabilities from the internal list of capabilities to be excluded.
-         *
-         * Each capability provided in the `capabilities` parameter will be removed individually.
-         *
-         * @param capabilities A variable number of capability names to be removed.
-         */
-        fun dropAll(vararg capabilities: String) = capabilities.forEach { drop(it) }
-
-        /**
-         * Builds a new instance of the `CapabilitiesSpec` based on the current state of the `CapabilitiesSpecBuilder`.
-         *
-         * @return A `CapabilitiesSpec` instance containing the capabilities to be added and dropped as specified
-         *         by the builder's internal state.
-         */
-        internal fun build(): CapabilitiesSpec = CapabilitiesSpec(add, drop)
-    }
+    internal abstract fun build(): T
 
     /**
      * A builder class for configuring SELinux options in a security context.
@@ -609,5 +355,473 @@ class SecurityContextSpecBuilder internal constructor() {
          */
         internal fun build(): ProfileSpec =
             ProfileSpec(type, localhostProfile)
+    }
+}
+
+/**
+ * Builder class for constructing a `ContainerSecurityContextSpec` object which defines 
+ * the security-related configurations for a container.
+ *
+ * This class allows setting specific properties related to the container's security context, 
+ * such as process namespace configuration (`procMount`) and defining capabilities to be added 
+ * or dropped. It extends from `SecurityContextSpecBuilder` to inherit common security context 
+ * configuration options.
+ *
+ * This builder is not intended for direct instantiation but is created and utilized 
+ * through internal mechanisms.
+ */
+class ContainerSecurityContextSpecBuilder internal constructor() :
+    SecurityContextSpecBuilder<ContainerSecurityContextSpec>() {
+    private var capabilities: CapabilitiesSpecBuilder? = null
+
+    /**
+     * Configures the mount type for the /proc filesystem within the container.
+     *
+     * This property determines how the /proc filesystem is exposed to the container,
+     * influencing the level of security and visibility of process-related information.
+     *
+     * By default, it is null, indicating the absence of an explicit configuration.
+     * When set, it uses the specified value from the `ProcMountType` enum.
+     */
+    var procMount: ContainerSecurityContextSpec.ProcMountType? = null
+
+    /**
+     * Specifies whether the container should be allowed to run with elevated privileges.
+     *
+     * When set to true, the container is granted additional administrative permissions,
+     * bypassing certain security restrictions in the runtime environment.
+     * This can enable access to sensitive resources or operations typically restricted
+     * in a standard container environment.
+     *
+     * When set to false or null, elevated privileges are not allowed, and the container
+     * operates within the default restricted security configuration.
+     *
+     * This property is commonly used in scenarios where privileged operations are required,
+     * such as debugging, custom network configuration, or managing system-level resources.
+     * Exercise caution when enabling this option, as it can increase security risks.
+     */
+    var privileged: Boolean? = null
+
+    /**
+     * Indicates whether the root filesystem should be mounted as read-only.
+     *
+     * When this property is set to true, the container's root filesystem will be mounted
+     * as read-only, preventing any modifications to the file system during runtime. This can
+     * be used to enhance security by ensuring that containerized applications cannot
+     * inadvertently or maliciously modify files or configurations in their root filesystem.
+     *
+     * If this property is null, the default behavior of mounting the filesystem read/write
+     * may be applied, depending on the container runtime and specific configurations.
+     */
+    var readOnlyRootFilesystem: Boolean? = null
+
+    /**
+     * Specifies whether a process can gain more privileges than it started with.
+     *
+     * When set to `true`, the container is allowed to enable privilege escalation,
+     * such as through the use of the `setuid` or `setgid` bit in the context of certain binaries.
+     * Setting this to `false` can enhance security by mitigating privilege escalation attacks.
+     *
+     * A value of `null` indicates that the setting is not explicitly defined
+     * and will defer to the default behavior of the container runtime.
+     */
+    var allowPrivilegeEscalation: Boolean? = null
+
+    /**
+     * Adds a capability to the security context configuration.
+     * 
+     * This method ensures that the capability is added to the list of capabilities 
+     * managed by the `CapabilitiesSpecBuilder`. If the builder is not yet initialized, 
+     * it will be created before adding the capability.
+     *
+     * @param capability The name of the capability to be added to the security context.
+     */
+    fun addCapability(capability: String) {
+        if (capabilities == null) {
+            capabilities = CapabilitiesSpecBuilder()
+        }
+        capabilities!!.add(capability)
+    }
+
+    /**
+     * Adds one or more capabilities to the security context configuration.
+     *
+     * This method ensures that the specified capabilities are added to the list of
+     * capabilities managed by the `CapabilitiesSpecBuilder`. If the builder is not yet
+     * initialized, it will be created before adding the capabilities.
+     *
+     * @param capabilities Vararg parameter representing the names of the capabilities to be added.
+     */
+    fun addCapabilities(vararg capabilities: String) {
+        if (this.capabilities == null) {
+            this.capabilities = CapabilitiesSpecBuilder()
+        }
+        this.capabilities!!.addAll(*capabilities)
+    }
+
+    /**
+     * Removes a specific capability from the security context configuration.
+     *
+     * This method ensures that the specified capability is removed from the list of 
+     * dropped capabilities managed by the `CapabilitiesSpecBuilder`. If the builder 
+     * is not initialized, it will be created before dropping the capability.
+     *
+     * @param capability The name of the capability to be removed from the security context.
+     */
+    fun dropCapability(capability: String) {
+        if (capabilities == null) {
+            capabilities = CapabilitiesSpecBuilder()
+        }
+        capabilities!!.drop(capability)
+    }
+
+    /**
+     * Removes one or more capabilities from the security context configuration.
+     *
+     * This method ensures that the specified capabilities are removed from the list of dropped 
+     * capabilities managed by the `CapabilitiesSpecBuilder`. If the builder is not yet initialized, 
+     * it will be created before dropping the capabilities.
+     *
+     * @param capabilities Vararg parameter representing the names of the capabilities to be removed from the security context.
+     */
+    fun dropCapabilities(vararg capabilities: String) {
+        if (this.capabilities == null) {
+            this.capabilities = CapabilitiesSpecBuilder()
+        }
+        this.capabilities!!.dropAll(*capabilities)
+    }
+
+    /**
+     * Configures the capabilities for the security context.
+     *
+     * This method initializes a `CapabilitiesSpecBuilder` and applies the provided
+     * configuration to it. The configuration can include adding or dropping
+     * specific capabilities, which are used to define the security context
+     * of a container or pod.
+     *
+     * Example usage:
+     * ```kotlin
+     *     capabilities {
+     *         add("NET_ADMIN")
+     *         add("SYS_TIME")
+     *         drop("ALL")
+     *     }
+     * ```
+     *
+     * @param prepare A lambda with receiver that defines the behavior for configuring 
+     *                the capabilities using a `CapabilitiesSpecBuilder`.
+     */
+    fun capabilities(prepare: CapabilitiesSpecBuilder.() -> Unit) {
+        capabilities = CapabilitiesSpecBuilder().apply(prepare)
+    }
+
+    /**
+     * Builds a `SecurityContextSpec` instance based on the current configuration of the `SecurityContextSpecBuilder`.
+     *
+     * This method aggregates the values of the various security-related fields and constructs a `SecurityContextSpec` 
+     * object to represent the final security context for a container or pod.
+     *
+     * @return A `SecurityContextSpec` object containing the configured security context.
+     */
+    override fun build(): ContainerSecurityContextSpec = ContainerSecurityContextSpec(
+        runAsUser,
+        runAsGroup,
+        runAsNonRoot,
+        seLinuxOptions?.build(),
+        seccompProfile?.build(),
+        appArmorProfile?.build(),
+        windowsOptions?.build(),
+        privileged,
+        readOnlyRootFilesystem,
+        allowPrivilegeEscalation,
+        procMount,
+        capabilities?.build()
+    )
+
+    /**
+     * Builder class for constructing a `CapabilitiesSpec` object, which defines
+     * capabilities to be added or dropped.
+     *
+     * This class provides methods for adding or dropping individual capabilities
+     * as well as multiple capabilities in a single operation. It accumulates the 
+     * specified capabilities into internal lists and constructs the final 
+     * `CapabilitiesSpec` object via the `build` function.
+     *
+     * Instances of this class are created internally and are not intended to be
+     * instantiated directly.
+     */
+    class CapabilitiesSpecBuilder internal constructor() {
+        private var add: MutableList<String>? = null
+        private var drop: MutableList<String>? = null
+
+        /**
+         * Adds a capability to the internal list of capabilities to be included.
+         *
+         * If the internal list is not initialized, it will be created before adding the capability.
+         *
+         * @param capability The capability to be added to the list.
+         */
+        fun add(capability: String) {
+            if (add == null) {
+                add = mutableListOf()
+            }
+            add!!.add(capability)
+        }
+
+        /**
+         * Adds multiple capabilities to the internal list of capabilities to be included.
+         *
+         * Each capability provided in the `capabilities` parameter will be added to the list
+         * using the `add` method.
+         *
+         * @param capabilities The capabilities to be added to the internal list of capabilities.
+         */
+        fun addAll(vararg capabilities: String) = capabilities.forEach { add(it) }
+
+        /**
+         * Removes a capability from the internal list of capabilities to be excluded.
+         *
+         * If the internal list is not initialized, it will be created before adding the capability
+         * to ensure subsequent exclusions.
+         *
+         * @param capability The capability to be removed from the list.
+         */
+        fun drop(capability: String) {
+            if (drop == null) {
+                drop = mutableListOf()
+            }
+            drop!!.add(capability)
+        }
+
+        /**
+         * Removes multiple capabilities from the internal list of capabilities to be excluded.
+         *
+         * Each capability provided in the `capabilities` parameter will be removed individually.
+         *
+         * @param capabilities A variable number of capability names to be removed.
+         */
+        fun dropAll(vararg capabilities: String) = capabilities.forEach { drop(it) }
+
+        /**
+         * Builds a new instance of the `CapabilitiesSpec` based on the current state of the `CapabilitiesSpecBuilder`.
+         *
+         * @return A `CapabilitiesSpec` instance containing the capabilities to be added and dropped as specified
+         *         by the builder's internal state.
+         */
+        internal fun build(): ContainerSecurityContextSpec.CapabilitiesSpec =
+            ContainerSecurityContextSpec.CapabilitiesSpec(add, drop)
+    }
+}
+
+/**
+ * A builder class for constructing a `PodSecurityContextSpec` instance.
+ *
+ * This builder provides methods to configure the various attributes of a pod's security context.
+ * Common attributes include file system group settings, supplemental group policies, and system-level
+ * configurations like sysctls.
+ *
+ * The `PodSecurityContextSpecBuilder` allows for precise customization and is best suited for scenarios
+ * where programmatic creation of security context specifications is required.
+ *
+ * Constructors for this class are internal, and it inherits from `SecurityContextSpecBuilder` to retain
+ * additional shared configuration behaviors.
+ */
+class PodSecurityContextSpecBuilder internal constructor() : SecurityContextSpecBuilder<PodSecurityContextSpec>() {
+    private var supplementalGroups: MutableList<Long>? = null
+    private var sysctls: MutableMap<String, String>? = null
+
+    /**
+     * The fsGroup field defines a special supplemental group that applies to all files
+     * and directories created by the container's processes. When specified, the owner
+     * group ID of any files created will be set to this ID, effectively assigning the file
+     * to the specified group.
+     *
+     * This is typically used to allow shared file access between processes that belong
+     * to different containers within the same Pod.
+     *
+     * A null value indicates that no specific fsGroup is set, and default group ownership
+     * behavior will apply.
+     */
+    var fsGroup: Long? = null
+
+    /**
+     * Represents the policy that governs the behavior of changing the file system group
+     * for a pod's volume mounts within the security context.
+     *
+     * Determines how and when the file system group should be applied to ensure the desired 
+     * security and operational settings are enforced. The behavior is controlled by the 
+     * `FSGroupChangePolicy` enum, which provides predefined policies like applying the 
+     * group always or only when there is a mismatch.
+     *
+     * This property is optional and is particularly relevant in scenarios where the 
+     * handling of file system group changes must be explicitly defined to meet specific 
+     * security or operational requirements for the pod's volume configuration.
+     */
+    var fsGroupChangePolicy: FSGroupChangePolicy? = null
+
+    /**
+     * Specifies the policy for handling supplemental groups within the pod's security context.
+     * This determines how supplemental groups are treated in relation to the pod's settings 
+     * and any existing groups defined at the node or cluster level.
+     */
+    var supplementalGroupsPolicy: SupplementalGroupsPolicy? = null
+
+    /**
+     * Adds a supplemental group to the list of supplemental groups.
+     *
+     * @param value The supplemental group ID to be added.
+     */
+    fun addSupplementalGroup(value: Long) {
+        if (supplementalGroups == null) {
+            supplementalGroups = mutableListOf()
+        }
+        supplementalGroups!!.add(value)
+    }
+
+    /**
+     * Adds one or more supplemental group IDs to the list of supplemental groups.
+     *
+     * @param values Variable number of supplemental group IDs to be added.
+     */
+    fun addSupplementalGroups(vararg values: Long) {
+        if (supplementalGroups == null) {
+            supplementalGroups = mutableListOf()
+        }
+        supplementalGroups!!.addAll(values.toList())
+    }
+
+    /**
+     * Configures the list of supplemental group IDs to be associated with the pod's security context.
+     *
+     * This method allows the user to define multiple supplemental group IDs through a configuration
+     * block using the `SupplementalGroupListBuilder`. Supplemental group IDs are used for setting
+     * file access permissions within a pod.
+     *
+     * Example usage:
+     * ```kotlin
+     *     supplementalGroups {
+     *         group(1000L)
+     *         groups(2000L, 3000L)
+     *     }
+     * ```
+     *
+     * @param prepare A lambda with `SupplementalGroupListBuilder` as its receiver to define 
+     *                supplemental group IDs.
+     */
+    fun supplementalGroups(prepare: SupplementalGroupListBuilder.() -> Unit) {
+        SupplementalGroupListBuilder().apply(prepare)
+    }
+
+    /**
+     * Adds a sysctl configuration to the pod's security context.
+     *
+     * Sysctls are kernel parameters that can be configured at runtime to control
+     * various aspects of the system behavior within the pod.
+     *
+     * @param key The name of the sysctl parameter to configure.
+     * @param value The value to set for the specified sysctl parameter.
+     */
+    fun addSysctl(key: String, value: String) {
+        if (sysctls == null) {
+            sysctls = mutableMapOf()
+        }
+        sysctls!![key] = value
+    }
+
+    /**
+     * Configures sysctl parameters for the pod's security context.
+     *
+     * This method allows defining multiple sysctl parameters through a configuration
+     * block using the `SysctlMapBuilder`. Sysctls are kernel parameters that control
+     * various aspects of system behavior within the pod.
+     *
+     * Example usage:
+     * ```kotlin
+     *     sysctls {
+     *         sysctl("net.ipv4.ip_forward", "1")
+     *         sysctl("kernel.shm_rmid_forced", "0")
+     *     }
+     * ```
+     *
+     * @param prepare A lambda with `SysctlMapBuilder` as its receiver to define
+     *                sysctl parameters.
+     */
+    fun sysctls(prepare: SysctlMapBuilder.() -> Unit) {
+        SysctlMapBuilder().apply(prepare)
+    }
+
+    /**
+     * Builds and returns a new instance of `PodSecurityContextSpec` based on the current configuration
+     * in the `PodSecurityContextSpecBuilder`.
+     *
+     * @return A `PodSecurityContextSpec` object that encapsulates the security context settings
+     * such as user ID, group ID, SELinux options, Seccomp profile, AppArmor profile,
+     * Windows-specific options, file system group settings, supplemental groups, and sysctl parameters.
+     */
+    override fun build(): PodSecurityContextSpec = PodSecurityContextSpec(
+        runAsUser,
+        runAsGroup,
+        runAsNonRoot,
+        seLinuxOptions?.build(),
+        seccompProfile?.build(),
+        appArmorProfile?.build(),
+        windowsOptions?.build(),
+        fsGroup,
+        fsGroupChangePolicy,
+        supplementalGroups,
+        supplementalGroupsPolicy,
+        sysctls,
+    )
+
+    /**
+     * A builder class for configuring a list of supplemental group IDs associated with a pod's security context.
+     *
+     * This class provides methods to add individual or multiple supplemental group IDs, which are used to set
+     * file access permissions within a pod. The builder can be used within a configuration block to define the
+     * desired group IDs.
+     */
+    inner class SupplementalGroupListBuilder internal constructor() {
+        /**
+         * Adds a single supplemental group ID to the list of supplemental groups.
+         *
+         * Supplemental group IDs are used to configure file access permissions
+         * within a pod's security context.
+         *
+         * @param value The supplemental group ID to add.
+         */
+        fun group(value: Long) = addSupplementalGroup(value)
+
+        /**
+         * Adds multiple supplemental group IDs to the builder's list of group IDs.
+         *
+         * Supplemental group IDs are used to configure file access permissions
+         * within a pod's security context.
+         *
+         * @param values Variable number of supplemental group IDs to be added.
+         */
+        fun groups(vararg values: Long) = addSupplementalGroups(*values)
+    }
+
+    /**
+     * A builder class for defining sysctl parameters in the pod's security context.
+     *
+     * Sysctls are kernel parameters that control various aspects of system behavior
+     * within the pod. This builder provides a DSL for adding multiple sysctl
+     * configurations through a fluent interface.
+     *
+     * This class is intended for internal use and is not exposed publicly.
+     */
+    inner class SysctlMapBuilder internal constructor() {
+        /**
+         * Configures a sysctl parameter for the pod's security context.
+         *
+         * This function uses `addSysctl` to define a specific kernel parameter
+         * and its value, which controls certain aspects of system behavior
+         * within the pod.
+         *
+         * @param key The name of the sysctl parameter to configure.
+         * @param value The value to assign to the specified sysctl parameter.
+         */
+        fun sysctl(key: String, value: String) = addSysctl(key, value)
     }
 }

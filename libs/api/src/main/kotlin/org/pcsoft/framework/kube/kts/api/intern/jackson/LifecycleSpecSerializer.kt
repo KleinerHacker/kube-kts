@@ -38,7 +38,7 @@ import tools.jackson.databind.ValueSerializer
  * This class is typically used in conjunction with `LifecycleSpec` to serialize lifecycle events
  * like `postStart` and `preStop` into appropriate JSON structures.
  */
-class LifecycleSpecActionSerializer : ValueSerializer<LifecycleSpec.Action>() {
+internal class LifecycleSpecActionSerializer : ValueSerializer<LifecycleSpec.Action>() {
     override fun serialize(
         value: LifecycleSpec.Action?, gen: JsonGenerator, ctxt: SerializationContext
     ) {
@@ -73,7 +73,7 @@ class LifecycleSpecActionSerializer : ValueSerializer<LifecycleSpec.Action>() {
  * This class is typically used in conjunction with `LifecycleSpec` to deserialize lifecycle events
  * like `postStart` and `preStop` from JSON structures.
  */
-class LifecycleSpecActionDeserializer : ValueDeserializer<LifecycleSpec.Action>() {
+internal class LifecycleSpecActionDeserializer : ValueDeserializer<LifecycleSpec.Action>() {
     override fun deserialize(
         p: JsonParser, ctxt: DeserializationContext
     ): LifecycleSpec.Action? {

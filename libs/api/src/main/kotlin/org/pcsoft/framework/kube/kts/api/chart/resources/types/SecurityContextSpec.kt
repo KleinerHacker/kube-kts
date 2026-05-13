@@ -13,6 +13,10 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
+import org.pcsoft.framework.kube.kts.api.intern.jackson.MapToNameValueDeserializer
+import org.pcsoft.framework.kube.kts.api.intern.jackson.MapToNameValueSerializer
+import tools.jackson.databind.annotation.JsonDeserialize
+import tools.jackson.databind.annotation.JsonSerialize
 
 /**
  * Represents the security context for a container, defining various security-related configurations.
@@ -24,57 +28,21 @@ import org.pcsoft.framework.kube.kts.api.intern.NoArgs
  * @param runAsUser The user ID to run the container as.
  * @param runAsGroup The group ID to run the container as.
  * @param runAsNonRoot Whether to run the container as a non-root user.
- * @param privileged Whether to run the container with elevated privileges.
- * @param readOnlyRootFilesystem Whether to mount the root filesystem as read-only.
- * @param allowPrivilegeEscalation Whether to allow privilege escalation within the container.
- * @param procMount The type of process mount to use for the container.
- * @param capabilities The capabilities to assign to the container.
  * @param seLinuxOptions The SELinux options for the container.
  * @param seccompProfile The seccomp profile to apply to the container.
  * @param appArmorProfile The AppArmor profile to apply to the container.
  * @param windowsOptions The Windows-specific options for the container.
  */
 @NoArgs
-data class SecurityContextSpec(
+sealed class SecurityContextSpec(
     val runAsUser: Long?,
     val runAsGroup: Long?,
     val runAsNonRoot: Boolean?,
-    val privileged: Boolean?,
-    val readOnlyRootFilesystem: Boolean?,
-    val allowPrivilegeEscalation: Boolean?,
-    val procMount: ProcMountType?,
-    val capabilities: CapabilitiesSpec?,
     val seLinuxOptions: SELinuxOptionsSpec?,
     val seccompProfile: ProfileSpec?,
     val appArmorProfile: ProfileSpec?,
     val windowsOptions: WindowsOptionsSpec?,
 ) {
-    /**
-     * Represents the type of mount configuration for the /proc filesystem within a container.
-     *
-     * This enum defines how the /proc filesystem is exposed to containers, affecting security and visibility of
-     * process information.
-     */
-    @Suppress("unused")
-    enum class ProcMountType {
-        /**
-         * Represents the default mount configuration for the /proc filesystem within a container.
-         *
-         * This option provides standard visibility of process information while maintaining security restrictions.
-         * It is suitable for most use cases where containers need access to basic process details without exposing
-         * sensitive kernel data.
-         */
-        Default,
-
-        /**
-         * Represents an unmasked mount configuration for the /proc filesystem within a container.
-         *
-         * This option provides unrestricted visibility of process information, including sensitive kernel data.
-         * It should be used with caution as it may expose security-sensitive information about the host system.
-         */
-        Unmasked
-    }
-
     /**
      * Defines the types of security profiles that can be applied to a pod or container.
      *
@@ -113,29 +81,6 @@ data class SecurityContextSpec(
          * and security are required, such as sensitive workloads or compliance-driven deployments.
          */
         Localhost
-    }
-
-    /**
-     * Represents a specification for Linux capabilities to add or drop from a container.
-     *
-     * This class is used to define which Linux capabilities should be added to or removed from
-     * the container's process. Capabilities allow fine-grained control over the privileges of a process,
-     * enabling more secure container configurations by restricting unnecessary permissions.
-     *
-     * @property add A list of capability names to add to the container. Can be null if no capabilities are to be added.
-     *                Each entry in the list must not be blank.
-     * @property drop A list of capability names to remove from the container. Can be null if no capabilities are to be dropped.
-     *                Each entry in the list must not be blank.
-     */
-    @NoArgs
-    data class CapabilitiesSpec(
-        val add: List<String>?,
-        val drop: List<String>?,
-    ) {
-        init {
-            add?.let { require(it.all { it.isNotBlank() }) { "Add must not contain blank values" } }
-            drop?.let { require(it.all { it.isNotBlank() }) { "Drop must not contain blank values" } }
-        }
     }
 
     /**
@@ -214,5 +159,199 @@ data class SecurityContextSpec(
             }
             localhostProfile?.let { require(it.isNotBlank()) { "Localhost profile must not be blank" } }
         }
+    }
+}
+
+/**
+ * Specifies the security context settings for a container within a Kubernetes pod.
+ *
+ * This class provides options to configure the security-related attributes of a container,
+ * including file system permissions, user and group execution context, privilege levels,
+ * and support for SELinux, Seccomp, AppArmor profiles, and Windows-specific settings.
+ * The configuration focuses on ensuring containers maintain the necessary security restrictions
+ * while allowing for fine-grained control of their behavior.
+ *
+ * @constructor Creates a new instance of the ContainerSecurityContextSpec class.
+ *
+ * @param runAsUser The user ID to run the container process as. Can be null.
+ * @param runAsGroup The group ID to run the container process as. Can be null.
+ * @param runAsNonRoot Indicates whether the container process should run as a non-root user. Can be null.
+ * @param seLinuxOptions SELinux options defining the SELinux context of the container. Can be null.
+ * @param seccompProfile Seccomp profile details to enforce syscall policy. Can be null.
+ * @param appArmorProfile AppArmor profile details to configure process confinement. Can be null.
+ * @param windowsOptions Windows-specific container options for security settings. Can be null.
+ * @param privileged Determines whether the container should run in privileged mode. Can be null.
+ * @param readOnlyRootFilesystem Indicates if the container's root filesystem should be mounted as read-only. Can be null.
+ * @param allowPrivilegeEscalation Indicates if the container process is allowed to gain additional privileges. Can be null.
+ * @param procMount Specifies the type of mount configuration for the /proc filesystem. Can be null.
+ * @param capabilities Defines the capabilities to add or drop for the container process. Can be null.
+ */
+@NoArgs
+class ContainerSecurityContextSpec(
+    runAsUser: Long?,
+    runAsGroup: Long?,
+    runAsNonRoot: Boolean?,
+    seLinuxOptions: SELinuxOptionsSpec?,
+    seccompProfile: ProfileSpec?,
+    appArmorProfile: ProfileSpec?,
+    windowsOptions: WindowsOptionsSpec?,
+    val privileged: Boolean?,
+    val readOnlyRootFilesystem: Boolean?,
+    val allowPrivilegeEscalation: Boolean?,
+    val procMount: ProcMountType?,
+    val capabilities: CapabilitiesSpec?,
+) : SecurityContextSpec(runAsUser, runAsGroup, runAsNonRoot, seLinuxOptions, seccompProfile, appArmorProfile, windowsOptions) {
+    /**
+     * Represents the type of mount configuration for the /proc filesystem within a container.
+     *
+     * This enum defines how the /proc filesystem is exposed to containers, affecting security and visibility of
+     * process information.
+     */
+    @Suppress("unused")
+    enum class ProcMountType {
+        /**
+         * Represents the default mount configuration for the /proc filesystem within a container.
+         *
+         * This option provides standard visibility of process information while maintaining security restrictions.
+         * It is suitable for most use cases where containers need access to basic process details without exposing
+         * sensitive kernel data.
+         */
+        Default,
+
+        /**
+         * Represents an unmasked mount configuration for the /proc filesystem within a container.
+         *
+         * This option provides unrestricted visibility of process information, including sensitive kernel data.
+         * It should be used with caution as it may expose security-sensitive information about the host system.
+         */
+        Unmasked
+    }
+
+    /**
+     * Represents a specification for Linux capabilities to add or drop from a container.
+     *
+     * This class is used to define which Linux capabilities should be added to or removed from
+     * the container's process. Capabilities allow fine-grained control over the privileges of a process,
+     * enabling more secure container configurations by restricting unnecessary permissions.
+     *
+     * @property add A list of capability names to add to the container. Can be null if no capabilities are to be added.
+     *                Each entry in the list must not be blank.
+     * @property drop A list of capability names to remove from the container. Can be null if no capabilities are to be dropped.
+     *                Each entry in the list must not be blank.
+     */
+    @NoArgs
+    data class CapabilitiesSpec(
+        val add: List<String>?,
+        val drop: List<String>?,
+    ) {
+        init {
+            add?.let { require(it.all { it.isNotBlank() }) { "Add must not contain blank values" } }
+            drop?.let { require(it.all { it.isNotBlank() }) { "Drop must not contain blank values" } }
+        }
+    }
+}
+
+/**
+ * Defines the pod-level security context, encapsulating security-related configurations
+ * for all containers that run within the pod. This specification allows fine-grained
+ * control over various security mechanisms at the pod scope.
+ *
+ * @constructor Creates a new instance of `PodSecurityContextSpec` and applies the provided
+ * security configurations.
+ *
+ * @param runAsUser The user ID to run processes as. If specified, overrides the UID
+ * set for containers.
+ * @param runAsGroup The group ID to run processes as. If specified, overrides the GID
+ * set for containers.
+ * @param runAsNonRoot Indicates if the container must run as a non-root user. If true,
+ * this requires `runAsUser` to be configured to a non-zero value.
+ * @param seLinuxOptions SELinux options specifying the user, role, type, and level for SELinux contexts.
+ * @param seccompProfile Security profile configuration for Seccomp to restrict the system call
+ * surface available to the container.
+ * @param appArmorProfile Security profile configuration for AppArmor to enforce mandatory
+ * access control.
+ * @param windowsOptions Windows-specific options for configuring the execution of containers
+ * on Windows nodes.
+ * @param fsGroup The group ID for all files that the pod's processes can access. This is applied
+ * to all volumes mounted for the pod.
+ * @param fsGroupChangePolicy Defines the behavior for modifying file ownership and permissions
+ * of volumes when `fsGroup` is specified.
+ * @param supplementalGroups A list of additional group IDs to add to the container's primary
+ * process's group membership.
+ * @param supplementalGroupsPolicy Defines the policy for handling supplemental groups, such as
+ * whether they should strictly match or be merged.
+ * @param sysctls A map of system control parameters to apply to the pod. These parameters
+ * can modify kernel-level configurations.
+ */
+@NoArgs
+class PodSecurityContextSpec(
+    runAsUser: Long?,
+    runAsGroup: Long?,
+    runAsNonRoot: Boolean?,
+    seLinuxOptions: SELinuxOptionsSpec?,
+    seccompProfile: ProfileSpec?,
+    appArmorProfile: ProfileSpec?,
+    windowsOptions: WindowsOptionsSpec?,
+    val fsGroup: Long?,
+    val fsGroupChangePolicy: FSGroupChangePolicy?,
+    val supplementalGroups: List<Long>?,
+    val supplementalGroupsPolicy: SupplementalGroupsPolicy?,
+    @field:JsonSerialize(using = MapToNameValueSerializer::class)
+    @field:JsonDeserialize(using = MapToNameValueDeserializer::class)
+    val sysctls: Map<String, String>?,
+) : SecurityContextSpec(runAsUser, runAsGroup, runAsNonRoot, seLinuxOptions, seccompProfile, appArmorProfile, windowsOptions) {
+
+    /**
+     * Represents the policy that governs the behavior of changing the file system group
+     * for a pod's volume mounts.
+     *
+     * This enum is typically used within the context of pod security configurations to
+     * dictate how the file system group should be applied when volumes are mounted.
+     */
+    @Suppress("unused")
+    enum class FSGroupChangePolicy {
+        /**
+         * Enum value that specifies the policy to apply the file system group only when a mismatch
+         * is detected between the existing file system group and the desired configuration.
+         *
+         * This policy can be used to ensure that unnecessary changes to the file system group
+         * do not occur unless strictly required.
+         */
+        OnRootMismatch,
+
+        /**
+         * Enum value that specifies the policy to always apply the file system group
+         * for the volumes, regardless of whether there is a mismatch with the existing
+         * file system group.
+         *
+         * This policy ensures that the desired file system group configuration is
+         * enforced consistently.
+         */
+        Always
+    }
+
+    /**
+     * Determines the policy for handling supplemental groups within the pod's security context.
+     */
+    @Suppress("unused")
+    enum class SupplementalGroupsPolicy {
+        /**
+         * Represents the `Merge` policy option within the `SupplementalGroupsPolicy` enum.
+         *
+         * This policy dictates that supplemental groups specified in the pod's security context
+         * will be merged with any existing groups defined at the node or cluster level.
+         * It ensures that the groups are combined rather than replaced, allowing for
+         * additive group assignments.
+         */
+        Merge,
+
+        /**
+         * Represents the `Strict` policy option within the `SupplementalGroupsPolicy` enum.
+         *
+         * This policy enforces strict adherence to the supplemental groups specified in the pod's
+         * security context. No additional groups defined at the node or cluster level
+         * are merged or supplemented. The pod's groups are treated as authoritative.
+         */
+        Strict
     }
 }

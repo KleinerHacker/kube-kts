@@ -34,7 +34,7 @@ import java.time.Duration
  *
  * If the ProbeSpec value is null, the serializer writes a null value to the JSON output.
  */
-class ProbeSpecSerializer : ValueSerializer<ProbeSpec>() {
+internal class ProbeSpecSerializer : ValueSerializer<ProbeSpec>() {
     override fun serialize(
         value: ProbeSpec?,
         gen: JsonGenerator,
@@ -88,7 +88,7 @@ class ProbeSpecSerializer : ValueSerializer<ProbeSpec>() {
  *
  * Throws an `IllegalArgumentException` if no valid probe action is found in the input JSON.
  */
-class ProbeSpecDeserializer : ValueDeserializer<ProbeSpec>() {
+internal class ProbeSpecDeserializer : ValueDeserializer<ProbeSpec>() {
     override fun deserialize(p: JsonParser, ctxt: DeserializationContext): ProbeSpec {
         val node: JsonNode = p.readValueAsTree()
 

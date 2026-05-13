@@ -25,7 +25,7 @@ import tools.jackson.databind.*
  * Serialization is performed using the `JsonGenerator` provided, ensuring that the
  * object structure is properly opened and closed using the `writeObject` function.
  */
-class HardwareResourceDataSpecSerializer : ValueSerializer<HardwareResourceSpec.Data>() {
+internal class HardwareResourceDataSpecSerializer : ValueSerializer<HardwareResourceSpec.Data>() {
     override fun serialize(
         value: HardwareResourceSpec.Data?,
         gen: JsonGenerator,
@@ -64,7 +64,7 @@ class HardwareResourceDataSpecSerializer : ValueSerializer<HardwareResourceSpec.
  * This deserializer enables the flexible handling of dynamic resources beyond the core CPU and memory,
  * as specified by extended resources.
  */
-class HardwareResourceDataSpecDeserializer : ValueDeserializer<HardwareResourceSpec.Data>() {
+internal class HardwareResourceDataSpecDeserializer : ValueDeserializer<HardwareResourceSpec.Data>() {
     override fun deserialize(
         p: JsonParser,
         ctxt: DeserializationContext

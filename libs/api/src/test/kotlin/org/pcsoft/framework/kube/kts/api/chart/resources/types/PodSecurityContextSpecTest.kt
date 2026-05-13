@@ -13,6 +13,8 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.junit.jupiter.api.Test
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.PodSecurityContextSpec.FSGroupChangePolicy
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.PodSecurityContextSpec.SupplementalGroupsPolicy
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
@@ -21,22 +23,14 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
-class SecurityContextSpecTest {
+class PodSecurityContextSpecTest {
 
     @Test
     fun testMaxContent() {
-        val spec = SecurityContextSpecBuilder().apply {
+        val spec = PodSecurityContextSpecBuilder().apply {
             runAsUser = 1000
             runAsGroup = 2000
             runAsNonRoot = true
-            privileged = true
-            readOnlyRootFilesystem = true
-            allowPrivilegeEscalation = true
-            procMount = SecurityContextSpec.ProcMountType.Unmasked
-            capabilities {
-                add("NET_ADMIN")
-                drop("ALL")
-            }
             seLinuxOptions {
                 level = "s0:c123,c456"
                 role = "role"
@@ -55,21 +49,21 @@ class SecurityContextSpecTest {
                 runAsUserName = "runAsUserName"
                 hostProcess = true
             }
+            fsGroup = 9999
+            fsGroupChangePolicy = FSGroupChangePolicy.OnRootMismatch
+            supplementalGroups {
+                group(1000)
+                group(2000)
+            }
+            supplementalGroupsPolicy = SupplementalGroupsPolicy.Merge
+            sysctls {
+                sysctl("net.ipv4.ip_forward", "1")
+            }
         }.build()
 
         assertEquals(1000, spec.runAsUser)
         assertEquals(2000, spec.runAsGroup)
         assertEquals(true, spec.runAsNonRoot)
-        assertEquals(true, spec.privileged)
-        assertEquals(true, spec.readOnlyRootFilesystem)
-        assertEquals(true, spec.allowPrivilegeEscalation)
-        assertEquals(SecurityContextSpec.ProcMountType.Unmasked, spec.procMount)
-
-        assertNotNull(spec.capabilities)
-        assertNotNull(spec.capabilities.add)
-        assertEquals("NET_ADMIN", spec.capabilities.add.first())
-        assertNotNull(spec.capabilities.drop)
-        assertEquals("ALL", spec.capabilities.drop.first())
 
         assertNotNull(spec.seLinuxOptions)
         assertEquals("s0:c123,c456", spec.seLinuxOptions.level)
@@ -92,22 +86,20 @@ class SecurityContextSpecTest {
         assertEquals("gmsaCredentialSpec", spec.windowsOptions.gmsaCredentialSpec)
         assertEquals("runAsUserName", spec.windowsOptions.runAsUserName)
         assertEquals(true, spec.windowsOptions.hostProcess)
+
+        assertEquals(9999L, spec.fsGroup)
+        assertEquals(FSGroupChangePolicy.OnRootMismatch, spec.fsGroupChangePolicy)
+        assertEquals(listOf(1000L, 2000L), spec.supplementalGroups)
+        assertEquals(SupplementalGroupsPolicy.Merge, spec.supplementalGroupsPolicy)
+        assertEquals(mapOf("net.ipv4.ip_forward" to "1"), spec.sysctls)
     }
 
     @Test
     fun testMaxYaml() {
-        val spec = SecurityContextSpecBuilder().apply {
+        val spec = PodSecurityContextSpecBuilder().apply {
             runAsUser = 1000
             runAsGroup = 2000
             runAsNonRoot = true
-            privileged = true
-            readOnlyRootFilesystem = true
-            allowPrivilegeEscalation = true
-            procMount = SecurityContextSpec.ProcMountType.Unmasked
-            capabilities {
-                add("NET_ADMIN")
-                drop("ALL")
-            }
             seLinuxOptions {
                 level = "s0:c123,c456"
                 role = "role"
@@ -126,6 +118,16 @@ class SecurityContextSpecTest {
                 runAsUserName = "runAsUserName"
                 hostProcess = true
             }
+            fsGroup = 9999
+            fsGroupChangePolicy = FSGroupChangePolicy.OnRootMismatch
+            supplementalGroups {
+                group(1000)
+                group(2000)
+            }
+            supplementalGroupsPolicy = SupplementalGroupsPolicy.Merge
+            sysctls {
+                sysctl("net.ipv4.ip_forward", "1")
+            }
         }.build()
 
         val actualJson = spec.toJson()
@@ -133,18 +135,6 @@ class SecurityContextSpecTest {
             |  "runAsUser": 1000,
             |  "runAsGroup": 2000,
             |  "runAsNonRoot": true,
-            |  "privileged": true,
-            |  "readOnlyRootFilesystem": true,
-            |  "allowPrivilegeEscalation": true,
-            |  "procMount": "Unmasked",
-            |  "capabilities": {
-            |    "add": [
-            |      "NET_ADMIN"
-            |    ],
-            |    "drop": [
-            |      "ALL"
-            |    ]
-            |  },
             |  "seLinuxOptions": {
             |    "level": "s0:c123,c456",
             |    "role": "role",
@@ -152,9 +142,11 @@ class SecurityContextSpecTest {
             |    "user": "user"
             |  },
             |  "seccompProfile": {
+            |    "type": "Localhost",
             |    "localhostProfile": "localhost"
             |  },
             |  "appArmorProfile": {
+            |    "type": "Localhost",
             |    "localhostProfile": "localhost"
             |  },
             |  "windowsOptions": {
@@ -162,25 +154,31 @@ class SecurityContextSpecTest {
             |    "gmsaCredentialSpec": "gmsaCredentialSpec",
             |    "runAsUserName": "runAsUserName",
             |    "hostProcess": true
-            |  }
+            |  },
+            |  "fsGroup": 9999,
+            |  "fsGroupChangePolicy": "OnRootMismatch",
+            |  "supplementalGroups": [1000, 2000],
+            |  "supplementalGroupsPolicy": "Merge",
+            |  "sysctls": [
+            |    {
+            |      "name": "net.ipv4.ip_forward",
+            |      "value": "1"
+            |    }
+            |  ]
             |}""".trimMargin()
+
+        println(actualJson)
+        println(expectedJson.lines().joinToString("") { it.trim().replace(": ", ":") })
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testMediumContent() {
-        val spec = SecurityContextSpecBuilder().apply {
+        val spec = PodSecurityContextSpecBuilder().apply {
             runAsUser = 1000
             runAsGroup = 2000
             runAsNonRoot = true
-            privileged = true
-            readOnlyRootFilesystem = true
-            allowPrivilegeEscalation = true
-            procMount = SecurityContextSpec.ProcMountType.Unmasked
-            capabilities {
-
-            }
             seLinuxOptions {
 
             }
@@ -193,19 +191,17 @@ class SecurityContextSpecTest {
             windowsOptions {
 
             }
+            supplementalGroups {
+
+            }
+            sysctls {
+
+            }
         }.build()
 
         assertEquals(1000, spec.runAsUser)
         assertEquals(2000, spec.runAsGroup)
         assertEquals(true, spec.runAsNonRoot)
-        assertEquals(true, spec.privileged)
-        assertEquals(true, spec.readOnlyRootFilesystem)
-        assertEquals(true, spec.allowPrivilegeEscalation)
-        assertEquals(SecurityContextSpec.ProcMountType.Unmasked, spec.procMount)
-
-        assertNotNull(spec.capabilities)
-        assertNull(spec.capabilities.add)
-        assertNull(spec.capabilities.drop)
 
         assertNotNull(spec.seLinuxOptions)
         assertNull(spec.seLinuxOptions.level)
@@ -226,21 +222,20 @@ class SecurityContextSpecTest {
         assertNull(spec.windowsOptions.gmsaCredentialSpec)
         assertNull(spec.windowsOptions.runAsUserName)
         assertNull(spec.windowsOptions.hostProcess)
+
+        assertNull(spec.fsGroup)
+        assertNull(spec.fsGroupChangePolicy)
+        assertNull(spec.supplementalGroups)
+        assertNull(spec.supplementalGroupsPolicy)
+        assertNull(spec.sysctls)
     }
 
     @Test
     fun testMediumYaml() {
-        val spec = SecurityContextSpecBuilder().apply {
+        val spec = PodSecurityContextSpecBuilder().apply {
             runAsUser = 1000
             runAsGroup = 2000
             runAsNonRoot = true
-            privileged = true
-            readOnlyRootFilesystem = true
-            allowPrivilegeEscalation = true
-            procMount = SecurityContextSpec.ProcMountType.Unmasked
-            capabilities {
-
-            }
             seLinuxOptions {
 
             }
@@ -253,6 +248,12 @@ class SecurityContextSpecTest {
             windowsOptions {
 
             }
+            supplementalGroups {
+
+            }
+            sysctls {
+
+            }
         }.build()
 
         val actualJson = spec.toJson()
@@ -260,11 +261,6 @@ class SecurityContextSpecTest {
             |  "runAsUser": 1000,
             |  "runAsGroup": 2000,
             |  "runAsNonRoot": true,
-            |  "privileged": true,
-            |  "readOnlyRootFilesystem": true,
-            |  "allowPrivilegeEscalation": true,
-            |  "procMount": "Unmasked",
-            |  "capabilities": {},
             |  "seLinuxOptions": {},
             |  "seccompProfile": {
             |    "type": "RuntimeDefault"
@@ -280,25 +276,25 @@ class SecurityContextSpecTest {
 
     @Test
     fun testMinContent() {
-        val spec = SecurityContextSpecBuilder().build()
+        val spec = PodSecurityContextSpecBuilder().build()
 
         assertNull(spec.runAsUser)
         assertNull(spec.runAsGroup)
         assertNull(spec.runAsNonRoot)
-        assertNull(spec.privileged)
-        assertNull(spec.readOnlyRootFilesystem)
-        assertNull(spec.allowPrivilegeEscalation)
-        assertNull(spec.procMount)
-        assertNull(spec.capabilities)
         assertNull(spec.seLinuxOptions)
         assertNull(spec.seccompProfile)
         assertNull(spec.appArmorProfile)
         assertNull(spec.windowsOptions)
+        assertNull(spec.fsGroup)
+        assertNull(spec.fsGroupChangePolicy)
+        assertNull(spec.supplementalGroups)
+        assertNull(spec.supplementalGroupsPolicy)
+        assertNull(spec.sysctls)
     }
 
     @Test
     fun testMinYaml() {
-        val spec = SecurityContextSpecBuilder().build()
+        val spec = PodSecurityContextSpecBuilder().build()
 
         JSONAssert.assertEquals("""{}""", spec.toJson(), JSONCompareMode.LENIENT)
     }
@@ -306,14 +302,14 @@ class SecurityContextSpecTest {
     @Test
     fun testNotAllowedProfile() {
         assertFailsWith<IllegalArgumentException> {
-            SecurityContextSpecBuilder().apply {
+            PodSecurityContextSpecBuilder().apply {
                 seccompProfile(SecurityContextSpec.ProfileType.Localhost) {
                 }
             }.build()
         }
 
         assertFailsWith<IllegalArgumentException> {
-            SecurityContextSpecBuilder().apply {
+            PodSecurityContextSpecBuilder().apply {
                 appArmorProfile(SecurityContextSpec.ProfileType.Localhost) {
                 }
             }.build()

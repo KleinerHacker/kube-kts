@@ -54,3 +54,12 @@ internal fun JsonGenerator.writeObjectProperty(propertyName: String, action: () 
         writeEndObject()
     }
 }
+
+internal fun JsonGenerator.writeArray(action: () -> Unit) {
+    writeStartArray()
+    try {
+        action()
+    } finally {
+        writeEndArray()
+    }
+}
