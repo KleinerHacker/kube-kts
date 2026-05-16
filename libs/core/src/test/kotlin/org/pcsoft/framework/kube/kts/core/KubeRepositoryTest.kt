@@ -29,17 +29,18 @@ class KubeRepositoryTest : RepositoryTest() {
         val ktsRepo =
             KubeKtsRepositoryScanner.DEFAULT.scan(Paths.get(this::class.java.getResource("/kts/helm").toURI()))
         Assertions.assertNotNull(ktsRepo)
-        Assertions.assertEquals(3, ktsRepo.files.size)
+        Assertions.assertEquals(4, ktsRepo.files.size)
         Assertions.assertEquals(1, ktsRepo.files.filter { it.isChart }.size)
         Assertions.assertTrue { ktsRepo.files.any { it.subject == "Chart" } }
         Assertions.assertTrue { ktsRepo.files.any { it.subject == "service" } }
         Assertions.assertTrue { ktsRepo.files.any { it.subject == "ingress" } }
+        Assertions.assertTrue { ktsRepo.files.any { it.subject == "deployment" } }
         Assertions.assertEquals(1, ktsRepo.legacyFiles.size)
         Assertions.assertEquals(1, ktsRepo.legacyFiles.filter { it.isValues }.size)
 
         val helmRepo = KubeKtsRepositoryBuilder.createDefault().build(ktsRepo, arrayOf())
         Assertions.assertNotNull(helmRepo)
-        Assertions.assertEquals(3, helmRepo.files.size)
+        Assertions.assertEquals(4, helmRepo.files.size)
         Assertions.assertEquals(1, helmRepo.files.filter { it.isChart }.size)
         Assertions.assertEquals(1, helmRepo.legacyFiles.size)
         Assertions.assertEquals(1, helmRepo.legacyFiles.filter { it.isValues }.size)
@@ -47,6 +48,7 @@ class KubeRepositoryTest : RepositoryTest() {
         Assertions.assertTrue { helmRepo.files.any { it.subject == "Chart" } }
         Assertions.assertTrue { helmRepo.files.any { it.subject == "service" } }
         Assertions.assertTrue { helmRepo.files.any { it.subject == "ingress" } }
+        Assertions.assertTrue { helmRepo.files.any { it.subject == "deployment" } }
         Assertions.assertTrue { helmRepo.legacyFiles.any { it.subject == "values" } }
 
         val targetPath = Files.createTempDirectory("helm")
@@ -62,6 +64,10 @@ class KubeRepositoryTest : RepositoryTest() {
         assertYaml(
             targetPath.resolve("templates/ingress.yaml"),
             Paths.get(this::class.java.getResource("/kts/expected/templates/ingress.yaml").toURI())
+        )
+        assertYaml(
+            targetPath.resolve("templates/deployment.yaml"),
+            Paths.get(this::class.java.getResource("/kts/expected/templates/deployment.yaml").toURI())
         )
         assertYaml(
             targetPath.resolve("values.yaml"),
