@@ -12,7 +12,12 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonValue
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
+import org.pcsoft.framework.kube.kts.api.intern.jackson.VolumeSpecSerializer
+import org.pcsoft.framework.kube.kts.api.types.MemoryValue
+import tools.jackson.databind.annotation.JsonSerialize
 
 /**
  * Represents a volume specification for a Kubernetes pod.
@@ -22,13 +27,12 @@ import org.pcsoft.framework.kube.kts.api.intern.NoArgs
  *
  * @property name The name of the volume.
  * @property source The source of the volume, represented by a sealed interface that supports multiple specific types.
- * @property emptyDir An optional configuration for an empty directory volume. If non-null, this volume will use an empty directory for storage.
  */
 @NoArgs
+@JsonSerialize(using = VolumeSpecSerializer::class)
 data class VolumeSpec(
     val name: String,
     val source: SourceSpec,
-    val emptyDir: Any?
 ) {
     /**
      * Represents the source specification for a volume in a Kubernetes pod.
@@ -174,6 +178,46 @@ data class VolumeSpec(
              * It provides functionality to attach and manage such devices in a Kubernetes environment.
              */
             BlockDevice
+        }
+    }
+
+    /**
+     * Specifies the configuration for an EmptyDir volume source.
+     *
+     * An EmptyDir volume is used to provide a temporary directory that is created when a pod is assigned
+     * to a node and persists as long as the pod is running on that node. The contents are deleted when the
+     * pod is removed from the node. The properties of this class allow customization of the storage medium and
+     * size limit for the EmptyDir volume.
+     *
+     * @constructor Creates an instance of `EmptyDirSourceSpec`.
+     * @property medium Specifies the type of storage medium to use for the EmptyDir volume. If null, the default
+     * medium type is used, which generally corresponds to disk storage.
+     * @property sizeLimit Defines the maximum amount of storage that can be allocated to this volume. If null,
+     * there is no size limit imposed.
+     */
+    @NoArgs
+    class EmptyDirSourceSpec(
+        val medium: MediumType?,
+        val sizeLimit: MemoryValue?
+    ) : SourceSpec {
+        /**
+         * Represents the storage medium type for an EmptyDir volume.
+         *
+         * Defines the type of storage used by an EmptyDir volume in a container's filesystem.
+         *
+         * @property value The string representation of the medium type.
+         */
+        @Suppress("unused")
+        enum class MediumType @JsonCreator constructor(@get:JsonValue val value: String) {
+            /**
+             * Represents a medium type that stores data in memory.
+             */
+            Memory("Memory"),
+
+            /**
+             * Represents a medium type that stores data on disk.
+             */
+            Disk("")
         }
     }
 }

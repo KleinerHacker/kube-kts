@@ -12,7 +12,9 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeSpec.EmptyDirSourceSpec.MediumType
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeSpec.SourceSpec
+import org.pcsoft.framework.kube.kts.api.types.MemoryValue
 
 /**
  * A builder class for constructing volume specifications to be used in a Kubernetes pod.
@@ -28,18 +30,6 @@ import org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeSpec.Source
  */
 class VolumeSpecBuilder internal constructor(private val name: String) {
     private var source: SourceSpec? = null
-
-    /**
-     * Represents an empty directory volume that can be associated with a Kubernetes pod.
-     *
-     * This property is used to configure an ephemeral emptyDir volume as part of the volume
-     * specification for a pod. An emptyDir volume is created when a pod is assigned to a node
-     * and exists as long as the pod is running on that node. It is primarily used for temporary
-     * storage purposes, such as caching or scratch data, and is deleted when the pod is terminated.
-     *
-     * This property accepts configuration details required for specifying the emptyDir volume.
-     */
-    var emptyDir: Any? = null
 
     /**
      * Configures the volume specification to use a ConfigMap as its source.
@@ -70,6 +60,15 @@ class VolumeSpecBuilder internal constructor(private val name: String) {
     }
 
     /**
+     * Configures the volume specification to use a PersistentVolumeClaim as its source.
+     *
+     * @param claimName The name of the PersistentVolumeClaim to use as the volume source.
+     */
+    fun fromPersistentVolumeClaim(claimName: String) {
+        source = VolumeSpec.PersistentVolumeClaimSourceSpec(claimName)
+    }
+
+    /**
      * Configures the volume specification to use a host path as its source.
      *
      * A host path represents a file or directory on the host node's filesystem. This method sets the
@@ -97,19 +96,56 @@ class VolumeSpecBuilder internal constructor(private val name: String) {
         FromBuilder().apply(prepare)
     }
 
+    fun emptyDir(prepare: EmptyDirSpecBuilder.() -> Unit) {
+        source = EmptyDirSpecBuilder().apply(prepare).build()
+    }
+
     /**
      * Builds a `VolumeSpec` object using the current configuration of the `VolumeSpecBuilder`.
      *
      * The method ensures that the `source` field is set before creating the `VolumeSpec` instance.
      * If the `source` field is null, an `IllegalArgumentException` is thrown.
      *
-     * @return A `VolumeSpec` instance containing the configured name, source, and emptyDir properties.
+     * @return A `VolumeSpec` instance containing the configured name and source properties.
      * @throws IllegalArgumentException if the source field is not set.
      */
     internal fun build(): VolumeSpec {
         require(source != null) { "Source must be set" }
 
-        return VolumeSpec(name, source!!, emptyDir)
+        return VolumeSpec(name, source!!)
+    }
+
+    /**
+     * A builder class used to configure and construct the specification for an `EmptyDir` volume.
+     *
+     * The `EmptyDir` volume is an ephemeral storage solution in Kubernetes, where data is preserved
+     * for the lifetime of the pod. The builder allows configuration of properties such as the storage
+     * medium and the size limit of the volume.
+     */
+    class EmptyDirSpecBuilder internal constructor() {
+        /**
+         * Specifies the storage medium type for the `EmptyDir` volume.
+         * If not specified, the default value is `Disk`.
+         */
+        var medium: MediumType? = null
+
+        /**
+         * Specifies the size limit for the `EmptyDir` volume.
+         * If not specified, the default value is `null`, which means no size limit is enforced.
+         */
+        var sizeLimit: MemoryValue? = null
+
+        /**
+         * Constructs an instance of `VolumeSpec.EmptyDirSpec` based on the current configuration
+         * of the `EmptyDirSpecBuilder`.
+         *
+         * The resulting `EmptyDirSpec` encapsulates the specified storage medium and size limit
+         * for the `EmptyDir` volume.
+         *
+         * @return A configured `VolumeSpec.EmptyDirSpec` instance.
+         * @see VolumeSpec.EmptyDirSourceSpec Represents the specification for an `EmptyDir` volume.
+         */
+        internal fun build() = VolumeSpec.EmptyDirSourceSpec(medium, sizeLimit)
     }
 
     /**
@@ -142,6 +178,13 @@ class VolumeSpecBuilder internal constructor(private val name: String) {
          *                   This must correspond to the name of an existing Secret in the Kubernetes cluster.
          */
         fun secret(secretName: String) = fromSecret(secretName)
+
+        /**
+         * Configures the volume to use a specific PersistentVolumeClaim as its source.
+         *
+         * @param claimName The name of the PersistentVolumeClaim to use as the volume source.
+         */
+        fun persistentVolumeClaim(claimName: String) = fromPersistentVolumeClaim(claimName)
 
         /**
          * Configures the volume to use a specific host path as its source.
