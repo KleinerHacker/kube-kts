@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -48,8 +48,8 @@ object ServiceAssertion {
         Assertions.assertEquals(listOf("externalIP"), serviceSpec.spec.externalIPs)
         Assertions.assertEquals("externalName", serviceSpec.spec.externalName)
 
-        Assertions.assertEquals(ServiceSpec.TrafficPolicy.Local, serviceSpec.spec.externalTrafficPolicy)
-        Assertions.assertEquals(ServiceSpec.TrafficPolicy.Local, serviceSpec.spec.internalTrafficPolicy)
+        Assertions.assertEquals(TrafficPolicy.Local, serviceSpec.spec.externalTrafficPolicy)
+        Assertions.assertEquals(TrafficPolicy.Local, serviceSpec.spec.internalTrafficPolicy)
 
         Assertions.assertEquals(false, serviceSpec.spec.allocateLoadBalancerNodePorts)
         Assertions.assertEquals("loadBalancerIP", serviceSpec.spec.loadBalancerIP)
