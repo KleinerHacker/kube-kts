@@ -15,6 +15,7 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.PodSpec.*
 import org.pcsoft.framework.kube.kts.api.types.CpuValue
 import org.pcsoft.framework.kube.kts.api.types.MemoryValue
+import java.time.Duration
 
 /**
  * Builder class for configuring and constructing the specification of a Kubernetes Pod.
@@ -187,14 +188,14 @@ class PodSpecBuilder internal constructor() {
      * The termination grace period defines the amount of time given to the Pod to gracefully terminate before it is forcefully terminated.
      * It allows for cleanup operations and ensures a smooth shutdown process.
      */
-    var terminationGracePeriodSeconds: Int? = null
+    var terminationGracePeriodSeconds: Duration? = null
 
     /**
      * Specifies the maximum number of seconds the Pod can be active before it is considered to be unhealthy.
      *
      * This setting allows for proactive detection of unhealthy Pods and facilitates timely intervention to prevent potential issues.
      */
-    var activeDeadlineSeconds: Int? = null
+    var activeDeadlineSeconds: Duration? = null
 
     /**
      * Adds a new container specification to the list of containers.
@@ -202,6 +203,14 @@ class PodSpecBuilder internal constructor() {
      * @param name The name of the container to be added.
      * @param image The image name, including the tag, for the container.
      * @param prepare A lambda for defining additional specifications or properties of the container.
+     *
+     * Example:
+     * ```kotlin
+     * addContainer("web", "nginx:1.21") {
+     *     addEnvironmentVariable("LOG_LEVEL", "info")
+     *     port = 8080
+     * }
+     * ```
      */
     fun addContainer(name: String, image: String, prepare: ContainerSpecBuilder.() -> Unit) {
         if (containers == null) {
@@ -216,6 +225,13 @@ class PodSpecBuilder internal constructor() {
      * @param name The name of the init container to be added.
      * @param image The image name, including the tag, for the init container.
      * @param prepare A lambda for defining additional specifications or properties of the init container.
+     *
+     * Example:
+     * ```kotlin
+     * addInitContainer("init-setup", "busybox:1.35") {
+     *     command = listOf("sh", "-c", "echo 'Initialization complete'")
+     * }
+     * ```
      */
     fun addInitContainer(name: String, image: String, prepare: ContainerSpecBuilder.() -> Unit) {
         if (initContainers == null) {
@@ -230,6 +246,15 @@ class PodSpecBuilder internal constructor() {
      * @param name The name of the ephemeral container to be added.
      * @param image The image name, including the tag, for the ephemeral container.
      * @param prepare A lambda for defining additional specifications or properties of the ephemeral container.
+     *
+     * Example:
+     * ```kotlin
+     * addEphemeralContainer("debugger", "busybox:1.35") {
+     *     command = listOf("sh")
+     *     stdin = true
+     *     tty = true
+     * }
+     * ```
      */
     fun addEphemeralContainer(name: String, image: String, prepare: ContainerSpecBuilder.() -> Unit) {
         if (ephemeralContainers == null) {
@@ -244,31 +269,26 @@ class PodSpecBuilder internal constructor() {
      * @param prepare A lambda with receiver that defines the configuration for the containers using the
      *                `ContainerSpecListBuilder`. This builder allows the addition and customization
      *                of multiple container specifications within the pod.
+     *
+     * Example:
+     * ```kotlin
+     * containers {
+     *     container("web", "nginx:1.21") {
+     *         port = 80
+     *     }
+     *     init("setup", "busybox:1.35") {
+     *         command = listOf("sh", "-c", "echo 'Initializing'")
+     *     }
+     *     ephemeral("debugger", "busybox:1.35") {
+     *         command = listOf("sh")
+     *         stdin = true
+     *         tty = true
+     *     }
+     * }
+     * ```
      */
     fun containers(prepare: ContainerSpecListBuilder.() -> Unit) {
         ContainerSpecListBuilder().apply(prepare)
-    }
-
-    /**
-     * Configures a list of init container specifications for the pod.
-     *
-     * @param prepare A lambda with receiver that defines the configuration for the init containers
-     *                using the `InitContainerSpecListBuilder`. This builder allows the addition
-     *                and customization of multiple init container specifications within the pod.
-     */
-    fun initContainers(prepare: InitContainerSpecListBuilder.() -> Unit) {
-        InitContainerSpecListBuilder().apply(prepare)
-    }
-
-    /**
-     * Configures a list of ephemeral container specifications for the pod.
-     *
-     * @param prepare A lambda with receiver that defines the configuration for the ephemeral containers
-     *                using the `EphemeralContainerSpecListBuilder`. This builder allows the addition
-     *                and customization of multiple ephemeral container specifications within the pod.
-     */
-    fun ephemeralContainers(prepare: EphemeralContainerSpecListBuilder.() -> Unit) {
-        EphemeralContainerSpecListBuilder().apply(prepare)
     }
 
     /**
@@ -277,6 +297,16 @@ class PodSpecBuilder internal constructor() {
      * @param prepare A lambda with receiver that defines the DNS configuration using the
      *                `DnsConfigurationSpecBuilder`. This allows you to configure nameservers,
      *                search domains, and DNS options for the pod.
+     *
+     * Example:
+     * ```kotlin
+     * dnsConfig {
+     *     addNameserver("8.8.8.8")
+     *     addNameserver("8.8.4.4")
+     *     addSearch("example.com")
+     *     addOption("ndots", "2")
+     * }
+     * ```
      */
     fun dnsConfig(prepare: DnsConfigurationSpecBuilder.() -> Unit) {
         dnsConfig = DnsConfigurationSpecBuilder().apply(prepare)
@@ -316,6 +346,14 @@ class PodSpecBuilder internal constructor() {
      * @param prepare A lambda with receiver that allows you to define the node selector configuration.
      *                Use the provided `NodeSelectorMapBuilder` to specify the key-value pairs for
      *                selecting nodes.
+     *
+     * Example:
+     * ```kotlin
+     * nodeSelector {
+     *     select("disktype", "ssd")
+     *     select("environment", "production")
+     * }
+     * ```
      */
     fun nodeSelector(prepare: NodeSelectorMapBuilder.() -> Unit) {
         NodeSelectorMapBuilder().apply(prepare)
@@ -348,6 +386,14 @@ class PodSpecBuilder internal constructor() {
      * @param prepare A lambda with receiver that defines the configuration for
      *                image pull secrets using the `ImagePullSecretListBuilder`.
      *                Use this builder to specify the required image pull secrets.
+     *
+     * Example:
+     * ```kotlin
+     * imagePullSecrets {
+     *     secret("registry-credentials")
+     *     secret("docker-hub-credentials")
+     * }
+     * ```
      */
     fun imagePullSecrets(prepare: ImagePullSecretListBuilder.() -> Unit) {
         ImagePullSecretListBuilder().apply(prepare)
@@ -359,6 +405,14 @@ class PodSpecBuilder internal constructor() {
      * @param name The name of the volume to be added.
      * @param prepare A lambda with receiver that defines additional specifications
      *                or properties of the volume using the `VolumeSpecBuilder`.
+     *
+     * Example:
+     * ```kotlin
+     * addVolume("config-volume") {
+     *     configMap = "app-config"
+     *     mountPath = "/etc/config"
+     * }
+     * ```
      */
     fun addVolume(name: String, prepare: VolumeSpecBuilder.() -> Unit) {
         if (volumes == null) {
@@ -374,6 +428,18 @@ class PodSpecBuilder internal constructor() {
      *                volumes using the `VolumeSpecListBuilder`. This builder
      *                allows the addition and customization of multiple volume
      *                specifications within the pod.
+     *
+     * Example:
+     * ```kotlin
+     * volumes {
+     *     volume("data") {
+     *         emptyDir = true
+     *     }
+     *     volume("secrets") {
+     *         secret = "app-secrets"
+     *     }
+     * }
+     * ```
      */
     fun volumes(prepare: VolumeSpecListBuilder.() -> Unit) {
         VolumeSpecListBuilder().apply(prepare)
@@ -387,6 +453,13 @@ class PodSpecBuilder internal constructor() {
      * @param topologyKey The key used to denote the topology domain (e.g., node, zone).
      * @param whenUnsatisfiable The action to take when the constraint is not satisfied.
      * @param prepare A builder block to customize the topology spread constraint spec.
+     *
+     * Example:
+     * ```kotlin
+     * addTopologySpreadConstraint(1, "topology.kubernetes.io/zone", WhenUnsatisfiable.DO_NOT_SCHEDULE) {
+     *     labelSelector = mapOf("app" to "myapp")
+     * }
+     * ```
      */
     fun addTopologySpreadConstraint(
         maxSkew: Int,
@@ -411,6 +484,18 @@ class PodSpecBuilder internal constructor() {
      *
      * @param prepare A lambda receiver to define a list of topology spread constraints
      * using the TopologySpreadConstraintSpecListBuilder.
+     *
+     * Example:
+     * ```kotlin
+     * topologySpreadConstraints {
+     *     constraint(1, "topology.kubernetes.io/zone", WhenUnsatisfiable.DO_NOT_SCHEDULE) {
+     *         labelSelector = mapOf("app" to "myapp")
+     *     }
+     *     constraint(2, "kubernetes.io/hostname", WhenUnsatisfiable.SCHEDULE_ANYWAY) {
+     *         labelSelector = mapOf("tier" to "frontend")
+     *     }
+     * }
+     * ```
      */
     fun topologySpreadConstraints(prepare: TopologySpreadConstraintSpecListBuilder.() -> Unit) {
         TopologySpreadConstraintSpecListBuilder().apply(prepare)
@@ -421,6 +506,19 @@ class PodSpecBuilder internal constructor() {
      *
      * @param prepare A lambda with receiver of type AffinitySpecBuilder
      *                used to build the affinity specification.
+     *
+     * Example:
+     * ```kotlin
+     * affinity {
+     *     nodeAffinity {
+     *         requiredDuringSchedulingIgnoredDuringExecution {
+     *             nodeSelectorTerms {
+     *                 matchExpressions("disktype", Operator.IN, listOf("ssd"))
+     *             }
+     *         }
+     *     }
+     * }
+     * ```
      */
     fun affinity(prepare: AffinitySpecBuilder.() -> Unit) {
         affinity = AffinitySpecBuilder().apply(prepare)
@@ -430,6 +528,16 @@ class PodSpecBuilder internal constructor() {
      * Adds a toleration to the tolerations list, initializing the list if necessary.
      *
      * @param prepare A lambda function that applies a configuration to a TolerationSpecBuilder instance.
+     *
+     * Example:
+     * ```kotlin
+     * addToleration {
+     *     key = "node.kubernetes.io/not-ready"
+     *     operator = Operator.EXISTS
+     *     effect = Effect.NO_EXECUTE
+     *     tolerationSeconds = 300
+     * }
+     * ```
      */
     fun addToleration(prepare: TolerationSpecBuilder.() -> Unit) {
         if (tolerations == null) {
@@ -442,6 +550,21 @@ class PodSpecBuilder internal constructor() {
      * Configures a list of tolerations to customize behavior related to taints in a Kubernetes environment.
      *
      * @param prepare a lambda with a receiver of type `TolationSpecListBuilder` used to define the tolerations.
+     *
+     * Example:
+     * ```kotlin
+     * tolerations {
+     *     toleration {
+     *         key = "node-role.kubernetes.io/master"
+     *         effect = Effect.NO_SCHEDULE
+     *     }
+     *     toleration {
+     *         key = "dedicated"
+     *         operator = Operator.EQUAL
+     *         value = "gpu-workload"
+     *     }
+     * }
+     * ```
      */
     fun tolerations(prepare: TolerationSpecListBuilder.() -> Unit) {
         TolerationSpecListBuilder().apply(prepare)
@@ -452,6 +575,16 @@ class PodSpecBuilder internal constructor() {
      *
      * @param prepare A lambda with receiver of type PodSecurityContextSpecBuilder that defines
      *                the customization logic for the pod's security context.
+     *
+     * Example:
+     * ```kotlin
+     * securityContext {
+     *     runAsUser = 1000
+     *     runAsGroup = 3000
+     *     fsGroup = 2000
+     *     runAsNonRoot = true
+     * }
+     * ```
      */
     fun securityContext(prepare: PodSecurityContextSpecBuilder.() -> Unit) {
         securityContext = PodSecurityContextSpecBuilder().apply(prepare)
@@ -476,6 +609,14 @@ class PodSpecBuilder internal constructor() {
      * The readiness gates define conditions that must be met before a resource is considered ready.
      *
      * @param prepare A lambda with receiver used to build and configure the readiness gates.
+     *
+     * Example:
+     * ```kotlin
+     * readinessGates {
+     *     readinessGate("custom.condition/ready")
+     *     readinessGate("external.service/available")
+     * }
+     * ```
      */
     fun readinessGates(prepare: ReadinessGateListBuilder.() -> Unit) {
         ReadinessGateListBuilder().apply(prepare)
@@ -486,6 +627,14 @@ class PodSpecBuilder internal constructor() {
      *
      * @param ip The IP address associated with the host alias.
      * @param prepare A lambda function for configuring the host alias using the HostAliasSpecBuilder.
+     *
+     * Example:
+     * ```kotlin
+     * addHostAlias("192.168.1.100") {
+     *     addHostname("database.local")
+     *     addHostname("db.local")
+     * }
+     * ```
      */
     fun addHostAlias(ip: String, prepare: HostAliasSpecBuilder.() -> Unit) {
         if (hostAliases == null) {
@@ -498,6 +647,19 @@ class PodSpecBuilder internal constructor() {
      * Configures and applies a list of host aliases using the provided builder.
      *
      * @param prepare A lambda with receiver that configures the HostAliasListBuilder.
+     *
+     * Example:
+     * ```kotlin
+     * hostAliases {
+     *     alias("10.0.0.1") {
+     *         addHostname("service1.local")
+     *     }
+     *     alias("10.0.0.2") {
+     *         addHostname("service2.local")
+     *         addHostname("api.local")
+     *     }
+     * }
+     * ```
      */
     fun hostAliases(prepare: HostAliasListBuilder.() -> Unit) {
         HostAliasListBuilder().apply(prepare)
@@ -509,6 +671,13 @@ class PodSpecBuilder internal constructor() {
      *
      * @param name The name of the resource claim to be added.
      * @param prepare A lambda function used to configure the `ResourceClaimSpecBuilder` for the resource claim.
+     *
+     * Example:
+     * ```kotlin
+     * addResourceClaim("gpu-claim") {
+     *     resourceClaimTemplateName = "gpu-template"
+     * }
+     * ```
      */
     fun addResourceClaim(name: String, prepare: ResourceClaimSpecBuilder.() -> Unit) {
         if (resourceClaims == null) {
@@ -521,9 +690,73 @@ class PodSpecBuilder internal constructor() {
      * Applies the provided configuration to a `ResourceClaimSpecListBuilder` instance.
      *
      * @param prepare a lambda with receiver used to configure the `ResourceClaimSpecListBuilder`.
+     *
+     * Example:
+     * ```kotlin
+     * resourceClaims {
+     *     claim("storage-claim") {
+     *         resourceClaimName = "fast-storage"
+     *     }
+     *     claim("network-claim") {
+     *         resourceClaimTemplateName = "network-template"
+     *     }
+     * }
+     * ```
      */
     fun resourceClaims(prepare: ResourceClaimSpecListBuilder.() -> Unit) {
         ResourceClaimSpecListBuilder().apply(prepare)
+    }
+
+    /**
+     * Builds and returns a fully constructed instance of [PodSpec].
+     *
+     * This method ensures that all required fields are properly set and validates
+     * that at least one container is present in the specification.
+     *
+     * @return A new instance of [PodSpec] representing the fully configured pod specification.
+     * @throws IllegalArgumentException If no containers are defined in the PodSpec.
+     */
+    internal fun build(): PodSpec {
+        require(containers != null) { "PodSpec must have at least one container" }
+
+        return PodSpec(
+            containers = containers!!.map { it.build() },
+            initContainers = initContainers?.map { it.build() },
+            ephemeralContainers = ephemeralContainers?.map { it.build() },
+            resourceClaims = resourceClaims?.map { it.build() },
+            dnsConfig = dnsConfig?.build(),
+            overhead = overhead?.build(),
+            nodeSelector = nodeSelector?.mapValues { it.value },
+            imagePullSecrets = imagePullSecrets?.map { it },
+            volumes = volumes?.map { it.build() },
+            topologySpreadConstraints = topologySpreadConstraints?.map { it.build() },
+            affinity = affinity?.build(),
+            tolerations = tolerations?.map { it.build() },
+            securityContext = securityContext?.build(),
+            readinessGates = readinessGates?.map { it },
+            hostAliases = hostAliases?.map { it.build() },
+            dnsPolicy = dnsPolicy,
+            restartPolicy = restartPolicy,
+            shareProcessNamespace = shareProcessNamespace,
+            hostname = hostname,
+            subdomain = subdomain,
+            hostNetwork = hostNetwork,
+            nodeName = nodeName,
+            automountServiceAccountToken = automountServiceAccountToken,
+            serviceAccountName = serviceAccountName,
+            runtimeClassName = runtimeClassName,
+            preemptionPolicy = preemptionPolicy,
+            priority = priority,
+            priorityClassName = priorityClassName,
+            setHostnameAsFQDN = setHostnameAsFQDN,
+            activeDeadlineSeconds = activeDeadlineSeconds,
+            terminationGracePeriodSeconds = terminationGracePeriodSeconds,
+            enableServiceLinks = enableServiceLinks,
+            schedulerName = schedulerName,
+            hostIPC = hostIPC,
+            hostPID = hostPID,
+            os = os
+        )
     }
 
     /**
@@ -576,6 +809,14 @@ class PodSpecBuilder internal constructor() {
          * Configures the list of nameservers using the provided builder action.
          *
          * @param prepare A lambda with receiver that defines the configuration for the nameservers.
+         *
+         * Example:
+         * ```kotlin
+         * nameservers {
+         *     nameserver("1.1.1.1")
+         *     nameserver("1.0.0.1")
+         * }
+         * ```
          */
         fun nameservers(prepare: NameserverListBuilder.() -> Unit) {
             NameserverListBuilder().apply(prepare)
@@ -585,6 +826,14 @@ class PodSpecBuilder internal constructor() {
          * Configures the list of search domains using the provided builder action.
          *
          * @param prepare A lambda with receiver that allows configuration of the search domains.
+         *
+         * Example:
+         * ```kotlin
+         * searches {
+         *     search("cluster.local")
+         *     search("svc.cluster.local")
+         * }
+         * ```
          */
         fun searches(prepare: SearchListBuilder.() -> Unit) {
             SearchListBuilder().apply(prepare)
@@ -594,6 +843,14 @@ class PodSpecBuilder internal constructor() {
          * Configures the options using the provided builder action.
          *
          * @param prepare A lambda with receiver that defines the configuration for the options.
+         *
+         * Example:
+         * ```kotlin
+         * options {
+         *     option("ndots", "5")
+         *     option("timeout", "2")
+         * }
+         * ```
          */
         fun options(prepare: OptionListBuilder.() -> Unit) {
             OptionListBuilder().apply(prepare)
@@ -704,6 +961,14 @@ class PodSpecBuilder internal constructor() {
          *
          * @param prepare A lambda with receiver of type `HostnameListBuilder`,
          *                which is used to configure and add hostnames.
+         *
+         * Example:
+         * ```kotlin
+         * hostnames {
+         *     hostname("db.example.com")
+         *     hostname("cache.example.com")
+         * }
+         * ```
          */
         fun hostnames(prepare: HostnameListBuilder.() -> Unit) {
             HostnameListBuilder().apply(prepare)
@@ -774,25 +1039,10 @@ class PodSpecBuilder internal constructor() {
     }
 
     /**
-     * A sealed interface that provides a mechanism for building a list of container specifications.
-     * It allows users to define individual containers with specific names, images, and configuration details.
-     */
-    sealed interface CommonContainerSpecListBuilder {
-        /**
-         * Defines a container with the specified name, image, and configuration.
-         *
-         * @param name The unique name of the container.
-         * @param image The image to be used for the container.
-         * @param prepare A lambda expression used to specify additional configuration for the container.
-         */
-        fun container(name: String, image: String, prepare: ContainerSpecBuilder.() -> Unit)
-    }
-
-    /**
      * A builder class for constructing a list of container specifications. This class is used to define
      * and configure multiple container definitions within a container spec list context.
      */
-    inner class ContainerSpecListBuilder internal constructor() : CommonContainerSpecListBuilder {
+    inner class ContainerSpecListBuilder internal constructor() {
         /**
          * Adds a container specification to the container list.
          *
@@ -800,18 +1050,9 @@ class PodSpecBuilder internal constructor() {
          * @param image The container image to use, including the version tag if appropriate.
          * @param prepare A lambda for configuring additional specifications for the container.
          */
-        override fun container(name: String, image: String, prepare: ContainerSpecBuilder.() -> Unit) =
+        fun container(name: String, image: String, prepare: ContainerSpecBuilder.() -> Unit) =
             addContainer(name, image, prepare)
-    }
 
-    /**
-     * Builder class for managing a list of init container specifications in a pod definition.
-     *
-     * This class is used to define and configure init containers, which run to completion before
-     * any other containers in the pod are started. It provides methods to add and configure
-     * init containers using a fluent interface.
-     */
-    inner class InitContainerSpecListBuilder internal constructor() : CommonContainerSpecListBuilder {
         /**
          * Adds an init container definition to the pod specification.
          *
@@ -819,22 +1060,9 @@ class PodSpecBuilder internal constructor() {
          * @param image The container image to use.
          * @param prepare A lambda to configure the container using the ContainerSpecBuilder.
          */
-        override fun container(name: String, image: String, prepare: ContainerSpecBuilder.() -> Unit) =
+        fun init(name: String, image: String, prepare: ContainerSpecBuilder.() -> Unit) =
             addInitContainer(name, image, prepare)
-    }
 
-    /**
-     * Builder class for creating and managing a list of ephemeral container specifications.
-     *
-     * This builder facilitates the addition of ephemeral containers with specific configurations
-     * by implementing the `CommonContainerSpecListBuilder` interface. Each container can
-     * be customized by specifying its name, image, and additional attributes defined within
-     * the provided `prepare` block.
-     *
-     * Ephemeral containers are temporary containers that can be added to a running pod
-     * for administrative purposes, such as debugging.
-     */
-    inner class EphemeralContainerSpecListBuilder internal constructor() : CommonContainerSpecListBuilder {
         /**
          * Adds an ephemeral container to the list with the specified name, image, and configuration.
          *
@@ -846,7 +1074,7 @@ class PodSpecBuilder internal constructor() {
          * @param prepare A lambda function used to configure additional properties
          * of the ephemeral container through the `ContainerSpecBuilder`.
          */
-        override fun container(name: String, image: String, prepare: ContainerSpecBuilder.() -> Unit) =
+        fun ephemeral(name: String, image: String, prepare: ContainerSpecBuilder.() -> Unit) =
             addEphemeralContainer(name, image, prepare)
     }
 
@@ -963,7 +1191,7 @@ class PodSpecBuilder internal constructor() {
          *
          * @param name The name of the readiness gate to be added.
          */
-        fun readinessGate(name: String) = addReadinessGate(name)
+        fun gate(name: String) = addReadinessGate(name)
     }
 
     /**

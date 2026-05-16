@@ -20,6 +20,7 @@ import org.pcsoft.framework.kube.kts.api.types.CpuValue
 import org.pcsoft.framework.kube.kts.api.types.MemoryValue
 import tools.jackson.databind.annotation.JsonDeserialize
 import tools.jackson.databind.annotation.JsonSerialize
+import java.time.Duration
 
 /**
  * Represents the specification of a Pod in Kubernetes.
@@ -100,10 +101,10 @@ data class PodSpec(
     val securityContext: PodSecurityContextSpec?,
     @field:JsonSerialize(using = DurationInSecondsSerializer::class)
     @field:JsonDeserialize(using = DurationInSecondsDeserializer::class)
-    val terminationGracePeriodSeconds: Int?,
+    val terminationGracePeriodSeconds: Duration?,
     @field:JsonSerialize(using = DurationInSecondsSerializer::class)
     @field:JsonDeserialize(using = DurationInSecondsDeserializer::class)
-    val activeDeadlineSeconds: Int?,
+    val activeDeadlineSeconds: Duration?,
     val readinessGates: List<String>?,
     val hostAliases: List<HostAliasSpec>?,
     val resourceClaims: List<ResourceClaimSpec>?,

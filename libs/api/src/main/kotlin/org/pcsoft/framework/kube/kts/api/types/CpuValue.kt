@@ -145,6 +145,16 @@ fun cpuOf(value: Float) = CpuValue(value)
 val Float.cpu get() = CpuValue(this)
 
 /**
+ * Extension property to convert an integer value representing CPU usage in microseconds
+ * into a `CpuValue` instance.
+ *
+ * This property allows interpreting an Int as a CPU allocation or limit, with `1000` representing
+ * a full CPU core. It simplifies the creation of `CpuValue` objects to represent resource constraints
+ * for CPU usage.
+ */
+val Int.mCpu get() = (this.toFloat() / 1000f).cpu
+
+/**
  * Provides a default CPU value that represents "zero" or "no CPU".
  *
  * This property is typically used in contexts where an absence or nullification
