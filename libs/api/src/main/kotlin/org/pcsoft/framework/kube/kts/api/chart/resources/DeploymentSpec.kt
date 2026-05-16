@@ -20,7 +20,7 @@ import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsDeseria
 import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsSerializer
 import tools.jackson.databind.annotation.JsonDeserialize
 import tools.jackson.databind.annotation.JsonSerialize
-import kotlin.time.Duration
+import java.time.Duration
 
 /**
  * Represents the specification for a Kubernetes Deployment resource.
