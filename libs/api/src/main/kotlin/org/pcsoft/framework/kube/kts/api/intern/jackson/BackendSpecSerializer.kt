@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -63,9 +63,7 @@ internal class BackendSpecSerializer : ValueSerializer<BackendSpec>() {
                 gen.writeObjectPropertyStart("resource")
                 gen.writeStringProperty("name", value.name)
                 gen.writeStringProperty("kind", value.kind)
-                if (value.apiGroup == null) {
-                    gen.writeNullProperty("apiGroup")
-                } else {
+                if (value.apiGroup != null) {
                     gen.writeStringProperty("apiGroup", value.apiGroup)
                 }
                 gen.writeEndObject()

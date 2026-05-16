@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -13,11 +13,12 @@
 package org.pcsoft.framework.kube.kts.definition.compiler
 
 import org.pcsoft.framework.kube.kts.api.chart.ChartSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.DeploymentSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortMappingSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
-import org.pcsoft.framework.kube.kts.api.chart.template.types.MetadataSpec
+import org.pcsoft.framework.kube.kts.api.chart.types.MetadataBaseSpec
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
 import org.pcsoft.framework.kube.kts.api.types.MailAddress
 import org.pcsoft.framework.kube.kts.api.values.ValueAccess
@@ -36,12 +37,13 @@ object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports("${ResourceSpec::class.java.packageName}.*")
     defaultImports("${PortMappingSpec::class.java.packageName}.*")
     defaultImports("${TemplateSpec::class.java.packageName}.*")
-    defaultImports("${MetadataSpec::class.java.packageName}.*")
+    defaultImports("${MetadataBaseSpec::class.java.packageName}.*")
     defaultImports("${KubeVersion::class.java.packageName}.*")
     defaultImports("${MailAddress::class.java.packageName}.*")
     defaultImports("${ValueAccess::class.java.packageName}.*")
 
     defaultImports("${ServiceSpec::class.qualifiedName}.*")
+    defaultImports("${DeploymentSpec::class.qualifiedName}.*")
     defaultImports("${PortMappingSpec::class.qualifiedName}.*")
 
     defaultImports("java.net.URL", "java.net.URI")

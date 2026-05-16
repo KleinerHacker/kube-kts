@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -15,7 +15,7 @@ package org.pcsoft.framework.kube.kts.api.intern.json
 import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
-import org.pcsoft.framework.kube.kts.api.chart.template.types.MetadataSpec
+import org.pcsoft.framework.kube.kts.api.chart.types.MetadataTemplateSpec
 import tools.jackson.core.JsonParser
 import tools.jackson.databind.DeserializationContext
 import tools.jackson.databind.JsonNode
@@ -31,7 +31,7 @@ class ResourceApiDeserializer : ValueDeserializer<TemplateSpec<*>>() {
 
         val apiVersion = tree["apiVersion"].asString()
         val kind = tree["kind"].asString()
-        val metadata = ctxt.readValue(TreeTraversingParser(tree["metadata"]), MetadataSpec::class.java)
+        val metadata = ctxt.readValue(TreeTraversingParser(tree["metadata"]), MetadataTemplateSpec::class.java)
 
         val targetType = when (kind) {
             ServiceSpec.KIND -> ServiceSpec::class.java

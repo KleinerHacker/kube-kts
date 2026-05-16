@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -41,7 +41,7 @@ sealed class BackendSpec(
  * @property port The port configuration for the service backend.
  */
 @NoArgs
-class ServiceBackendSpec(
+class ServiceBackendSpec internal constructor(
     name: String,
     val port: PortSpec
 ) : BackendSpec(name)
@@ -54,7 +54,7 @@ class ServiceBackendSpec(
  * @property apiGroup The API group of the resource, if applicable.
  */
 @NoArgs
-class ResourceBackendSpec(
+class ResourceBackendSpec internal constructor(
     name: String,
     val kind: String,
     val apiGroup: String?

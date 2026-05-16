@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -15,13 +15,13 @@ package org.pcsoft.framework.kube.kts.api.chart.resources
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortMappingSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.Protocol
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpecBuilder
 import org.pcsoft.framework.kube.kts.api.utils.convertToJson
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
-import java.util.UUID
+import java.util.*
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
@@ -31,11 +31,10 @@ class ServiceSpecTest {
         private val maxSpecBuilder = ServiceSpecBuilder().apply {
             type = ServiceSpec.Type.LoadBalancer
 
-            addPort("port") {
-                port = 9999
+            addPort("port", 9999) {
                 targetPort = 8888
                 nodePort = 7777
-                protocol = PortMappingSpec.Protocol.SCTP
+                protocol = Protocol.SCTP
                 appProtocol = "https"
             }
 
@@ -97,7 +96,7 @@ class ServiceSpecTest {
         Assertions.assertEquals(9999, maxSpec.ports[0].port)
         Assertions.assertEquals(8888, maxSpec.ports[0].targetPort)
         Assertions.assertEquals(7777, maxSpec.ports[0].nodePort)
-        Assertions.assertEquals(PortMappingSpec.Protocol.SCTP, maxSpec.ports[0].protocol)
+        Assertions.assertEquals(Protocol.SCTP, maxSpec.ports[0].protocol)
         Assertions.assertEquals("https", maxSpec.ports[0].appProtocol)
 
         Assertions.assertEquals("clusterIP", maxSpec.clusterIP)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -14,7 +14,7 @@ package org.pcsoft.framework.kube.kts.api.chart.template
 
 import org.pcsoft.framework.kube.kts.api.chart.KubeSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpec
-import org.pcsoft.framework.kube.kts.api.chart.template.types.MetadataSpec
+import org.pcsoft.framework.kube.kts.api.chart.types.MetadataTemplateSpec
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 /**
@@ -35,6 +35,6 @@ import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 data class TemplateSpec<S>(
     val apiVersion: String,
     val kind: String,
-    val metadata: MetadataSpec,
+    val metadata: MetadataTemplateSpec,
     val spec: S
 ) : KubeSpec where S : ResourceSpec

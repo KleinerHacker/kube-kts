@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -25,6 +25,8 @@ import java.net.URI
  * This class provides a fluent API for configuring Helm chart metadata, including
  * dependencies, maintainers, keywords, and Kubernetes version compatibility.
  * It is typically used via the top-level [chart] function.
+ *
+ * All values are optional.
  *
  * @param name The unique name of the Helm chart.
  * @param version The semantic version of the chart.

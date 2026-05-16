@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations.
  */
 
-package org.pcsoft.framework.kube.kts.api.chart.template.types
+package org.pcsoft.framework.kube.kts.api.chart.types
 
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import java.util.UUID

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -10,7 +10,7 @@
  * See the License for the specific language governing permissions and limitations.
  */
 
-package org.pcsoft.framework.kube.kts.api.chart.template.types
+package org.pcsoft.framework.kube.kts.api.chart.types
 
 import java.util.UUID
 
@@ -20,6 +20,8 @@ import java.util.UUID
  * This builder allows configuration of owner reference properties such as API version,
  * kind, name, and UID. It also supports optional settings like controller flag and
  * block owner deletion behavior.
+ *
+ * All values are optional.
  *
  * @property apiVersion The API version of the referenced object (e.g., "v1").
  * @property kind The kind of the referenced object (e.g., "Pod", "Deployment").

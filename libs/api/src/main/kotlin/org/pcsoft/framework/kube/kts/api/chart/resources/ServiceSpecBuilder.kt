@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -25,6 +25,8 @@ import java.time.Duration
  * session affinity, and other service-related attributes.
  *
  * The builder enforces the creation of at least one port mapping as part of the service specification.
+ *
+ * Some values are required.
  *
  * @constructor Creates an instance of `ServiceSpecBuilder`. This constructor is intended for internal use.
  */
@@ -204,18 +206,18 @@ class ServiceSpecBuilder internal constructor() : ResourceSpecBuilder<ServiceSpe
      * 
      * Example:
      * ```kotlin
-     * addPort("http") {
-     *     port = 80
+     * addPort("http", 80) {
      *     targetPort = 8080
      * }
      * ```
      *
      * @param name The name of the port mapping. This is a unique identifier for the port and must not be blank.
+     * @param port The port number for the port mapping. This should be a valid port number.
      * @param prepare A lambda with receiver that provides a [PortMappingSpecBuilder] to configure the
-     *                port specifics such as port number, target port, protocol, and more.
+     *                port specifics such as target port, protocol, and more.
      */
-    fun addPort(name: String, prepare: PortMappingSpecBuilder.() -> Unit) {
-        val portSpec = PortMappingSpecBuilder(name).apply(prepare)
+    fun addPort(name: String, port: Int, prepare: PortMappingSpecBuilder.() -> Unit) {
+        val portSpec = PortMappingSpecBuilder(name, port).apply(prepare)
         ports.add(portSpec)
     }
 
@@ -527,18 +529,18 @@ class ServiceSpecBuilder internal constructor() : ResourceSpecBuilder<ServiceSpe
          *
          * Example:
          * ```kotlin
-     *     port("http") {
-     *         port = 80
+     *     port("http", 80) {
      *         targetPort = 8080
      *     }
          * ```
          *
          * @param name The name of the port mapping. This serves as a unique identifier and must not be blank.
+         * @param port The port number for the port mapping. This should be a valid port number.
          * @param prepare A lambda with receiver that provides a [PortMappingSpecBuilder] to define the port's
-         *                configuration details, such as the port number, target port, protocol, and other specifications.
+         *                configuration details, such as target port, protocol, and other specifications.
          */
-        fun port(name: String, prepare: PortMappingSpecBuilder.() -> Unit) =
-            addPort(name, prepare)
+        fun port(name: String, port: Int, prepare: PortMappingSpecBuilder.() -> Unit) =
+            addPort(name, port, prepare)
     }
 
     /**
