@@ -100,7 +100,9 @@ class PodSpecTest {
             volumes {
                 volume("my-volume") {
                     from {
-                        secret("secret-name")
+                        secret {
+                            name = "secret-name"
+                        }
                     }
                 }
             }
@@ -212,7 +214,7 @@ class PodSpecTest {
         assertNotNull(spec.volumes)
         assertEquals("my-volume", spec.volumes.first().name)
         assertIs<VolumeSpec.SecretSourceSpec>(spec.volumes.first().source)
-        assertEquals("secret-name", (spec.volumes.first().source as VolumeSpec.SecretSourceSpec).secretName)
+        assertEquals("secret-name", (spec.volumes.first().source as VolumeSpec.SecretSourceSpec).name)
 
         assertNotNull(spec.nodeSelector)
         assertEquals("ssd", spec.nodeSelector["disktype"])

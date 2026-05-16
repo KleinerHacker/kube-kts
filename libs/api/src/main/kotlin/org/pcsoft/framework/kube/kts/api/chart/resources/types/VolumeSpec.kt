@@ -13,6 +13,7 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonValue
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import org.pcsoft.framework.kube.kts.api.intern.jackson.VolumeSpecSerializer
@@ -44,28 +45,97 @@ data class VolumeSpec(
     sealed interface SourceSpec
 
     /**
-     * Represents a volume source configuration backed by a Kubernetes ConfigMap.
+     * Represents a specification for a file source within a projected volume.
      *
-     * This class is used to define a ConfigMap as the source for a volume in a Kubernetes pod,
-     * allowing the pod to access the configuration data stored in the ConfigMap.
+     * This sealed class defines the common fields and structure for file source configurations,
+     * which are used in the context of volume projections in Kubernetes. It can be extended
+     * to provide specific file mapping rules or properties.
      *
-     * @property name The name of the ConfigMap to be used as the volume source.
+     * @property name The name identifier for the file source. This may correspond to a specific volume or file source name.
+     * @property optional Indicates whether the file source is optional. If true, the absence of the specified source
+     *                    will not be considered an error.
+     * @property defaultMode Represents the default permission mode (Unix-style) applied to all files created within this
+     *                       file source. If null, a default mode specific to the container runtime may be used.
+     * @property items A list of additional items detailing specific mappings or configurations related to the
+     *                 file source. These items depend on the specific context or type of implementation.
      */
     @NoArgs
-    data class ConfigMapSourceSpec(val name: String) : SourceSpec
+    sealed class FileSourceSpec(
+        val name: String?,
+        val optional: Boolean?,
+        val defaultMode: Int?,
+        val items: List<Any>?
+    ) : SourceSpec {
+        /**
+         * Represents a mapping between a specific key in a ConfigMap and its corresponding file path
+         * within a projected volume. This specification is used to customize how individual keys
+         * from a Kubernetes ConfigMap are mapped to files inside the volume.
+         *
+         * @property key The key in the ConfigMap to be projected into the volume. This is the name of the
+         *               data entry within the ConfigMap that should be used.
+         * @property path The relative file path within the volume where the content of the specified key
+         *                will be written. The path is relative to the mount point of the volume.
+         * @property mode The file permission mode (Unix-style) to be applied to the file created for the
+         *                specified key. When null, a default permission may be applied.
+         */
+        @NoArgs
+        data class KeyToPathSpec(val key: String, val path: String, val mode: Int?)
+    }
 
     /**
-     * Represents a volume source specification that uses a Kubernetes Secret as its source.
+     * Defines the specification for a ConfigMap source used in a volume configuration.
      *
-     * This class is a specific implementation of the `SourceSpec` interface and allows
-     * a Kubernetes Secret to be mounted as a volume in a pod. The secret is identified
-     * by its name, which corresponds to an existing Kubernetes Secret resource in the
-     * same namespace as the pod.
+     * This class represents a Kubernetes ConfigMap volume source, allowing a ConfigMap to be
+     * projected into a volume. It provides options to configure the name of the ConfigMap,
+     * optionality, default file permissions, and key-to-path mappings.
      *
-     * @property secretName The name of the Kubernetes Secret to be used as the volume source.
+     * @property name The name of the ConfigMap to be used. When null, it indicates that a ConfigMap
+     *                reference is not specified.
+     * @property optional Whether the ConfigMap is optional. If true, the volume is mounted even if
+     *                    the ConfigMap does not exist. If false or null, the volume mount fails when
+     *                    the ConfigMap is missing.
+     * @property defaultMode Default permissions mode (file mode) to be applied to the files created
+     *                       from this ConfigMap. It is represented as an integer using Unix permission
+     *                       notation.
+     * @property items A list of key-to-path mappings, allowing specific ConfigMap keys to be projected
+     *                 to custom file paths within the volume. If null, all keys in the ConfigMap are
+     *                 protected into the volume with their default mappings.
      */
     @NoArgs
-    data class SecretSourceSpec(val secretName: String) : SourceSpec
+    class ConfigMapSourceSpec(
+        name: String?,
+        optional: Boolean?,
+        defaultMode: Int?,
+        items: List<KeyToPathSpec>?
+    ) : FileSourceSpec(name, optional, defaultMode, items)
+
+    /**
+     * Represents a source specification for a secret volume in a Kubernetes-like environment.
+     *
+     * This class is used to define how secrets are projected into a volume. It extends the
+     * functionality of [FileSourceSpec], inheriting properties that specify the source name,
+     * optionality, file permission defaults, and mappings of keys to paths.
+     *
+     * @constructor
+     * Creates an instance of `SecretSourceSpec`.
+     *
+     * @param name The name of the secret to be projected into the volume.
+     *             If null, the name will be resolved dynamically based on the context.
+     * @param optional Specifies whether the secret is optional. If true, the volume
+     *                 will be created even if the secret is missing.
+     * @param defaultMode The default file permission mode (Unix-style)
+     *                    for files created within the volume.
+     * @param items A list of key-to-path mappings, where each mapping specifies how an individual
+     *              key in the secret is projected into a specific path inside the volume.
+     */
+    @NoArgs
+    class SecretSourceSpec(
+        @JsonProperty("secretName")
+        name: String?,
+        optional: Boolean?,
+        defaultMode: Int?,
+        items: List<KeyToPathSpec>?
+    ) : FileSourceSpec(name, optional, defaultMode, items)
 
     /**
      * Represents the source of a volume backed by a PersistentVolumeClaim (PVC).
@@ -75,9 +145,10 @@ data class VolumeSpec(
      * to a PersistentVolume before it can be used by the pod.
      *
      * @property claimName The name of the PersistentVolumeClaim to be used as the source.
+     * @property readOnly Whether the volume should be mounted read-only. If null, defaults to false.
      */
     @NoArgs
-    data class PersistentVolumeClaimSourceSpec(val claimName: String) : SourceSpec
+    data class PersistentVolumeClaimSourceSpec(val claimName: String, val readOnly: Boolean?) : SourceSpec
 
     /**
      * Specifies the configuration for a HostPath volume source.
@@ -91,10 +162,11 @@ data class VolumeSpec(
      *                depending on the specified type.
      * @property type The type of the HostPath volume, which determines the required behavior or
      *                object type (e.g., file, directory, socket). Use [Type] enumeration to indicate
-     *                the desired behavior and constraints.
+     *                the desired behavior and constraints. If null, the type will be inferred based
+     *                on the path.
      */
     @NoArgs
-    data class HostPathSourceSpec(val path: String, val type: Type) : SourceSpec {
+    data class HostPathSourceSpec(val path: String, val type: Type?) : SourceSpec {
         /**
          * Defines the possible types of file system objects for a HostPath volume.
          *

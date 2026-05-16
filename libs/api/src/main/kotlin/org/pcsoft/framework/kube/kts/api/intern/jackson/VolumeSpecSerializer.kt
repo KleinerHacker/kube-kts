@@ -15,9 +15,25 @@ package org.pcsoft.framework.kube.kts.api.intern.jackson
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeSpec
 import org.pcsoft.framework.kube.kts.api.intern.utils.writeObject
 import tools.jackson.core.JsonGenerator
+import tools.jackson.databind.JsonNode
 import tools.jackson.databind.SerializationContext
+import tools.jackson.databind.ValueDeserializer
 import tools.jackson.databind.ValueSerializer
 
+/**
+ * A custom serializer for the [VolumeSpec] class that converts VolumeSpec instances
+ * into a JSON representation based on their specific source type.
+ *
+ * This serializer checks the type of the [VolumeSpec.source] property and serializes it 
+ * accordingly into one of the predefined source types: secret, configMap, persistentVolumeClaim, 
+ * hostPath, or emptyDir. If the value is null, it writes a JSON null value.
+ *
+ * This implementation ensures a dynamic handling of [VolumeSpec] objects during serialization
+ * by delegating the source-specific serialization to their respective POJO properties.
+ *
+ * Throws exceptions if the internal object writer (JsonGenerator) encounters errors during serialization
+ * or if the data structure being serialized is invalid.
+ */
 class VolumeSpecSerializer : ValueSerializer<VolumeSpec>() {
     override fun serialize(
         value: VolumeSpec?,
@@ -39,5 +55,47 @@ class VolumeSpecSerializer : ValueSerializer<VolumeSpec>() {
                 is VolumeSpec.EmptyDirSourceSpec -> gen.writePOJOProperty("emptyDir", value.source)
             }
         }
+    }
+}
+
+/**
+ * A custom deserializer for the [VolumeSpec] class that converts JSON representations
+ * back into VolumeSpec instances based on their specific source type.
+ *
+ * This deserializer reads the JSON object and determines the source type based on which
+ * source property is present (secret, configMap, persistentVolumeClaim, hostPath, or emptyDir).
+ * It then deserializes the source-specific data into the appropriate VolumeSpec.SourceSpec subtype.
+ *
+ * This implementation ensures proper reconstruction of [VolumeSpec] objects during deserialization
+ * by handling each source type dynamically.
+ *
+ * Throws exceptions if the JSON structure is invalid or if required fields are missing.
+ */
+class VolumeSpecDeserializer : ValueDeserializer<VolumeSpec>() {
+    override fun deserialize(
+        p: tools.jackson.core.JsonParser,
+        ctxt: tools.jackson.databind.DeserializationContext
+    ): VolumeSpec {
+        val node: JsonNode = p.readValueAsTree()
+        val name = node.get("name").asString()
+
+        val source = when {
+            node.has("secret") -> ctxt.readTreeAsValue(node.get("secret"), VolumeSpec.SecretSourceSpec::class.java)
+            node.has("configMap") -> ctxt.readTreeAsValue(
+                node.get("configMap"),
+                VolumeSpec.ConfigMapSourceSpec::class.java
+            )
+
+            node.has("persistentVolumeClaim") -> ctxt.readTreeAsValue(
+                node.get("persistentVolumeClaim"),
+                VolumeSpec.PersistentVolumeClaimSourceSpec::class.java
+            )
+
+            node.has("hostPath") -> ctxt.readTreeAsValue(node.get("hostPath"), VolumeSpec.HostPathSourceSpec::class.java)
+            node.has("emptyDir") -> ctxt.readTreeAsValue(node.get("emptyDir"), VolumeSpec.EmptyDirSourceSpec::class.java)
+            else -> throw IllegalArgumentException("Unknown volume source type")
+        }
+
+        return VolumeSpec(name, source)
     }
 }
