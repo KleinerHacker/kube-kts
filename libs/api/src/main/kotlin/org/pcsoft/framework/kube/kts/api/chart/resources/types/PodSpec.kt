@@ -291,7 +291,12 @@ data class PodSpec(
     data class HostAliasSpec(
         val ip: String,
         val hostnames: List<String>
-    )
+    ) {
+        init {
+            require(ip.isNotBlank()) { "IP address cannot be blank" }
+            require(hostnames.isNotEmpty()) { "At least one hostname is required" }
+        }
+    }
 
     /**
      * Describes a specification for a resource claim within a pod.
