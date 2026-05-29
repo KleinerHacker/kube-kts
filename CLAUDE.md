@@ -24,13 +24,19 @@ Kube KTS ist ein **Helm-Wrapper für Kubernetes**, der YAML-Dateien mit Go-Templ
 
 ```
 helm/
-├── Chart.kts           # → Chart.yaml
+├── Chart.spec.kts      # → Chart.yaml
 ├── values.yaml
 └── templates/
-    ├── deployment.kts  # → deployment.yaml
-    ├── service.kts     # → service.yaml
+    ├── deployment.spec.kts  # → deployment.yaml
+    ├── service.spec.kts     # → service.yaml
+    ├── helpers.lib.kts      # Hilfsfunktionen (wird nicht gerendert)
     └── ...
 ```
+
+**KTS-Dateitypen:**
+- `*.spec.kts` — Definiert eine Kubernetes-Ressource, wird zu YAML gerendert
+- `*.lib.kts` — Definiert Hilfsfunktionen, die in allen `*.spec.kts`-Dateien verfügbar sind (nicht untereinander)
+- `*.kts` — Legacy (wird weiterhin als Spec-Datei behandelt)
 
 Legacy `.yaml`/`.yml`-Dateien werden unverändert kopiert (vollständige Rückwärtskompatibilität).
 

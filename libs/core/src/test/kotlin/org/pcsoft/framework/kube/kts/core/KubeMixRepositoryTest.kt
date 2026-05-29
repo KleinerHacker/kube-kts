@@ -28,11 +28,11 @@ class KubeMixRepositoryTest : RepositoryTest() {
     fun testSuccessfully() {
         val ktsRepo = KubeKtsRepositoryScanner.DEFAULT.scan(Paths.get(this::class.java.getResource("/mix/helm").toURI()))
         Assertions.assertNotNull(ktsRepo)
-        Assertions.assertEquals(3, ktsRepo.files.size)
-        Assertions.assertEquals(1, ktsRepo.files.filter { it.isChart }.size)
-        Assertions.assertTrue { ktsRepo.files.any { it.subject == "Chart" } }
-        Assertions.assertTrue { ktsRepo.files.any { it.subject == "service" } }
-        Assertions.assertTrue { ktsRepo.files.any { it.subject == "deployment" } }
+        Assertions.assertEquals(3, ktsRepo.specFiles.size)
+        Assertions.assertEquals(1, ktsRepo.specFiles.filter { it.isChart }.size)
+        Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "Chart" } }
+        Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "service" } }
+        Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "deployment" } }
         Assertions.assertEquals(3, ktsRepo.legacyFiles.size)
         Assertions.assertEquals(0, ktsRepo.legacyFiles.filter { it.isChart }.size)
         Assertions.assertEquals(1, ktsRepo.legacyFiles.filter { it.isValues }.size)
@@ -42,15 +42,15 @@ class KubeMixRepositoryTest : RepositoryTest() {
 
         val helmRepo = KubeKtsRepositoryBuilder.createDefault().build(ktsRepo, arrayOf())
         Assertions.assertNotNull(helmRepo)
-        Assertions.assertEquals(3, helmRepo.files.size)
-        Assertions.assertEquals(1, helmRepo.files.filter { it.isChart }.size)
+        Assertions.assertEquals(3, helmRepo.specFiles.size)
+        Assertions.assertEquals(1, helmRepo.specFiles.filter { it.isChart }.size)
         Assertions.assertEquals(3, helmRepo.legacyFiles.size)
         Assertions.assertEquals(0, helmRepo.legacyFiles.filter { it.isChart }.size)
         Assertions.assertEquals(1, helmRepo.legacyFiles.filter { it.isValues }.size)
 
-        Assertions.assertTrue { helmRepo.files.any { it.subject == "Chart" } }
-        Assertions.assertTrue { helmRepo.files.any { it.subject == "service" } }
-        Assertions.assertTrue { helmRepo.files.any { it.subject == "deployment" } }
+        Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "Chart" } }
+        Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "service" } }
+        Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "deployment" } }
         Assertions.assertTrue { helmRepo.legacyFiles.any { it.subject == "ingress" } }
         Assertions.assertTrue { helmRepo.legacyFiles.any { it.subject == "helper" } }
         Assertions.assertTrue { helmRepo.legacyFiles.any { it.subject == "values" } }

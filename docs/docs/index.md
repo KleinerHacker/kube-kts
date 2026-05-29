@@ -32,11 +32,12 @@ The project structure mirrors a classic Helm repository:
 
 ```
 ─ helm
-  ├── Chart.kts
+  ├── Chart.spec.kts
   ├── values.yaml
   └── templates
-      ├── deployment.kts
-      ├── service.kts
+      ├── deployment.spec.kts
+      ├── service.spec.kts
+      ├── helpers.lib.kts
       └── ...
 ```
 
@@ -52,6 +53,53 @@ During processing, Kube KTS generates a Helm-compatible output:
       └── ...
 ```
 
+!!! note "Library files are not rendered"
+    Files with the `.lib.kts` extension are not rendered to YAML. Their content is
+    automatically made available in all spec files at compile time.
+
+---
+
+## KTS File Types
+
+Kube KTS distinguishes between two types of Kotlin Script files:
+
+| Extension | Purpose |
+| :--- | :--- |
+| `*.spec.kts` | Defines a Kubernetes resource (rendered to YAML) |
+| `*.lib.kts` | Defines helper functions available in all spec files |
+
+### Spec Files (`*.spec.kts`)
+
+Spec files define Kubernetes resources using the KTS DSL. Each spec file produces one YAML
+output file. `Chart.spec.kts` is a special spec file that produces `Chart.yaml`.
+
+```kotlin
+// templates/deployment.spec.kts
+deployment {
+    metadata("my-app") { }
+    spec { /* ... */ }
+}
+```
+
+### Library Files (`*.lib.kts`)
+
+Library files define reusable helper functions that are automatically available in all spec files
+within the same repository. Library files are **not** rendered to YAML output and are **not**
+accessible from other library files.
+
+```kotlin
+// templates/helpers.lib.kts
+fun appLabels(name: String) = mapOf("app" to name, "managed-by" to "kube-kts")
+```
+
+```kotlin
+// templates/deployment.spec.kts — can call appLabels() directly
+deployment {
+    metadata("my-app") {
+        labels { appLabels("my-app").forEach { label(it.key, it.value) } }
+    }
+}
+```
 
 ---
 
@@ -59,7 +107,8 @@ During processing, Kube KTS generates a Helm-compatible output:
 
 Kube KTS is fully compatible with legacy Helm setups.
 
-- Existing YAML files can be used alongside `.kts` files
+- Existing YAML files can be used alongside `.spec.kts` files
+- Plain `.kts` files (without the `.spec.` qualifier) are also supported as legacy spec files
 - Legacy files are **copied unchanged** into the final output
 - Mixed environments (YAML + KTS) are fully supported
 
