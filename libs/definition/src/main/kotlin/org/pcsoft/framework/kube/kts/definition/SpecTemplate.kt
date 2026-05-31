@@ -12,14 +12,14 @@
 
 package org.pcsoft.framework.kube.kts.definition
 
-import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsCompilationConfiguration
-import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsEvaluationConfiguration
+import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsSpecCompilationConfiguration
+import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsSpecEvaluationConfiguration
 import kotlin.script.experimental.annotations.KotlinScript
 
 @Suppress("unused")
 @KotlinScript(
-    compilationConfiguration = KubeKtsCompilationConfiguration::class,
-    evaluationConfiguration = KubeKtsEvaluationConfiguration::class,
+    compilationConfiguration = KubeKtsSpecCompilationConfiguration::class,
+    evaluationConfiguration = KubeKtsSpecEvaluationConfiguration::class,
     displayName = "Kube KTS Spec",
     filePathPattern = ".*[/\\\\]helm[/\\\\].*\\.spec\\.kts"
 )

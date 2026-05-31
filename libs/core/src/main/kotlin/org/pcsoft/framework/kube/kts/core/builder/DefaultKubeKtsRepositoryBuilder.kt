@@ -20,6 +20,7 @@ import org.pcsoft.framework.kube.kts.core.intern.utils.map
 import org.pcsoft.framework.kube.kts.core.intern.utils.thenCollect
 import org.pcsoft.framework.kube.kts.core.intern.utils.thenMap
 import org.pcsoft.framework.kube.kts.core.intern.utils.thenMapWithError
+import org.pcsoft.framework.kube.kts.core.intern.utils.withTempFileHandler
 import org.pcsoft.framework.kube.kts.core.merge.YamlMerging
 import org.pcsoft.framework.kube.kts.logging.*
 import tools.jackson.dataformat.yaml.YAMLMapper
@@ -53,56 +54,66 @@ internal class DefaultKubeKtsRepositoryBuilder(
     override fun build(repository: KubeKtsRepository, valueFiles: Array<Path>): KubeHelmRepository {
         logger.atDebug().log { "$symbolProcess Building Helm repository from Kube KTS repository: ${repository.name}" }
 
-        logger.atDebug().log { "$symbolBullet Merge ${valueFiles.size} value files..." }
-        logger.atTrace().log { "\t$symbolArrowRight ${valueFiles.joinToString(", ") { it.fileName.toString() }}" }
-        val baseValue = repository.legacyFiles.firstOrNull { it.isValues }?.let {
-            Files.createTempFile("base", ".${it.extension}").apply {
-                Files.writeString(this, it.content, Charsets.UTF_8)
+        return withTempFileHandler {
+            logger.atDebug().log { "$symbolBullet Merge ${valueFiles.size} value files..." }
+            logger.atTrace().log { "\t$symbolArrowRight ${valueFiles.joinToString(", ") { it.fileName.toString() }}" }
+            val baseValue = repository.legacyFiles.firstOrNull { it.isValues }?.let {
+                Files.createTempFile("base", ".${it.extension}").also { path ->
+                    Files.writeString(path, it.content, Charsets.UTF_8)
+                }.toTempFile()
             }
-        }
 
-        val mergedValueFile = merging.merge(baseValue, *valueFiles)
-        val valueNode = mergedValueFile?.let { YAMLMapper().readTree(it) } ?: YAMLMapper().createObjectNode()
-        val valueAccess = ValueAccess.ofRoot(valueNode)
+            val mergedValueFile = merging.merge(baseValue, *valueFiles)
+            val valueNode = mergedValueFile?.let { YAMLMapper().readTree(it) } ?: YAMLMapper().createObjectNode()
+            val valueAccess = ValueAccess.ofRoot(valueNode)
 
-        logger.atDebug().log { "$symbolBullet Build ${repository.specFiles.size} files..." }
-        logger.atTrace().log {
-            "\t$symbolArrowRight ${repository.specFiles.joinToString(", ") { it.subject }}"
-        }
+            logger.atDebug().log { "$symbolBullet Create ${repository.libFiles.size} lib script temp files..." }
+            logger.atTrace().log { "\t$symbolArrowRight ${repository.libFiles.joinToString(", ") { it.subject }}" }
+            val libTempFiles = repository.libFiles.map { libFile ->
+                Files.createTempFile(libFile.subject, ".lib.kts").also { path ->
+                    Files.writeString(path, libFile.script, Charsets.UTF_8)
+                }.toTempFile()
+            }
 
-        val helmFiles = repository.specFiles
-            .map { file ->
-                withTempFile(file) {
-                    processor.compile(file.subject, it, unsafeMode)
-                        .map { file to it }
+            logger.atDebug().log { "$symbolBullet Build ${repository.specFiles.size} files..." }
+            logger.atTrace().log {
+                "\t$symbolArrowRight ${repository.specFiles.joinToString(", ") { it.subject }}"
+            }
+
+            val helmFiles = repository.specFiles
+                .map { file ->
+                    withTempFile(file) {
+                        processor.compile(file.subject, it, libTempFiles, unsafeMode)
+                            .map { file to it }
+                    }
                 }
-            }
-            .thenMapWithError { pair ->
-                processor.execute<KubeSpec>(pair.first.subject, pair.second, valueAccess)
-                    .map { pair.first to it }
-            }
-            .thenMap { helmFileMapper(it.first, it.second) }
-            .thenCollect {
-                val collectedReasons = it.joinToString(System.lineSeparator()) {
-                    it.reason
+                .thenMapWithError { pair ->
+                    processor.execute<KubeSpec>(pair.first.subject, pair.second, valueAccess)
+                        .map { pair.first to it }
+                }
+                .thenMap { helmFileMapper(it.first, it.second) }
+                .thenCollect {
+                    val collectedReasons = it.joinToString(System.lineSeparator()) {
+                        it.reason
+                    }
+
+                    Either.Error("Multiple errors occurred during processing: ${System.lineSeparator()}$collectedReasons")
                 }
 
-                Either.Error("Multiple errors occurred during processing: ${System.lineSeparator()}$collectedReasons")
+            require(helmFiles !is Either.Error) {
+                val reason = (helmFiles as Either.Error).reason
+                logger.atTrace().log { "Errors during processing: $reason".failedStyle() }
+
+                reason
             }
 
-        require(helmFiles !is Either.Error) {
-            val reason = (helmFiles as Either.Error).reason
-            logger.atTrace().log { "Errors during processing: $reason".failedStyle() }
-
-            reason
+            logger.atDebug().log { "Build Helm repository finished: ${repository.name}".successStyle() }
+            KubeHelmRepository(
+                repository.name,
+                (helmFiles as Either.Success<Iterable<KubeHelmFile>>).value.toList(),
+                repository.legacyFiles
+            )
         }
-
-        logger.atDebug().log { "Build Helm repository finished: ${repository.name}".successStyle() }
-        return KubeHelmRepository(
-            repository.name,
-            (helmFiles as Either.Success<Iterable<KubeHelmFile>>).value.toList(),
-            repository.legacyFiles
-        )
     }
 
     private fun <T> withTempFile(file: KubeKtsFile, action: (Path) -> T): T {

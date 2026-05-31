@@ -16,8 +16,8 @@ import kotlinx.coroutines.runBlocking
 import org.jetbrains.kotlin.incremental.util.Either
 import org.pcsoft.framework.kube.kts.api.values.ValueAccess
 import org.pcsoft.framework.kube.kts.core.intern.utils.toEffectiveString
-import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsCompilationConfiguration
-import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsEvaluationConfiguration
+import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsSpecCompilationConfiguration
+import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsSpecEvaluationConfiguration
 import org.pcsoft.framework.kube.kts.logging.failedStyle
 import org.pcsoft.framework.kube.kts.logging.logger
 import org.pcsoft.framework.kube.kts.logging.successStyle
@@ -69,9 +69,8 @@ internal object DefaultKotlinScriptProcessor : KotlinScriptProcessor {
     private val logger = logger()
 
     private val scriptingHost = BasicJvmScriptingHost()
-    private val compilerConfiguration = KubeKtsCompilationConfiguration
 
-    override fun compile(name: String, script: Path, unsafe: Boolean): Either<CompiledScript> = runBlocking {
+    override fun compile(name: String, script: Path, libScripts: List<Path>, unsafe: Boolean): Either<CompiledScript> = runBlocking {
         logger.atDebug().log { "$symbolSubProcess Compile script: $name" }
 
         if (!unsafe) {
@@ -80,6 +79,7 @@ internal object DefaultKotlinScriptProcessor : KotlinScriptProcessor {
             }
         }
 
+        val compilerConfiguration = KubeKtsSpecCompilationConfiguration(libScripts)
         val result = scriptingHost.compiler.invoke(script.toFile().toScriptSource(), compilerConfiguration)
         if (result.isError()) {
             logger.atTrace().log { "Detect compile errors for script: $name".failedStyle() }
@@ -94,7 +94,7 @@ internal object DefaultKotlinScriptProcessor : KotlinScriptProcessor {
     override fun <T> execute(name: String, script: CompiledScript, valueAccess: ValueAccess): Either<T> = runBlocking {
         logger.atDebug().log { "$symbolSubProcess Execute script: $name" }
 
-        val evaluationConfiguration = KubeKtsEvaluationConfiguration(valueAccess)
+        val evaluationConfiguration = KubeKtsSpecEvaluationConfiguration(valueAccess)
         val result = scriptingHost.evaluator.invoke(script, evaluationConfiguration)
         if (result.isError()) {
             logger.atTrace().log { "Detect errors for script: $name".failedStyle() }

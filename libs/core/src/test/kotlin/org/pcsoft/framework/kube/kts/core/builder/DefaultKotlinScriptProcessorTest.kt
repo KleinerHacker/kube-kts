@@ -43,7 +43,7 @@ class DefaultKotlinScriptProcessorTest {
     @Test
     fun testChart() {
         val compiledScriptEither =
-            compiler.compile("chart", Path.of(this::class.java.getResource("/kts/helm/Chart.spec.kts").toURI()), false)
+            compiler.compile("chart", Path.of(this::class.java.getResource("/kts/helm/Chart.spec.kts").toURI()), emptyList(), false)
         Assertions.assertNotNull(compiledScriptEither)
         Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
 
@@ -64,6 +64,7 @@ class DefaultKotlinScriptProcessorTest {
             compiler.compile(
                 "service",
                 Path.of(this::class.java.getResource("/kts/helm/templates/service.spec.kts").toURI()),
+                emptyList(),
                 false
             )
         Assertions.assertNotNull(compiledScriptEither)
@@ -89,6 +90,7 @@ class DefaultKotlinScriptProcessorTest {
             compiler.compile(
                 "ingress",
                 Path.of(this::class.java.getResource("/kts/helm/templates/ingress.spec.kts").toURI()),
+                emptyList(),
                 false
             )
         Assertions.assertNotNull(compiledScriptEither)
