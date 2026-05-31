@@ -65,9 +65,6 @@ internal class DefaultKubeKtsRepositoryBuilder(
         val valueNode = mergedValueFile?.let { YAMLMapper().readTree(it) } ?: YAMLMapper().createObjectNode()
         val valueAccess = ValueAccess.ofRoot(valueNode)
 
-        val libScripts = repository.libFiles.map { it.script }
-        logger.atDebug().log { "$symbolBullet Found ${libScripts.size} lib scripts to prepend to spec files" }
-
         logger.atDebug().log { "$symbolBullet Build ${repository.specFiles.size} files..." }
         logger.atTrace().log {
             "\t$symbolArrowRight ${repository.specFiles.joinToString(", ") { it.subject }}"
@@ -75,7 +72,7 @@ internal class DefaultKubeKtsRepositoryBuilder(
 
         val helmFiles = repository.specFiles
             .map { file ->
-                withTempFile(file, libScripts) {
+                withTempFile(file) {
                     processor.compile(file.subject, it, unsafeMode)
                         .map { file to it }
                 }
@@ -108,16 +105,9 @@ internal class DefaultKubeKtsRepositoryBuilder(
         )
     }
 
-    private fun stripShebang(script: String): String =
-        if (script.startsWith("#!")) script.substringAfter('\n') else script
-
-    private fun <T> withTempFile(file: KubeKtsFile, libScripts: List<String>, action: (Path) -> T): T {
+    private fun <T> withTempFile(file: KubeKtsFile, action: (Path) -> T): T {
         val tmpFile = Files.createTempFile(file.subject, ".kts")
-        val combined = buildString {
-            libScripts.forEach { append(stripShebang(it)); append("\n") }
-            append(stripShebang(file.script))
-        }
-        Files.writeString(tmpFile, combined, Charsets.UTF_8)
+        Files.writeString(tmpFile, file.script, Charsets.UTF_8)
 
         try {
             return action(tmpFile)
