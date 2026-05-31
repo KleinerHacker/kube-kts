@@ -25,15 +25,16 @@ import org.pcsoft.framework.kube.kts.api.values.ValueAccess
 import java.io.File
 import java.net.JarURLConnection
 import java.net.URL
-import java.nio.file.Path
 import kotlin.reflect.KClass
 import kotlin.script.experimental.api.*
+import kotlin.script.experimental.host.FileScriptSource
 import kotlin.script.experimental.host.toScriptSource
 import kotlin.script.experimental.jvm.dependenciesFromClassContext
 import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
 
-class KubeKtsSpecCompilationConfiguration(libScripts: List<Path> = emptyList()) : ScriptCompilationConfiguration({
+@Suppress("JavaIoSerializableObjectMustHaveReadResolve")
+object KubeKtsSpecCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports("${ChartSpec::class.java.packageName}.*")
     defaultImports("${ResourceSpec::class.java.packageName}.*")
     defaultImports("${PortMappingSpec::class.java.packageName}.*")
@@ -73,25 +74,45 @@ class KubeKtsSpecCompilationConfiguration(libScripts: List<Path> = emptyList()) 
         acceptedLocations(ScriptAcceptedLocation.Everywhere)
     }
 
-    if (libScripts.isNotEmpty()) {
-        val libSources = libScripts.map { it.toFile().toScriptSource() }
-        refineConfiguration {
-            beforeCompiling { context ->
-                // Only inject lib imports for spec scripts, not when compiling the lib scripts
-                // themselves as dependencies — otherwise importScripts would self-reference.
-                if (context.script.name?.endsWith(".lib.kts") == true) {
-                    context.compilationConfiguration.asSuccess()
-                } else {
-                    ScriptCompilationConfiguration(context.compilationConfiguration) {
-                        importScripts.put(libSources)
-                    }.asSuccess()
-                }
+    refineConfiguration {
+        beforeCompiling { context ->
+            // Lib scripts are compiled as dependencies of spec scripts — don't add importScripts
+            // for them, otherwise they would try to import themselves (cycle).
+            if (context.script.name?.endsWith(".lib.kts") == true) {
+                return@beforeCompiling context.compilationConfiguration.asSuccess()
             }
+
+            // Discover *.lib.kts siblings in the same helm/ tree so IntelliJ sees their members.
+            val scriptFile = (context.script as? FileScriptSource)?.file
+            val libFiles = findHelmRoot(scriptFile)
+                ?.walkTopDown()
+                ?.filter { it.isFile && it.name.endsWith(".lib.kts") }
+                ?.toList()
+                .orEmpty()
+
+            if (libFiles.isEmpty()) {
+                return@beforeCompiling context.compilationConfiguration.asSuccess()
+            }
+
+            ScriptCompilationConfiguration(context.compilationConfiguration) {
+                importScripts.put(libFiles.map { it.toScriptSource() })
+            }.asSuccess()
         }
     }
 
     implicitReceivers(KotlinType(ValueAccess::class))
 })
+
+internal fun findHelmRoot(file: File?): File? {
+    file?.parentFile?.let { dir ->
+        if (dir.name.equals("helm", true))
+            return dir
+
+        return findHelmRoot(dir)
+    }
+
+    return null
+}
 
 internal fun getJarFromClass(clazz: KClass<*>): File? {
     val keyResource = clazz.java.name.replace('.', '/') + ".class"

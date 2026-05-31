@@ -24,9 +24,7 @@ import org.pcsoft.framework.kube.kts.logging.successStyle
 import org.pcsoft.framework.kube.kts.logging.symbolSubProcess
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.script.experimental.api.CompiledScript
-import kotlin.script.experimental.api.ResultValue
-import kotlin.script.experimental.api.valueOrThrow
+import kotlin.script.experimental.api.*
 import kotlin.script.experimental.host.toScriptSource
 import kotlin.script.experimental.jvm.util.isError
 import kotlin.script.experimental.jvm.util.renderError
@@ -79,7 +77,21 @@ internal object DefaultKotlinScriptProcessor : KotlinScriptProcessor {
             }
         }
 
-        val compilerConfiguration = KubeKtsSpecCompilationConfiguration(libScripts)
+        val libSources = libScripts.map { it.toFile().toScriptSource() }
+        val compilerConfiguration = ScriptCompilationConfiguration(KubeKtsSpecCompilationConfiguration) {
+            if (libSources.isNotEmpty()) {
+                refineConfiguration {
+                    beforeCompiling { context ->
+                        if (context.script.name?.endsWith(".lib.kts") == true) {
+                            return@beforeCompiling context.compilationConfiguration.asSuccess()
+                        }
+                        ScriptCompilationConfiguration(context.compilationConfiguration) {
+                            importScripts.put(libSources)
+                        }.asSuccess()
+                    }
+                }
+            }
+        }
         val result = scriptingHost.compiler.invoke(script.toFile().toScriptSource(), compilerConfiguration)
         if (result.isError()) {
             logger.atTrace().log { "Detect compile errors for script: $name".failedStyle() }

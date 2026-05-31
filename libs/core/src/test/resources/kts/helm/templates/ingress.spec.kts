@@ -11,6 +11,7 @@
  */
 
 ingress {
+    buildAppLabel("name")
     metadata("metadata") {
         namespace = "namespace"
         generateName = "generateName"
