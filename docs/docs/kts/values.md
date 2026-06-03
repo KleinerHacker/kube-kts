@@ -12,6 +12,13 @@ The values overlay mechanism works just like in Helm.
 
 In Kotlin scripts, you have access to several built-in functions to retrieve and validate values. These functions use a **dot-separated path** to navigate your values structure.
 
+!!! warning "Security: Import Restrictions"
+    By default, KTS scripts **do not allow** `import` statements or fully qualified class names
+    (e.g. `java.lang.Runtime`). Only types provided via the pre-configured default imports may
+    be used.
+
+    Use the `--unsafe` flag to lift these restrictions.
+
 !!! note "Important"
     By default, all paths are relative to the `values:` root element of your YAML file. You do not need to include `values.` at the beginning of your paths.
 

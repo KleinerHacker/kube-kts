@@ -1,10 +1,17 @@
 # Ingress DSL
 
-Die `ingress` DSL wird verwendet, um Kubernetes Ingress-Ressourcen zu konfigurieren, die den externen Zugriff auf Dienste in einem Cluster verwalten, normalerweise über HTTP.
+The `ingress` DSL is used to configure Kubernetes Ingress resources, which manage external access to services in a cluster, typically over HTTP.
 
-## Grundlegende Verwendung
+!!! warning "Security: Import Restrictions"
+    By default, KTS scripts **do not allow** `import` statements or fully qualified class names
+    (e.g. `java.lang.Runtime`). Only types provided via the pre-configured default imports may
+    be used.
 
-Eine minimale Ingress-Konfiguration erfordert `metadata` und mindestens eine Regel im `spec`.
+    Use the `--unsafe` flag to lift these restrictions.
+
+## Basic Usage
+
+A minimal Ingress configuration requires `metadata` and at least one rule in `spec`.
 
 ```kotlin
 ingress {
@@ -30,9 +37,9 @@ ingress {
 }
 ```
 
-## Detailliertes Beispiel
+## Detailed Example
 
-Unten findest du ein umfassendes Beispiel, das verschiedene Konfigurationsoptionen zeigt, einschließlich TLS und mehrerer Regeln.
+The following is a comprehensive example showing various configuration options, including TLS and multiple rules.
 
 ```kotlin
 ingress {
@@ -43,12 +50,12 @@ ingress {
     spec {
         ingressClassName = "nginx"
 
-        // Standard-Backend, wenn keine Regeln zutreffen
+        // Default backend when no rules match
         defaultServiceBackend("default-service") {
             port(8080)
         }
 
-        // TLS-Konfiguration
+        // TLS configuration
         tlsList {
             tls {
                 secretName = "example-tls-secret"
@@ -59,7 +66,7 @@ ingress {
             }
         }
 
-        // Regel für die Hauptwebsite
+        // Rule for the main website
         rules {
             rule {
                 host = "example.com"
@@ -67,14 +74,14 @@ ingress {
                     httpPath(RulesSpec.HttpPathConfig.PathType.Exact) {
                         path = "/home"
                         serviceBackend("web-service") {
-                            port("http") // Port über Namen referenzieren
+                            port("http") // Reference port by name
                         }
                     }
                 }
             }
         }
 
-        // Regel für API mit mehreren Pfaden
+        // Rule for API with multiple paths
         rules {
             rule {
                 host = "api.example.com"
@@ -98,51 +105,51 @@ ingress {
 }
 ```
 
-## Konfigurationsreferenz
+## Configuration Reference
 
-### Metadaten (`metadata`)
+### Metadata (`metadata`)
 
-| Eigenschaft | Typ | Beschreibung |
+| Property | Type | Description |
 | :--- | :--- | :--- |
-| `name` | `String` | Der Name der Ingress-Ressource (als erstes Argument übergeben). |
-| `namespace` | `String?` | Der Namespace für die Ressource. |
-| `generateName` | `String?` | Ein optionales Präfix zur Generierung eines eindeutigen Namens. |
+| `name` | `String` | The name of the Ingress resource (passed as the first argument). |
+| `namespace` | `String?` | The namespace for the resource. |
+| `generateName` | `String?` | An optional prefix for generating a unique name. |
 
-### Ingress-Spezifikation (`spec`)
+### Ingress Specification (`spec`)
 
-| Eigenschaft / Methode | Beschreibung |
+| Property / Method | Description |
 | :--- | :--- |
-| `ingressClassName` | Name der IngressClass-Clusterressource. |
-| `defaultServiceBackend(name) { ... }` | Legt das Standard-Backend für einen Dienst fest. |
-| `defaultResourceBackend(name, kind) { ... }` | Legt das Standard-Backend für eine benutzerdefinierte Ressource fest. |
-| `tlsList { tls { ... } }` | Fügt einen TLS-Konfigurationsblock hinzu. (Alternativ: `addTls`) |
-| `rules { rule { ... } }` | Fügt eine Ingress-Regel hinzu. (Alternativ: `addRule`) |
+| `ingressClassName` | Name of the IngressClass cluster resource. |
+| `defaultServiceBackend(name) { ... }` | Sets the default backend for a service. |
+| `defaultResourceBackend(name, kind) { ... }` | Sets the default backend for a custom resource. |
+| `tlsList { tls { ... } }` | Adds a TLS configuration block. (Alternative: `addTls`) |
+| `rules { rule { ... } }` | Adds an Ingress rule. (Alternative: `addRule`) |
 
-### TLS-Konfiguration (`tls`)
+### TLS Configuration (`tls`)
 
-| Eigenschaft / Methode | Beschreibung |
+| Property / Method | Description |
 | :--- | :--- |
-| `secretName` | Der Name des Secrets, das das TLS-Zertifikat und den Schlüssel enthält. |
-| `hosts { host(String) }` | Fügt einen Host hinzu, der in das TLS-Zertifikat aufgenommen werden soll. (Alternativ: `addHost`) |
+| `secretName` | The name of the Secret containing the TLS certificate and key. |
+| `hosts { host(String) }` | Adds a host to include in the TLS certificate. (Alternative: `addHost`) |
 
-### Regeln (`rule`)
+### Rules (`rule`)
 
-| Eigenschaft / Methode | Beschreibung |
+| Property / Method | Description |
 | :--- | :--- |
-| `host` | Der vollqualifizierte Domänenname eines Netzwerk-Hosts. |
-| `httpPaths { httpPath(type) { ... } }` | Fügt der Regel einen HTTP-Pfad hinzu. (Alternativ: `addHttpPath`) |
+| `host` | The fully qualified domain name of a network host. |
+| `httpPaths { httpPath(type) { ... } }` | Adds an HTTP path to the rule. (Alternative: `addHttpPath`) |
 
-### HTTP-Pfad (`httpPath`)
+### HTTP Path (`httpPath`)
 
-| Eigenschaft / Methode | Beschreibung |
+| Property / Method | Description |
 | :--- | :--- |
-| `path` | Der Pfad, der gegen den Pfad einer eingehenden Anfrage geprüft wird. |
-| `type` | Der Typ des Pfad-Matchings: `Exact`, `Prefix` oder `ImplementationSpecific`. |
-| `serviceBackend(name) { ... }` | Verweist auf ein Service-Backend. |
-| `resourceBackend(name, kind) { ... }` | Verweist auf ein Backend einer benutzerdefinierten Ressource. |
+| `path` | The path matched against the path of an incoming request. |
+| `type` | The type of path matching: `Exact`, `Prefix`, or `ImplementationSpecific`. |
+| `serviceBackend(name) { ... }` | References a Service backend. |
+| `resourceBackend(name, kind) { ... }` | References a custom resource backend. |
 
-### Backend-Konfiguration
+### Backend Configuration
 
-Wenn `serviceBackend` verwendet wird, muss der Port angegeben werden:
-- `port(Int)`: Verwendet einen numerischen Port.
-- `port(String)`: Verwendet einen benannten Port.
+When using `serviceBackend`, the port must be specified:
+- `port(Int)`: Uses a numeric port.
+- `port(String)`: Uses a named port.

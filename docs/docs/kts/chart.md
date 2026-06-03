@@ -1,33 +1,40 @@
 # Chart DSL
 
-Die `chart` DSL wird verwendet, um die Metadaten und Abhängigkeiten deines Helm-Charts zu definieren, ähnlich der `Chart.yaml` Datei in traditionellen Helm-Charts.
+The `chart` DSL is used to define the metadata and dependencies of your Helm chart, similar to the `Chart.yaml` file in traditional Helm charts.
 
-## Grundlegende Verwendung
+!!! warning "Security: Import Restrictions"
+    By default, KTS scripts **do not allow** `import` statements or fully qualified class names
+    (e.g. `java.lang.Runtime`). Only types provided via the pre-configured default imports may
+    be used.
 
-Um ein Chart zu definieren, verwende die `chart` Funktion, die den Chart-**Namen** und die **Version** als Hauptargumente entgegennimmt.
+    Use the `--unsafe` flag to lift these restrictions.
+
+## Basic Usage
+
+To define a chart, use the `chart` function, which takes the chart **name** and **version** as its main arguments.
 
 ```kotlin
 chart("my-chart", "1.0.0") {
-    description = "Eine kurze Beschreibung meines Charts"
+    description = "A short description of my chart"
     type = ChartSpec.Type.Application
 }
 ```
 
-## Detailliertes Beispiel
+## Detailed Example
 
-Unten findest du ein umfassendes Beispiel, das alle verfügbaren Konfigurationsoptionen innerhalb des `chart` Blocks zeigt.
+The following is a comprehensive example showing all available configuration options within the `chart` block.
 
 ```kotlin
 chart("full-featured-chart", "1.2.3") {
-    // Metadaten
-    description = "Ein umfassendes Beispiel der Chart-DSL"
-    type = ChartSpec.Type.Library // Standard ist Application, falls nicht angegeben
+    // Metadata
+    description = "A comprehensive example of the Chart DSL"
+    type = ChartSpec.Type.Library // Default is Application if not specified
     home = "https://github.com/example/kube-kts"
     icon = URI("https://example.com/icon.png")
     appVersion = "2.5.0"
     deprecated = false
 
-    // Schlagworte und Quellen
+    // Keywords and sources
     keywords {
         keyword("kubernetes")
         keyword("kotlin")
@@ -37,13 +44,13 @@ chart("full-featured-chart", "1.2.3") {
         source(URI("https://github.com/example/kube-kts/src"))
     }
 
-    // Kompatibilität
+    // Compatibility
     kubeVersion {
         minInclusive("1.20.0")
         maxExclusive("1.30.0")
     }
 
-    // Abhängigkeiten
+    // Dependencies
     dependencies {
         dependency("common-utils", "0.5.0") {
             repository = URI("https://charts.example.com")
@@ -70,52 +77,51 @@ chart("full-featured-chart", "1.2.3") {
         }
     }
 
-    // Benutzerdefinierte Annotationen
+    // Custom annotations
     annotations {
         annotation("custom-metadata-key", "some-value")
     }
 }
 ```
 
-## Konfigurationsreferenz
+## Configuration Reference
 
-### Top-Level Eigenschaften
+### Top-Level Properties
 
-| Eigenschaft | Typ | Beschreibung |
+| Property | Type | Description |
 | :--- | :--- | :--- |
-| `description` | `String?` | Eine einzeilige Beschreibung des Charts. |
-| `type` | `ChartSpec.Type?` | Der Typ des Charts: `Application` oder `Library`. |
-| `home` | `String?` | Die URL der Homepage des Projekts. |
-| `icon` | `URI?` | Eine URL zu einem SVG- oder PNG-Bild, das als Icon verwendet werden soll. |
-| `appVersion` | `String?` | Die Version der Anwendung, die dieses Chart enthält (nicht die Chart-Version). |
-| `deprecated` | `Boolean?` | Ob dieses Chart veraltet ist. |
+| `description` | `String?` | A one-line description of the chart. |
+| `type` | `ChartSpec.Type?` | The chart type: `Application` or `Library`. |
+| `home` | `String?` | The URL of the project's homepage. |
+| `icon` | `URI?` | A URL to an SVG or PNG image to use as an icon. |
+| `appVersion` | `String?` | The version of the application this chart contains (not the chart version). |
+| `deprecated` | `Boolean?` | Whether this chart is deprecated. |
 
-### Methoden
+### Methods
 
-| Methode                                                           | Beschreibung |
+| Method | Description |
 |:-----------------------------------------------------------------| :--- |
-| `keywords { ... }`                                          | Fügt Keywords hinzu, die zur Suche nach diesem Chart verwendet werden. (Alternativ: `addKeyword`, `addKeywords`) |
-| `sources { ... }`                                           | Fügt URLs zum Quellcode für dieses Projekt hinzu. (Alternativ: `addSource`, `addSources`)          |
-| `kubeVersion { ... }`                                            | Legt den Bereich der kompatiblen Kubernetes-Versionen fest. |
-| `dependencies { ... }`                                       | Fügt eine Chart-Abhängigkeit hinzu. Siehe [Abhängigkeiten](#abhängigkeiten) unten. (Alternativ: `addDependency`) |
-| `maintainers { ... }`                                        | Fügt Informationen über einen Maintainer hinzu. (Alternativ: `addMaintainer`)                    |
-| `annotations { ... }`                                        | Fügt eine benutzerdefinierte Annotation hinzu. (Alternativ: `addAnnotation`)                      |
+| `keywords { ... }` | Adds keywords used to find this chart. (Alternative: `addKeyword`, `addKeywords`) |
+| `sources { ... }` | Adds URLs to the source code for this project. (Alternative: `addSource`, `addSources`) |
+| `kubeVersion { ... }` | Sets the range of compatible Kubernetes versions. |
+| `dependencies { ... }` | Adds a chart dependency. See [Dependencies](#dependencies) below. (Alternative: `addDependency`) |
+| `maintainers { ... }` | Adds information about a maintainer. (Alternative: `addMaintainer`) |
+| `annotations { ... }` | Adds a custom annotation. (Alternative: `addAnnotation`) |
 
 
+### Dependencies
 
-### Abhängigkeiten
+The `dependency` block enables fine-grained control:
 
-Der `dependency` Block ermöglicht eine fein abgestufte Steuerung:
+- `repository`: The URL of the chart repository.
+- `alias`: An alias for the chart (useful when the same chart is used multiple times).
+- `condition`: A boolean expression to decide whether to install the chart.
+- `tags { tag(String) }`: Adds a tag to group dependencies. (Alternative: `addTag`)
+- `pathImportValues { pathImportValue(path) }`: Imports values from the sub-chart. (Alternative: `addPathImportValue`)
+- `mappingImportValues { mappingImportValue(childKey, parentKey) }`: Maps a specific value from the sub-chart to the parent chart. (Alternative: `addMappingImportValue`)
 
-- `repository`: Die URL des Chart-Repositorys.
-- `alias`: Ein Alias für das Chart (nützlich, wenn dasselbe Chart mehrmals verwendet wird).
-- `condition`: Ein boolescher Ausdruck, um zu entscheiden, ob das Chart installiert werden soll.
-- `tags { tag(String) }`: Fügt ein Tag hinzu, um Abhängigkeiten zu gruppieren. (Alternativ: `addTag`)
-- `pathImportValues { pathImportValue(path) }`: Importiert Werte aus dem Sub-Chart. (Alternativ: `addPathImportValue`)
-- `mappingImportValues { mappingImportValue(childKey, parentKey) }`: Ordnet einen bestimmten Wert aus dem Sub-Chart dem übergeordneten Chart zu. (Alternativ: `addMappingImportValue`)
+## Special Types
 
-## Spezielle Typen
-
-- `ChartSpec.Type`: Enum mit den Werten `Application` und `Library`.
-- `MailAddress`: Ein Hilfstyp für die E-Mail-Validierung und -Formatierung.
-- `URI`: Standard `java.net.URI` zur Darstellung von Web-Links.
+- `ChartSpec.Type`: Enum with values `Application` and `Library`.
+- `MailAddress`: A helper type for email validation and formatting.
+- `URI`: Standard `java.net.URI` for representing web links.

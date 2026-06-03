@@ -2,6 +2,13 @@
 
 The `deployment` DSL is used to configure Kubernetes Deployment resources. A Deployment describes the desired state of an application, manages the related Pods through ReplicaSets, and controls rollouts, rollbacks, and scaling.
 
+!!! warning "Security: Import Restrictions"
+    By default, KTS scripts **do not allow** `import` statements or fully qualified class names
+    (e.g. `java.lang.Runtime`). Only types provided via the pre-configured default imports may
+    be used.
+
+    Use the `--unsafe` flag to lift these restrictions.
+
 ## Basic Usage
 
 A minimal Deployment configuration requires `metadata`, a `selector`, and a `template` with at least one container.

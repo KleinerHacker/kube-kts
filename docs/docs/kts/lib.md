@@ -92,6 +92,13 @@ import statements.
 
 ## Constraints
 
+!!! warning "Security: Import Restrictions"
+    By default, KTS scripts **do not allow** `import` statements or fully qualified class names
+    (e.g. `java.lang.Runtime`). Only types from the pre-configured default imports listed above
+    may be used.
+
+    Use the `--unsafe` flag to lift these restrictions.
+
 !!! warning "Lib files cannot access other lib files"
     Functions defined in one `*.lib.kts` file are **not** available in other `*.lib.kts` files.
     Only `*.spec.kts` files can call lib functions. Structure your libraries accordingly and

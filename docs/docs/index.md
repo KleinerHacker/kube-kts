@@ -81,6 +81,13 @@ deployment {
 }
 ```
 
+!!! warning "Security: Import Restrictions"
+    By default, KTS scripts **do not allow** `import` statements or fully qualified class names
+    (e.g. `java.lang.Runtime`). Only types provided via the pre-configured default imports may
+    be used — see [Default Imports](kts/lib.md#default-imports) for the full list.
+
+    Use the `--unsafe` flag to lift these restrictions.
+
 ### Library Files (`*.lib.kts`)
 
 Library files define reusable helper functions that are automatically available in all spec files

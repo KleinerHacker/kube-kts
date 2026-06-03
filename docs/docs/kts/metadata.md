@@ -1,27 +1,27 @@
-# Metadaten DSL
+# Metadata DSL
 
-Die `metadata` DSL wird verwendet, um die Metadaten einer Kubernetes-Ressource zu definieren. Metadaten sind in fast allen Kubernetes-Ressourcen (wie Services, Ingresses, Deployments) enthalten und dienen der Identifizierung und Organisation.
+The `metadata` DSL is used to define the metadata of a Kubernetes resource. Metadata is present in almost all Kubernetes resources (such as Services, Ingresses, Deployments) and serves to identify and organize them.
 
-## Grundlegende Verwendung
+## Basic Usage
 
-In Kube-KTS wird der `metadata` Block innerhalb einer Ressource (z. B. `service`, `ingress`) definiert. Der **Name** der Ressource wird als erstes Argument an die `metadata` Funktion übergeben.
+In Kube KTS, the `metadata` block is defined within a resource (e.g. `service`, `ingress`). The **name** of the resource is passed as the first argument to the `metadata` function.
 
-### Minimale Ausprägung
+### Minimal Configuration
 
-Eine minimale Konfiguration benötigt lediglich den Namen der Ressource.
+A minimal configuration only requires the name of the resource.
 
 ```kotlin
 service {
     metadata("my-service") {
-        // Keine weiteren Angaben nötig
+        // No further properties required
     }
-    // ... restliche service konfiguration
+    // ... remaining service configuration
 }
 ```
 
-## Maximale Ausprägung
+## Full Configuration
 
-Unten findest du ein Beispiel, das alle verfügbaren Konfigurationsoptionen innerhalb des `metadata` Blocks zeigt.
+The following is an example showing all available configuration options within the `metadata` block.
 
 ```kotlin
 ingress {
@@ -36,7 +36,7 @@ ingress {
         
         annotations {
             annotation("cert-manager.io/cluster-issuer", "letsencrypt-prod")
-            annotation("description", "Managed by Kube-KTS")
+            annotation("description", "Managed by Kube KTS")
         }
         
         finalizers {
@@ -50,49 +50,49 @@ ingress {
             }
         }
     }
-    // ... restliche ingress konfiguration
+    // ... remaining ingress configuration
 }
 ```
 
-## Konfigurationsreferenz
+## Configuration Reference
 
-### Eigenschaften
+### Properties
 
-| Eigenschaft | Typ | Beschreibung |
+| Property | Type | Description |
 | :--- | :--- | :--- |
-| `name` | `String` | Der Name der Ressource (als erstes Argument der `metadata` Funktion übergeben). Muss im Namespace eindeutig sein. |
-| `namespace` | `String?` | Der Namespace, in dem die Ressource erstellt werden soll. Standardmäßig `default`. |
-| `generateName` | `String?` | Ein Präfix für den Namen. Kubernetes generiert daraus einen eindeutigen Namen durch Anhängen eines Suffixes. |
+| `name` | `String` | The name of the resource (passed as the first argument of the `metadata` function). Must be unique within the namespace. |
+| `namespace` | `String?` | The namespace in which the resource should be created. Defaults to `default`. |
+| `generateName` | `String?` | A prefix for the name. Kubernetes generates a unique name by appending a suffix. |
 
-### Methoden
+### Methods
 
-| Methode | Beschreibung |
+| Method | Description |
 | :--- | :--- |
-| `labels { label(key, value) }` | Fügt Labels zur Organisation und Selektion hinzu. (Alternativ: `addLabel`) |
-| `annotations { annotation(key, value) }` | Fügt nicht-identifizierende Metadaten hinzu, die von Tools genutzt werden können. (Alternativ: `addAnnotation`) |
-| `finalizers { finalizer(name) }` | Fügt Finalizer hinzu, die den Löschvorgang der Ressource steuern. (Alternativ: `addFinalizer`, `addFinalizers`) |
-| `ownerReferences { ownerReference(...) { ... } }` | Definiert Abhängigkeiten zu anderen Ressourcen (Besitzer-Beziehungen). (Alternativ: `addOwnerReference`) |
+| `labels { label(key, value) }` | Adds labels for organization and selection. (Alternative: `addLabel`) |
+| `annotations { annotation(key, value) }` | Adds non-identifying metadata usable by tools. (Alternative: `addAnnotation`) |
+| `finalizers { finalizer(name) }` | Adds finalizers that control the deletion lifecycle of the resource. (Alternative: `addFinalizer`, `addFinalizers`) |
+| `ownerReferences { ownerReference(...) { ... } }` | Defines dependencies on other resources (owner relationships). (Alternative: `addOwnerReference`) |
 
-### Owner-Referenzen (`ownerReference`)
+### Owner References (`ownerReference`)
 
-Innerhalb von `ownerReferences` können folgende Felder gesetzt werden:
+The following fields can be set within `ownerReferences`:
 
-| Eigenschaft | Typ | Beschreibung |
+| Property | Type | Description |
 | :--- | :--- | :--- |
-| `apiVersion` | `String` | Die API-Version des besitzenden Objekts. |
-| `kind` | `String` | Die Art (Kind) des besitzenden Objekts. |
-| `name` | `String` | Der Name des besitzenden Objekts. |
-| `uid` | `UUID` | Die eindeutige ID (UID) des besitzenden Objekts. |
-| `controller` | `Boolean?` | Ob diese Referenz auf einen Controller zeigt, der das Objekt verwaltet. |
-| `blockOwnerDeletion` | `Boolean?` | Ob das Löschen des Besitzers blockiert werden soll, solange dieses Objekt existiert. |
+| `apiVersion` | `String` | The API version of the owning object. |
+| `kind` | `String` | The kind of the owning object. |
+| `name` | `String` | The name of the owning object. |
+| `uid` | `UUID` | The unique ID (UID) of the owning object. |
+| `controller` | `Boolean?` | Whether this reference points to a controller managing the object. |
+| `blockOwnerDeletion` | `Boolean?` | Whether deletion of the owner should be blocked while this object exists. |
 
-## Allgemeines zu Metadaten
+## About Metadata
 
-Metadaten sind essentiell für Kubernetes, da sie:
-1. **Ressourcen identifizieren**: Über `name` und `namespace`.
-2. **Ressourcen gruppieren**: Über `labels` können Ressourcen effizient gefiltert und ausgewählt werden (z.B. durch Services oder NetworkPolicies).
-3. **Erweiterbarkeit ermöglichen**: Über `annotations` können zusätzliche Informationen für Controller oder externe Tools hinterlegt werden.
-4. **Lebenszyklen verwalten**: Über `finalizers` und `ownerReferences` wird sichergestellt, dass Ressourcen in der richtigen Reihenfolge und sauber gelöscht werden.
+Metadata is essential for Kubernetes because it:
 
-In Kube-KTS müssen Metadaten in jedem Template (`service`, `ingress`, etc.) gesetzt werden, um eine gültige Kubernetes-Ressource zu erzeugen.
+1. **Identifies resources**: Via `name` and `namespace`.
+2. **Groups resources**: Via `labels`, resources can be efficiently filtered and selected (e.g. by Services or NetworkPolicies).
+3. **Enables extensibility**: Via `annotations`, additional information can be stored for controllers or external tools.
+4. **Manages lifecycles**: Via `finalizers` and `ownerReferences`, resources are deleted in the correct order and cleanly.
 
+In Kube KTS, metadata must be set in every template (`service`, `ingress`, etc.) to produce a valid Kubernetes resource.

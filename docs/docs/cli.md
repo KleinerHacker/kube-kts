@@ -12,7 +12,7 @@ provided, the current working directory is used.
 - `--show-log-level`: Prints the log level in the output.
 - `--exception`: Prints the full exception stack trace in case of errors.
 - `--experimental`: Enables experimental features.
-- `--unsafe`: Enables unsafe mode, allowing imports in Kotlin scripts.
+- `--unsafe`: Enables unsafe mode, allowing `import` statements and fully qualified class names in Kotlin scripts.
 
 ## Experimental Features
 
