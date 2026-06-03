@@ -32,9 +32,9 @@ interface KubeRepository<T : KubeFile> {
     val name: String
 
     /**
-     * The list of processed files in this repository.
+     * The list of spec files in this repository (rendered to YAML output).
      */
-    val files: List<T>
+    val specFiles: List<T>
 
     /**
      * The list of legacy Helm files (YAML templates) in this repository.

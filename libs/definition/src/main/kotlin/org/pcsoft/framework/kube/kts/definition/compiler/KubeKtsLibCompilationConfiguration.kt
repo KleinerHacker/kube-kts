@@ -5,7 +5,7 @@
  * You may obtain a copy of the License at:
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, this software is distributed on an “AS IS” BASIS,
+ * Unless required by applicable law or agreed to in writing, this software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations.
  */
@@ -22,17 +22,13 @@ import org.pcsoft.framework.kube.kts.api.chart.types.MetadataBaseSpec
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
 import org.pcsoft.framework.kube.kts.api.types.MailAddress
 import org.pcsoft.framework.kube.kts.api.values.ValueAccess
-import java.io.File
-import java.net.JarURLConnection
-import java.net.URL
-import kotlin.reflect.KClass
 import kotlin.script.experimental.api.*
 import kotlin.script.experimental.jvm.dependenciesFromClassContext
 import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
 
 @Suppress("JavaIoSerializableObjectMustHaveReadResolve")
-object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
+object KubeKtsLibCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports("${ChartSpec::class.java.packageName}.*")
     defaultImports("${ResourceSpec::class.java.packageName}.*")
     defaultImports("${PortMappingSpec::class.java.packageName}.*")
@@ -50,19 +46,18 @@ object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports("java.time.*")
     defaultImports("kotlin.time.*", "kotlin.time.Duration.Companion.*")
 
-
     jvm {
         dependenciesFromCurrentContext(wholeClasspath = true)
 
-        val thisJarFile = getJarFromClass(KubeKtsCompilationConfiguration::class)
+        val thisJarFile = getJarFromClass(KubeKtsLibCompilationConfiguration::class)
         val apiJarFile = getJarFromClass(ChartSpec::class)
         if (thisJarFile != null && apiJarFile != null) {
             dependenciesFromClassContext(
-                KubeKtsCompilationConfiguration::class,
+                KubeKtsLibCompilationConfiguration::class,
                 thisJarFile.name, "kotlin-stdlib", "kotlin-reflect", "kotlin-scripting-dependencies", apiJarFile.name
             )
         } else {
-            dependenciesFromClassContext(KubeKtsCompilationConfiguration::class, wholeClasspath = true)
+            dependenciesFromClassContext(KubeKtsLibCompilationConfiguration::class, wholeClasspath = true)
         }
     }
 
@@ -71,28 +66,4 @@ object KubeKtsCompilationConfiguration : ScriptCompilationConfiguration({
     ide {
         acceptedLocations(ScriptAcceptedLocation.Everywhere)
     }
-
-    implicitReceivers(KotlinType(ValueAccess::class))
 })
-
-internal fun getJarFromClass(clazz: KClass<*>): File? {
-    val keyResource = clazz.java.name.replace('.', '/') + ".class"
-    return clazz.java.classLoader.getResource(keyResource)?.toContainingJarOrNull()
-}
-
-internal fun URL.toContainingJarOrNull(): File? =
-    if (protocol == "jar") {
-        (openConnection() as? JarURLConnection)?.jarFileURL?.toFileOrNull()
-    } else null
-
-internal fun URL.toFileOrNull() =
-    try {
-        File(toURI())
-    } catch (_: IllegalArgumentException) {
-        null
-    } catch (_: java.net.URISyntaxException) {
-        null
-    } ?: run {
-        if (protocol != "file") null
-        else File(file)
-    }

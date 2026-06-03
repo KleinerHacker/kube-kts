@@ -5,22 +5,22 @@
  * You may obtain a copy of the License at:
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, this software is distributed on an “AS IS” BASIS,
+ * Unless required by applicable law or agreed to in writing, this software is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations.
  */
 
 package org.pcsoft.framework.kube.kts.definition
 
-import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsCompilationConfiguration
-import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsEvaluationConfiguration
+import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsLibCompilationConfiguration
+import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsLibEvaluationConfiguration
 import kotlin.script.experimental.annotations.KotlinScript
 
 @Suppress("unused")
 @KotlinScript(
-    compilationConfiguration = KubeKtsCompilationConfiguration::class,
-    evaluationConfiguration = KubeKtsEvaluationConfiguration::class,
-    displayName = "Chart Template",
-    filePathPattern = ".*[/\\\\]helm[/\\\\].*\\.kts"
+    compilationConfiguration = KubeKtsLibCompilationConfiguration::class,
+    evaluationConfiguration = KubeKtsLibEvaluationConfiguration::class,
+    displayName = "Kube KTS Library",
+    filePathPattern = ".*[/\\\\]helm[/\\\\].*\\.lib\\.kts"
 )
-abstract class ChartTemplate
+abstract class LibTemplate
