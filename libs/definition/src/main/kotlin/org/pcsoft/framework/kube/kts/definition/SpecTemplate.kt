@@ -16,6 +16,24 @@ import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsSpecCompilationC
 import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsSpecEvaluationConfiguration
 import kotlin.script.experimental.annotations.KotlinScript
 
+/**
+ * Abstract base class for Helm chart templates, providing Kotlin script-based configuration capabilities.
+ *
+ * This class is used to define templates for Helm charts in a structured and programmatic
+ * manner using Kotlin scripting. It supports specific configurations for compilation
+ * and evaluation through `KubeKtsCompilationConfiguration` and `KubeKtsEvaluationConfiguration`.
+ *
+ * The associated file path pattern ensures that scripts with a matching file path
+ * are recognized and processed as chart templates.
+ *
+ * Annotations:
+ * - `@KotlinScript`: Specifies the settings for script compilation and evaluation, along with
+ *   the display name and the file path pattern for identifying related scripts.
+ *
+ * Suppression:
+ * - Annotated with `@Suppress("unused")` to prevent IDE warnings for
+ *   unused declarations, ensuring compatibility in various use cases.
+ */
 @Suppress("unused")
 @KotlinScript(
     compilationConfiguration = KubeKtsSpecCompilationConfiguration::class,

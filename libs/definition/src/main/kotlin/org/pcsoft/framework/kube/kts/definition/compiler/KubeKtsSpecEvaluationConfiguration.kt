@@ -18,9 +18,18 @@ import kotlin.script.experimental.api.ScriptEvaluationConfiguration
 import kotlin.script.experimental.api.implicitReceivers
 import kotlin.script.experimental.api.scriptsInstancesSharing
 
+/**
+ * Configuration class for evaluating KubeKTS scripts with specific settings.
+ *
+ * This class is designed to configure script evaluation by enabling instance sharing and
+ * setting up implicit receivers for handling values using a `ValueAccess` instance.
+ *
+ * @param valueAccess The `ValueAccess` instance used to provide contextual data and support
+ *                     for the script evaluation process.
+ */
 class KubeKtsSpecEvaluationConfiguration(private val valueAccess: ValueAccess) : ScriptEvaluationConfiguration({
     scriptsInstancesSharing(true)
-    this.implicitReceivers(valueAccess)
+    implicitReceivers(valueAccess)
 }) {
     @Suppress("unused")
     constructor() : this(ValueAccess.ofRoot(YAMLMapper().createObjectNode()))

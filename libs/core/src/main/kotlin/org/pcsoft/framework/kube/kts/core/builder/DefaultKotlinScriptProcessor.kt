@@ -47,7 +47,7 @@ import kotlin.script.experimental.jvmhost.BasicJvmScriptingHost
  *
  * ## Behavior:
  * - Compilation:
- *     - Denies the usage of `import` statements in scripts unless the `unsafe` flag is set to true.
+ *     - Denies the usage of `import` statements and fully qualified class names in scripts unless the `unsafe` flag is set to true.
  *     - Reports detailed errors in case of compilation failures.
  *
  * - Execution:
@@ -64,16 +64,31 @@ import kotlin.script.experimental.jvmhost.BasicJvmScriptingHost
 internal object DefaultKotlinScriptProcessor : KotlinScriptProcessor {
     private val importRegex = Regex("""(?m)^\s*import\s+""")
 
+    // Matches fully qualified class references: ≥2 lowercase package segments + uppercase class name
+    // e.g. java.lang.Runtime, kotlin.io.File, org.example.SomeClass
+    private val fqnRegex = Regex("""\b(?:[a-z][a-zA-Z0-9_]*\.){2,}[A-Z][a-zA-Z0-9_]*""")
+
     private val logger = logger()
 
     private val scriptingHost = BasicJvmScriptingHost()
+
+    private fun stripLiteralsAndComments(source: String): String = source
+        .replace(Regex("\"\"\".*?\"\"\"", RegexOption.DOT_MATCHES_ALL), "\"\"\"\"\"\"")
+        .replace(Regex(""""(?:[^"\\]|\\.)*""""), "\"\"")
+        .replace(Regex("""'(?:[^'\\]|\\.)'"""), "' '")
+        .replace(Regex("""//[^\n]*"""), "")
+        .replace(Regex("""/\*.*?\*/""", RegexOption.DOT_MATCHES_ALL), "")
 
     override fun compile(name: String, script: Path, libScripts: List<Path>, unsafe: Boolean): Either<CompiledScript> = runBlocking {
         logger.atDebug().log { "$symbolSubProcess Compile script: $name" }
 
         if (!unsafe) {
-            require(importRegex.find(Files.readString(script)) == null) {
+            val strippedSource = stripLiteralsAndComments(Files.readString(script))
+            require(importRegex.find(strippedSource) == null) {
                 "Import statements are not allowed in Kube KTS scripts"
+            }
+            require(fqnRegex.find(strippedSource) == null) {
+                "Fully qualified class names are not allowed in Kube KTS scripts (use pre-imported types only)"
             }
         }
 
