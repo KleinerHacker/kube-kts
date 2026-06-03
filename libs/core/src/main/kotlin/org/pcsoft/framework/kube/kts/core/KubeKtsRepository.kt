@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -17,7 +17,8 @@ package org.pcsoft.framework.kube.kts.core
  *
  * This class implements the [KubeRepository] interface to encapsulate
  * a collection of Kubernetes-related Kotlin Script files ([KubeKtsFile])
- * along with any associated legacy Helm files ([LegacyHelmFile]).
+ * along with any associated legacy Helm files ([LegacyHelmFile]) and
+ * library script files ([libFiles]).
  *
  * It is designed to provide a structured way to manage and interact
  * with repositories comprising modern Kotlin Script-based definitions
@@ -26,12 +27,14 @@ package org.pcsoft.framework.kube.kts.core
  * @constructor Internal constructor used for instantiating the repository.
  *
  * @property name The name of the repository.
- * @property files The list of processed Kubernetes Kotlin Script files in the repository.
+ * @property specFiles The list of spec Kubernetes Kotlin Script files (`*.spec.kts` or `*.kts`) in the repository.
+ * @property libFiles The list of library Kotlin Script files (`*.lib.kts`) whose content is made available in all spec files.
  * @property legacyFiles The list of legacy Helm files (YAML templates) in the repository.
  */
 class KubeKtsRepository internal constructor(
     override val name: String,
-    override val files: List<KubeKtsFile>,
+    override val specFiles: List<KubeKtsFile>,
+    val libFiles: List<KubeKtsFile>,
     override val legacyFiles: List<LegacyHelmFile>
 ) : KubeRepository<KubeKtsFile> {
 

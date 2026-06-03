@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -36,6 +36,8 @@ import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpecBuilder
  *
  * Note: This builder is intended for internal use and ensures `IngressSpec` 
  * objects are built in a controlled and validated manner.
+ *
+ * All values are optional.
  *
  * @constructor Creates an instance of `IngressSpecBuilder` for internal usage.
  */

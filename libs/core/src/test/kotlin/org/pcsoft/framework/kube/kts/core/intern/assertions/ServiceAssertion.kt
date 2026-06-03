@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -14,7 +14,8 @@ package org.pcsoft.framework.kube.kts.core.intern.assertions
 
 import org.junit.jupiter.api.Assertions
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortMappingSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec.*
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.Protocol
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
@@ -28,42 +29,42 @@ object ServiceAssertion {
         Assertions.assertEquals("generateName", serviceSpec.metadata.generateName)
 
         Assertions.assertNotNull(serviceSpec.spec)
-        Assertions.assertEquals(ServiceSpec.Type.LoadBalancer, serviceSpec.spec.type)
+        Assertions.assertEquals(Type.LoadBalancer, serviceSpec.spec.type)
 
         Assertions.assertEquals(1, serviceSpec.spec.ports.size)
         Assertions.assertEquals("port", serviceSpec.spec.ports[0].name)
         Assertions.assertEquals(9999, serviceSpec.spec.ports[0].port)
         Assertions.assertEquals(8888, serviceSpec.spec.ports[0].targetPort)
         Assertions.assertEquals(7777, serviceSpec.spec.ports[0].nodePort)
-        Assertions.assertEquals(PortMappingSpec.Protocol.SCTP, serviceSpec.spec.ports[0].protocol)
+        Assertions.assertEquals(Protocol.SCTP, serviceSpec.spec.ports[0].protocol)
         Assertions.assertEquals("https", serviceSpec.spec.ports[0].appProtocol)
 
         Assertions.assertEquals("clusterIP", serviceSpec.spec.clusterIP)
         Assertions.assertEquals(listOf("clusterIP"), serviceSpec.spec.clusterIPs)
 
-        Assertions.assertEquals(setOf(ServiceSpec.IPFamily.IPv4, ServiceSpec.IPFamily.IPv6), serviceSpec.spec.ipFamilies)
-        Assertions.assertEquals(ServiceSpec.FamilyPolicy.RequireDualStack, serviceSpec.spec.ipFamilyPolicy)
+        Assertions.assertEquals(setOf(IPFamily.IPv4, IPFamily.IPv6), serviceSpec.spec.ipFamilies)
+        Assertions.assertEquals(FamilyPolicy.RequireDualStack, serviceSpec.spec.ipFamilyPolicy)
 
         Assertions.assertEquals(listOf("externalIP"), serviceSpec.spec.externalIPs)
         Assertions.assertEquals("externalName", serviceSpec.spec.externalName)
 
-        Assertions.assertEquals(ServiceSpec.TrafficPolicy.Local, serviceSpec.spec.externalTrafficPolicy)
-        Assertions.assertEquals(ServiceSpec.TrafficPolicy.Local, serviceSpec.spec.internalTrafficPolicy)
+        Assertions.assertEquals(TrafficPolicy.Local, serviceSpec.spec.externalTrafficPolicy)
+        Assertions.assertEquals(TrafficPolicy.Local, serviceSpec.spec.internalTrafficPolicy)
 
         Assertions.assertEquals(false, serviceSpec.spec.allocateLoadBalancerNodePorts)
         Assertions.assertEquals("loadBalancerIP", serviceSpec.spec.loadBalancerIP)
         Assertions.assertEquals("loadBalancerClass", serviceSpec.spec.loadBalancerClass)
         Assertions.assertEquals(listOf("loadBalancerSourceRange"), serviceSpec.spec.loadBalancerSourceRanges)
 
-        Assertions.assertEquals(ServiceSpec.SessionAffinity.None, serviceSpec.spec.sessionAffinity)
+        Assertions.assertEquals(SessionAffinity.None, serviceSpec.spec.sessionAffinity)
         Assertions.assertEquals(
-            ServiceSpec.SessionAffinityConfig(ServiceSpec.ClientIPConfig(30.seconds.toJavaDuration())),
+            SessionAffinityConfig(ClientIPConfig(30.seconds.toJavaDuration())),
             serviceSpec.spec.sessionAffinityConfig
         )
 
         Assertions.assertEquals(true, serviceSpec.spec.publishNotReadyAddresses)
         Assertions.assertEquals(3000, serviceSpec.spec.healthCheckNodePort)
-        Assertions.assertEquals(ServiceSpec.TrafficDistribution.PreferClose, serviceSpec.spec.trafficDistribution)
+        Assertions.assertEquals(TrafficDistribution.PreferClose, serviceSpec.spec.trafficDistribution)
     }
 
 }

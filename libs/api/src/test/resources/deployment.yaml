@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: name
+  namespace: namespace
+  generateName: generateName
+  labels:
+    key: value
+  annotations:
+    key: value
+  finalizers:
+    - finalizer
+  ownerReferences:
+    - apiVersion: apiVersion
+      kind: kind
+      name: name
+      uid: 2fade68b-1f49-403a-b5e8-4e640d3c6594
+      controller: true
+      blockOwnerDeletion: true
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: demo
+    matchExpressions:
+      - key: tier
+        operator: In
+        values:
+          - backend
+  template:
+    metadata:
+      labels:
+        app: demo
+      annotations:
+        description: Demo pod template
+    spec:
+      containers:
+        - name: name
+          image: image
+      restartPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: "10%"
+      maxUnavailable: 3
+  minReadySeconds: 30
+  revisionHistoryLimit: 5
+  paused: true
+  progressDeadlineSeconds: 600

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -76,6 +76,8 @@ class ServiceBackendSpecBuilder internal constructor(private val name: String) :
  * group configuration. The resulting `ResourceBackendSpec` object can be used to represent
  * Kubernetes resources as backends in various configurations.
  *
+ * All values are optional.
+ *
  * @constructor Creates a new instance of the builder with the specified resource name and kind.
  * @param name The name of the resource.
  * @param kind The kind of the resource to be referenced in the backend.
@@ -88,7 +90,7 @@ class ResourceBackendSpecBuilder internal constructor(private val name: String, 
     /**
      * The API group of the resource.
      */
-    val apiGroup: String? = null
+    var apiGroup: String? = null
 
     override fun build(): BackendSpec {
         require(name.isNotBlank()) { "Resource name is required for resource backend" }

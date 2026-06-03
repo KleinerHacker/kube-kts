@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -20,6 +20,8 @@ import java.net.URI
  *
  * This builder provides properties to set the email address and URL for a maintainer.
  * The maintainer's name must be provided when the builder is created.
+ *
+ * All values are optional.
  *
  * @constructor Creates a builder with the specified maintainer name.
  * @param name The full name of the maintainer.

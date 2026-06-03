@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -16,17 +16,15 @@ import kotlinx.coroutines.runBlocking
 import org.jetbrains.kotlin.incremental.util.Either
 import org.pcsoft.framework.kube.kts.api.values.ValueAccess
 import org.pcsoft.framework.kube.kts.core.intern.utils.toEffectiveString
-import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsCompilationConfiguration
-import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsEvaluationConfiguration
+import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsSpecCompilationConfiguration
+import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsSpecEvaluationConfiguration
 import org.pcsoft.framework.kube.kts.logging.failedStyle
 import org.pcsoft.framework.kube.kts.logging.logger
 import org.pcsoft.framework.kube.kts.logging.successStyle
 import org.pcsoft.framework.kube.kts.logging.symbolSubProcess
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.script.experimental.api.CompiledScript
-import kotlin.script.experimental.api.ResultValue
-import kotlin.script.experimental.api.valueOrThrow
+import kotlin.script.experimental.api.*
 import kotlin.script.experimental.host.toScriptSource
 import kotlin.script.experimental.jvm.util.isError
 import kotlin.script.experimental.jvm.util.renderError
@@ -69,9 +67,8 @@ internal object DefaultKotlinScriptProcessor : KotlinScriptProcessor {
     private val logger = logger()
 
     private val scriptingHost = BasicJvmScriptingHost()
-    private val compilerConfiguration = KubeKtsCompilationConfiguration
 
-    override fun compile(name: String, script: Path, unsafe: Boolean): Either<CompiledScript> = runBlocking {
+    override fun compile(name: String, script: Path, libScripts: List<Path>, unsafe: Boolean): Either<CompiledScript> = runBlocking {
         logger.atDebug().log { "$symbolSubProcess Compile script: $name" }
 
         if (!unsafe) {
@@ -80,6 +77,21 @@ internal object DefaultKotlinScriptProcessor : KotlinScriptProcessor {
             }
         }
 
+        val libSources = libScripts.map { it.toFile().toScriptSource() }
+        val compilerConfiguration = ScriptCompilationConfiguration(KubeKtsSpecCompilationConfiguration) {
+            if (libSources.isNotEmpty()) {
+                refineConfiguration {
+                    beforeCompiling { context ->
+                        if (context.script.name?.endsWith(".lib.kts") == true) {
+                            return@beforeCompiling context.compilationConfiguration.asSuccess()
+                        }
+                        ScriptCompilationConfiguration(context.compilationConfiguration) {
+                            importScripts.put(libSources)
+                        }.asSuccess()
+                    }
+                }
+            }
+        }
         val result = scriptingHost.compiler.invoke(script.toFile().toScriptSource(), compilerConfiguration)
         if (result.isError()) {
             logger.atTrace().log { "Detect compile errors for script: $name".failedStyle() }
@@ -94,7 +106,7 @@ internal object DefaultKotlinScriptProcessor : KotlinScriptProcessor {
     override fun <T> execute(name: String, script: CompiledScript, valueAccess: ValueAccess): Either<T> = runBlocking {
         logger.atDebug().log { "$symbolSubProcess Execute script: $name" }
 
-        val evaluationConfiguration = KubeKtsEvaluationConfiguration(valueAccess)
+        val evaluationConfiguration = KubeKtsSpecEvaluationConfiguration(valueAccess)
         val result = scriptingHost.evaluator.invoke(script, evaluationConfiguration)
         if (result.isError()) {
             logger.atTrace().log { "Detect errors for script: $name".failedStyle() }

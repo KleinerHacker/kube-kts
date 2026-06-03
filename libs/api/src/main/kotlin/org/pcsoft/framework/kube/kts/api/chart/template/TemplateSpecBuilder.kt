@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -14,12 +14,14 @@ package org.pcsoft.framework.kube.kts.api.chart.template
 
 import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpecBuilder
-import org.pcsoft.framework.kube.kts.api.chart.template.types.MetadataSpecBuilder
+import org.pcsoft.framework.kube.kts.api.chart.types.MetadataTemplateSpecBuilder
 
 /**
  * Builder class for creating instances of [TemplateSpec]. This class provides methods to
  * configure the metadata and specification of a Kubernetes resource template while ensuring
  * that all necessary components are set before the final build.
+ *
+ * Some values are required.
  *
  * @param S The type of the resource specification contained within the template. Must extend [ResourceSpec].
  * @param B The type of the builder used to configure the resource specification. Must implement [ResourceSpecBuilder].
@@ -33,7 +35,7 @@ class TemplateSpecBuilder<S, B> internal constructor(
     private val kind: String,
     private val specBuilder: B
 ) where S : ResourceSpec, B : ResourceSpecBuilder<S> {
-    private var metadataBuilder: MetadataSpecBuilder? = null
+    private var metadataBuilder: MetadataTemplateSpecBuilder? = null
 
     /**
      * Configures the metadata for the Kubernetes resource template.
@@ -47,10 +49,10 @@ class TemplateSpecBuilder<S, B> internal constructor(
      * ```
      *
      * @param name The name of the resource being configured.
-     * @param prepare A lambda with a receiver of [MetadataSpecBuilder] to further customize the metadata.
+     * @param prepare A lambda with a receiver of [MetadataTemplateSpecBuilder] to further customize the metadata.
      */
-    fun metadata(name: String, prepare: MetadataSpecBuilder.() -> Unit) {
-        metadataBuilder = MetadataSpecBuilder(name).apply(prepare)
+    fun metadata(name: String, prepare: MetadataTemplateSpecBuilder.() -> Unit) {
+        metadataBuilder = MetadataTemplateSpecBuilder(name).apply(prepare)
     }
 
     /**

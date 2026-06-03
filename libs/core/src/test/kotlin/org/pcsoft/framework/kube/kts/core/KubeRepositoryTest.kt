@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -29,24 +29,28 @@ class KubeRepositoryTest : RepositoryTest() {
         val ktsRepo =
             KubeKtsRepositoryScanner.DEFAULT.scan(Paths.get(this::class.java.getResource("/kts/helm").toURI()))
         Assertions.assertNotNull(ktsRepo)
-        Assertions.assertEquals(3, ktsRepo.files.size)
-        Assertions.assertEquals(1, ktsRepo.files.filter { it.isChart }.size)
-        Assertions.assertTrue { ktsRepo.files.any { it.subject == "Chart" } }
-        Assertions.assertTrue { ktsRepo.files.any { it.subject == "service" } }
-        Assertions.assertTrue { ktsRepo.files.any { it.subject == "ingress" } }
+        Assertions.assertEquals(4, ktsRepo.specFiles.size)
+        Assertions.assertEquals(1, ktsRepo.specFiles.filter { it.isChart }.size)
+        Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "Chart" } }
+        Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "service" } }
+        Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "ingress" } }
+        Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "deployment" } }
+        Assertions.assertEquals(1, ktsRepo.libFiles.size)
+        Assertions.assertTrue { ktsRepo.libFiles.any { it.subject == "helpers" } }
         Assertions.assertEquals(1, ktsRepo.legacyFiles.size)
         Assertions.assertEquals(1, ktsRepo.legacyFiles.filter { it.isValues }.size)
 
         val helmRepo = KubeKtsRepositoryBuilder.createDefault().build(ktsRepo, arrayOf())
         Assertions.assertNotNull(helmRepo)
-        Assertions.assertEquals(3, helmRepo.files.size)
-        Assertions.assertEquals(1, helmRepo.files.filter { it.isChart }.size)
+        Assertions.assertEquals(4, helmRepo.specFiles.size)
+        Assertions.assertEquals(1, helmRepo.specFiles.filter { it.isChart }.size)
         Assertions.assertEquals(1, helmRepo.legacyFiles.size)
         Assertions.assertEquals(1, helmRepo.legacyFiles.filter { it.isValues }.size)
 
-        Assertions.assertTrue { helmRepo.files.any { it.subject == "Chart" } }
-        Assertions.assertTrue { helmRepo.files.any { it.subject == "service" } }
-        Assertions.assertTrue { helmRepo.files.any { it.subject == "ingress" } }
+        Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "Chart" } }
+        Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "service" } }
+        Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "ingress" } }
+        Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "deployment" } }
         Assertions.assertTrue { helmRepo.legacyFiles.any { it.subject == "values" } }
 
         val targetPath = Files.createTempDirectory("helm")
@@ -62,6 +66,10 @@ class KubeRepositoryTest : RepositoryTest() {
         assertYaml(
             targetPath.resolve("templates/ingress.yaml"),
             Paths.get(this::class.java.getResource("/kts/expected/templates/ingress.yaml").toURI())
+        )
+        assertYaml(
+            targetPath.resolve("templates/deployment.yaml"),
+            Paths.get(this::class.java.getResource("/kts/expected/templates/deployment.yaml").toURI())
         )
         assertYaml(
             targetPath.resolve("values.yaml"),

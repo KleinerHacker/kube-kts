@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -57,13 +57,13 @@ class DefaultKubeHelmRepositoryRenderer(
         logger.atDebug().log { "$symbolProcess Rendering repository to YAML: ${repository.name}" }
 
         logger.atDebug()
-            .log { "$symbolBullet Render ${repository.files.size} KTS files and ${repository.legacyFiles.size} legacy Helm files..." }
+            .log { "$symbolBullet Render ${repository.specFiles.size} KTS files and ${repository.legacyFiles.size} legacy Helm files..." }
         logger.atTrace()
-            .log { "\t$symbolArrowRight KTS : ${repository.files.joinToString(", ") { it.subject }}" }
+            .log { "\t$symbolArrowRight KTS : ${repository.specFiles.joinToString(", ") { it.subject }}" }
         logger.atTrace()
             .log { "\t$symbolArrowRight Helm: ${repository.legacyFiles.joinToString(", ") { it.subject }}" }
 
-        repository.files.forEach {
+        repository.specFiles.forEach {
             val yaml = renderer.render(it)
 
             val file = targetPath.resolve(it.relativePath, "${it.subject}.yaml")

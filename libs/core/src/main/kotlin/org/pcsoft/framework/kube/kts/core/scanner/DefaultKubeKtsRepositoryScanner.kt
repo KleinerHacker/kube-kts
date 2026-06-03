@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -31,8 +31,9 @@ import kotlin.io.path.*
  *
  * The scanning process includes the following steps:
  * - Validating that the provided path exists and is a directory.
- * - Searching for `.kts` files, extracting their content, and encapsulating them
- *   as [DefaultKubeKtsFile] instances.
+ * - Searching for `*.spec.kts` and legacy `*.kts` spec files, extracting their content,
+ *   and encapsulating them as [DefaultKubeKtsFile] instances.
+ * - Searching for `*.lib.kts` library files, whose content is made available in all spec files.
  * - Searching for legacy `.yaml`, `.yml`, and `.tpl` files, reading their content,
  *   and representing them as [LegacyHelmFile] instances.
  * - Logging details about the files discovered during the scan.
@@ -50,16 +51,26 @@ internal object DefaultKubeKtsRepositoryScanner : KubeKtsRepositoryScanner {
         require(path.toFile().isDirectory) { "Path is not a directory: ${path.toAbsolutePath()}" }
         logger.atDebug().log { "$symbolProcess Scan repository at path ${path.toAbsolutePath()}" }
 
-        val kubeKtsFiles = Files.walk(path, FileVisitOption.FOLLOW_LINKS)
+        val allKtsFiles = Files.walk(path, FileVisitOption.FOLLOW_LINKS)
             .filter { it.isRegularFile() }
-            .filter { it.extension.equals("kts", true) }
-            .map { file ->
-                val subject = file.fileName.nameWithoutExtension
-                val script = Files.readString(file)
+            .filter { it.fileName.toString().endsWith(".kts", ignoreCase = true) }
+            .toList()
 
+        val kubeKtsFiles = allKtsFiles
+            .filter { !it.fileName.toString().endsWith(".lib.kts", ignoreCase = true) }
+            .map { file ->
+                val subject = extractKtsSubject(file.fileName.toString())
+                val script = Files.readString(file)
                 DefaultKubeKtsFile(subject, file.parent.relativeTo(path), script)
             }
-            .toList()
+
+        val libKtsFiles = allKtsFiles
+            .filter { it.fileName.toString().endsWith(".lib.kts", ignoreCase = true) }
+            .map { file ->
+                val subject = extractKtsSubject(file.fileName.toString())
+                val script = Files.readString(file)
+                DefaultKubeKtsFile(subject, file.parent.relativeTo(path), script)
+            }
 
         val legacyHelmFiles = Files.walk(path, FileVisitOption.FOLLOW_LINKS)
             .filter { it.isRegularFile() }
@@ -77,8 +88,9 @@ internal object DefaultKubeKtsRepositoryScanner : KubeKtsRepositoryScanner {
             .toList()
 
         logger.atDebug()
-            .log { "$symbolBullet Found ${kubeKtsFiles.size} KTS files and ${legacyHelmFiles.size} legacy Helm files in repository" }
-        logger.atTrace().log { "\t$symbolArrowRight KTS : ${kubeKtsFiles.joinToString(", ") { it.subject }}" }
+            .log { "$symbolBullet Found ${kubeKtsFiles.size} spec KTS, ${libKtsFiles.size} lib KTS, and ${legacyHelmFiles.size} legacy Helm files in repository" }
+        logger.atTrace().log { "\t$symbolArrowRight Spec: ${kubeKtsFiles.joinToString(", ") { it.subject }}" }
+        logger.atTrace().log { "\t$symbolArrowRight Lib : ${libKtsFiles.joinToString(", ") { it.subject }}" }
         logger.atTrace().log { "\t$symbolArrowRight Helm: ${legacyHelmFiles.joinToString(", ") { it.subject }}" }
 
         if (!kubeKtsFiles.any { it.isChart }) {
@@ -86,6 +98,12 @@ internal object DefaultKubeKtsRepositoryScanner : KubeKtsRepositoryScanner {
         }
 
         logger.atDebug().log { "Scan finished for repository at path ${path.toAbsolutePath()}".successStyle() }
-        return KubeKtsRepository(path.parent.fileName.name, kubeKtsFiles, legacyHelmFiles)
+        return KubeKtsRepository(path.parent.fileName.name, kubeKtsFiles, libKtsFiles, legacyHelmFiles)
+    }
+
+    private fun extractKtsSubject(fileName: String): String = when {
+        fileName.endsWith(".spec.kts", ignoreCase = true) -> fileName.dropLast(".spec.kts".length)
+        fileName.endsWith(".lib.kts", ignoreCase = true) -> fileName.dropLast(".lib.kts".length)
+        else -> fileName.dropLast(".kts".length)
     }
 }

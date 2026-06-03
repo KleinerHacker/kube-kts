@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -28,10 +28,11 @@ class KubeMixRepositoryTest : RepositoryTest() {
     fun testSuccessfully() {
         val ktsRepo = KubeKtsRepositoryScanner.DEFAULT.scan(Paths.get(this::class.java.getResource("/mix/helm").toURI()))
         Assertions.assertNotNull(ktsRepo)
-        Assertions.assertEquals(2, ktsRepo.files.size)
-        Assertions.assertEquals(1, ktsRepo.files.filter { it.isChart }.size)
-        Assertions.assertTrue { ktsRepo.files.any { it.subject == "Chart" } }
-        Assertions.assertTrue { ktsRepo.files.any { it.subject == "service" } }
+        Assertions.assertEquals(3, ktsRepo.specFiles.size)
+        Assertions.assertEquals(1, ktsRepo.specFiles.filter { it.isChart }.size)
+        Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "Chart" } }
+        Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "service" } }
+        Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "deployment" } }
         Assertions.assertEquals(3, ktsRepo.legacyFiles.size)
         Assertions.assertEquals(0, ktsRepo.legacyFiles.filter { it.isChart }.size)
         Assertions.assertEquals(1, ktsRepo.legacyFiles.filter { it.isValues }.size)
@@ -41,14 +42,15 @@ class KubeMixRepositoryTest : RepositoryTest() {
 
         val helmRepo = KubeKtsRepositoryBuilder.createDefault().build(ktsRepo, arrayOf())
         Assertions.assertNotNull(helmRepo)
-        Assertions.assertEquals(2, helmRepo.files.size)
-        Assertions.assertEquals(1, helmRepo.files.filter { it.isChart }.size)
+        Assertions.assertEquals(3, helmRepo.specFiles.size)
+        Assertions.assertEquals(1, helmRepo.specFiles.filter { it.isChart }.size)
         Assertions.assertEquals(3, helmRepo.legacyFiles.size)
         Assertions.assertEquals(0, helmRepo.legacyFiles.filter { it.isChart }.size)
         Assertions.assertEquals(1, helmRepo.legacyFiles.filter { it.isValues }.size)
 
-        Assertions.assertTrue { helmRepo.files.any { it.subject == "Chart" } }
-        Assertions.assertTrue { helmRepo.files.any { it.subject == "service" } }
+        Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "Chart" } }
+        Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "service" } }
+        Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "deployment" } }
         Assertions.assertTrue { helmRepo.legacyFiles.any { it.subject == "ingress" } }
         Assertions.assertTrue { helmRepo.legacyFiles.any { it.subject == "helper" } }
         Assertions.assertTrue { helmRepo.legacyFiles.any { it.subject == "values" } }
@@ -66,6 +68,10 @@ class KubeMixRepositoryTest : RepositoryTest() {
         assertYaml(
             targetPath.resolve("templates/ingress.yaml"),
             Paths.get(this::class.java.getResource("/mix/expected/templates/ingress.yaml").toURI())
+        )
+        assertYaml(
+            targetPath.resolve("templates/deployment.yaml"),
+            Paths.get(this::class.java.getResource("/mix/expected/templates/deployment.yaml").toURI())
         )
         assertYaml(
             targetPath.resolve("values.yaml"),

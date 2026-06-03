@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -18,6 +18,8 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
  *
  * This builder supports the dynamic configuration of hosts and secret names. It also provides
  * an internal nested [HostListBuilder] class for a more structured way to add multiple hosts.
+ *
+ * All values are optional.
  *
  * @constructor Internal constructor to initialize the builder.
  *              Instance creation is restricted to internal usage.

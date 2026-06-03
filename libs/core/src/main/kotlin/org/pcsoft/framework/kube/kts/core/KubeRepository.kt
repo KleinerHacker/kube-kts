@@ -1,5 +1,5 @@
 /*
- * Copyright (c) KleinerHacker alias pcsoft 2026.
+ * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
  * You may obtain a copy of the License at:
@@ -32,9 +32,9 @@ interface KubeRepository<T : KubeFile> {
     val name: String
 
     /**
-     * The list of processed files in this repository.
+     * The list of spec files in this repository (rendered to YAML output).
      */
-    val files: List<T>
+    val specFiles: List<T>
 
     /**
      * The list of legacy Helm files (YAML templates) in this repository.

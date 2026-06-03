@@ -27,6 +27,16 @@ nav:
           - Metadata: kts/metadata.md
           - Service: kts/service.md
           - Ingress: kts/ingress.md
+          - Deployment:
+              - Overview: kts/deployment.md
+              - Selector: kts/deployment/selector.md
+              - Pod Template: kts/deployment/template.md
+              - Pod Spec: kts/deployment/pod-spec.md
+              - Containers: kts/deployment/containers.md
+              - Probes: kts/deployment/probes.md
+              - Volumes: kts/deployment/volumes.md
+              - Strategy: kts/deployment/strategy.md
+      - Library Files: kts/lib.md
       - Values Handling: kts/values.md
   - API Docs: dokka/html/index.html
   - Licences: licences/index.html
