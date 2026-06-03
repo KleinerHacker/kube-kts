@@ -114,7 +114,7 @@ class DefaultFlagsImpl(
         names = ["--unsafe"],
         description = [
             "Enable unsafe mode, allowing certain operations that may be @|italic dangerous|@",
-            "\t@|italic Allow imports in scripts|@"
+            "\t@|italic Allow import statements and fully qualified class names in scripts|@"
         ]
     )
     override var unsafeMode: Boolean = false,
