@@ -83,7 +83,12 @@ object KubeKtsSpecCompilationConfiguration : ScriptCompilationConfiguration({
             }
 
             // Discover *.lib.kts siblings in the same helm/ tree so IntelliJ sees their members.
+            // IntelliJ may not wrap the script as FileScriptSource — fall back to locationId.
             val scriptFile = (context.script as? FileScriptSource)?.file
+                ?: context.script.locationId?.let { locId ->
+                    runCatching { java.net.URI(locId).takeIf { it.scheme == "file" }?.let { File(it) } }
+                        .getOrNull() ?: File(locId).takeIf { it.exists() }
+                }
             val libFiles = findHelmRoot(scriptFile)
                 ?.walkTopDown()
                 ?.filter { it.isFile && it.name.endsWith(".lib.kts") }
