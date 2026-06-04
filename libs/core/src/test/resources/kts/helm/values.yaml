@@ -1,0 +1,20 @@
+values:
+  security:
+    tls:
+      secret: "secretName"
+      host: "host.example.com"
+
+  routes:
+    rules:
+      - host: "rule1.example.com"
+        path: "path1"
+        port: 9999
+      - host: "rule2.example.com"
+        path: "path2"
+        port: 8888
+
+  ports:
+    - name: "port"
+      port: 9999
+      targetPort: 8888
+      nodePort: 7777

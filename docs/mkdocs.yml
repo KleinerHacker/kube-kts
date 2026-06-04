@@ -1,0 +1,42 @@
+site_name: Kube KTS User Guide
+copyright: "Copyright (c) KleinerHacker alias pcsoft 2026."
+
+markdown_extensions:
+  - admonition
+  - toc:
+      toc_depth: 3
+#  - pymdownx.snippets
+#  - pymdownx.highlight
+
+theme:
+  name: material
+  language: de
+  features:
+    - navigation.sections
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+
+nav:
+  - Home: index.md
+  - CLI: cli.md
+  - Kotlin Scripts Repository:
+      - Chart: kts/chart.md
+      - Templates:
+          - Metadata: kts/metadata.md
+          - Service: kts/service.md
+          - Ingress: kts/ingress.md
+          - Deployment:
+              - Overview: kts/deployment.md
+              - Selector: kts/deployment/selector.md
+              - Pod Template: kts/deployment/template.md
+              - Pod Spec: kts/deployment/pod-spec.md
+              - Containers: kts/deployment/containers.md
+              - Probes: kts/deployment/probes.md
+              - Volumes: kts/deployment/volumes.md
+              - Strategy: kts/deployment/strategy.md
+      - Library Files: kts/lib.md
+      - Values Handling: kts/values.md
+  - API Docs: dokka/html/index.html
+  - Licences: licences/index.html

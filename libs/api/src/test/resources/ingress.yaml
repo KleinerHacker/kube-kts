@@ -1,0 +1,59 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: name
+  namespace: namespace
+  generateName: generateName
+  labels:
+    key: value
+  annotations:
+    key: value
+  finalizers:
+    - finalizer
+  ownerReferences:
+    - apiVersion: apiVersion
+      kind: kind
+      name: name
+      uid: 2fade68b-1f49-403a-b5e8-4e640d3c6594
+      controller: true
+      blockOwnerDeletion: true
+spec:
+  ingressClassName: className
+
+  defaultBackend:
+    service:
+      name: service
+      port:
+        number: 9999
+  # Alternative:
+  #   defaultBackend:
+  #     resource:
+  #       apiGroup: example.com
+  #       kind: StorageBucket
+  #       name: fallback-assets
+
+  tls:
+    - hosts:
+        - host.example.com
+      secretName: secretName
+
+  rules:
+    - host: rule.example.com
+      http:
+        paths:
+          - path: path
+            pathType: Exact
+            backend:
+              service:
+                name: ruleService
+                port:
+                  number: 7777
+    # Alternative:
+    #         - path: /assets
+    #           pathType: Prefix
+    #           backend:
+    #             resource:
+    #               apiGroup: example.com
+    #               kind: StorageBucket
+    #               name: assets-bucket
