@@ -17,11 +17,13 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.ChartSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.ConfigMapSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.IngressSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
 import org.pcsoft.framework.kube.kts.api.values.ValueAccess
 import org.pcsoft.framework.kube.kts.core.intern.assertions.ChartAssertion
+import org.pcsoft.framework.kube.kts.core.intern.assertions.ConfigMapAssertion
 import org.pcsoft.framework.kube.kts.core.intern.assertions.ServiceAssertion
 import org.pcsoft.framework.kube.kts.core.intern.setupTestLogger
 import tools.jackson.databind.JsonNode
@@ -108,6 +110,32 @@ class DefaultKotlinScriptProcessorTest {
         //val ingressSpec = (ingressSpecEither as Either.Success).value
         //ServiceAssertion.assertMax(ingressSpec)
         //TODO: Assertions
+    }
+
+    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    @Test
+    fun testConfigMap() {
+        val compiledScriptEither =
+            compiler.compile(
+                "configmap",
+                Path.of(this::class.java.getResource("/kts/helm/templates/configmap.spec.kts").toURI()),
+                emptyList(),
+                false
+            )
+        Assertions.assertNotNull(compiledScriptEither)
+        Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
+
+        val compiledScript = (compiledScriptEither as Either.Success).value
+        val configMapSpecEither = compiler.execute<TemplateSpec<ConfigMapSpec>>(
+            "configmap",
+            compiledScript,
+            ValueAccess.ofRoot(getValuesNode())
+        )
+        Assertions.assertNotNull(configMapSpecEither)
+        Assertions.assertInstanceOf(Either.Success::class.java, configMapSpecEither)
+
+        val configMapSpec = (configMapSpecEither as Either.Success).value
+        ConfigMapAssertion.assertMax(configMapSpec)
     }
 
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")

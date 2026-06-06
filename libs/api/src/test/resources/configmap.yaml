@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: name
+  namespace: namespace
+  generateName: generateName
+  labels:
+    key: value
+  annotations:
+    key: value
+  finalizers:
+    - finalizer
+spec:
+  data:
+    key1: value1
+    key2: value2
+  binaryData:
+    binKey: "dGVzdA=="
+  immutable: true
