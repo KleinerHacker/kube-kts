@@ -16,7 +16,7 @@ import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.Protocol
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpecBuilder
+import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpecBuilder
 import org.pcsoft.framework.kube.kts.api.utils.convertToJson
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
@@ -64,7 +64,7 @@ class ServiceSpecTest {
         }
 
         private val maxSpec = maxSpecBuilder.build()
-        private val maxTemplate = TemplateSpecBuilder(ServiceSpec.API_VERSION, ServiceSpec.KIND, maxSpecBuilder).apply {
+        private val maxTemplate = ExplicitTemplateSpecBuilder(ServiceSpec.API_VERSION, ServiceSpec.KIND, maxSpecBuilder).apply {
             metadata("name") {
                 namespace = "namespace"
                 generateName = "generateName"

@@ -15,7 +15,7 @@ package org.pcsoft.framework.kube.kts.api.chart.resources
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpecBuilder
+import org.pcsoft.framework.kube.kts.api.chart.template.FlatTemplateSpecBuilder
 import org.pcsoft.framework.kube.kts.api.utils.convertToJson
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
@@ -31,7 +31,7 @@ class ConfigMapSpecTest {
         }
 
         private val maxSpec = maxSpecBuilder.build()
-        private val maxTemplate = TemplateSpecBuilder(ConfigMapSpec.API_VERSION, ConfigMapSpec.KIND, maxSpecBuilder).apply {
+        private val maxTemplate = FlatTemplateSpecBuilder(ConfigMapSpec.API_VERSION, ConfigMapSpec.KIND, maxSpecBuilder).apply {
             metadata("name") {
                 namespace = "namespace"
                 generateName = "generateName"
@@ -70,6 +70,56 @@ class ConfigMapSpecTest {
         val expectedYaml = IOUtils.resourceToString("/configmap.yaml", Charsets.UTF_8)
         val expectedJson = convertToJson(expectedYaml)
         val actualJson = maxTemplate.toJson()
+
+        println(actualJson)
+        println(expectedJson)
+
+        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+    }
+
+    @Test
+    fun testBinaryDataMultipleEntries() {
+        val spec = ConfigMapSpecBuilder().apply {
+            addBinaryData("bin1", "test1".toByteArray())
+            addBinaryData("bin2", "test2".toByteArray())
+        }.build()
+
+        Assertions.assertNotNull(spec.binaryData)
+        Assertions.assertEquals(2, spec.binaryData!!.size)
+        Assertions.assertArrayEquals("test1".toByteArray(), spec.binaryData["bin1"])
+        Assertions.assertArrayEquals("test2".toByteArray(), spec.binaryData["bin2"])
+        Assertions.assertNull(spec.data)
+    }
+
+    @Test
+    fun testBinaryDataBuilderDsl() {
+        val spec = ConfigMapSpecBuilder().apply {
+            binaryData {
+                entry("bin1", "test1".toByteArray())
+                entry("bin2", "test2".toByteArray())
+            }
+        }.build()
+
+        Assertions.assertNotNull(spec.binaryData)
+        Assertions.assertEquals(2, spec.binaryData!!.size)
+        Assertions.assertArrayEquals("test1".toByteArray(), spec.binaryData["bin1"])
+        Assertions.assertArrayEquals("test2".toByteArray(), spec.binaryData["bin2"])
+        Assertions.assertNull(spec.data)
+    }
+
+    @Test
+    fun testBinaryDataOnlyYaml() {
+        val specBuilder = ConfigMapSpecBuilder().apply {
+            addBinaryData("bin1", "test1".toByteArray())
+            addBinaryData("bin2", "test2".toByteArray())
+        }
+        val template = FlatTemplateSpecBuilder(ConfigMapSpec.API_VERSION, ConfigMapSpec.KIND, specBuilder).apply {
+            metadata("name") {}
+        }.build()
+
+        val expectedYaml = IOUtils.resourceToString("/configmap-binaryonly.yaml", Charsets.UTF_8)
+        val expectedJson = convertToJson(expectedYaml)
+        val actualJson = template.toJson()
 
         println(actualJson)
         println(expectedJson)

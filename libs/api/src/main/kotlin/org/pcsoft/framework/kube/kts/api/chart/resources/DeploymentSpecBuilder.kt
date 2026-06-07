@@ -15,8 +15,8 @@ package org.pcsoft.framework.kube.kts.api.chart.resources
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.DeploymentStrategySpecBuilder
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.LabelSelectorSpecBuilder
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.PodTemplateSpecBuilder
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpecBuilder
+import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
+import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpecBuilder
 import java.time.Duration
 
 /**
@@ -130,15 +130,15 @@ class DeploymentSpecBuilder internal constructor() : ResourceSpecBuilder<Deploym
  * This function allows users to define the desired state and configuration
  * details for a Deployment using a builder-style DSL.
  *
- * @param prepare A lambda with a receiver of type [TemplateSpecBuilder]. This lambda is used
+ * @param prepare A lambda with a receiver of type [ExplicitTemplateSpecBuilder]. This lambda is used
  * to configure the metadata and specification for the Deployment resource.
  * The receiver provides methods to set properties like metadata, labels, replicas,
  * pod template, and other settings relevant to the Deployment.
  *
- * @return A [TemplateSpec] instance containing the configured [DeploymentSpec].
+ * @return A [ExplicitTemplateSpec] instance containing the configured [DeploymentSpec].
  * This object can be used to define and apply a Deployment resource in a Kubernetes cluster.
  */
-fun deployment(prepare: TemplateSpecBuilder<DeploymentSpec, DeploymentSpecBuilder>.() -> Unit): TemplateSpec<DeploymentSpec> =
-    TemplateSpecBuilder(DeploymentSpec.API_VERSION, DeploymentSpec.KIND, DeploymentSpecBuilder())
+fun deployment(prepare: ExplicitTemplateSpecBuilder<DeploymentSpec, DeploymentSpecBuilder>.() -> Unit): ExplicitTemplateSpec<DeploymentSpec> =
+    ExplicitTemplateSpecBuilder(DeploymentSpec.API_VERSION, DeploymentSpec.KIND, DeploymentSpecBuilder())
         .apply(prepare)
         .build()

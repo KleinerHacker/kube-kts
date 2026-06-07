@@ -14,11 +14,11 @@ package org.pcsoft.framework.kube.kts.core.intern.assertions
 
 import org.junit.jupiter.api.Assertions
 import org.pcsoft.framework.kube.kts.api.chart.resources.ConfigMapSpec
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
+import org.pcsoft.framework.kube.kts.api.chart.template.FlatTemplateSpec
 
 object ConfigMapAssertion {
 
-    fun assertMax(configMapSpec: TemplateSpec<ConfigMapSpec>) {
+    fun assertMax(configMapSpec: FlatTemplateSpec<ConfigMapSpec>) {
         Assertions.assertNotNull(configMapSpec.metadata)
         Assertions.assertEquals("configmap", configMapSpec.metadata.name)
         Assertions.assertEquals("namespace", configMapSpec.metadata.namespace)

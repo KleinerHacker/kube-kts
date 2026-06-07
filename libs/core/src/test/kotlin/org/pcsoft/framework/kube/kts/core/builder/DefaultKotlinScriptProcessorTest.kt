@@ -20,7 +20,8 @@ import org.pcsoft.framework.kube.kts.api.chart.ChartSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ConfigMapSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.IngressSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
+import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
+import org.pcsoft.framework.kube.kts.api.chart.template.FlatTemplateSpec
 import org.pcsoft.framework.kube.kts.api.values.ValueAccess
 import org.pcsoft.framework.kube.kts.core.intern.assertions.ChartAssertion
 import org.pcsoft.framework.kube.kts.core.intern.assertions.ConfigMapAssertion
@@ -73,7 +74,7 @@ class DefaultKotlinScriptProcessorTest {
         Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
 
         val compiledScript = (compiledScriptEither as Either.Success).value
-        val serviceSpecEither = compiler.execute<TemplateSpec<ServiceSpec>>(
+        val serviceSpecEither = compiler.execute<ExplicitTemplateSpec<ServiceSpec>>(
             "service",
             compiledScript,
             ValueAccess.ofRoot(getValuesNode())
@@ -99,7 +100,7 @@ class DefaultKotlinScriptProcessorTest {
         Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
 
         val compiledScript = (compiledScriptEither as Either.Success).value
-        val ingressSpecEither = compiler.execute<TemplateSpec<IngressSpec>>(
+        val ingressSpecEither = compiler.execute<ExplicitTemplateSpec<IngressSpec>>(
             "ingress",
             compiledScript,
             ValueAccess.ofRoot(getValuesNode())
@@ -126,7 +127,7 @@ class DefaultKotlinScriptProcessorTest {
         Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
 
         val compiledScript = (compiledScriptEither as Either.Success).value
-        val configMapSpecEither = compiler.execute<TemplateSpec<ConfigMapSpec>>(
+        val configMapSpecEither = compiler.execute<FlatTemplateSpec<ConfigMapSpec>>(
             "configmap",
             compiledScript,
             ValueAccess.ofRoot(getValuesNode())

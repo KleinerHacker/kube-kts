@@ -13,8 +13,8 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.*
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpecBuilder
+import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
+import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpecBuilder
 
 /**
  * Builder class for constructing instances of `IngressSpec`, which describes
@@ -268,9 +268,9 @@ class IngressSpecBuilder internal constructor() : ResourceSpecBuilder<IngressSpe
  * Creates an Ingress resource specification by applying the given configuration.
  *
  * @param prepare The configuration lambda used to build the Ingress specification.
- * This lambda is applied to a [TemplateSpecBuilder] for [IngressSpec] and can define
+ * This lambda is applied to a [ExplicitTemplateSpecBuilder] for [IngressSpec] and can define
  * metadata and specification details for the Kubernetes Ingress resource.
- * @return A [TemplateSpec] containing the built Ingress resource specification.
+ * @return A [ExplicitTemplateSpec] containing the built Ingress resource specification.
  *
  * Example:
  * ```kotlin
@@ -294,7 +294,7 @@ class IngressSpecBuilder internal constructor() : ResourceSpecBuilder<IngressSpe
  * }
  * ```
  */
-fun ingress(prepare: TemplateSpecBuilder<IngressSpec, IngressSpecBuilder>.() -> Unit): TemplateSpec<IngressSpec> =
-    TemplateSpecBuilder(IngressSpec.API_VERSION, IngressSpec.KIND, IngressSpecBuilder())
+fun ingress(prepare: ExplicitTemplateSpecBuilder<IngressSpec, IngressSpecBuilder>.() -> Unit): ExplicitTemplateSpec<IngressSpec> =
+    ExplicitTemplateSpecBuilder(IngressSpec.API_VERSION, IngressSpec.KIND, IngressSpecBuilder())
         .apply(prepare)
         .build()

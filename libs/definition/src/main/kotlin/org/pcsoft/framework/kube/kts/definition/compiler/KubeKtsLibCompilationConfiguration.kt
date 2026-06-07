@@ -17,7 +17,7 @@ import org.pcsoft.framework.kube.kts.api.chart.resources.DeploymentSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortMappingSpec
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
+import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
 import org.pcsoft.framework.kube.kts.api.chart.types.MetadataBaseSpec
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
 import org.pcsoft.framework.kube.kts.api.types.MailAddress
@@ -53,7 +53,7 @@ object KubeKtsLibCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports("${ChartSpec::class.java.packageName}.*")
     defaultImports("${ResourceSpec::class.java.packageName}.*")
     defaultImports("${PortMappingSpec::class.java.packageName}.*")
-    defaultImports("${TemplateSpec::class.java.packageName}.*")
+    defaultImports("${ExplicitTemplateSpec::class.java.packageName}.*")
     defaultImports("${MetadataBaseSpec::class.java.packageName}.*")
     defaultImports("${KubeVersion::class.java.packageName}.*")
     defaultImports("${MailAddress::class.java.packageName}.*")

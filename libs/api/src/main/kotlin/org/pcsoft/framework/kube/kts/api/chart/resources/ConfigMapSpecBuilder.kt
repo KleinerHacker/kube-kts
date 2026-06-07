@@ -12,8 +12,8 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpecBuilder
+import org.pcsoft.framework.kube.kts.api.chart.template.FlatTemplateSpec
+import org.pcsoft.framework.kube.kts.api.chart.template.FlatTemplateSpecBuilder
 
 /**
  * A builder class for constructing `ConfigMapSpec` objects.
@@ -103,7 +103,7 @@ class ConfigMapSpecBuilder internal constructor() : ResourceSpecBuilder<ConfigMa
  * }
  * ```
  */
-fun configMap(prepare: TemplateSpecBuilder<ConfigMapSpec, ConfigMapSpecBuilder>.() -> Unit): TemplateSpec<ConfigMapSpec> =
-    TemplateSpecBuilder(ConfigMapSpec.API_VERSION, ConfigMapSpec.KIND, ConfigMapSpecBuilder())
+fun configMap(prepare: FlatTemplateSpecBuilder<ConfigMapSpec, ConfigMapSpecBuilder>.() -> Unit): FlatTemplateSpec<ConfigMapSpec> =
+    FlatTemplateSpecBuilder(ConfigMapSpec.API_VERSION, ConfigMapSpec.KIND, ConfigMapSpecBuilder())
         .apply(prepare)
         .build()
