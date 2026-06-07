@@ -18,7 +18,7 @@ import org.junit.jupiter.api.assertThrows
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.DeploymentStrategySpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.LabelSelectorRequirementSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.PodSpec
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpecBuilder
+import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpecBuilder
 import org.pcsoft.framework.kube.kts.api.types.absolute
 import org.pcsoft.framework.kube.kts.api.types.percent
 import org.pcsoft.framework.kube.kts.api.utils.convertToJson
@@ -86,7 +86,7 @@ class DeploymentSpecTest {
         }
 
         private val maxSpec = maxSpecBuilder.build()
-        private val maxTemplate = TemplateSpecBuilder(DeploymentSpec.API_VERSION, DeploymentSpec.KIND, maxSpecBuilder).apply {
+        private val maxTemplate = ExplicitTemplateSpecBuilder(DeploymentSpec.API_VERSION, DeploymentSpec.KIND, maxSpecBuilder).apply {
             metadata("name") {
                 namespace = "namespace"
                 generateName = "generateName"

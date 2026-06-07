@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.RulesSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.ServiceBackendSpec
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpecBuilder
+import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpecBuilder
 import org.pcsoft.framework.kube.kts.api.utils.KotlinAssertions
 import org.pcsoft.framework.kube.kts.api.utils.convertToJson
 import org.pcsoft.framework.kube.kts.api.utils.toJson
@@ -52,7 +52,7 @@ class IngressSpecTest {
         }
 
         private val maxSpec = maxSpecBuilder.build()
-        private val maxTemplate = TemplateSpecBuilder(IngressSpec.API_VERSION, IngressSpec.KIND, maxSpecBuilder).apply {
+        private val maxTemplate = ExplicitTemplateSpecBuilder(IngressSpec.API_VERSION, IngressSpec.KIND, maxSpecBuilder).apply {
             metadata("name") {
                 namespace = "namespace"
                 generateName = "generateName"

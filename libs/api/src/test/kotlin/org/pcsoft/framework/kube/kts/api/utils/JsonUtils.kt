@@ -13,7 +13,7 @@
 package org.pcsoft.framework.kube.kts.api.utils
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
+import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
 import org.pcsoft.framework.kube.kts.api.intern.json.ResourceApiDeserializer
 import tools.jackson.databind.MapperFeature
 import tools.jackson.databind.json.JsonMapper
@@ -23,7 +23,7 @@ import tools.jackson.module.kotlin.KotlinModule
 import java.io.ByteArrayOutputStream
 
 private val module = SimpleModule().apply {
-    addDeserializer(TemplateSpec::class.java, ResourceApiDeserializer())
+    addDeserializer(ExplicitTemplateSpec::class.java, ResourceApiDeserializer())
 }
 
 private val jsonMapper = JsonMapper.builder()

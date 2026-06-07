@@ -17,11 +17,14 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.ChartSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.ConfigMapSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.IngressSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
+import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
+import org.pcsoft.framework.kube.kts.api.chart.template.FlatTemplateSpec
 import org.pcsoft.framework.kube.kts.api.values.ValueAccess
 import org.pcsoft.framework.kube.kts.core.intern.assertions.ChartAssertion
+import org.pcsoft.framework.kube.kts.core.intern.assertions.ConfigMapAssertion
 import org.pcsoft.framework.kube.kts.core.intern.assertions.ServiceAssertion
 import org.pcsoft.framework.kube.kts.core.intern.setupTestLogger
 import tools.jackson.databind.JsonNode
@@ -71,7 +74,7 @@ class DefaultKotlinScriptProcessorTest {
         Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
 
         val compiledScript = (compiledScriptEither as Either.Success).value
-        val serviceSpecEither = compiler.execute<TemplateSpec<ServiceSpec>>(
+        val serviceSpecEither = compiler.execute<ExplicitTemplateSpec<ServiceSpec>>(
             "service",
             compiledScript,
             ValueAccess.ofRoot(getValuesNode())
@@ -97,7 +100,7 @@ class DefaultKotlinScriptProcessorTest {
         Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
 
         val compiledScript = (compiledScriptEither as Either.Success).value
-        val ingressSpecEither = compiler.execute<TemplateSpec<IngressSpec>>(
+        val ingressSpecEither = compiler.execute<ExplicitTemplateSpec<IngressSpec>>(
             "ingress",
             compiledScript,
             ValueAccess.ofRoot(getValuesNode())
@@ -108,6 +111,32 @@ class DefaultKotlinScriptProcessorTest {
         //val ingressSpec = (ingressSpecEither as Either.Success).value
         //ServiceAssertion.assertMax(ingressSpec)
         //TODO: Assertions
+    }
+
+    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    @Test
+    fun testConfigMap() {
+        val compiledScriptEither =
+            compiler.compile(
+                "configmap",
+                Path.of(this::class.java.getResource("/kts/helm/templates/configmap.spec.kts").toURI()),
+                emptyList(),
+                false
+            )
+        Assertions.assertNotNull(compiledScriptEither)
+        Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
+
+        val compiledScript = (compiledScriptEither as Either.Success).value
+        val configMapSpecEither = compiler.execute<FlatTemplateSpec<ConfigMapSpec>>(
+            "configmap",
+            compiledScript,
+            ValueAccess.ofRoot(getValuesNode())
+        )
+        Assertions.assertNotNull(configMapSpecEither)
+        Assertions.assertInstanceOf(Either.Success::class.java, configMapSpecEither)
+
+        val configMapSpec = (configMapSpecEither as Either.Success).value
+        ConfigMapAssertion.assertMax(configMapSpec)
     }
 
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")

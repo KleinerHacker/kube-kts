@@ -16,13 +16,13 @@ import org.junit.jupiter.api.Assertions
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec.*
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.Protocol
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
+import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
 object ServiceAssertion {
 
-    fun assertMax(serviceSpec: TemplateSpec<ServiceSpec>) {
+    fun assertMax(serviceSpec: ExplicitTemplateSpec<ServiceSpec>) {
         Assertions.assertNotNull(serviceSpec.metadata)
         Assertions.assertEquals("metadata", serviceSpec.metadata.name)
         Assertions.assertEquals("namespace", serviceSpec.metadata.namespace)

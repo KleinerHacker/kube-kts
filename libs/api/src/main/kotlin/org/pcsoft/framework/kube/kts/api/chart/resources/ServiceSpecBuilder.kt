@@ -14,8 +14,8 @@ package org.pcsoft.framework.kube.kts.api.chart.resources
 
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec.*
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortMappingSpecBuilder
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpec
-import org.pcsoft.framework.kube.kts.api.chart.template.TemplateSpecBuilder
+import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
+import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpecBuilder
 import java.time.Duration
 
 /**
@@ -662,7 +662,7 @@ class ServiceSpecBuilder internal constructor() : ResourceSpecBuilder<ServiceSpe
  *                and other resource-specific configurations.
  * @return A `TemplateSpec` instance encapsulating the configured `ServiceSpec`.
  */
-fun service(prepare: TemplateSpecBuilder<ServiceSpec, ServiceSpecBuilder>.() -> Unit): TemplateSpec<ServiceSpec> =
-    TemplateSpecBuilder(ServiceSpec.API_VERSION, ServiceSpec.KIND, ServiceSpecBuilder())
+fun service(prepare: ExplicitTemplateSpecBuilder<ServiceSpec, ServiceSpecBuilder>.() -> Unit): ExplicitTemplateSpec<ServiceSpec> =
+    ExplicitTemplateSpecBuilder(ServiceSpec.API_VERSION, ServiceSpec.KIND, ServiceSpecBuilder())
         .apply(prepare)
         .build()
