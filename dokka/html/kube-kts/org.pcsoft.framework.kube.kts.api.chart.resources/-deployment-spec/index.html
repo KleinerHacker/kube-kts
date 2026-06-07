@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>DeploymentSpec</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../../index.html" tabindex="1">
+                    kube-kts
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+1.0-SNAPSHOT        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true"
+                        data-filter=":/api">api</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":/api"
+                                       data-filter=":/api"/>
+                                <span class="checkbox--icon"></span>
+                                api
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    kube-kts
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="kube-kts::org.pcsoft.framework.kube.kts.api.chart.resources/DeploymentSpec///PointingToDeclaration//301696402">
+  <div class="breadcrumbs"><a href="../../../index.html">kube-kts</a><span class="delimiter">/</span><a href="../index.html">org.pcsoft.framework.kube.kts.api.chart.resources</a><span class="delimiter">/</span><span class="current">DeploymentSpec</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Deployment</span><wbr></wbr><span><span>Spec</span></span></h1>
+    <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+      <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">DeploymentSpec</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>replicas<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>selector<span class="token operator">: </span><a href="../../org.pcsoft.framework.kube.kts.api.chart.resources.types/-label-selector-spec/index.html">LabelSelectorSpec</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>template<span class="token operator">: </span><a href="../../org.pcsoft.framework.kube.kts.api.chart.resources.types/-pod-template-spec/index.html">PodTemplateSpec</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>strategy<span class="token operator">: </span><a href="../../org.pcsoft.framework.kube.kts.api.chart.resources.types/-deployment-strategy-spec/index.html">DeploymentStrategySpec</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>minReadySeconds<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/Duration.html">Duration</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>revisionHistoryLimit<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>paused<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>progressDeadlineSeconds<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/Duration.html">Duration</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span> : <a href="../-resource-spec/index.html">ResourceSpec</a></div><p class="paragraph">Represents the specification for a Kubernetes Deployment resource.</p><p class="paragraph">A DeploymentSpec defines the desired state for a Deployment, which is a higher-level abstraction for managing Pods. Deployments provide declarative updates for Pods and ReplicaSets while offering features such as automated rollouts, rollbacks, scaling, and more.</p></div>    </div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="1959523071%2FConstructors%2F301696402" anchor-label="DeploymentSpec" id="1959523071%2FConstructors%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-deployment-spec.html"><span>Deployment</span><wbr></wbr><span><span>Spec</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1959523071%2FConstructors%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">replicas<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">selector<span class="token operator">: </span><a href="../../org.pcsoft.framework.kube.kts.api.chart.resources.types/-label-selector-spec/index.html">LabelSelectorSpec</a><span class="token punctuation">, </span></span><span class="parameter ">template<span class="token operator">: </span><a href="../../org.pcsoft.framework.kube.kts.api.chart.resources.types/-pod-template-spec/index.html">PodTemplateSpec</a><span class="token punctuation">, </span></span><span class="parameter ">strategy<span class="token operator">: </span><a href="../../org.pcsoft.framework.kube.kts.api.chart.resources.types/-deployment-strategy-spec/index.html">DeploymentStrategySpec</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">minReadySeconds<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/Duration.html">Duration</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">revisionHistoryLimit<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">paused<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">progressDeadlineSeconds<span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/Duration.html">Duration</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-786057801%2FClasslikes%2F301696402" anchor-label="Companion" id="-786057801%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-786057801%2FClasslikes%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-795940062%2FProperties%2F301696402" anchor-label="minReadySeconds" id="-795940062%2FProperties%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="min-ready-seconds.html"><span>min</span><wbr></wbr><span>Ready</span><wbr></wbr><span><span>Seconds</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-795940062%2FProperties%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="min-ready-seconds.html">minReadySeconds</a><span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/Duration.html">Duration</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">The minimum number of seconds that a Pod should be ready without interruptions before being considered available. This helps ensure stability during updates.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-776155524%2FProperties%2F301696402" anchor-label="paused" id="-776155524%2FProperties%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="paused.html"><span><span>paused</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-776155524%2FProperties%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="paused.html">paused</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Indicates whether the Deployment is currently paused. A paused Deployment will halt rollouts and updates without affecting the existing Pods or ReplicaSets.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1753213610%2FProperties%2F301696402" anchor-label="progressDeadlineSeconds" id="-1753213610%2FProperties%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="progress-deadline-seconds.html"><span>progress</span><wbr></wbr><span>Deadline</span><wbr></wbr><span><span>Seconds</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1753213610%2FProperties%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="progress-deadline-seconds.html">progressDeadlineSeconds</a><span class="token operator">: </span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/Duration.html">Duration</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">The maximum duration that updates to Pods are allowed to take within this Deployment. If the rollout or update does not complete within this duration, the Deployment will record an error.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1561277007%2FProperties%2F301696402" anchor-label="replicas" id="1561277007%2FProperties%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="replicas.html"><span><span>replicas</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1561277007%2FProperties%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="replicas.html">replicas</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">The desired number of replicas (Pod instances) to maintain for this Deployment. If null, the default number of replicas will be determined by Kubernetes.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="441859176%2FProperties%2F301696402" anchor-label="revisionHistoryLimit" id="441859176%2FProperties%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="revision-history-limit.html"><span>revision</span><wbr></wbr><span>History</span><wbr></wbr><span><span>Limit</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="441859176%2FProperties%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="revision-history-limit.html">revisionHistoryLimit</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">The maximum number of ReplicaSets to retain in the history for rollback purposes. Older ReplicaSets exceeding this limit will be automatically deleted.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1457334869%2FProperties%2F301696402" anchor-label="selector" id="-1457334869%2FProperties%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="selector.html"><span><span>selector</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1457334869%2FProperties%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="selector.html">selector</a><span class="token operator">: </span><a href="../../org.pcsoft.framework.kube.kts.api.chart.resources.types/-label-selector-spec/index.html">LabelSelectorSpec</a></div><div class="brief "><p class="paragraph">Defines the label selector used to identify the set of Pods being managed by this Deployment. This is used to associate the Deployment with its corresponding ReplicaSet(s) and Pod(s).</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="53482647%2FProperties%2F301696402" anchor-label="strategy" id="53482647%2FProperties%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="strategy.html"><span><span>strategy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="53482647%2FProperties%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="strategy.html">strategy</a><span class="token operator">: </span><a href="../../org.pcsoft.framework.kube.kts.api.chart.resources.types/-deployment-strategy-spec/index.html">DeploymentStrategySpec</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">The deployment strategy that determines how updates to Pods are managed. This can be either <code class="lang-kotlin">Recreate</code> or <code class="lang-kotlin">RollingUpdate</code>, with optional additional configuration for rolling updates.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-567914128%2FProperties%2F301696402" anchor-label="template" id="-567914128%2FProperties%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="template.html"><span><span>template</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-567914128%2FProperties%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="template.html">template</a><span class="token operator">: </span><a href="../../org.pcsoft.framework.kube.kts.api.chart.resources.types/-pod-template-spec/index.html">PodTemplateSpec</a></div><div class="brief "><p class="paragraph">Specifies the object that describes the Pods to be created by this Deployment. The <code class="lang-kotlin">template</code> includes both metadata for the Pods and their desired state (spec).</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>© 2026 Copyright</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
