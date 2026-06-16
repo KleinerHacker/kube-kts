@@ -1,0 +1,163 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  licences:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: gradle
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Check licences
+        run: ./gradlew licensee --stacktrace
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: gradle
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build
+        run: ./gradlew build --stacktrace
+
+      - name: Upload CLI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cli-jar
+          path: apps/cli/build/libs/*.jar
+
+  # Build the docs as a generation test (mkdocs --strict) before they get deployed.
+  validate-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Pip Update
+        run: pip install --upgrade pip
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: gradle
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build docs
+        run: ./gradlew buildDocs --stacktrace --info
+
+  # Publish the docs to gh-pages (mkdocs gh-deploy --force, see the deployDocs task).
+  deploy-docs:
+    runs-on: ubuntu-latest
+    needs: validate-docs
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Pip Update
+        run: pip install --upgrade pip
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: gradle
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Configure git for gh-deploy
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Deploy docs
+        run: ./gradlew deployDocs --stacktrace --info
+
+  release:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - licences
+      - deploy-docs
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download CLI artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: cli-jar
+          path: build/release/
+
+      - name: Extract changelog
+        run: |
+          TAG="${{ github.ref_name }}"
+          NOTES=$(awk "/^## \[$TAG\]/{found=1; next} found && /^## \[/{exit} found{print}" CHANGELOG.md)
+          NOTES=$(echo "$NOTES" | sed '/./,$!d' | sed -e :a -e '/^\n*$/{$d;N;ba}')
+          if [ -z "$NOTES" ]; then
+            echo "ERROR: No changelog entry found for tag $TAG"
+            exit 1
+          fi
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          echo "$NOTES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="${{ github.ref_name }}"
+          if [[ "$TAG" =~ ^(0|[a-zA-Z]) ]]; then
+            gh release create "$TAG" build/release/*.jar \
+              --title "$TAG" \
+              --notes "$RELEASE_NOTES" \
+              --prerelease \
+              --latest=false
+          else
+            gh release create "$TAG" build/release/*.jar \
+              --title "$TAG" \
+              --notes "$RELEASE_NOTES" \
+              --latest
+          fi

@@ -164,6 +164,31 @@ tasks {
         commandLine("python", "-m", "pip", "install", "ghp-import")
     }
 
+    register<Exec>("installMike") {
+        group = null
+        description = "Install mike for versioned docs deployment"
+        workingDir = file("docs")
+        commandLine("python", "-m", "pip", "install", "--upgrade", "mike")
+    }
+
+    register<Exec>("installMkDocsI18n") {
+        group = null
+        description = "Install mkdocs-static-i18n"
+        workingDir = file("docs")
+        commandLine("python", "-m", "pip", "install", "mkdocs-static-i18n")
+    }
+
+    register<Exec>("buildDocs") {
+        group = "MKDocs"
+        description = "Build the mkdocs site into build/docs (per mkdocs.yml site_dir; no serve, no deploy) — usable as a generation test"
+        workingDir = file("docs")
+        // --strict fails the build on warnings (broken links, missing pages …) so it acts as a test;
+        // --clean wipes the previous output first.
+        commandLine("python", "-m", "mkdocs", "build", "--clean", "--strict")
+        dependsOn("installDocs", "copyDokka", "copyLicenceReport")
+        finalizedBy("deleteDokka", "deleteLicenceReport")
+    }
+
     register("installDocs") {
         group = "MKDocs"
         description = "Install mkdocs"
@@ -171,6 +196,8 @@ tasks {
         dependsOn("installMkDocs")
         dependsOn("installMkDocsMaterial")
         dependsOn("installGitHubPages")
+        dependsOn("installMkDocsI18n")
+        dependsOn("installMike")
     }
 
     register<Exec>("runDocs") {
