@@ -10,13 +10,119 @@ markdown_extensions:
 
 theme:
   name: material
-  language: de
+  language: en
+  logo: assets/images/icon.png
+  favicon: assets/images/icon.png
   features:
     - navigation.sections
   palette:
-    - scheme: default
-      primary: indigo
-      accent: indigo
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    # Dark mode (matches the dark logo background)
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+extra_css:
+  - assets/stylesheets/extra.css
+
+plugins:
+  - search
+  - i18n:
+      docs_structure: suffix
+      languages:
+        - locale: en
+          default: true
+          name: English
+          build: true
+        - locale: zh
+          name: 简体中文
+          build: true
+          nav_translations:
+            Home: 首页
+            CLI: 命令行 (CLI)
+            Kotlin Scripts Repository: Kotlin 脚本仓库
+            Chart: Chart
+            Templates: 模板
+            Metadata: 元数据
+            Service: 服务
+            Ingress: Ingress
+            ConfigMap: ConfigMap
+            Deployment: 部署
+            Overview: 概览
+            Selector: 选择器
+            Pod Template: Pod 模板
+            Pod Spec: Pod 规约
+            Containers: 容器
+            Probes: 探针
+            Volumes: 卷
+            Strategy: 策略
+            Library Files: 库文件
+            Values Handling: 值处理
+            API Docs: API 文档
+            Licences: 许可证
+        - locale: ja
+          name: 日本語
+          build: true
+          nav_translations:
+            Home: ホーム
+            CLI: CLI
+            Kotlin Scripts Repository: Kotlin スクリプトリポジトリ
+            Chart: チャート
+            Templates: テンプレート
+            Metadata: メタデータ
+            Service: サービス
+            Ingress: Ingress
+            ConfigMap: ConfigMap
+            Deployment: デプロイメント
+            Overview: 概要
+            Selector: セレクター
+            Pod Template: Pod テンプレート
+            Pod Spec: Pod スペック
+            Containers: コンテナ
+            Probes: プローブ
+            Volumes: ボリューム
+            Strategy: ストラテジー
+            Library Files: ライブラリファイル
+            Values Handling: 値の取り扱い
+            API Docs: API ドキュメント
+            Licences: ライセンス
+        - locale: ko
+          name: 한국어
+          build: true
+          nav_translations:
+            Home: 홈
+            CLI: CLI
+            Kotlin Scripts Repository: Kotlin 스크립트 저장소
+            Chart: 차트
+            Templates: 템플릿
+            Metadata: 메타데이터
+            Service: 서비스
+            Ingress: Ingress
+            ConfigMap: ConfigMap
+            Deployment: 디플로이먼트
+            Overview: 개요
+            Selector: 셀렉터
+            Pod Template: Pod 템플릿
+            Pod Spec: Pod 스펙
+            Containers: 컨테이너
+            Probes: 프로브
+            Volumes: 볼륨
+            Strategy: 전략
+            Library Files: 라이브러리 파일
+            Values Handling: 값 처리
+            API Docs: API 문서
+            Licences: 라이선스
 
 nav:
   - Home: index.md
@@ -27,6 +133,7 @@ nav:
           - Metadata: kts/metadata.md
           - Service: kts/service.md
           - Ingress: kts/ingress.md
+          - ConfigMap: kts/configmap.md
           - Deployment:
               - Overview: kts/deployment.md
               - Selector: kts/deployment/selector.md
