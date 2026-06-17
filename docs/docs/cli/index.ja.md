@@ -15,7 +15,7 @@ Kube KTS は Helm を置き換えません。Helm への入力を準備します
 
 1. **レンダリングフェーズ（Kube KTS）:** リポジトリをスキャンし、Kotlin スクリプトをコンパイル・実行
    して、結果を標準的な Helm Chart としてターゲットディレクトリに書き出します。
-2. **Helm フェーズ（委譲）:** Helm ベースのコマンド（`lint`、`template`、`install`、`uninstall`）
+2. **Helm フェーズ（委譲）:** Helm ベースのコマンド（`lint`、`template`、`install`、`upgrade`、`uninstall`）
    では、Kube KTS がそのレンダリング済み Chart に対して実際の `helm` を呼び出し、すべての Helm 専用
    オプションをそのまま転送します。
 
@@ -23,7 +23,7 @@ Kube KTS は Helm を置き換えません。Helm への入力を準備します
 の両方を受け付けます。最終的に Helm に渡るオプションには印が付きます。下記の「オプションマーカーの凡例」を参照してください。
 
 !!! note "Helm のインストールが必要"
-    `lint`、`template`、`install`、`uninstall` には `helm` 実行ファイルが `PATH` 上にある必要が
+    `lint`、`template`、`install`、`upgrade`、`uninstall` には `helm` 実行ファイルが `PATH` 上にある必要が
     あります。`validate`、`compile`、`render` は Helm なしで動作します。
 
 ## 用法
@@ -37,7 +37,7 @@ kube-kts [グローバルオプション] <コマンド> <REPOSITORY> [TARGET] [
 - **`REPOSITORY`** は最初の位置引数で、Kube KTS リポジトリ（`*.spec.kts`、`*.lib.kts`、
   `values.yaml` などを含むディレクトリ）を指します。省略するとカレントディレクトリが使われます。
   パスが存在しない場合、Helm を呼ぶ前に即座に失敗します。
-- **`TARGET`** はレンダリング系コマンド（`render`、`lint`、`template`、`install`、`uninstall`）が
+- **`TARGET`** はレンダリング系コマンド（`render`、`lint`、`template`、`install`、`upgrade`、`uninstall`）が
   使う任意の 2 番目の位置引数で、Chart のレンダリング先ディレクトリです。省略すると一時ディレクトリが
   作成され OS により後始末されます。生成された Chart を確認・再利用したい場合は明示的に指定してください。
 
@@ -56,7 +56,24 @@ CLI は成功時に `0`、失敗時に 0 以外の終了コードを返します
 | `lint` | [lint](lint.md) | レンダリング後に `helm lint` で lint する。 |
 | `template` | [template](template.md) | レンダリングして `helm template` でマニフェストを出力する。 |
 | `install` | [install](install.md) | レンダリングして `helm install` でクラスターにインストールする。 |
+| `upgrade` | [upgrade](upgrade.md) | レンダリングして `helm upgrade` でリリースをアップグレード（またはインストール）する。 |
 | `uninstall` | [uninstall](uninstall.md) | レンダリングして `helm uninstall` で 1 つ以上のリリースを削除する。 |
+
+## これらのコマンドはレンダリングが必要か？（KTS の関連性）
+
+コマンドが KTS リポジトリをレンダリングするかどうかで、Kotlin スクリプトがそのコマンドに関係するか —
+つまりそのコマンドに **リポジトリ**（KTS・素の YAML・混在）を渡す必要があるか — が分かります。
+
+- **レンダリングが必要 → リポジトリ必須（KTS 関連）:** `validate`、`compile`、`render`、`lint`、
+  `template`、`install`、`upgrade` はいずれも *スキャン → コンパイル → レンダリング* を実行するため、
+  KTS スクリプトに依存し、リポジトリを渡す必要があります。
+- **レンダリングと無関係 → リポジトリ不要（KTS 非関連）:** 既存リリース・クラスター・リポジトリに対する
+  操作（将来の `status`、`list`、`rollback` など）はレンダリング済み Chart を必要としないため、KTS
+  スクリプトは関係しません。
+
+!!! note "`uninstall` は特殊ケース"
+    `uninstall` は名前だけでリリースを削除し、技術的にはレンダリング済み Chart を必要としません。一貫性の
+    ため現在は Helm 呼び出し前にレンダリングしますが、機能的には KTS スクリプトは関係ありません。
 
 ## オプションマーカーの凡例
 
@@ -96,7 +113,7 @@ CLI は成功時に `0`、失敗時に 0 以外の終了コードを返します
 
 ## 値 (Values)
 
-すべてのレンダリング系コマンド（`render`、`lint`、`template`、`install`、`uninstall`）は値ファイルを
+すべてのレンダリング系コマンド（`render`、`lint`、`template`、`install`、`upgrade`、`uninstall`）は値ファイルを
 受け付けます。値は 2 つの段階で使われます。レンダリング中に Kotlin スクリプトから利用でき、**かつ**
 Helm に渡されます。
 

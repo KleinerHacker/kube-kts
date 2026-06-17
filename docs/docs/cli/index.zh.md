@@ -14,14 +14,14 @@ Kube KTS 从不替代 Helm，而是为其准备输入。一个典型命令分两
 
 1. **渲染阶段（Kube KTS）：** 扫描仓库，编译并执行 Kotlin 脚本，将结果作为标准 Helm Chart 写入目标
    目录。
-2. **Helm 阶段（委托）：** 对于由 Helm 支持的命令（`lint`、`template`、`install`、`uninstall`），
+2. **Helm 阶段（委托）：** 对于由 Helm 支持的命令（`lint`、`template`、`install`、`upgrade`、`uninstall`），
    Kube KTS 随后针对渲染出的 Chart 调用真正的 `helm` 可执行文件，并将所有 Helm 专属选项原样转发。
 
 因此，这些命令同时接受 Kube KTS 选项（影响渲染）和 Helm 选项（被转发）。最终传给 Helm 的选项会被
 相应标记——参见下方的“选项标记说明”。
 
 !!! note "必须安装 Helm"
-    `lint`、`template`、`install`、`uninstall` 需要 `helm` 可执行文件在 `PATH` 中可用。
+    `lint`、`template`、`install`、`upgrade`、`uninstall` 需要 `helm` 可执行文件在 `PATH` 中可用。
     `validate`、`compile`、`render` 无需 Helm 即可工作。
 
 ## 用法
@@ -35,7 +35,7 @@ kube-kts [全局选项] <命令> <REPOSITORY> [TARGET] [命令选项]
 - **`REPOSITORY`** 是第一个位置参数，指向 Kube KTS 仓库（包含 `*.spec.kts`、`*.lib.kts`、
   `values.yaml` 等的目录）。若省略，则使用当前工作目录。若路径不存在，命令会立即失败，根本不会调用
   Helm。
-- **`TARGET`** 是渲染类命令（`render`、`lint`、`template`、`install`、`uninstall`）使用的可选第二个
+- **`TARGET`** 是渲染类命令（`render`、`lint`、`template`、`install`、`upgrade`、`uninstall`）使用的可选第二个
   位置参数，即 Chart 渲染到的目录。若省略，会创建一个临时目录并由操作系统清理；当你想查看或复用生成
   的 Chart 时，请显式传入目标目录。
 
@@ -54,7 +54,22 @@ kube-kts [全局选项] <命令> <REPOSITORY> [TARGET] [命令选项]
 | `lint` | [lint](lint.md) | 渲染后通过 `helm lint` 进行 lint。 |
 | `template` | [template](template.md) | 渲染并通过 `helm template` 打印清单。 |
 | `install` | [install](install.md) | 渲染并通过 `helm install` 安装到集群。 |
+| `upgrade` | [upgrade](upgrade.md) | 渲染并通过 `helm upgrade` 升级（或安装）发布。 |
 | `uninstall` | [uninstall](uninstall.md) | 渲染并通过 `helm uninstall` 卸载一个或多个发布。 |
+
+## 这些命令是否需要渲染？（KTS 相关性）
+
+一个命令是否渲染 KTS 仓库，决定了你的 Kotlin 脚本对该命令是否相关——也就决定了是否需要为该命令提供一个
+**仓库**（KTS、纯 YAML 或混合）：
+
+- **需要渲染 → 需要仓库（KTS 相关）：** `validate`、`compile`、`render`、`lint`、`template`、`install`
+  和 `upgrade` 都会运行 *扫描 → 编译 → 渲染* 流程，因此依赖你的 KTS 脚本，必须为它们提供仓库。
+- **与渲染无关 → 无需仓库（KTS 不相关）：** 针对已安装发布、集群或仓库的操作（例如将来的 `status`、
+  `list`、`rollback`）不需要渲染后的 Chart，因此 KTS 脚本对它们不起作用。
+
+!!! note "`uninstall` 是特例"
+    `uninstall` 仅按名称移除发布，技术上不需要渲染后的 Chart。出于一致性，它当前在调用 Helm 前仍会
+    渲染，但从功能上看 KTS 脚本对它并不相关。
 
 ## 选项标记说明
 
@@ -93,7 +108,7 @@ kube-kts [全局选项] <命令> <REPOSITORY> [TARGET] [命令选项]
 
 ## 值 (Values)
 
-所有渲染类命令（`render`、`lint`、`template`、`install`、`uninstall`）都接受值文件。值作用于两个阶段：
+所有渲染类命令（`render`、`lint`、`template`、`install`、`upgrade`、`uninstall`）都接受值文件。值作用于两个阶段：
 渲染期间供 Kotlin 脚本使用，**并**传递给 Helm。
 
 | 选项 | 标记 | 说明 |

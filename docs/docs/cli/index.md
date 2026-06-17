@@ -17,7 +17,7 @@ Kube KTS never replaces Helm — it prepares the input for it. A typical command
 1. **Render phase (Kube KTS):** the repository is scanned, the Kotlin scripts are compiled and
    evaluated, and the result is written as a normal Helm chart into a target directory.
 2. **Helm phase (delegation):** for the Helm-backed commands (`lint`, `template`, `install`,
-   `uninstall`) Kube KTS then invokes the real `helm` binary against that rendered chart and forwards
+   `upgrade`, `uninstall`) Kube KTS then invokes the real `helm` binary against that rendered chart and forwards
    all Helm-specific options unchanged.
 
 Because of this, the Helm-backed commands accept both Kube KTS options (which influence rendering)
@@ -25,8 +25,8 @@ and Helm options (which are forwarded). Options that end up at Helm are marked a
 [legend](#option-marker-legend) below.
 
 !!! note "Helm must be installed"
-    The `helm` executable must be available on your `PATH` for `lint`, `template`, `install` and
-    `uninstall`. `validate`, `compile` and `render` work without Helm.
+    The `helm` executable must be available on your `PATH` for `lint`, `template`, `install`,
+    `upgrade` and `uninstall`. `validate`, `compile` and `render` work without Helm.
 
 ## Usage
 
@@ -41,7 +41,7 @@ kube-kts [GLOBAL OPTIONS] <command> <REPOSITORY> [TARGET] [COMMAND OPTIONS]
   current working directory is used. If the path does not exist the command fails immediately,
   before Helm is ever invoked.
 - **`TARGET`** is the optional second positional argument used by the rendering commands
-  (`render`, `lint`, `template`, `install`, `uninstall`). It is the directory the chart is rendered
+  (`render`, `lint`, `template`, `install`, `upgrade`, `uninstall`). It is the directory the chart is rendered
   into. If you omit it, a temporary directory is created and cleaned up by the operating system; pass
   an explicit target when you want to inspect or reuse the generated chart.
 
@@ -61,7 +61,26 @@ the full stack trace when diagnosing a failure.
 | `lint` | [lint](lint.md) | Render and then lint the chart via `helm lint`. |
 | `template` | [template](template.md) | Render and print the manifests via `helm template`. |
 | `install` | [install](install.md) | Render and install the chart into a cluster via `helm install`. |
+| `upgrade` | [upgrade](upgrade.md) | Render and upgrade (or install) a release via `helm upgrade`. |
 | `uninstall` | [uninstall](uninstall.md) | Render and uninstall one or more releases via `helm uninstall`. |
+
+## Do these commands need rendering? (KTS relevance)
+
+Whether a command renders the KTS repository tells you whether your Kotlin scripts are relevant for
+that command at all — and therefore whether you need to point it at a repository (KTS, plain YAML, or
+mixed) in the first place:
+
+- **Needs rendering → repository required (KTS relevant):** `validate`, `compile`, `render`, `lint`,
+  `template`, `install` and `upgrade` all run the *scan → compile → render* pipeline and therefore
+  depend on your KTS scripts. You must pass (or stand in) a repository for them.
+- **Independent of rendering → no repository needed (KTS not relevant):** operations that act on an
+  already installed release, the cluster, or a repository (e.g. a future `status`, `list`,
+  `rollback`) do not need a rendered chart, so the KTS scripts play no role for them.
+
+!!! note "`uninstall` is a special case"
+    `uninstall` removes a release purely by name and does not technically need a rendered chart.
+    For consistency it currently still renders before calling Helm, but functionally the KTS scripts
+    are not relevant for it.
 
 ## Option marker legend
 
@@ -101,7 +120,7 @@ Experimental features are not stable and may change in future versions. They req
 
 ## Values
 
-All rendering commands (`render`, `lint`, `template`, `install`, `uninstall`) accept values files.
+All rendering commands (`render`, `lint`, `template`, `install`, `upgrade`, `uninstall`) accept values files.
 Values feed two stages: they are available to the Kotlin scripts during rendering **and** are passed
 on to Helm.
 

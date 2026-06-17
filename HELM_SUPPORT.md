@@ -37,6 +37,7 @@ Legende: ✅ implementiert · 🟡 teilweise · ❌ nicht implementiert
 | `lint` | ✅ | vollständig | `helm lint` + globale Flags + `--set*`/`-f`. |
 | `template` | ✅ | vollständig | `helm template` inkl. `-a`, `--show-only`, `--validate`, `--output-dir`, … |
 | `install` | ✅ | vollständig | `helm install` inkl. `--atomic`, `--wait[-for-jobs]`, Chart-Source-Flags, … |
+| `upgrade` | ✅ | vollständig | `helm upgrade` inkl. `-i/--install`, `--reuse-values`/`--reset-values`/`--reset-then-reuse-values`, `--cleanup-on-fail`, `--history-max`, `--take-ownership`, … |
 | `uninstall` | ✅ | vollständig | `helm uninstall` inkl. `--cascade`, `--keep-history`, `--ignore-not-found`, … |
 
 **Anmerkung zum Release-Namen:** Da `REPOSITORY` (Index 0) und `TARGET` (Index 1) bereits positional
@@ -49,7 +50,6 @@ Diese Helm-Kommandos haben aktuell **kein** `kube-kts`-Pendant. Reihenfolge grob
 
 | Helm-Kommando | Status | Bemerkung / Sinnhaftigkeit als Wrapper |
 |---|---|---|
-| `upgrade` | ❌ | Hoher Wert — natürliche Ergänzung zu `install` (inkl. `--install`, `--reset-values`, `--reuse-values`). |
 | `status` | ❌ | Status eines Releases; kein Rendern nötig. |
 | `list` / `ls` | ❌ | Releases auflisten. |
 | `history` | ❌ | Revisionsverlauf eines Releases. |
@@ -67,6 +67,47 @@ Diese Helm-Kommandos haben aktuell **kein** `kube-kts`-Pendant. Reihenfolge grob
 | `version` / `env` | ❌ | Diagnose/Info. |
 | `plugin`, `completion`, `create` | ❌ | Eher außerhalb des Wrapper-Scopes. |
 
+## YAML-Rendering-Abhängigkeit (KTS-Relevanz)
+
+Entscheidend für die Wrapper-Sinnhaftigkeit ist, ob ein Kommando das gerenderte Chart (also das
+Ergebnis der KTS-Skripte) benötigt. Daraus ergibt sich, ob die KTS-Skripte überhaupt relevant sind —
+und damit, ob man dem Kommando überhaupt ein **Repository** (KTS, reines YAML oder gemischt) übergeben
+muss.
+
+### Benötigen YAML-Rendering — **Repository erforderlich (KTS relevant)**
+
+Diese Kommandos arbeiten mit dem aus den KTS-Skripten erzeugten Chart. Sie durchlaufen die
+Pipeline *Scan → Compile → Render* und sind nur sinnvoll, wenn ein Repository vorliegt — ohne
+Repository (bzw. ohne gültiges Render-Ergebnis) brechen sie ab, bevor Helm aufgerufen wird.
+
+| Kommando | Warum Rendering nötig |
+|---|---|
+| `validate` | Prüft das KTS-Repo selbst (Struktur). |
+| `compile` | Führt die KTS-Skripte aus und baut das Objektmodell. |
+| `render` | Erzeugt das Chart aus den KTS-Skripten. |
+| `lint` | `helm lint` benötigt das gerenderte Chart. |
+| `template` | `helm template` benötigt das gerenderte Chart. |
+| `install` | `helm install` installiert das gerenderte Chart. |
+| `upgrade` | `helm upgrade` upgradet auf Basis des gerenderten Charts. |
+
+### Unabhängig vom Rendering — **kein Repository nötig (KTS irrelevant)**
+
+Diese (noch nicht implementierten) Helm-Kommandos operieren auf einem bereits installierten Release,
+auf der Cluster-/Repo-Ebene oder rein informativ. Sie brauchen **kein** gerendertes Chart und damit
+auch **kein** Repository, d. h. die KTS-Skripte sind dafür unerheblich. Falls sie künftig gewrappt werden, sollten sie **nicht** von
+`BaseRenderCommand` ableiten, sondern direkt Helm aufrufen (z. B. von `BaseRootCommand`).
+
+| Kommando | Bezugspunkt |
+|---|---|
+| `status`, `list`, `history`, `get`, `rollback`, `test` | bestehendes Release |
+| `repo`, `search`, `pull`, `push`, `registry` | Repository / Registry |
+| `show`, `version`, `env`, `verify` | Chart-Metadaten / Diagnose |
+
+> **Sonderfall `uninstall`:** Benötigt fachlich **kein** Rendering (es entfernt ein Release per Name),
+> leitet aber aktuell aus Konsistenzgründen dennoch von `BaseHelmCommand`/`BaseRenderCommand` ab und
+> rendert vor dem Aufruf. Das ist ein bewusster, aber optimierbarer Kompromiss — KTS ist hier streng
+> genommen irrelevant.
+
 ## Globale Helm-Flags
 
 Die globalen Helm-Flags (`--namespace/-n`, `--kube-context`, `--kubeconfig`, `--kube-*`,
@@ -78,7 +119,7 @@ Die globalen Helm-Flags (`--namespace/-n`, `--kube-context`, `--kubeconfig`, `--
 
 - `HelmArgsTest` — prüft Flag-Weiterleitung pro Kommando ohne Helm-Aufruf.
 - `HelpRenderTest` — prüft die Marker-Spalte in der Hilfe (helm/experimentell/gefährlich).
-- `InstallTest` / `TemplateTest` / `UninstallTest` — vollständige Pipeline mit gemocktem `HelmExecutor`.
+- `InstallTest` / `UpgradeTest` / `TemplateTest` / `UninstallTest` — vollständige Pipeline mit gemocktem `HelmExecutor`.
 
 ## Doku
 

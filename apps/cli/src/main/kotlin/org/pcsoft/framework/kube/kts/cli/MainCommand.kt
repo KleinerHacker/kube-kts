@@ -36,6 +36,7 @@ import picocli.CommandLine.*
         LintCommand::class,
         TemplateCommand::class,
         InstallCommand::class,
+        UpgradeCommand::class,
         UninstallCommand::class
     ],
     header = ["Kube KTS 0.1.0 - 2026", ""],

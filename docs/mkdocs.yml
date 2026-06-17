@@ -137,6 +137,7 @@ nav:
       - lint: cli/lint.md
       - template: cli/template.md
       - install: cli/install.md
+      - upgrade: cli/upgrade.md
       - uninstall: cli/uninstall.md
   - Kotlin Scripts Repository:
       - Chart: kts/chart.md

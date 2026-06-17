@@ -36,6 +36,10 @@ the KTS scripts (the DSL for Kubernetes resources) and the `kube-kts` CLI tool.
 - `lint <repo> <target>` — lint via Helm.
 - `template <repo> <target> --name <name>` — run `helm template`.
 - `install <repo> <target> --name <name>` — run `helm install`.
+- `upgrade <repo> <target> --name <name>` — run `helm upgrade`
+  (incl. `-i`/`--install`, `--reuse-values`/`--reset-values`/
+  `--reset-then-reuse-values`, `--cleanup-on-fail`, `--history-max`,
+  `--take-ownership`).
 - `uninstall <repo> <target> --name <release>` — run `helm uninstall`
   (repeatable `--name` for multiple releases).
 - **Full Helm flag forwarding**: every Helm-backed command (`lint`, `template`,

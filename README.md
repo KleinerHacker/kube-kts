@@ -52,6 +52,7 @@ and then delegates to Helm for the actual cluster operations.
 | `lint <repo> [target]` | Render and run `helm lint`. |
 | `template <repo> [target] --name <name>` | Render and run `helm template`. |
 | `install <repo> [target] --name <name>` | Render and run `helm install`. |
+| `upgrade <repo> [target] --name <name>` | Render and run `helm upgrade` (use `-i` to install if missing). |
 | `uninstall <repo> [target] --name <release>` | Render and run `helm uninstall`. |
 
 The Helm-backed commands (`lint`, `template`, `install`, `uninstall`) forward **all** supported Helm
