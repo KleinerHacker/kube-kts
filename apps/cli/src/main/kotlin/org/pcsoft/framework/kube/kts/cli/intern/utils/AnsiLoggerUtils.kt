@@ -77,4 +77,20 @@ val Level.traceStyle: String
  */
 const val HELM_MARKER = "@|yellow ---->|@"
 
+/**
+ * Help marker for options that are experimental.
+ *
+ * Prepended to the picocli option description so users can see, directly in `--help`, which flags are
+ * experimental, even when they are already grouped in the experimental section.
+ */
+const val EXPERIMENTAL_MARKER = "@|red *|@"
+
+/**
+ * Help marker for options that are dangerous (security relevant).
+ *
+ * Prepended to the picocli option description so users can see, directly in `--help`, which flags may
+ * compromise safety or security.
+ */
+const val DANGER_MARKER = "@|red !!!|@"
+
 

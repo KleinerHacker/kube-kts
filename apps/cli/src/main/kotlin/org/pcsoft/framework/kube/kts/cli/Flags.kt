@@ -13,6 +13,8 @@
 package org.pcsoft.framework.kube.kts.cli
 
 import org.pcsoft.framework.kube.kts.cli.intern.NoArgs
+import org.pcsoft.framework.kube.kts.cli.intern.utils.DANGER_MARKER
+import org.pcsoft.framework.kube.kts.cli.intern.utils.EXPERIMENTAL_MARKER
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
 import org.pcsoft.framework.kube.kts.cli.types.YamlMergingAlgorithm
 import org.pcsoft.framework.kube.kts.core.merge.YamlArrayMergeStrategy
@@ -114,7 +116,7 @@ class DefaultFlagsImpl(
     @field:Option(
         names = ["--unsafe"],
         description = [
-            "Enable unsafe mode, allowing certain operations that may be @|italic dangerous|@",
+            "$DANGER_MARKER Enable unsafe mode, allowing certain operations that may be @|italic dangerous|@",
             "\t@|italic Allow import statements and fully qualified class names in scripts|@"
         ]
     )
@@ -166,7 +168,7 @@ class ExperimentalFlagsImpl(
     @field:Option(
         names = ["--yaml-merge"],
         description = [
-            "Algorithm to use for merging yaml files (@|italic requires experimental mode|@)",
+            "$EXPERIMENTAL_MARKER Algorithm to use for merging yaml files (@|italic requires experimental mode|@)",
             "\t@|cyan HELM|@ to use merging algorithm of Helm (@|bold default|@)",
             "\t@|cyan INTERNAL|@ to use internal custom algorithm (@|italic experimental|@)"
         ],
@@ -176,7 +178,7 @@ class ExperimentalFlagsImpl(
     @field:Option(
         names = ["--yaml-array-merge"],
         description = [
-            "Strategy to use for merging YAML arrays (@|italic requires experimental mode|@)",
+            "$EXPERIMENTAL_MARKER Strategy to use for merging YAML arrays (@|italic requires experimental mode|@)",
             "\t@|cyan None|@ Do not change array in base YAML",
             "\t@|cyan Replace|@ Replace array in base YAML with overlay array (@|bold default|@)",
             "\t@|cyan AddFirst|@ Add overlay array to beginning of base array",

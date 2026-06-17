@@ -13,6 +13,8 @@
 package org.pcsoft.framework.kube.kts.cli
 
 import org.pcsoft.framework.kube.kts.cli.commands.*
+import org.pcsoft.framework.kube.kts.cli.intern.utils.DANGER_MARKER
+import org.pcsoft.framework.kube.kts.cli.intern.utils.EXPERIMENTAL_MARKER
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
 import picocli.CommandLine.*
 
@@ -48,6 +50,8 @@ import picocli.CommandLine.*
     footerHeading = "%n@|bold Option Legend|@%n",
     footer = [
         "  $HELM_MARKER        forwarded to the underlying Helm CLI",
+        "  $EXPERIMENTAL_MARKER            experimental feature",
+        "  $DANGER_MARKER          dangerous / security relevant",
     ],
 )
 object MainCommand {

@@ -14,6 +14,8 @@ package org.pcsoft.framework.kube.kts.cli
 
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.pcsoft.framework.kube.kts.cli.intern.utils.DANGER_MARKER
+import org.pcsoft.framework.kube.kts.cli.intern.utils.EXPERIMENTAL_MARKER
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HelmHelpFactory
 import picocli.CommandLine
@@ -29,6 +31,12 @@ class HelpRenderTest {
 
     /** The hint rendered in the dedicated Helm column, derived from [HELM_MARKER] without ANSI styling. */
     private val helmHint = CommandLine.Help.Ansi.OFF.string(HELM_MARKER)
+
+    /** The hint rendered for experimental options, derived from [EXPERIMENTAL_MARKER] without styling. */
+    private val experimentalHint = CommandLine.Help.Ansi.OFF.string(EXPERIMENTAL_MARKER)
+
+    /** The hint rendered for dangerous options, derived from [DANGER_MARKER] without styling. */
+    private val dangerHint = CommandLine.Help.Ansi.OFF.string(DANGER_MARKER)
 
     private fun usageOf(command: String): String {
         val cli = CommandLine(MainCommand).apply {
@@ -116,6 +124,25 @@ class HelpRenderTest {
         assertInternal(usage, "--name")
         assertInternal(usage, "--exception")
         assertNoRawMarker(usage)
+    }
+
+    @Test
+    fun experimentalFlagsCarryMarker() {
+        val usage = usageOf("install")
+        for (option in listOf("--yaml-merge", "--yaml-array-merge")) {
+            val row = rowOf(usage, option)
+            Assertions.assertTrue(row.contains(experimentalHint), "Expected '$experimentalHint' column for '$option' in row: $row")
+            Assertions.assertTrue(row.indexOf(option) < row.indexOf(experimentalHint), "Column order wrong for '$option' in row: $row")
+            Assertions.assertFalse(row.contains(helmHint), "Experimental option '$option' must not be marked as forwarded: $row")
+        }
+    }
+
+    @Test
+    fun dangerousFlagCarriesMarker() {
+        val usage = usageOf("install")
+        val row = rowOf(usage, "--unsafe")
+        Assertions.assertTrue(row.contains(dangerHint), "Expected '$dangerHint' column for '--unsafe' in row: $row")
+        Assertions.assertTrue(row.indexOf("--unsafe") < row.indexOf(dangerHint), "Column order wrong for '--unsafe' in row: $row")
     }
 
     @Test

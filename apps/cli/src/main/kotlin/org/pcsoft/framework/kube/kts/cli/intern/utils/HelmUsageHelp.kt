@@ -64,43 +64,48 @@ private class HelmColumnHelp(commandSpec: CommandSpec, colorScheme: ColorScheme)
     }
 }
 
-/** Decorates the default option renderer, moving the Helm marker into a dedicated column. */
+/** Markers that are moved out of the description into the dedicated hint column. */
+private val HINT_MARKERS = listOf(HELM_MARKER, EXPERIMENTAL_MARKER, DANGER_MARKER)
+
+/** Decorates the default option renderer, moving a leading hint marker into a dedicated column. */
 private class HelmColumnOptionRenderer(private val delegate: IOptionRenderer) : IOptionRenderer {
     override fun render(option: OptionSpec, paramLabelRenderer: IParamLabelRenderer, scheme: ColorScheme): Array<Array<Ansi.Text>> {
-        val isHelm = option.description().isHelmForwarded()
-        val source = if (isHelm) option.toBuilder().description(*option.description().withoutMarker()).build() else option
-        return insertHelmColumn(delegate.render(source, paramLabelRenderer, scheme), isHelm, scheme)
+        val marker = option.description().leadingMarker()
+        val source = if (marker != null) option.toBuilder().description(*option.description().withoutMarker(marker)).build() else option
+        return insertHintColumn(delegate.render(source, paramLabelRenderer, scheme), marker, scheme)
     }
 }
 
 /** Decorates the default parameter renderer so positional parameters keep the table column count. */
 private class HelmColumnParameterRenderer(private val delegate: IParameterRenderer) : IParameterRenderer {
     override fun render(param: PositionalParamSpec, paramLabelRenderer: IParamLabelRenderer, scheme: ColorScheme): Array<Array<Ansi.Text>> {
-        val isHelm = param.description().isHelmForwarded()
-        val source = if (isHelm) param.toBuilder().description(*param.description().withoutMarker()).build() else param
-        return insertHelmColumn(delegate.render(source, paramLabelRenderer, scheme), isHelm, scheme)
+        val marker = param.description().leadingMarker()
+        val source = if (marker != null) param.toBuilder().description(*param.description().withoutMarker(marker)).build() else param
+        return insertHintColumn(delegate.render(source, paramLabelRenderer, scheme), marker, scheme)
     }
 }
 
-/** Whether the first description line carries the Helm forwarding marker. */
-private fun Array<String>.isHelmForwarded(): Boolean = firstOrNull()?.startsWith(HELM_MARKER) == true
+/** The hint marker the first description line starts with, or `null` if none. */
+private fun Array<String>.leadingMarker(): String? =
+    firstOrNull()?.let { line -> HINT_MARKERS.firstOrNull { line.startsWith(it) } }
 
-/** Returns the description with the leading Helm marker removed from the first line. */
-private fun Array<String>.withoutMarker(): Array<String> = mapIndexed { index, line ->
-    if (index == 0) line.removePrefix(HELM_MARKER).trimStart() else line
+/** Returns the description with the given leading [marker] removed from the first line. */
+private fun Array<String>.withoutMarker(marker: String): Array<String> = mapIndexed { index, line ->
+    if (index == 0) line.removePrefix(marker).trimStart() else line
 }.toTypedArray()
 
 /**
- * Inserts the Helm hint cell into every rendered row right before the description column, so the
- * resulting rows match the six-column table built in [HelmColumnHelp.createDefaultLayout].
+ * Inserts the hint cell (the extracted [marker], if any) into every rendered row right before the
+ * description column, so the resulting rows match the six-column table built in
+ * [HelmColumnHelp.createDefaultLayout].
  */
-private fun insertHelmColumn(rows: Array<Array<Ansi.Text>>, isHelm: Boolean, scheme: ColorScheme): Array<Array<Ansi.Text>> {
+private fun insertHintColumn(rows: Array<Array<Ansi.Text>>, marker: String?, scheme: ColorScheme): Array<Array<Ansi.Text>> {
     val empty = scheme.ansi().text("")
-    val hint = scheme.ansi().text(HELM_MARKER)
+    val hint = marker?.let { scheme.ansi().text(it) } ?: empty
     return Array(rows.size) { rowIndex ->
         val row = rows[rowIndex]
         val descriptionIndex = row.size - 1
-        val cell = if (rowIndex == 0 && isHelm) hint else empty
+        val cell = if (rowIndex == 0) hint else empty
         Array(row.size + 1) { columnIndex ->
             when {
                 columnIndex < descriptionIndex -> row[columnIndex]
