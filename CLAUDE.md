@@ -10,6 +10,10 @@ Kube KTS ist ein **Helm-Wrapper für Kubernetes**, der YAML-Dateien mit Go-Templ
 - Saubere YAML-Struktur ohne Template-Logik-Interferenz
 - Debuggbarkeit
 
+> **Helm-Abdeckung:** Der aktuelle Umsetzungsstand des CLI-Wrappers gegenüber dem vollen
+> Helm-Funktionsumfang wird in [HELM_SUPPORT.md](HELM_SUPPORT.md) gepflegt. Bei Änderungen an
+> Kommandos/Flags in `apps/cli` diese Datei mitführen.
+
 ## Modulstruktur (Gradle Multi-Projekt)
 
 | Modul | Pfad | Zweck |

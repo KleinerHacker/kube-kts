@@ -12,16 +12,41 @@
 
 package org.pcsoft.framework.kube.kts.cli.commands
 
+import org.pcsoft.framework.kube.kts.cli.commands.helm.*
+import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
 import picocli.CommandLine.Command
+import picocli.CommandLine.Mixin
+import picocli.CommandLine.Option
 
 /**
  * Command for linting a KTS-based Helm chart repository.
  *
- * This command executes the `helm lint` operation on the current directory,
- * validating the Helm charts for potential issues and best practice violations.
+ * Renders the KTS repository to Helm YAML and executes `helm lint` against it, forwarding all
+ * supported Helm lint flags.
  */
 @Command(name = "lint", description = ["Linting a KTS based chart repository with helm"])
-class LintCommand : BaseHelmCommand() {
-    override val helmArguments: Array<String>
-        get() = arrayOf("lint", ".")
+class LintCommand : BaseHelmCommand(), HelmArgsProvider {
+    @Mixin
+    private lateinit var globalOptions: HelmGlobalOptions
+    @Mixin
+    private lateinit var valueOptions: HelmValueOptions
+
+    @Option(names = ["--quiet"], description = ["$HELM_MARKER print only warnings and errors"])
+    private var quiet: Boolean = false
+    @Option(names = ["--strict"], description = ["$HELM_MARKER fail on lint warnings"])
+    private var strict: Boolean = false
+    @Option(names = ["--with-subcharts"], description = ["$HELM_MARKER lint dependent charts"])
+    private var withSubcharts: Boolean = false
+
+    override val helmCommand: List<String>
+        get() = listOf("lint", ".")
+
+    override val helmOptionGroups: List<HelmArgsProvider>
+        get() = listOf(globalOptions, valueOptions, this)
+
+    override fun toHelmArgs(): List<String> = helmArgs {
+        flag("--quiet", quiet)
+        flag("--strict", strict)
+        flag("--with-subcharts", withSubcharts)
+    }
 }

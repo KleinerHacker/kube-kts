@@ -1,0 +1,130 @@
+# install
+
+```bash
+kube-kts install <REPOSITORY> [TARGET] --name <NAME> [옵션]
+```
+
+저장소를 Helm Chart 로 렌더링한 다음 `helm install` 을 실행하여 새 릴리스로 Kubernetes 클러스터에
+배포합니다. 실제로 클러스터 상태를 바꾸는 명령이므로 kube-context(또는 아래 재정의)를 사용해 API 서버와
+통신하고 지원되는 모든 Helm install 플래그를 전달합니다.
+
+## 동작 방식
+
+1. 저장소를 스캔·컴파일하고 `-f`/`--set*` 값을 적용하여 (임시 또는 명시적) Chart 디렉터리로
+   렌더링합니다.
+2. 그 디렉터리에서 `helm install <NAME> .` 를 실행하고 전달 옵션을 모두 덧붙입니다.
+3. Helm 이 릴리스를 생성합니다. 종료 코드는 Helm 의 결과를 반영합니다. 실패 시 `--atomic` 을 전달하지
+   않으면 롤백되지 않습니다.
+
+!!! note "릴리스 이름은 옵션, 네임스페이스는 `-n`"
+    릴리스 이름은 `--name` 으로 전달하며 위치 인수 `NAME` 으로 Helm 에 전달됩니다. `-n` 단축 옵션은
+    의도적으로 이름이 **아니라** Helm 과 일관성을 위해 `--namespace` 용으로 예약되어 있습니다. `--name`
+    을 생략할 수 있는 경우는 `--generate-name` 과 함께 사용할 때뿐입니다.
+
+!!! tip "더 안전한 롤아웃"
+    `--atomic`(실패 시 롤백)을 `--wait` / `--wait-for-jobs` 및 적절한 `--timeout` 과 결합하여, 실패한
+    설치가 절반만 생성된 리소스를 남기지 않도록 하세요.
+
+## 매개변수
+
+| 매개변수 | 필수 | 설명 |
+|---|---|---|
+| `REPOSITORY` | 예 | 설치할 저장소 경로. 생략하면 현재 작업 디렉터리를 사용합니다. |
+| `TARGET` | 아니오 | 설치 전에 Chart 를 렌더링할 디렉터리. 생략하면 임시 디렉터리를 사용합니다. |
+
+## install 옵션
+
+| 옵션 | 마커 | 설명 |
+|---|---|---|
+| `--name=NAME` | | 생성할 릴리스 이름. 위치 인수 `NAME` 으로 Helm 에 전달됩니다. `--generate-name` 을 쓰지 않는 한 필수입니다. |
+| `--atomic` | `---->` | 설치가 실패하면 생성된 모든 것을 자동 삭제하여 클러스터를 원래대로 되돌립니다. `--wait` 를 포함합니다. 무인/CI 설치에 강력히 권장. |
+| `--create-namespace` | `---->` | 대상 네임스페이스(`-n`/`--namespace`)가 없으면 실패하지 않고 생성합니다. |
+| `--dry-run` | `---->` | 클러스터를 바꾸지 않고 설치를 시뮬레이션하여 무슨 일이 일어날지 보여줍니다. 릴리스 미리보기에 좋습니다. |
+| `--enable-dns` | `---->` | 렌더링 중 템플릿이 DNS 조회를 수행하도록 허용합니다(Helm 의 `getHostByName` 등). 재현성을 위해 기본 비활성화. |
+| `--force` | `---->` | 교체를 통해 리소스 업데이트를 강제합니다. 멈춘 상태에서 복구할 때 사용. 파괴적일 수 있음——리소스를 삭제·재생성할 수 있습니다. |
+| `-g`, `--generate-name` | `---->` | Helm 이 릴리스 이름을 자동 생성하게 합니다. `--name` 대신 사용. |
+| `-l`, `--labels=KEY=VALUE` | `---->` | 릴리스 메타데이터(렌더링된 리소스가 아니라 Helm 릴리스 객체)에 레이블을 추가합니다. 반복 가능. |
+| `--description=TEXT` | `---->` | 이 릴리스 리비전에 사람이 읽을 수 있는 사용자 지정 설명을 붙입니다. |
+| `-o`, `--output=FORMAT` | `---->` | 명령 결과 출력 형식: `table`(기본), `json`, `yaml`. 스크립트화 시 `json`/`yaml` 사용. |
+| `--replace` | `---->` | 히스토리에 남아 있는, 이전에 삭제된 릴리스의 이름을 재사용합니다. 프로덕션에서는 비권장. 깔끔한 제거/설치가 좋습니다. |
+| `--wait` | `---->` | 릴리스를 성공으로 표시하기 전에 생성된 모든 리소스(Pod, PVC, Service, Deployment 등)가 준비 완료를 보고할 때까지 블록합니다. `--timeout` 을 따릅니다. |
+| `--wait-for-jobs` | `---->` | `--wait` 외에, 릴리스가 생성한 모든 Job 이 완료될 때까지 블록합니다. |
+
+## 값 옵션
+
+| 옵션 | 마커 | 설명 |
+|---|---|---|
+| `--set=KEY=VALUE` | `---->` | 값을 인라인으로 재정의(예: `--set image.tag=1.2.3`). 타입은 추론됩니다. 반복 가능하며 나중 `--set` 이 이기고 `-f` 를 덮어씁니다. |
+| `--set-string=KEY=VALUE` | `---->` | `--set` 과 비슷하지만 값을 항상 문자열로 유지합니다(예: `"01"`). 반복 가능. |
+| `--set-file=KEY=PATH` | `---->` | `PATH` 파일의 전체 내용을 `KEY` 의 값으로 사용합니다(인증서, 스크립트 등). 반복 가능. |
+| `--set-json=KEY=JSON` | `---->` | JSON 식에서 값을 설정하여 객체/배열을 표현(예: `--set-json 'ports=[80,443]'`). 반복 가능. |
+| `--set-literal=KEY=VALUE` | `---->` | 작성한 그대로 값을 설정하며 타입 변환을 하지 않습니다. 반복 가능. |
+| `-f`, `--values=FILE` | `---->` | 렌더링에 사용되고 Helm 에 전달되는 YAML 값 파일. 반복 가능하며 순서대로 겹쳐지고 `--set*` 이 이를 덮어씁니다. |
+
+## Chart 소스 및 검증 옵션
+
+| 옵션 | 마커 | 설명 |
+|---|---|---|
+| `--repo=URL` | `---->` | 로컬 경로 대신 이 리포지토리 URL 에서 Chart 를 가져옵니다. |
+| `--username=USER` | `---->` | Chart 리포지토리 사용자 이름(`--password` 와 함께). |
+| `--password=PASSWORD` | `---->` | Chart 리포지토리 비밀번호. 명령줄보다 시크릿/환경 변수를 권장합니다. |
+| `--pass-credentials` | `---->` | 리포지토리 자격 증명을 Chart 호스트뿐 아니라 모든 도메인에 보냅니다. 신뢰하는 리포지토리에서만. |
+| `--ca-file=FILE` | `---->` | HTTPS Chart 서버 TLS 인증서 검증에 사용할 CA 번들. |
+| `--cert-file=FILE` | `---->` | Chart 서버에 대한 상호 TLS 용 클라이언트 TLS 인증서. |
+| `--key-file=FILE` | `---->` | `--cert-file` 에 대응하는 클라이언트 TLS 개인 키. |
+| `--insecure-skip-tls-verify` | `---->` | Chart 다운로드 시 TLS 검증을 건너뜁니다. 안전하지 않음——프로덕션에서는 피하세요. |
+| `--keyring=FILE` | `---->` | 서명된 Chart 검증에 사용할 공개 키 키링(`--verify` 와 함께). 기본 `~/.gnupg/pubring.gpg`. |
+| `--verify` | `---->` | 설치 전에 Chart 의 출처 서명을 검증합니다. 없거나 유효하지 않으면 실패. |
+| `--version=VERSION` | `---->` | Chart 버전을 선택하는 SemVer 제약(예: `1.2.3` 또는 `^1.2`). 기본은 최신 안정 버전. |
+| `--devel` | `---->` | 사전 릴리스 버전도 고려합니다(`>0.0.0-0` 과 동일). |
+| `--dependency-update` | `---->` | 설치 전에 누락된 Chart 의존성을 다운로드/업데이트합니다(`helm dependency update` 와 유사). |
+
+## 렌더링 옵션
+
+| 옵션 | 마커 | 설명 |
+|---|---|---|
+| `--no-hooks` | `---->` | 설치 중 모든 Chart 수명 주기 hooks(pre/post-install 등)를 건너뜁니다. |
+| `--disable-openapi-validation` | `---->` | 렌더링된 매니페스트를 클러스터의 OpenAPI 스키마로 검증하지 않습니다. 더 빠르지만 안전망을 건너뜁니다. |
+| `--name-template=TEMPLATE` | `---->` | 고정 `--name` 대신 릴리스 이름을 계산하는 Go 템플릿. |
+| `--render-subchart-notes` | `---->` | 부모뿐 아니라 서브차트의 NOTES.txt 도 렌더링합니다. |
+| `--skip-crds` | `---->` | Chart 에 포함된 CRD 를 설치하지 않습니다(CRD 를 별도 관리할 때). |
+| `--post-renderer=PATH` | `---->` | 적용 전 렌더링된 매니페스트에 대해 실행하는 실행 파일. Kustomize 식 후처리가 가능합니다. |
+| `--post-renderer-args=ARG` | `---->` | `--post-renderer` 실행 파일에 전달할 인수. 반복 가능. |
+| `--timeout=DURATION` | `---->` | 단일 Kubernetes 작업을 기다리는 최대 시간. Go duration 형식(`5m0s`, `90s` 등). 기본 `5m0s`. `--wait` 와 함께일 때 가장 관련. |
+
+## Helm 전역 옵션
+
+| 옵션 | 마커 | 설명 |
+|---|---|---|
+| `-n`, `--namespace=NAMESPACE` | `---->` | 릴리스를 설치할 네임스페이스. 없으면 `--create-namespace` 와 함께 사용. 기본은 현재 kube-context 의 네임스페이스. |
+| `--kube-context=CONTEXT` | `---->` | 사용할 kubeconfig 내 컨텍스트. 현재 컨텍스트를 바꾸지 않고 특정 클러스터/사용자를 대상으로 합니다. |
+| `--kubeconfig=FILE` | `---->` | `$KUBECONFIG` / `~/.kube/config` 대신 사용할 kubeconfig 파일 경로. |
+| `--kube-apiserver=ADDRESS` | `---->` | kubeconfig 의 API 서버 주소와 포트를 재정의합니다. |
+| `--kube-as-user=USER` | `---->` | 이 사용자를 가장합니다. 가장 권한이 필요합니다. |
+| `--kube-as-group=GROUP` | `---->` | 이 그룹을 가장합니다. 반복 가능. |
+| `--kube-ca-file=FILE` | `---->` | API 서버 TLS 인증서 검증에 사용할 CA 인증서 파일. |
+| `--kube-token=TOKEN` | `---->` | kubeconfig 자격 증명 대신 인증에 사용할 베어러 토큰. |
+| `--kube-tls-server-name=NAME` | `---->` | API 서버 인증서 검증에 사용할 서버 이름(URL 호스트와 다를 때). |
+| `--kube-insecure-skip-tls-verify` | `---->` | API 서버 인증서 검증을 건너뜁니다. 안전하지 않음——신뢰/테스트 전용. |
+| `--burst-limit=INT` | `---->` | API 요청에 대한 클라이언트 측 스로틀링 버스트 한도(기본 `100`). 매우 큰 Chart 에서는 올립니다. |
+| `--qps=QPS` | `---->` | API 서버와 통신 시 클라이언트 측 초당 쿼리 한도. 소수 허용. |
+| `--registry-config=FILE` | `---->` | OCI 레지스트리 설정(자격 증명) 파일 경로. |
+| `--repository-cache=DIR` | `---->` | 의존성 해결에 사용하는 캐시된 리포지토리 인덱스 디렉터리. |
+| `--repository-config=FILE` | `---->` | 리포지토리 이름을 URL 에 매핑하는 파일 경로(`repositories.yaml`). |
+
+## 전역 옵션
+
+모든 [전역 옵션](index.md)(`--debug`, `--unsafe` 등)도 사용할 수 있습니다.
+
+## 예시
+
+```bash
+# "prod" 네임스페이스에 릴리스 "my-app" 설치 후 준비 상태 대기
+kube-kts install /path/to/repository --name my-app -n prod --create-namespace --wait
+
+# 값 재정의와 더 긴 타임아웃을 사용한 원자적 설치
+kube-kts install . --name my-app --atomic --timeout 10m --set image.tag=1.2.3 -f prod.yaml
+
+# 클러스터를 건드리지 않고 설치 내용 미리보기
+kube-kts install ./helm --name my-app --dry-run
+```

@@ -59,12 +59,12 @@ class KubeKtsConsoleAppender(
     override fun requiresLayout(): Boolean = false
 
     private fun Priority.toColoredString(): String = when(this as Level) {
-        Level.TRACE -> this.traceStyle()
-        Level.DEBUG -> this.debugStyle()
+        Level.TRACE -> this.traceStyle
+        Level.DEBUG -> this.debugStyle
         Level.INFO -> this.toString()
-        Level.WARN -> this.warnStyle()
-        Level.ERROR -> this.errorStyle()
-        Level.FATAL -> this.fatalStyle()
+        Level.WARN -> this.warnStyle
+        Level.ERROR -> this.errorStyle
+        Level.FATAL -> this.fatalStyle
         else -> "UNKNOWN"
     }.padEnd(5)
 }

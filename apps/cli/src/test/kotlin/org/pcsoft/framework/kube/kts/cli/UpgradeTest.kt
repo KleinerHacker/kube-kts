@@ -24,12 +24,12 @@ import org.pcsoft.framework.kube.kts.cli.intern.RepoType
 import java.nio.file.Path
 
 /**
- * Tests for the `template` command using a mocked [HelmExecutor]: the full pipeline (scan, compile,
- * render) runs for real, but Helm itself is never invoked. Instead the executor captures the command
- * line that would have been passed to Helm so it can be asserted.
+ * Tests for the `upgrade` command using a mocked [HelmExecutor]: the full pipeline (scan, compile,
+ * render) runs for real, but Helm itself is never invoked. The executor captures the command line
+ * that would have been passed to Helm so it can be asserted.
  */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class TemplateTest {
+class UpgradeTest {
 
     /** Records the arguments and working directory of the last (mocked) Helm invocation. */
     private class CapturingHelmExecutor : HelmExecutor {
@@ -61,11 +61,11 @@ class TemplateTest {
     @ParameterizedTest
     @EnumSource(RepoType::class)
     fun namePassedAsPositional(type: RepoType) {
-        val exitCode = runCli(arrayOf("template", "src/test/resources/${type.path}", "--name", "demo"))
+        val exitCode = runCli(arrayOf("upgrade", "src/test/resources/${type.path}", "--name", "demo"))
 
         Assertions.assertEquals(0, exitCode)
         Assertions.assertEquals(1, executor.invocations)
-        Assertions.assertEquals(listOf("template", "demo", "."), executor.capturedArgs)
+        Assertions.assertEquals(listOf("upgrade", "demo", "."), executor.capturedArgs)
         Assertions.assertNotNull(executor.capturedWorkingDir)
     }
 
@@ -76,23 +76,27 @@ class TemplateTest {
 
         val exitCode = runCli(
             arrayOf(
-                "template", "src/test/resources/${type.path}", "--name", "demo",
-                "-n", "ns", "--set", "a=1", "--include-crds", "-f", valuesFile,
+                "upgrade", "src/test/resources/${type.path}", "--name", "demo",
+                "-n", "ns", "--set", "a=1", "--install", "--atomic", "--reuse-values",
+                "--history-max", "5", "-f", valuesFile,
             )
         )
 
         Assertions.assertEquals(0, exitCode)
         val args = executor.capturedArgs!!
-        Assertions.assertEquals(listOf("template", "demo", "."), args.subList(0, 3))
+        Assertions.assertEquals(listOf("upgrade", "demo", "."), args.subList(0, 3))
         Assertions.assertTrue(args.containsAll(listOf("--namespace", "ns")), "namespace forwarded: $args")
         Assertions.assertTrue(args.containsAll(listOf("--set", "a=1")), "set forwarded: $args")
-        Assertions.assertTrue(args.contains("--include-crds"), "flag forwarded: $args")
+        Assertions.assertTrue(args.contains("--install"), "flag forwarded: $args")
+        Assertions.assertTrue(args.contains("--atomic"), "flag forwarded: $args")
+        Assertions.assertTrue(args.contains("--reuse-values"), "flag forwarded: $args")
+        Assertions.assertTrue(args.containsAll(listOf("--history-max", "5")), "history-max forwarded: $args")
         Assertions.assertTrue(args.containsAll(listOf("-f", valuesFile)), "values forwarded: $args")
     }
 
     @Test
     fun failsWithoutInvokingHelmWhenRepositoryMissing() {
-        val exitCode = runCli(arrayOf("template", "abc", "--name", "demo"))
+        val exitCode = runCli(arrayOf("upgrade", "abc", "--name", "demo"))
 
         Assertions.assertNotEquals(0, exitCode)
         Assertions.assertEquals(0, executor.invocations, "Helm must not be invoked when the repository is missing")

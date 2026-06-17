@@ -12,6 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.cli
 
+import org.pcsoft.framework.kube.kts.cli.intern.utils.HelmHelpFactory
 import picocli.CommandLine
 
 fun main(args: Array<String>) {
@@ -35,6 +36,7 @@ fun runCli(args: Array<String>): Int {
         usageHelpWidth = 120
         usageHelpLongOptionsMaxWidth = 80
         isCaseInsensitiveEnumValuesAllowed = true
+        helpFactory = HelmHelpFactory()
     }
 
     if (args.isEmpty()) {

@@ -1,6 +1,9 @@
 site_name: Kube KTS User Guide
 copyright: "Copyright (c) KleinerHacker alias pcsoft 2026."
 
+docs_dir: docs
+site_dir: ../build/docs
+
 markdown_extensions:
   - admonition
   - toc:
@@ -126,7 +129,16 @@ plugins:
 
 nav:
   - Home: index.md
-  - CLI: cli.md
+  - CLI:
+      - Overview: cli/index.md
+      - validate: cli/validate.md
+      - compile: cli/compile.md
+      - render: cli/render.md
+      - lint: cli/lint.md
+      - template: cli/template.md
+      - install: cli/install.md
+      - upgrade: cli/upgrade.md
+      - uninstall: cli/uninstall.md
   - Kotlin Scripts Repository:
       - Chart: kts/chart.md
       - Templates:

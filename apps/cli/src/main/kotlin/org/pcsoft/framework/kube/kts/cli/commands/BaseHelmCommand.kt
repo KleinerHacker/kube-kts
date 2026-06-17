@@ -12,59 +12,35 @@
 
 package org.pcsoft.framework.kube.kts.cli.commands
 
+import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.logging.*
+import java.nio.file.Path
 
 /**
- * Base class for Helm commands that extends [BaseRenderCommand].
+ * Runs the assembled Helm command line and returns the process exit code.
  *
- * This sealed class provides the foundation for executing Helm operations by defining a common structure
- * and behavior. It handles the execution of Helm commands, logging their output, and managing process lifecycle.
- *
- * Subclasses must implement [helmArguments] to specify the arguments required for the specific Helm command.
+ * The default implementation [ProcessHelmExecutor] spawns the real `helm` process. Tests may replace
+ * [BaseHelmCommand.helmExecutor] with a mock to verify the forwarded arguments without invoking Helm.
  */
-sealed class BaseHelmCommand : BaseRenderCommand() {
-    companion object {
-        private val logger = logger()
-    }
-
+fun interface HelmExecutor {
     /**
-     * Array of command-line arguments to be passed to the Helm CLI.
+     * Executes `helm` with [args] in [workingDir].
      *
-     * This property defines the specific Helm subcommand and its arguments that will be executed
-     * when running this command. Subclasses must override this property to provide the appropriate
-     * Helm command structure for their specific functionality.
+     * @param args the Helm arguments (without the leading `helm` itself).
+     * @param workingDir the directory the rendered Helm chart was written to.
+     * @return the process exit code (`0` on success).
      */
-    protected abstract val helmArguments: Array<String>
+    fun execute(args: List<String>, workingDir: Path): Int
+}
 
-    /**
-     * Executes the Helm command and verifies its success.
-     *
-     * This method first calls the parent class's [run] implementation, then executes a Helm command
-     * using [runHelm]. If the Helm command fails (returns a non-zero exit code), an [IllegalStateException]
-     * is thrown with details about the failure. The exception includes the exit code from the failed command.
-     *
-     * @throws IllegalStateException if the Helm command execution fails (non-zero exit code).
-     */
-    final override fun run() {
-        super.run()
+/** Default [HelmExecutor] spawning the real `helm` process and streaming its output to the log. */
+internal object ProcessHelmExecutor : HelmExecutor {
+    private val logger = logger()
 
-        if (runHelm() != 0)
-            throw IllegalStateException("Helm command failed with exit code ${runHelm()}")
-    }
-
-    private fun runHelm(): Int {
-        logger.atInfo().log { "$symbolMainProcess Run helm..." }
-        logger.atDebug().log { "$symbolBullet with arguments: ${helmArguments.joinToString(" ")}" }
-        
-        logger.atDebug().log { "$symbolBullet Start process..." }
-        val args = arrayOf(
-            *helmArguments,
-            *values.flatMap { listOf("-f", it.toString()) }.toTypedArray()
-        )
-        logger.atTrace().log { "\t$symbolArrowRight Arguments: ${args.joinToString(" ")}" }
+    override fun execute(args: List<String>, workingDir: Path): Int {
         val process = ProcessBuilder()
-            .command("helm", *args)
-            .directory(targetPath.toFile())
+            .command("helm", *args.toTypedArray())
+            .directory(workingDir.toFile())
             .start()
         logger.atTrace().log { "$symbolArrowRight Process started" }
 
@@ -81,7 +57,88 @@ sealed class BaseHelmCommand : BaseRenderCommand() {
         }
 
         logger.atTrace().log { "$symbolBullet Wait for process to finish..." }
-        val exitCode = process.waitFor()
+        return process.waitFor()
+    }
+}
+
+/**
+ * Base class for Helm commands that extends [BaseRenderCommand].
+ *
+ * This sealed class provides the foundation for executing Helm operations by defining a common structure
+ * and behavior. It handles the execution of Helm commands, logging their output, and managing process lifecycle.
+ *
+ * Subclasses define the Helm subcommand and positionals via [helmCommand] and contribute their option
+ * groups via [helmOptionGroups]. The fully assembled command line is built by [buildHelmCommandLine].
+ */
+sealed class BaseHelmCommand : BaseRenderCommand() {
+    companion object {
+        private val logger = logger()
+
+        /**
+         * The executor used to run Helm. Defaults to the real process executor; tests may swap it for
+         * a mock to capture the forwarded arguments. Always reset it afterwards.
+         */
+        internal var helmExecutor: HelmExecutor = ProcessHelmExecutor
+    }
+
+    /**
+     * The Helm subcommand together with its positional arguments, e.g. `["install", "my-release", "."]`.
+     *
+     * Subclasses must provide the leading subcommand and any positionals; all flag options are added
+     * separately through [helmOptionGroups] and the shared value/debug forwarding.
+     */
+    protected abstract val helmCommand: List<String>
+
+    /**
+     * The option groups (picocli mixins implementing [HelmArgsProvider]) contributing flags to Helm.
+     *
+     * Each command lists the mixins it embeds. The shared `-f`/`--values` files and the global
+     * `--debug` flag are appended automatically by [buildHelmCommandLine] and must not be repeated here.
+     */
+    protected abstract val helmOptionGroups: List<HelmArgsProvider>
+
+    /**
+     * Assembles the complete argument list passed to the `helm` executable.
+     *
+     * The result is composed of [helmCommand], the flags from every group in [helmOptionGroups], the
+     * shared `-f`/`--values` files, and `--debug` when debug mode is active. Only options actually set
+     * by the user contribute arguments. Exposed with `internal` visibility so it can be verified by
+     * tests without invoking Helm.
+     *
+     * @return the ordered list of Helm CLI arguments.
+     */
+    internal fun buildHelmCommandLine(): List<String> = buildList {
+        addAll(helmCommand)
+        helmOptionGroups.forEach { addAll(it.toHelmArgs()) }
+        addAll(valueFileOptions.toHelmArgs())
+        if (isDebug) add("--debug")
+    }
+
+    /**
+     * Executes the Helm command and verifies its success.
+     *
+     * This method first calls the parent class's [run] implementation, then executes a Helm command
+     * using [runHelm]. If the Helm command fails (returns a non-zero exit code), an [IllegalStateException]
+     * is thrown with details about the failure. The exception includes the exit code from the failed command.
+     *
+     * @throws IllegalStateException if the Helm command execution fails (non-zero exit code).
+     */
+    final override fun run() {
+        super.run()
+
+        val exitCode = runHelm()
+        if (exitCode != 0)
+            throw IllegalStateException("Helm command failed with exit code $exitCode")
+    }
+
+    private fun runHelm(): Int {
+        val args = buildHelmCommandLine()
+        logger.atInfo().log { "$symbolMainProcess Run helm..." }
+        logger.atDebug().log { "$symbolBullet with arguments: ${args.joinToString(" ")}" }
+
+        logger.atDebug().log { "$symbolBullet Start process..." }
+        logger.atTrace().log { "\t$symbolArrowRight Arguments: ${args.joinToString(" ")}" }
+        val exitCode = helmExecutor.execute(args, targetPath)
         logger.atDebug().log { "$symbolArrowRight Process finished with exit code $exitCode" }
 
         if (exitCode == 0) {

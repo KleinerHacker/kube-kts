@@ -13,6 +13,9 @@
 package org.pcsoft.framework.kube.kts.cli
 
 import org.pcsoft.framework.kube.kts.cli.commands.*
+import org.pcsoft.framework.kube.kts.cli.intern.utils.DANGER_MARKER
+import org.pcsoft.framework.kube.kts.cli.intern.utils.EXPERIMENTAL_MARKER
+import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
 import picocli.CommandLine.*
 
 /**
@@ -33,6 +36,7 @@ import picocli.CommandLine.*
         LintCommand::class,
         TemplateCommand::class,
         InstallCommand::class,
+        UpgradeCommand::class,
         UninstallCommand::class
     ],
     header = ["Kube KTS 0.1.0 - 2026", ""],
@@ -44,6 +48,12 @@ import picocli.CommandLine.*
     version = ["Kube KTS 0.1.0"],
     subcommandsRepeatable = false,
     commandListHeading = "%n@|bold Commands|@%n",
+    footerHeading = "%n@|bold Option Legend|@%n",
+    footer = [
+        "  $HELM_MARKER        forwarded to the underlying Helm CLI",
+        "  $EXPERIMENTAL_MARKER            experimental feature",
+        "  $DANGER_MARKER          dangerous / security relevant",
+    ],
 )
 object MainCommand {
     @Mixin
