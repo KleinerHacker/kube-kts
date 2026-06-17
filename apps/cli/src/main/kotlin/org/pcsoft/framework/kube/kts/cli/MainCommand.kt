@@ -13,6 +13,7 @@
 package org.pcsoft.framework.kube.kts.cli
 
 import org.pcsoft.framework.kube.kts.cli.commands.*
+import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
 import picocli.CommandLine.*
 
 /**
@@ -44,6 +45,10 @@ import picocli.CommandLine.*
     version = ["Kube KTS 0.1.0"],
     subcommandsRepeatable = false,
     commandListHeading = "%n@|bold Commands|@%n",
+    footerHeading = "%n@|bold Option Legend|@%n",
+    footer = [
+        "  $HELM_MARKER        forwarded to the underlying Helm CLI",
+    ],
 )
 object MainCommand {
     @Mixin

@@ -22,7 +22,8 @@ import org.apache.log4j.Level
  *
  * @return A styled string representing the [Level] in fatal error format.
  */
-fun Level.fatalStyle(): String = "\u001B[5;31m${this}\u001B[0m"
+val Level.fatalStyle: String
+    get() = "\u001B[5;31m${this}\u001B[0m"
 
 /**
  * Returns a string representation of the [Level] with ANSI escape codes for error styling.
@@ -32,7 +33,8 @@ fun Level.fatalStyle(): String = "\u001B[5;31m${this}\u001B[0m"
  *
  * @return A styled string representing the [Level] in error format.
  */
-fun Level.errorStyle(): String = "\u001B[1;31m${this}\u001B[0m"
+val Level.errorStyle: String
+    get() = "\u001B[1;31m${this}\u001B[0m"
 
 /**
  * Returns a string representation of the [Level] with ANSI escape codes for warning styling.
@@ -42,7 +44,8 @@ fun Level.errorStyle(): String = "\u001B[1;31m${this}\u001B[0m"
  *
  * @return A styled string representing the [Level] in warning format.
  */
-fun Level.warnStyle(): String = "\u001B[1;33m${this}\u001B[0m"
+val Level.warnStyle: String
+    get() = "\u001B[1;33m${this}\u001B[0m"
 
 /**
  * Returns a string representation of the [Level] with ANSI escape codes for debug styling.
@@ -52,7 +55,8 @@ fun Level.warnStyle(): String = "\u001B[1;33m${this}\u001B[0m"
  *
  * @return A styled string representing the [Level] in debug format.
  */
-fun Level.debugStyle(): String = "\u001B[2;34m${this}\u001B[0m"
+val Level.debugStyle: String
+    get() = "\u001B[2;34m${this}\u001B[0m"
 
 /**
  * Returns a string representation of the [Level] with ANSI escape codes for trace styling.
@@ -62,6 +66,15 @@ fun Level.debugStyle(): String = "\u001B[2;34m${this}\u001B[0m"
  *
  * @return A styled string representing the [Level] in trace format.
  */
-fun Level.traceStyle(): String = "\u001B[2;90m${this}\u001B[0m"
+val Level.traceStyle: String
+    get() = "\u001B[2;90m${this}\u001B[0m"
+
+/**
+ * Help marker for options that are (only) forwarded to Helm.
+ *
+ * Prepended to the picocli option description so users can see, directly in `--help`, which flags
+ * are passed through to the underlying Helm CLI.
+ */
+const val HELM_MARKER = "@|yellow ---->|@"
 
 

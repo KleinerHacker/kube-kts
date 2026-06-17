@@ -13,6 +13,7 @@
 package org.pcsoft.framework.kube.kts.cli
 
 import org.pcsoft.framework.kube.kts.cli.intern.NoArgs
+import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
 import org.pcsoft.framework.kube.kts.cli.types.YamlMergingAlgorithm
 import org.pcsoft.framework.kube.kts.core.merge.YamlArrayMergeStrategy
 import picocli.CommandLine.ArgGroup
@@ -97,7 +98,7 @@ interface DefaultFlags {
  */
 @NoArgs
 class DefaultFlagsImpl(
-    @field:Option(names = ["--debug"], description = ["Print debug information with log level"])
+    @field:Option(names = ["--debug"], description = ["$HELM_MARKER Print debug information with log level"])
     override var debug: Boolean = false,
     @field:Option(names = ["--verbose"], description = ["Print all information with log level"])
     override var verbose: Boolean = false,
