@@ -18,7 +18,8 @@ Kube KTS never replaces Helm — it prepares the input for it. A typical command
    evaluated, and the result is written as a normal Helm chart into a target directory.
 2. **Helm phase (delegation):** for the Helm-backed commands (`lint`, `template`, `install`,
    `upgrade`, `uninstall`) Kube KTS then invokes the real `helm` binary against that rendered chart and forwards
-   all Helm-specific options unchanged.
+   all Helm-specific options unchanged. A few Helm-backed commands (`status`) skip the render phase
+   entirely and call Helm directly, because they operate on an existing release.
 
 Because of this, the Helm-backed commands accept both Kube KTS options (which influence rendering)
 and Helm options (which are forwarded). Options that end up at Helm are marked accordingly — see the
@@ -26,7 +27,7 @@ and Helm options (which are forwarded). Options that end up at Helm are marked a
 
 !!! note "Helm must be installed"
     The `helm` executable must be available on your `PATH` for `lint`, `template`, `install`,
-    `upgrade` and `uninstall`. `validate`, `compile` and `render` work without Helm.
+    `upgrade`, `uninstall` and `status`. `validate`, `compile` and `render` work without Helm.
 
 ## Usage
 
@@ -63,6 +64,7 @@ the full stack trace when diagnosing a failure.
 | `install` | [install](install.md) | Render and install the chart into a cluster via `helm install`. |
 | `upgrade` | [upgrade](upgrade.md) | Render and upgrade (or install) a release via `helm upgrade`. |
 | `uninstall` | [uninstall](uninstall.md) | Render and uninstall one or more releases via `helm uninstall`. |
+| `status` | [status](status.md) | Show the status of a release via `helm status` (no rendering). |
 
 ## Do these commands need rendering? (KTS relevance)
 
@@ -74,8 +76,10 @@ mixed) in the first place:
   `template`, `install` and `upgrade` all run the *scan → compile → render* pipeline and therefore
   depend on your KTS scripts. You must pass (or stand in) a repository for them.
 - **Independent of rendering → no repository needed (KTS not relevant):** operations that act on an
-  already installed release, the cluster, or a repository (e.g. a future `status`, `list`,
-  `rollback`) do not need a rendered chart, so the KTS scripts play no role for them.
+  already installed release, the cluster, or a repository do not need a rendered chart, so the KTS
+  scripts play no role for them. `status` is the first such command (it takes the release name as a
+  positional and forwards it straight to Helm); future ones like `list` or `rollback` will follow the
+  same pattern.
 
 !!! note "`uninstall` is a special case"
     `uninstall` removes a release purely by name and does not technically need a rendered chart.

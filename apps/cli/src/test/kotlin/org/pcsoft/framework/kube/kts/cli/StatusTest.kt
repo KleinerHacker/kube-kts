@@ -16,20 +16,18 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.EnumSource
-import org.pcsoft.framework.kube.kts.cli.commands.BaseRenderedHelmCommand
+import org.pcsoft.framework.kube.kts.cli.commands.BaseDirectHelmCommand
 import org.pcsoft.framework.kube.kts.cli.commands.HelmExecutor
-import org.pcsoft.framework.kube.kts.cli.intern.RepoType
+import org.pcsoft.framework.kube.kts.cli.commands.ProcessHelmExecutor
 import java.nio.file.Path
 
 /**
- * Tests for the `template` command using a mocked [HelmExecutor]: the full pipeline (scan, compile,
- * render) runs for real, but Helm itself is never invoked. Instead the executor captures the command
- * line that would have been passed to Helm so it can be asserted.
+ * Tests for the `status` command using a mocked [HelmExecutor]. Unlike the render-based commands,
+ * `status` needs neither a repository nor a rendering step: it is forwarded directly to Helm. The
+ * executor captures the command line that would have been passed to Helm so it can be asserted.
  */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class TemplateTest {
+class StatusTest {
 
     /** Records the arguments and working directory of the last (mocked) Helm invocation. */
     private class CapturingHelmExecutor : HelmExecutor {
@@ -50,51 +48,43 @@ class TemplateTest {
     @BeforeEach
     fun installMock() {
         executor = CapturingHelmExecutor()
-        BaseRenderedHelmCommand.helmExecutor = executor
+        BaseDirectHelmCommand.helmExecutor = executor
     }
 
     @AfterEach
     fun restoreExecutor() {
-        BaseRenderedHelmCommand.helmExecutor = org.pcsoft.framework.kube.kts.cli.commands.ProcessHelmExecutor
+        BaseDirectHelmCommand.helmExecutor = ProcessHelmExecutor
     }
 
-    @ParameterizedTest
-    @EnumSource(RepoType::class)
-    fun namePassedAsPositional(type: RepoType) {
-        val exitCode = runCli(arrayOf("template", "src/test/resources/${type.path}", "--name", "demo"))
+    @Test
+    fun releaseForwardedWithoutRepository() {
+        val exitCode = runCli(arrayOf("status", "my-release"))
 
         Assertions.assertEquals(0, exitCode)
         Assertions.assertEquals(1, executor.invocations)
-        Assertions.assertEquals(listOf("template", "demo", "."), executor.capturedArgs)
+        Assertions.assertEquals(listOf("status", "my-release"), executor.capturedArgs)
         Assertions.assertNotNull(executor.capturedWorkingDir)
     }
 
-    @ParameterizedTest
-    @EnumSource(RepoType::class)
-    fun forwardsFlagsAndValues(type: RepoType) {
-        val valuesFile = Path.of(this::class.java.getResource("/values-overlay.yaml").toURI()).toString()
-
+    @Test
+    fun forwardsFlags() {
         val exitCode = runCli(
-            arrayOf(
-                "template", "src/test/resources/${type.path}", "--name", "demo",
-                "-n", "ns", "--set", "a=1", "--include-crds", "-f", valuesFile,
-            )
+            arrayOf("status", "rel", "-n", "ns", "--revision", "2", "--output", "json")
         )
 
         Assertions.assertEquals(0, exitCode)
         val args = executor.capturedArgs!!
-        Assertions.assertEquals(listOf("template", "demo", "."), args.subList(0, 3))
+        Assertions.assertEquals(listOf("status", "rel"), args.subList(0, 2))
         Assertions.assertTrue(args.containsAll(listOf("--namespace", "ns")), "namespace forwarded: $args")
-        Assertions.assertTrue(args.containsAll(listOf("--set", "a=1")), "set forwarded: $args")
-        Assertions.assertTrue(args.contains("--include-crds"), "flag forwarded: $args")
-        Assertions.assertTrue(args.containsAll(listOf("-f", valuesFile)), "values forwarded: $args")
+        Assertions.assertTrue(args.containsAll(listOf("--revision", "2")), "revision forwarded: $args")
+        Assertions.assertTrue(args.containsAll(listOf("--output", "json")), "output forwarded: $args")
     }
 
     @Test
-    fun failsWithoutInvokingHelmWhenRepositoryMissing() {
-        val exitCode = runCli(arrayOf("template", "abc", "--name", "demo"))
+    fun failsWhenReleaseMissing() {
+        val exitCode = runCli(arrayOf("status"))
 
         Assertions.assertNotEquals(0, exitCode)
-        Assertions.assertEquals(0, executor.invocations, "Helm must not be invoked when the repository is missing")
+        Assertions.assertEquals(0, executor.invocations, "Helm must not be invoked when the release name is missing")
     }
 }

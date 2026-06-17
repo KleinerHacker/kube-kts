@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import org.pcsoft.framework.kube.kts.cli.intern.*
 /**
  * Verifies that every supported Helm flag of each Helm based command is translated and forwarded to
  * the Helm command line. No real Helm process is ever started — only the argument list built by
- * [org.pcsoft.framework.kube.kts.cli.commands.BaseHelmCommand.buildHelmCommandLine] is inspected.
+ * [org.pcsoft.framework.kube.kts.cli.commands.BaseRenderedHelmCommand.buildHelmCommandLine] is inspected.
  */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class HelmArgsTest {
@@ -145,6 +145,40 @@ class HelmArgsTest {
         assertHasFlag(args, "--no-hooks")
         assertHasOption(args, "--timeout", "1m")
         assertHasFlag(args, "--wait")
+    }
+
+    // ---------------------------------------------------------------------------------------------
+    // status (render-less: no REPOSITORY positional, forwarded directly to helm)
+    // ---------------------------------------------------------------------------------------------
+
+    @Test
+    fun status_releasePassedAsPositional() {
+        val args = buildHelmCommandLine("status", "my-release")
+        Assertions.assertEquals(listOf("status", "my-release"), args)
+    }
+
+    @Test
+    fun status_flagsForwarded() {
+        val args = buildHelmCommandLine(
+            "status", "rel", "-n", "ns", "--revision", "3", "--output", "json",
+            "--show-desc", "--show-resources",
+        )
+        Assertions.assertEquals(listOf("status", "rel"), args.subList(0, 2))
+        assertHasOption(args, "--namespace", "ns")
+        assertHasOption(args, "--revision", "3")
+        assertHasOption(args, "--output", "json")
+        assertHasFlag(args, "--show-desc")
+        assertHasFlag(args, "--show-resources")
+    }
+
+    @Test
+    fun status_unsetFlagsAreNotForwarded() {
+        val args = buildHelmCommandLine("status", "rel")
+        assertMissing(args, "--revision")
+        assertMissing(args, "--output")
+        assertMissing(args, "--show-desc")
+        assertMissing(args, "--namespace")
+        assertMissing(args, "--debug")
     }
 
     // ---------------------------------------------------------------------------------------------

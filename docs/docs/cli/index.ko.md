@@ -57,6 +57,7 @@ CLI 는 성공 시 `0`, 실패 시 0 이 아닌 종료 코드를 반환합니다
 | `install` | [install](install.md) | 렌더링 후 `helm install` 로 클러스터에 설치합니다. |
 | `upgrade` | [upgrade](upgrade.md) | 렌더링 후 `helm upgrade` 로 릴리스를 업그레이드(또는 설치)합니다. |
 | `uninstall` | [uninstall](uninstall.md) | 렌더링 후 `helm uninstall` 로 하나 이상의 릴리스를 제거합니다. |
+| `status` | [status](status.md) | `helm status` 로 릴리스 상태를 표시합니다(렌더링 불필요). |
 
 ## 이 명령들은 렌더링이 필요한가? (KTS 관련성)
 

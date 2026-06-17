@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import picocli.CommandLine.Option
  * Helm as the positional NAME); the `-n` shorthand is reserved for `--namespace` to stay in sync with Helm.
  */
 @Command(name = "install", description = ["Install a KTS based chart repository with helm"])
-class InstallCommand : BaseHelmCommand(), HelmArgsProvider {
+class InstallCommand : BaseRenderedHelmCommand(), HelmArgsProvider {
     @Option(names = ["--name"], description = ["Name of the release (forwarded to helm as positional NAME)"], paramLabel = "NAME")
     private var name: String? = null
 

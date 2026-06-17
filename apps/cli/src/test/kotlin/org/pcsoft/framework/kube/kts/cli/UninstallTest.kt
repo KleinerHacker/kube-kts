@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
-import org.pcsoft.framework.kube.kts.cli.commands.BaseHelmCommand
+import org.pcsoft.framework.kube.kts.cli.commands.BaseRenderedHelmCommand
 import org.pcsoft.framework.kube.kts.cli.commands.HelmExecutor
 import org.pcsoft.framework.kube.kts.cli.intern.RepoType
 import java.nio.file.Path
@@ -50,12 +50,12 @@ class UninstallTest {
     @BeforeEach
     fun installMock() {
         executor = CapturingHelmExecutor()
-        BaseHelmCommand.helmExecutor = executor
+        BaseRenderedHelmCommand.helmExecutor = executor
     }
 
     @AfterEach
     fun restoreExecutor() {
-        BaseHelmCommand.helmExecutor = org.pcsoft.framework.kube.kts.cli.commands.ProcessHelmExecutor
+        BaseRenderedHelmCommand.helmExecutor = org.pcsoft.framework.kube.kts.cli.commands.ProcessHelmExecutor
     }
 
     @ParameterizedTest

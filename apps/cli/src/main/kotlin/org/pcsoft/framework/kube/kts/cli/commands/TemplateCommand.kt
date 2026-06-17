@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import picocli.CommandLine.Option
  * `--namespace` to stay in sync with Helm).
  */
 @Command(name = "template", description = ["Print template of a KTS based chart repository with helm"])
-class TemplateCommand : BaseHelmCommand(), HelmArgsProvider {
+class TemplateCommand : BaseRenderedHelmCommand(), HelmArgsProvider {
     @Option(names = ["--name"], description = ["Name of the release (forwarded to helm as positional NAME)"], paramLabel = "NAME")
     private var name: String? = null
 

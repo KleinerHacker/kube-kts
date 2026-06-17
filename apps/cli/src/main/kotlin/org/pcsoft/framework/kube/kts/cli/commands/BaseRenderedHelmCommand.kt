@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
 package org.pcsoft.framework.kube.kts.cli.commands
 
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
+import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmCommandLineProvider
 import org.pcsoft.framework.kube.kts.logging.*
 import java.nio.file.Path
 
@@ -20,7 +21,7 @@ import java.nio.file.Path
  * Runs the assembled Helm command line and returns the process exit code.
  *
  * The default implementation [ProcessHelmExecutor] spawns the real `helm` process. Tests may replace
- * [BaseHelmCommand.helmExecutor] with a mock to verify the forwarded arguments without invoking Helm.
+ * [BaseRenderedHelmCommand.helmExecutor] with a mock to verify the forwarded arguments without invoking Helm.
  */
 fun interface HelmExecutor {
     /**
@@ -70,7 +71,7 @@ internal object ProcessHelmExecutor : HelmExecutor {
  * Subclasses define the Helm subcommand and positionals via [helmCommand] and contribute their option
  * groups via [helmOptionGroups]. The fully assembled command line is built by [buildHelmCommandLine].
  */
-sealed class BaseHelmCommand : BaseRenderCommand() {
+sealed class BaseRenderedHelmCommand : BaseRenderCommand(), HelmCommandLineProvider {
     companion object {
         private val logger = logger()
 
@@ -107,7 +108,7 @@ sealed class BaseHelmCommand : BaseRenderCommand() {
      *
      * @return the ordered list of Helm CLI arguments.
      */
-    internal fun buildHelmCommandLine(): List<String> = buildList {
+    override fun buildHelmCommandLine(): List<String> = buildList {
         addAll(helmCommand)
         helmOptionGroups.forEach { addAll(it.toHelmArgs()) }
         addAll(valueFileOptions.toHelmArgs())

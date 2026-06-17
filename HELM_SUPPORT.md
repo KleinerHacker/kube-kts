@@ -1,4 +1,4 @@
-# Helm-Wrapper — Umsetzungsstand
+﻿# Helm-Wrapper — Umsetzungsstand
 
 Diese Datei dokumentiert, wie weit das `kube-kts` CLI-Tool Helm bereits als Wrapper abdeckt. Sie ist
 die zentrale Merkhilfe für den Fortschritt „CLI ↔ vollumfängliche Helm-Unterstützung" und wird von
@@ -9,7 +9,11 @@ der [CLAUDE.md](CLAUDE.md) referenziert.
 
 ## Architektur (Kurz)
 
-- Helm-Kommandos leiten von `BaseHelmCommand` ab (`apps/cli/.../commands/`).
+- Render-basierte Helm-Kommandos leiten von `BaseRenderedHelmCommand` ab (`apps/cli/.../commands/`); sie
+  durchlaufen *Scan → Compile → Render* und benötigen ein Repository.
+- Render-lose Helm-Kommandos (operieren auf einem bestehenden Release, z. B. `status`) leiten von
+  `BaseDirectHelmCommand` ab: **kein** Repository, **kein** Rendering — die Argumente werden direkt
+  an Helm weitergereicht. Beide Basisklassen implementieren `HelmCommandLineProvider`.
 - Flags sind in wiederverwendbare Mixins gruppiert (`apps/cli/.../commands/helm/`):
   `HelmGlobalOptions`, `HelmValueOptions`, `HelmChartSourceOptions`, `HelmRenderSharedOptions`,
   `HelmValueFileOptions`.
@@ -39,10 +43,13 @@ Legende: ✅ implementiert · 🟡 teilweise · ❌ nicht implementiert
 | `install` | ✅ | vollständig | `helm install` inkl. `--atomic`, `--wait[-for-jobs]`, Chart-Source-Flags, … |
 | `upgrade` | ✅ | vollständig | `helm upgrade` inkl. `-i/--install`, `--reuse-values`/`--reset-values`/`--reset-then-reuse-values`, `--cleanup-on-fail`, `--history-max`, `--take-ownership`, … |
 | `uninstall` | ✅ | vollständig | `helm uninstall` inkl. `--cascade`, `--keep-history`, `--ignore-not-found`, … |
+| `status` | ✅ | vollständig | `helm status` inkl. `--revision`, `--output`, `--show-desc`, `--show-resources`. **Render-los** (`BaseDirectHelmCommand`), kein Repository nötig. |
 
-**Anmerkung zum Release-Namen:** Da `REPOSITORY` (Index 0) und `TARGET` (Index 1) bereits positional
-belegt sind, wird der Release-Name über `--name` übergeben (bei `uninstall` wiederholbar) und an Helm
-positional weitergereicht. `-n` ist für `--namespace` reserviert (Helm-konform).
+**Anmerkung zum Release-Namen:** Bei den render-basierten Kommandos sind `REPOSITORY` (Index 0) und
+`TARGET` (Index 1) bereits positional belegt, daher wird der Release-Name dort über `--name`
+übergeben (bei `uninstall` wiederholbar) und an Helm positional weitergereicht. `-n` ist für
+`--namespace` reserviert (Helm-konform). Render-lose Kommandos wie `status` haben **kein**
+`REPOSITORY`-Positional und reichen den Release-Namen direkt als Positional (`RELEASE`) an Helm durch.
 
 ### Noch nicht gewrappte Helm-Kommandos
 
@@ -50,7 +57,6 @@ Diese Helm-Kommandos haben aktuell **kein** `kube-kts`-Pendant. Reihenfolge grob
 
 | Helm-Kommando | Status | Bemerkung / Sinnhaftigkeit als Wrapper |
 |---|---|---|
-| `status` | ❌ | Status eines Releases; kein Rendern nötig. |
 | `list` / `ls` | ❌ | Releases auflisten. |
 | `history` | ❌ | Revisionsverlauf eines Releases. |
 | `rollback` | ❌ | Auf frühere Revision zurückrollen. |
@@ -92,19 +98,21 @@ Repository (bzw. ohne gültiges Render-Ergebnis) brechen sie ab, bevor Helm aufg
 
 ### Unabhängig vom Rendering — **kein Repository nötig (KTS irrelevant)**
 
-Diese (noch nicht implementierten) Helm-Kommandos operieren auf einem bereits installierten Release,
-auf der Cluster-/Repo-Ebene oder rein informativ. Sie brauchen **kein** gerendertes Chart und damit
-auch **kein** Repository, d. h. die KTS-Skripte sind dafür unerheblich. Falls sie künftig gewrappt werden, sollten sie **nicht** von
-`BaseRenderCommand` ableiten, sondern direkt Helm aufrufen (z. B. von `BaseRootCommand`).
+Diese Helm-Kommandos operieren auf einem bereits installierten Release, auf der Cluster-/Repo-Ebene
+oder rein informativ. Sie brauchen **kein** gerendertes Chart und damit auch **kein** Repository,
+d. h. die KTS-Skripte sind dafür unerheblich. Sie leiten **nicht** von `BaseRenderCommand` ab,
+sondern von `BaseDirectHelmCommand` und rufen Helm direkt auf. `status` ist als erstes solches
+Kommando umgesetzt (✅) und dient als Vorlage für die übrigen.
 
-| Kommando | Bezugspunkt |
-|---|---|
-| `status`, `list`, `history`, `get`, `rollback`, `test` | bestehendes Release |
-| `repo`, `search`, `pull`, `push`, `registry` | Repository / Registry |
-| `show`, `version`, `env`, `verify` | Chart-Metadaten / Diagnose |
+| Kommando | Bezugspunkt | Status |
+|---|---|---|
+| `status` | bestehendes Release | ✅ implementiert (`BaseDirectHelmCommand`) |
+| `list`, `history`, `get`, `rollback`, `test` | bestehendes Release | ❌ |
+| `repo`, `search`, `pull`, `push`, `registry` | Repository / Registry | ❌ |
+| `show`, `version`, `env`, `verify` | Chart-Metadaten / Diagnose | ❌ |
 
 > **Sonderfall `uninstall`:** Benötigt fachlich **kein** Rendering (es entfernt ein Release per Name),
-> leitet aber aktuell aus Konsistenzgründen dennoch von `BaseHelmCommand`/`BaseRenderCommand` ab und
+> leitet aber aktuell aus Konsistenzgründen dennoch von `BaseRenderedHelmCommand`/`BaseRenderCommand` ab und
 > rendert vor dem Aufruf. Das ist ein bewusster, aber optimierbarer Kompromiss — KTS ist hier streng
 > genommen irrelevant.
 

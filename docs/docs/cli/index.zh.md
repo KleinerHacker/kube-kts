@@ -56,6 +56,7 @@ kube-kts [全局选项] <命令> <REPOSITORY> [TARGET] [命令选项]
 | `install` | [install](install.md) | 渲染并通过 `helm install` 安装到集群。 |
 | `upgrade` | [upgrade](upgrade.md) | 渲染并通过 `helm upgrade` 升级（或安装）发布。 |
 | `uninstall` | [uninstall](uninstall.md) | 渲染并通过 `helm uninstall` 卸载一个或多个发布。 |
+| `status` | [status](status.md) | 通过 `helm status` 显示发布状态（无需渲染）。 |
 
 ## 这些命令是否需要渲染？（KTS 相关性）
 

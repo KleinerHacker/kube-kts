@@ -58,6 +58,7 @@ CLI は成功時に `0`、失敗時に 0 以外の終了コードを返します
 | `install` | [install](install.md) | レンダリングして `helm install` でクラスターにインストールする。 |
 | `upgrade` | [upgrade](upgrade.md) | レンダリングして `helm upgrade` でリリースをアップグレード（またはインストール）する。 |
 | `uninstall` | [uninstall](uninstall.md) | レンダリングして `helm uninstall` で 1 つ以上のリリースを削除する。 |
+| `status` | [status](status.md) | `helm status` でリリースの状態を表示する（レンダリング不要）。 |
 
 ## これらのコマンドはレンダリングが必要か？（KTS の関連性）
 
