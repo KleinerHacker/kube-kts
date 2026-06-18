@@ -33,7 +33,7 @@ class ValidateCommand : BaseRootCommand() {
 
     /**
      * Executes the repository scanning process by logging the start of the scan,
-     * invoking the [KubeKtsRepositoryScanner] to analyze the specified source path,
+     * invoking the `KubeKtsRepositoryScanner` to analyze the specified source path,
      * and logging a success message upon completion.
      */
     override fun run() {

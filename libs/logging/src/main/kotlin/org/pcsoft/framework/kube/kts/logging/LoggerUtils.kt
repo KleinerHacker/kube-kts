@@ -16,7 +16,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 /**
- * Returns a [Logger] instance for the given type [T].
+ * Returns a `Logger` instance for the given type [T].
  *
  * @return Logger instance configured for the specified class.
  */

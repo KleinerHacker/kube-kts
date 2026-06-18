@@ -39,7 +39,7 @@ class CompileCommand : BaseCompileCommand() {
      *
      * This method performs the following steps:
      * 1. Scans the specified source path to discover Kubernetes Kotlin Script (KTS) files and legacy Helm templates,
-     *    creating a [KubeKtsRepository] structure.
+     *    creating a `KubeKtsRepository` structure.
      * 2. Configures the YAML merging strategy based on the selected algorithm ([YamlMergingAlgorithm.INTERNAL]
      *    or [YamlMergingAlgorithm.HELM]).
      * 3. Builds the Helm repository using the configured builder with the scanned repository and provided values,

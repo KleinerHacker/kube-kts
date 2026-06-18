@@ -24,10 +24,10 @@ private const val HELM_COLUMN_WIDTH = 10
 private const val DEFAULT_LONG_OPTIONS_COLUMN_WIDTH = 24
 
 /**
- * [CommandLine.IHelpFactory] that renders the option and parameter tables with an additional column
+ * `CommandLine.IHelpFactory` that renders the option and parameter tables with an additional column
  * indicating whether an option is forwarded to Helm.
  *
- * Install it on the root command via [CommandLine.setHelpFactory]; picocli applies it recursively to
+ * Install it on the root command via `CommandLine.setHelpFactory`; picocli applies it recursively to
  * all subcommands.
  */
 class HelmHelpFactory : CommandLine.IHelpFactory {
@@ -36,7 +36,7 @@ class HelmHelpFactory : CommandLine.IHelpFactory {
 }
 
 /**
- * A [Help] variant whose option/parameter list has three logical columns: the option itself (as
+ * A `Help` variant whose option/parameter list has three logical columns: the option itself (as
  * usual), a Helm hint column, and the description (as usual).
  *
  * The Helm hint is derived from the [HELM_MARKER] prefix embedded in an option's description: when

@@ -45,7 +45,7 @@ interface KotlinScriptProcessor {
      * @param script The file path to the Kotlin script to be compiled.
      * @param libScripts Paths to library scripts whose definitions are made available during compilation.
      * @param unsafe If true, enables unsafe script compilation, potentially bypassing security checks.
-     * @return An [Either] instance containing the compiled script if successful or an error if the compilation fails.
+     * @return An `Either` instance containing the compiled script if successful or an error if the compilation fails.
      */
     fun compile(name: String, script: Path, libScripts: List<Path>, unsafe: Boolean): Either<CompiledScript>
 
@@ -55,7 +55,7 @@ interface KotlinScriptProcessor {
      * @param name The name of the script execution context, typically used for logging or identification purposes.
      * @param script The compiled script to be executed.
      * @param valueAccess The mechanism for providing and retrieving values used during script execution.
-     * @return An [Either] instance containing the result of the script execution if successful,
+     * @return An `Either` instance containing the result of the script execution if successful,
      * or an error if the execution fails.
      */
     fun <T> execute(name: String, script: CompiledScript, valueAccess: ValueAccess): Either<T>

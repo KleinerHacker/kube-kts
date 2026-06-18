@@ -123,7 +123,7 @@ sealed class BaseCommand {
      * Strategy used for merging YAML array nodes when processing multiple YAML structures.
      *
      * This property determines how elements of arrays in the base YAML document interact with elements
-     * from overlay YAML documents during merge operations. Default is [YamlArrayMergeStrategy.Replace].
+     * from overlay YAML documents during merge operations. Default is `YamlArrayMergeStrategy.Replace`.
      */
     protected val yamlArrayMergeStrategy: YamlArrayMergeStrategy
         get() = globalFlags.yamlArrayMergeStrategy ?: rootFlags.yamlArrayMergeStrategy ?: YamlArrayMergeStrategy.Replace

@@ -187,7 +187,7 @@ internal class KubeVersionSerializer : ValueSerializer<KubeVersion>() {
  * The [KubeVersion] object encapsulates a version string, consisting of version constraints
  * and equality operators used to specify Kubernetes version requirements.
  *
- * This deserializer extends [ValueDeserializer] to leverage the deserialization mechanism
+ * This deserializer extends `ValueDeserializer` to leverage the deserialization mechanism
  * provided by the framework for constructing structured objects from JSON trees.
  */
 internal class KubeVersionDeserializer : ValueDeserializer<KubeVersion>() {

@@ -149,9 +149,9 @@ interface ExperimentalFlags {
      * This property determines how array elements from overlay YAML documents should be merged with
      * existing array elements in base YAML documents. The strategy controls whether new elements are
      * added to the beginning, end, or replace the entire array, or if no merging should occur at all.
-     * When null, a default value of [YamlArrayMergeStrategy.Replace] will be used unless overridden by other configuration.
+     * When null, a default value of `YamlArrayMergeStrategy.Replace` will be used unless overridden by other configuration.
      *
-     * @see YamlArrayMergeStrategy
+     * See `YamlArrayMergeStrategy` for the available strategies.
      */
     val yamlArrayMergeStrategy: YamlArrayMergeStrategy?
 }
