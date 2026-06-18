@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import picocli.CommandLine.Option
  * The release names are passed via `--name` (forwarded to Helm as positional RELEASE arguments).
  */
 @Command(name = "uninstall", description = ["Uninstall a KTS based chart repository with helm"])
-class UninstallCommand : BaseHelmCommand(), HelmArgsProvider {
+class UninstallCommand : BaseRenderedHelmCommand(), HelmArgsProvider {
     @Option(names = ["--name"], required = true, description = ["Name of the release(s) to uninstall (repeatable, forwarded to helm as positional RELEASE)"], paramLabel = "RELEASE")
     private lateinit var releases: Array<String>
 

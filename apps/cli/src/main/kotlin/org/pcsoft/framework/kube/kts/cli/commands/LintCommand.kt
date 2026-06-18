@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import picocli.CommandLine.Option
  * supported Helm lint flags.
  */
 @Command(name = "lint", description = ["Linting a KTS based chart repository with helm"])
-class LintCommand : BaseHelmCommand(), HelmArgsProvider {
+class LintCommand : BaseRenderedHelmCommand(), HelmArgsProvider {
     @Mixin
     private lateinit var globalOptions: HelmGlobalOptions
     @Mixin

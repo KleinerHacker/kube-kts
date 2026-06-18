@@ -1,18 +1,25 @@
-# Helm-Wrapper — Umsetzungsstand
+﻿# Helm-Wrapper — Umsetzungsstand
 
 Diese Datei dokumentiert, wie weit das `kube-kts` CLI-Tool Helm bereits als Wrapper abdeckt. Sie ist
 die zentrale Merkhilfe für den Fortschritt „CLI ↔ vollumfängliche Helm-Unterstützung" und wird von
 der [CLAUDE.md](CLAUDE.md) referenziert.
 
 > **Pflege:** Beim Hinzufügen/Ändern von Kommandos oder Flags in `apps/cli` bitte diese Datei
-> aktualisieren. Stand zuletzt geprüft: 2026-06-17.
+> aktualisieren. Stand zuletzt geprüft: 2026-06-18.
 
 ## Architektur (Kurz)
 
-- Helm-Kommandos leiten von `BaseHelmCommand` ab (`apps/cli/.../commands/`).
+- Render-basierte Helm-Kommandos leiten von `BaseRenderedHelmCommand` ab (`apps/cli/.../commands/`); sie
+  durchlaufen *Scan → Compile → Render* und benötigen ein Repository.
+- Render-lose Helm-Kommandos (operieren auf einem bestehenden Release, z. B. `status`) leiten von
+  `BaseDirectHelmCommand` ab: **kein** Repository, **kein** Rendering — die Argumente werden direkt
+  an Helm weitergereicht. Beide Basisklassen implementieren `HelmCommandLineProvider`.
+- Verschachtelte Kommando-Gruppen (`get`, `repo`, `search`, `registry`, `show`, `dependency`, `diff`)
+  leiten von `BaseGroupCommand` ab: sie rufen selbst kein Helm auf, sondern bündeln nur ihre
+  Unterbefehle und geben bei Aufruf ohne Subcommand die Usage aus.
 - Flags sind in wiederverwendbare Mixins gruppiert (`apps/cli/.../commands/helm/`):
-  `HelmGlobalOptions`, `HelmValueOptions`, `HelmChartSourceOptions`, `HelmRenderSharedOptions`,
-  `HelmValueFileOptions`.
+  `HelmGlobalOptions`, `HelmValueOptions`, `HelmChartSourceOptions`, `HelmChartDownloadOptions`,
+  `HelmRenderSharedOptions`, `HelmValueFileOptions`.
 - `buildHelmCommandLine()` setzt die finale Argumentliste zusammen; die Ausführung läuft über den
   injizierbaren `HelmExecutor` (mockbar in Tests).
 - Hilfe-Marker: `---->` = an Helm weitergereicht, `*` = experimentell, `!!!` = gefährlich
@@ -39,33 +46,39 @@ Legende: ✅ implementiert · 🟡 teilweise · ❌ nicht implementiert
 | `install` | ✅ | vollständig | `helm install` inkl. `--atomic`, `--wait[-for-jobs]`, Chart-Source-Flags, … |
 | `upgrade` | ✅ | vollständig | `helm upgrade` inkl. `-i/--install`, `--reuse-values`/`--reset-values`/`--reset-then-reuse-values`, `--cleanup-on-fail`, `--history-max`, `--take-ownership`, … |
 | `uninstall` | ✅ | vollständig | `helm uninstall` inkl. `--cascade`, `--keep-history`, `--ignore-not-found`, … |
+| `status` | ✅ | vollständig | `helm status` inkl. `--revision`, `--output`, `--show-desc`, `--show-resources`. **Render-los** (`BaseDirectHelmCommand`), kein Repository nötig. |
+| `list` / `ls` | ✅ | vollständig | `helm list` inkl. `-a/-A`, `--deployed`/`--failed`/`--pending`/…, `-o`, `-l`, `--time-format`. Render-los. |
+| `history` / `hist` | ✅ | vollständig | `helm history RELEASE` inkl. `--max`, `-o`. Render-los. |
+| `rollback` | ✅ | vollständig | `helm rollback RELEASE [REVISION]` inkl. `--cleanup-on-fail`, `--force`, `--wait[-for-jobs]`, … Render-los. |
+| `test` | ✅ | vollständig | `helm test RELEASE` inkl. `--filter`, `--hide-notes`, `--logs`, `--timeout`. Render-los. |
+| `get` (all/values/manifest/hooks/notes/metadata) | ✅ | vollständig | Verschachtelt; je `RELEASE` inkl. `--revision`, `-o`, `--template`, `-a`. Render-los. |
+| `repo` (add/update/list/remove) | ✅ | vollständig | Verschachtelt; `add NAME URL` inkl. Auth/TLS-Flags, `--no-update`/`--force-update`. Render-los. |
+| `search` (repo/hub) | ✅ | vollständig | Verschachtelt; `[KEYWORD]` inkl. `--devel`, `-r`, `-l`, `--endpoint`, … Render-los. |
+| `registry` (login/logout) | ✅ | vollständig | Verschachtelt; `HOST` inkl. `-u/-p`, `--password-stdin`, `--insecure`, … Render-los. |
+| `show` (all/chart/values/readme/crds) | ✅ | vollständig | Verschachtelt; `CHART` inkl. Chart-Download-Flags; `show values` zusätzlich `--jsonpath`. Render-los. |
+| `pull` / `fetch` | ✅ | vollständig | `helm pull CHART` inkl. `-d`, `--prov`, `--untar[dir]` + Chart-Download-Flags. Render-los. |
+| `push` | ✅ | vollständig | `helm push CHART REMOTE` inkl. `--ca-file`/`--cert-file`/`--key-file`, `--plain-http`. Render-los. |
+| `verify` | ✅ | vollständig | `helm verify PATH` inkl. `--keyring`. Render-los. |
+| `version` | ✅ | vollständig | `helm version` inkl. `--short`, `--template`. Render-los. |
+| `env` | ✅ | vollständig | `helm env [NAME]`. Render-los. |
+| `package` | ✅ | vollständig | `helm package .` inkl. `--app-version`/`--version`, `-d`, `-u`, `--sign`/`--key`/`--keyring`/`--pass-stdin`. **Render-basiert**. |
+| `dependency` (build/update/list) | ✅ | vollständig | Verschachtelt; `dependency <sub> .` inkl. `--keyring`, `--skip-refresh`, `--verify` (list: `--max-col-width`). **Render-basiert**. |
+| `diff upgrade` | ✅ | vollständig | Verschachtelt; `diff upgrade RELEASE .` (Release via `--name`) inkl. `--detailed-exitcode`, `--context`, `--reset/reuse-values`, … + `--set*`/`-f`. **Render-basiert**, benötigt **helm-diff-Plugin**. |
 
-**Anmerkung zum Release-Namen:** Da `REPOSITORY` (Index 0) und `TARGET` (Index 1) bereits positional
-belegt sind, wird der Release-Name über `--name` übergeben (bei `uninstall` wiederholbar) und an Helm
-positional weitergereicht. `-n` ist für `--namespace` reserviert (Helm-konform).
+**Anmerkung zum Release-Namen:** Bei den render-basierten Kommandos sind `REPOSITORY` (Index 0) und
+`TARGET` (Index 1) bereits positional belegt, daher wird der Release-Name dort über `--name`
+übergeben (bei `uninstall` wiederholbar) und an Helm positional weitergereicht. `-n` ist für
+`--namespace` reserviert (Helm-konform). Render-lose Kommandos wie `status` haben **kein**
+`REPOSITORY`-Positional und reichen den Release-Namen direkt als Positional (`RELEASE`) an Helm durch.
 
 ### Noch nicht gewrappte Helm-Kommandos
 
-Diese Helm-Kommandos haben aktuell **kein** `kube-kts`-Pendant. Reihenfolge grob nach Nutzen:
+Alle für den Wrapper vorgesehenen Helm-Kommandos sind umgesetzt. Bewusst **ausgenommen** bleiben die
+reinen Helm-Meta-Kommandos:
 
-| Helm-Kommando | Status | Bemerkung / Sinnhaftigkeit als Wrapper |
+| Helm-Kommando | Status | Bemerkung |
 |---|---|---|
-| `status` | ❌ | Status eines Releases; kein Rendern nötig. |
-| `list` / `ls` | ❌ | Releases auflisten. |
-| `history` | ❌ | Revisionsverlauf eines Releases. |
-| `rollback` | ❌ | Auf frühere Revision zurückrollen. |
-| `get` (all/values/manifest/hooks/notes/metadata) | ❌ | Details eines installierten Releases abrufen. |
-| `test` | ❌ | Release-Tests ausführen. |
-| `diff` | ❌ | Nur via Plugin (`helm-diff`); für „render → diff"-Workflows interessant. |
-| `dependency` (update/build/list) | ❌ | Teilweise indirekt über `--dependency-update` bei install/template abgedeckt. |
-| `package` | ❌ | Chart zu `.tgz` packen — könnte an `render` anschließen. |
-| `pull` / `push` / `registry` | ❌ | OCI/Repo-Transfer; Auth-Flags existieren bereits in `HelmChartSourceOptions`. |
-| `repo` (add/update/list/remove) | ❌ | Repo-Verwaltung. |
-| `show` (chart/values/readme/crds) | ❌ | Chart-Metadaten anzeigen. |
-| `search` (repo/hub) | ❌ | Charts suchen. |
-| `verify` | ❌ | Signatur eines gepackten Charts prüfen (`--verify` als Flag bereits vorhanden). |
-| `version` / `env` | ❌ | Diagnose/Info. |
-| `plugin`, `completion`, `create` | ❌ | Eher außerhalb des Wrapper-Scopes. |
+| `plugin`, `completion`, `create` | ❌ (bewusst) | Reine Helm-Meta-Befehle, außerhalb des Wrapper-Scopes (Nutzer-Entscheid). |
 
 ## YAML-Rendering-Abhängigkeit (KTS-Relevanz)
 
@@ -89,22 +102,25 @@ Repository (bzw. ohne gültiges Render-Ergebnis) brechen sie ab, bevor Helm aufg
 | `template` | `helm template` benötigt das gerenderte Chart. |
 | `install` | `helm install` installiert das gerenderte Chart. |
 | `upgrade` | `helm upgrade` upgradet auf Basis des gerenderten Charts. |
+| `package` | `helm package .` packt das gerenderte Chart zu `.tgz`. |
+| `dependency` (build/update/list) | operiert auf dem gerenderten Chart (`dependency <sub> .`). |
+| `diff upgrade` | diffed das gerenderte Chart gegen den Cluster (benötigt **helm-diff-Plugin**). |
 
 ### Unabhängig vom Rendering — **kein Repository nötig (KTS irrelevant)**
 
-Diese (noch nicht implementierten) Helm-Kommandos operieren auf einem bereits installierten Release,
-auf der Cluster-/Repo-Ebene oder rein informativ. Sie brauchen **kein** gerendertes Chart und damit
-auch **kein** Repository, d. h. die KTS-Skripte sind dafür unerheblich. Falls sie künftig gewrappt werden, sollten sie **nicht** von
-`BaseRenderCommand` ableiten, sondern direkt Helm aufrufen (z. B. von `BaseRootCommand`).
+Diese Helm-Kommandos operieren auf einem bereits installierten Release, auf der Cluster-/Repo-Ebene
+oder rein informativ. Sie brauchen **kein** gerendertes Chart und damit auch **kein** Repository,
+d. h. die KTS-Skripte sind dafür unerheblich. Sie leiten **nicht** von `BaseRenderCommand` ab,
+sondern von `BaseDirectHelmCommand` und rufen Helm direkt auf.
 
-| Kommando | Bezugspunkt |
-|---|---|
-| `status`, `list`, `history`, `get`, `rollback`, `test` | bestehendes Release |
-| `repo`, `search`, `pull`, `push`, `registry` | Repository / Registry |
-| `show`, `version`, `env`, `verify` | Chart-Metadaten / Diagnose |
+| Kommando | Bezugspunkt | Status |
+|---|---|---|
+| `status`, `list`, `history`, `get`, `rollback`, `test` | bestehendes Release | ✅ implementiert (`BaseDirectHelmCommand`) |
+| `repo`, `search`, `pull`, `push`, `registry` | Repository / Registry | ✅ implementiert (`BaseDirectHelmCommand`) |
+| `show`, `version`, `env`, `verify` | Chart-Metadaten / Diagnose | ✅ implementiert (`BaseDirectHelmCommand`) |
 
 > **Sonderfall `uninstall`:** Benötigt fachlich **kein** Rendering (es entfernt ein Release per Name),
-> leitet aber aktuell aus Konsistenzgründen dennoch von `BaseHelmCommand`/`BaseRenderCommand` ab und
+> leitet aber aktuell aus Konsistenzgründen dennoch von `BaseRenderedHelmCommand`/`BaseRenderCommand` ab und
 > rendert vor dem Aufruf. Das ist ein bewusster, aber optimierbarer Kompromiss — KTS ist hier streng
 > genommen irrelevant.
 
@@ -117,9 +133,10 @@ Die globalen Helm-Flags (`--namespace/-n`, `--kube-context`, `--kubeconfig`, `--
 
 ## Tests
 
-- `HelmArgsTest` — prüft Flag-Weiterleitung pro Kommando ohne Helm-Aufruf.
-- `HelpRenderTest` — prüft die Marker-Spalte in der Hilfe (helm/experimentell/gefährlich).
-- `InstallTest` / `UpgradeTest` / `TemplateTest` / `UninstallTest` — vollständige Pipeline mit gemocktem `HelmExecutor`.
+- `HelmArgsTest` — prüft Flag-Weiterleitung pro Kommando ohne Helm-Aufruf (inkl. verschachtelter Befehle).
+- `HelpRenderTest` — prüft die Marker-Spalte in der Hilfe (helm/experimentell/gefährlich), auch für verschachtelte Befehle.
+- Render-los, gemockter `HelmExecutor`: `StatusTest`, `ListTest`, `RollbackTest`, `GetValuesTest`, `RepoAddTest`.
+- Render-basiert, gemockter `HelmExecutor`: `InstallTest`, `UpgradeTest`, `TemplateTest`, `UninstallTest`, `PackageTest`, `DependencyUpdateTest`, `DiffTest`.
 
 ## Doku
 

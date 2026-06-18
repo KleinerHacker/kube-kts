@@ -56,7 +56,7 @@ sealed class BaseRenderCommand : BaseCompileCommand() {
      * repository and rendering it to the target directory.
      *
      * This method performs the following steps:
-     * 1. Scans the source path for KTS files and legacy Helm templates, creating a [KubeKtsRepository].
+     * 1. Scans the source path for KTS files and legacy Helm templates, creating a `KubeKtsRepository`.
      * 2. Compiles the scanned repository into a Helm repository using the specified YAML merging algorithm and values.
      * 3. Renders the compiled Helm repository to the target directory.
      *

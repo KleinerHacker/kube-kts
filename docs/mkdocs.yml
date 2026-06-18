@@ -139,6 +139,24 @@ nav:
       - install: cli/install.md
       - upgrade: cli/upgrade.md
       - uninstall: cli/uninstall.md
+      - package: cli/package.md
+      - dependency: cli/dependency.md
+      - diff: cli/diff.md
+      - status: cli/status.md
+      - list: cli/list.md
+      - history: cli/history.md
+      - rollback: cli/rollback.md
+      - test: cli/test.md
+      - get: cli/get.md
+      - repo: cli/repo.md
+      - search: cli/search.md
+      - registry: cli/registry.md
+      - show: cli/show.md
+      - pull: cli/pull.md
+      - push: cli/push.md
+      - verify: cli/verify.md
+      - version: cli/version.md
+      - env: cli/env.md
   - Kotlin Scripts Repository:
       - Chart: kts/chart.md
       - Templates:

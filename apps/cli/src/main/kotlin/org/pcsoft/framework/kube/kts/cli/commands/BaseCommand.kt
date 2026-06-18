@@ -17,20 +17,29 @@ import org.pcsoft.framework.kube.kts.cli.MainCommand
 import org.pcsoft.framework.kube.kts.cli.types.YamlMergingAlgorithm
 import org.pcsoft.framework.kube.kts.core.merge.YamlArrayMergeStrategy
 import picocli.CommandLine.Mixin
-import picocli.CommandLine.ParentCommand
+import picocli.CommandLine.Model.CommandSpec
+import picocli.CommandLine.Spec
 
 /**
  * Abstract base class for command implementations, providing access to global flags and parent command.
  *
  * This sealed class serves as a foundation for various command types, offering protected properties that
- * consolidate flag values from both the current command's [globalFlags] and its parent command's flags.
+ * consolidate flag values from both the current command's [globalFlags] and the root command's flags.
  * It also includes validation logic for experimental features.
+ *
+ * The root command's flags are resolved via the picocli [spec] root rather than a direct
+ * `@ParentCommand`, so commands may be nested arbitrarily deep (e.g. `get values`) without the
+ * immediate parent having to be [MainCommand].
  */
 sealed class BaseCommand {
-    @ParentCommand
-    private lateinit var parent: MainCommand
+    @Spec
+    private lateinit var spec: CommandSpec
     @Mixin
     private lateinit var globalFlags: GlobalFlags
+
+    /** Global flags from the root command (`MainCommand`), regardless of nesting depth. */
+    private val rootFlags: GlobalFlags
+        get() = (spec.root().userObject() as MainCommand).globalFlags
 
     /**
      * Flag indicating whether to throw exceptions instead of handling them gracefully.
@@ -48,7 +57,7 @@ sealed class BaseCommand {
      * returning true if either is set to true. Used for conditional logging and debugging output.
      */
     protected val isDebug: Boolean
-        get() = globalFlags.debug || parent.globalFlags.debug
+        get() = globalFlags.debug || rootFlags.debug
 
     /**
      * Indicates whether trace-level logging is enabled.
@@ -58,7 +67,7 @@ sealed class BaseCommand {
      * enabling detailed trace-level logging throughout the application.
      */
     protected val isTrace: Boolean
-        get() = globalFlags.verbose || parent.globalFlags.verbose
+        get() = globalFlags.verbose || rootFlags.verbose
 
     /**
      * Determines whether detailed log levels should be shown.
@@ -70,7 +79,7 @@ sealed class BaseCommand {
      * - The trace mode is active
      */
     protected val showLogLevel: Boolean
-        get() = globalFlags.showLogLevel || parent.globalFlags.showLogLevel || isDebug || isTrace
+        get() = globalFlags.showLogLevel || rootFlags.showLogLevel || isDebug || isTrace
 
     /**
      * Indicates whether exceptions should be thrown or logged.
@@ -79,7 +88,7 @@ sealed class BaseCommand {
      * If either is set to true, exceptions will be thrown; otherwise, they will only be logged.
      */
     protected val exception: Boolean
-        get() = globalFlags.exception || parent.globalFlags.exception
+        get() = globalFlags.exception || rootFlags.exception
 
     /**
      * Indicates whether experimental features are enabled.
@@ -88,7 +97,7 @@ sealed class BaseCommand {
      * When true, experimental features may be available or behavior may differ from stable releases.
      */
     protected val experimentalMode: Boolean
-        get() = globalFlags.experimentalMode || parent.globalFlags.experimentalMode
+        get() = globalFlags.experimentalMode || rootFlags.experimentalMode
 
     /**
      * Indicates whether unsafe mode is enabled either globally or for the parent command.
@@ -98,7 +107,7 @@ sealed class BaseCommand {
      * checks or restrictions in the application.
      */
     protected val unsafeMode: Boolean
-        get() = globalFlags.unsafeMode || parent.globalFlags.unsafeMode
+        get() = globalFlags.unsafeMode || rootFlags.unsafeMode
 
     /**
      * The algorithm used for merging YAML files.
@@ -108,16 +117,16 @@ sealed class BaseCommand {
      * defaulting to [YamlMergingAlgorithm.HELM] if none is specified.
      */
     protected val yamlMergeAlgorithm: YamlMergingAlgorithm
-        get() = globalFlags.yamlMergeAlgorithm ?: parent.globalFlags.yamlMergeAlgorithm ?: YamlMergingAlgorithm.HELM
+        get() = globalFlags.yamlMergeAlgorithm ?: rootFlags.yamlMergeAlgorithm ?: YamlMergingAlgorithm.HELM
 
     /**
      * Strategy used for merging YAML array nodes when processing multiple YAML structures.
      *
      * This property determines how elements of arrays in the base YAML document interact with elements
-     * from overlay YAML documents during merge operations. Default is [YamlArrayMergeStrategy.Replace].
+     * from overlay YAML documents during merge operations. Default is `YamlArrayMergeStrategy.Replace`.
      */
     protected val yamlArrayMergeStrategy: YamlArrayMergeStrategy
-        get() = globalFlags.yamlArrayMergeStrategy ?: parent.globalFlags.yamlArrayMergeStrategy ?: YamlArrayMergeStrategy.Replace
+        get() = globalFlags.yamlArrayMergeStrategy ?: rootFlags.yamlArrayMergeStrategy ?: YamlArrayMergeStrategy.Replace
 
     /**
      * Validates global flags to ensure they are compatible with the current mode.
@@ -127,9 +136,9 @@ sealed class BaseCommand {
      */
     protected fun validateGlobalFlags() {
         if (!experimentalMode) {
-            if (globalFlags.yamlMergeAlgorithm != null || parent.globalFlags.yamlMergeAlgorithm != null)
+            if (globalFlags.yamlMergeAlgorithm != null || rootFlags.yamlMergeAlgorithm != null)
                 throw IllegalStateException("Yaml merge algorithm is not supported in non experimental mode")
-            if (globalFlags.yamlArrayMergeStrategy != null || parent.globalFlags.yamlArrayMergeStrategy != null)
+            if (globalFlags.yamlArrayMergeStrategy != null || rootFlags.yamlArrayMergeStrategy != null)
                 throw IllegalStateException("Yaml array merge strategy is not supported in non experimental mode")
         }
     }

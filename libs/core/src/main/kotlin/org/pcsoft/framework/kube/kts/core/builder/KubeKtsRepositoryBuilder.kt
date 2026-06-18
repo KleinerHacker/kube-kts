@@ -45,7 +45,7 @@ interface KubeKtsRepositoryBuilder {
          * @param merging The [YamlMerging] strategy to use for merging YAML files. Defaults to [YamlMerging.HELM].
          * @param unsafe If true, executes Kotlin scripts in an unsafe mode, potentially bypassing security checks.
          *               Defaults to false.
-         * @param helmFileMapper A lambda function that maps a [KubeKtsFile] and [KubeSpec] to a [KubeHelmFile].
+         * @param helmFileMapper A lambda function that maps a [KubeKtsFile] and `KubeSpec` to a [KubeHelmFile].
          *                       Defaults to a mapping generating a [DefaultKubeHelmFile].
          * @return A [KubeKtsRepositoryBuilder] instance configured with the provided parameters.
          */

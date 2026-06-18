@@ -20,7 +20,7 @@ import org.pcsoft.framework.kube.kts.logging.symbolSubProcess
 /**
  * Default renderer for Kubernetes Helm files, converting their specifications into YAML string format.
  *
- * This implementation extends the [KubeHelmRendererBase] class, leveraging its preconfigured [tools.jackson.dataformat.yaml.YAMLMapper]
+ * This implementation extends the [KubeHelmRendererBase] class, leveraging its preconfigured `YAMLMapper`
  * for serializing the specifications of [KubeHelmFile] instances. The rendered YAML output can be used
  * for deployment or other downstream processes.
  *

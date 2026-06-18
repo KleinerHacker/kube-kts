@@ -38,14 +38,16 @@ class HelpRenderTest {
     /** The hint rendered for dangerous options, derived from [DANGER_MARKER] without styling. */
     private val dangerHint = CommandLine.Help.Ansi.OFF.string(DANGER_MARKER)
 
-    private fun usageOf(command: String): String {
+    private fun usageOf(vararg path: String): String {
         val cli = CommandLine(MainCommand).apply {
             helpFactory = HelmHelpFactory()
             usageHelpWidth = 120
             usageHelpLongOptionsMaxWidth = 80
         }
+        var current = cli
+        for (name in path) current = current.subcommands[name]!!
         val writer = StringWriter()
-        cli.subcommands[command]!!.usage(PrintWriter(writer), CommandLine.Help.Ansi.OFF)
+        current.usage(PrintWriter(writer), CommandLine.Help.Ansi.OFF)
         return writer.toString()
     }
 
@@ -123,6 +125,51 @@ class HelpRenderTest {
         assertForwarded(usage, "--values")
         assertInternal(usage, "--name")
         assertInternal(usage, "--exception")
+        assertNoRawMarker(usage)
+    }
+
+    @Test
+    fun listHelp() {
+        val usage = usageOf("list")
+        assertForwarded(usage, "--all-namespaces")
+        assertForwarded(usage, "--output")
+        assertForwarded(usage, "--namespace")
+        assertNoRawMarker(usage)
+    }
+
+    @Test
+    fun pullHelp() {
+        val usage = usageOf("pull")
+        assertForwarded(usage, "--destination")
+        assertForwarded(usage, "--untar")
+        assertForwarded(usage, "--repo")
+        assertNoRawMarker(usage)
+    }
+
+    @Test
+    fun packageHelp() {
+        val usage = usageOf("package")
+        assertForwarded(usage, "--app-version")
+        assertForwarded(usage, "--pass-stdin")
+        assertForwarded(usage, "--values")
+        assertNoRawMarker(usage)
+    }
+
+    @Test
+    fun nestedGetValuesHelp() {
+        val usage = usageOf("get", "values")
+        assertForwarded(usage, "--all")
+        assertForwarded(usage, "--output")
+        assertForwarded(usage, "--namespace")
+        assertNoRawMarker(usage)
+    }
+
+    @Test
+    fun nestedDiffUpgradeHelp() {
+        val usage = usageOf("diff", "upgrade")
+        assertForwarded(usage, "--detailed-exitcode")
+        assertForwarded(usage, "--set")
+        assertInternal(usage, "--name")
         assertNoRawMarker(usage)
     }
 

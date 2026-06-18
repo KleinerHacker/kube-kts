@@ -15,56 +15,56 @@ package org.pcsoft.framework.kube.kts.cli.intern.utils
 import org.apache.log4j.Level
 
 /**
- * Returns a string representation of the [Level] with ANSI escape codes for fatal error styling.
+ * Returns a string representation of the `Level` with ANSI escape codes for fatal error styling.
  *
  * The output is formatted as blinking red text (ANSI code `\u001B[5;31m`) followed by a reset
  * (ANSI code `\u001B[0m`).
  *
- * @return A styled string representing the [Level] in fatal error format.
+ * @return A styled string representing the `Level` in fatal error format.
  */
 val Level.fatalStyle: String
     get() = "\u001B[5;31m${this}\u001B[0m"
 
 /**
- * Returns a string representation of the [Level] with ANSI escape codes for error styling.
+ * Returns a string representation of the `Level` with ANSI escape codes for error styling.
  *
  * The output is formatted as bold red text (ANSI code `\u001B[1;31m`) followed by a reset
  * (ANSI code `\u001B[0m`).
  *
- * @return A styled string representing the [Level] in error format.
+ * @return A styled string representing the `Level` in error format.
  */
 val Level.errorStyle: String
     get() = "\u001B[1;31m${this}\u001B[0m"
 
 /**
- * Returns a string representation of the [Level] with ANSI escape codes for warning styling.
+ * Returns a string representation of the `Level` with ANSI escape codes for warning styling.
  *
  * The output is formatted as bold yellow text (ANSI code `\u001B[1;33m`) followed by a reset
  * (ANSI code `\u001B[0m`).
  *
- * @return A styled string representing the [Level] in warning format.
+ * @return A styled string representing the `Level` in warning format.
  */
 val Level.warnStyle: String
     get() = "\u001B[1;33m${this}\u001B[0m"
 
 /**
- * Returns a string representation of the [Level] with ANSI escape codes for debug styling.
+ * Returns a string representation of the `Level` with ANSI escape codes for debug styling.
  *
  * The output is formatted as faint blue text (ANSI code `\u001B[2;34m`) followed by a reset
  * (ANSI code `\u001B[0m`).
  *
- * @return A styled string representing the [Level] in debug format.
+ * @return A styled string representing the `Level` in debug format.
  */
 val Level.debugStyle: String
     get() = "\u001B[2;34m${this}\u001B[0m"
 
 /**
- * Returns a string representation of the [Level] with ANSI escape codes for trace styling.
+ * Returns a string representation of the `Level` with ANSI escape codes for trace styling.
  *
  * The output is formatted as faint gray text (ANSI code `\u001B[2;90m`) followed by a reset
  * (ANSI code `\u001B[0m`).
  *
- * @return A styled string representing the [Level] in trace format.
+ * @return A styled string representing the `Level` in trace format.
  */
 val Level.traceStyle: String
     get() = "\u001B[2;90m${this}\u001B[0m"

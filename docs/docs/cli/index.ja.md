@@ -58,6 +58,24 @@ CLI は成功時に `0`、失敗時に 0 以外の終了コードを返します
 | `install` | [install](install.md) | レンダリングして `helm install` でクラスターにインストールする。 |
 | `upgrade` | [upgrade](upgrade.md) | レンダリングして `helm upgrade` でリリースをアップグレード（またはインストール）する。 |
 | `uninstall` | [uninstall](uninstall.md) | レンダリングして `helm uninstall` で 1 つ以上のリリースを削除する。 |
+| `package` | [package](package.md) | レンダリングして `helm package` で chart をアーカイブにパッケージ化する。 |
+| `dependency` | [dependency](dependency.md) | レンダリングして `helm dependency` で chart の依存関係を管理する（build/update/list）。 |
+| `diff` | [diff](diff.md) | レンダリングして `helm-diff` プラグインで変更をプレビューする（`diff upgrade`）。 |
+| `status` | [status](status.md) | `helm status` でリリースの状態を表示する（レンダリング不要）。 |
+| `list` | [list](list.md) | `helm list` でリリースを一覧表示する（レンダリング不要）。 |
+| `history` | [history](history.md) | `helm history` でリリースのリビジョン履歴を表示する（レンダリング不要）。 |
+| `rollback` | [rollback](rollback.md) | `helm rollback` でリリースをロールバックする（レンダリング不要）。 |
+| `test` | [test](test.md) | `helm test` でリリースのテストを実行する（レンダリング不要）。 |
+| `get` | [get](get.md) | `helm get …` でリリースの拡張情報をダウンロードする（レンダリング不要）。 |
+| `repo` | [repo](repo.md) | `helm repo …` で chart リポジトリを管理する（レンダリング不要）。 |
+| `search` | [search](search.md) | `helm search …` で chart を検索する（レンダリング不要）。 |
+| `registry` | [registry](registry.md) | `helm registry …` で OCI レジストリにログイン/ログアウトする（レンダリング不要）。 |
+| `show` | [show](show.md) | `helm show …` で chart 情報を表示する（レンダリング不要）。 |
+| `pull` | [pull](pull.md) | `helm pull` で chart をダウンロードする（レンダリング不要）。 |
+| `push` | [push](push.md) | `helm push` で chart パッケージをアップロードする（レンダリング不要）。 |
+| `verify` | [verify](verify.md) | `helm verify` でパッケージ化された chart の署名を検証する（レンダリング不要）。 |
+| `version` | [version](version.md) | `helm version` で Helm のバージョンを表示する（レンダリング不要）。 |
+| `env` | [env](env.md) | `helm env` で Helm の環境を表示する（レンダリング不要）。 |
 
 ## これらのコマンドはレンダリングが必要か？（KTS の関連性）
 
@@ -65,11 +83,13 @@ CLI は成功時に `0`、失敗時に 0 以外の終了コードを返します
 つまりそのコマンドに **リポジトリ**（KTS・素の YAML・混在）を渡す必要があるか — が分かります。
 
 - **レンダリングが必要 → リポジトリ必須（KTS 関連）:** `validate`、`compile`、`render`、`lint`、
-  `template`、`install`、`upgrade` はいずれも *スキャン → コンパイル → レンダリング* を実行するため、
-  KTS スクリプトに依存し、リポジトリを渡す必要があります。
+  `template`、`install`、`upgrade`、`package`、`dependency`、`diff` はいずれも
+  *スキャン → コンパイル → レンダリング* を実行するため、KTS スクリプトに依存し、リポジトリを渡す必要が
+  あります。
 - **レンダリングと無関係 → リポジトリ不要（KTS 非関連）:** 既存リリース・クラスター・リポジトリに対する
-  操作（将来の `status`、`list`、`rollback` など）はレンダリング済み Chart を必要としないため、KTS
-  スクリプトは関係しません。
+  操作はレンダリング済み Chart を必要としないため、KTS スクリプトは関係しません：`status`、`list`、
+  `history`、`rollback`、`test`、`get`、`repo`、`search`、`registry`、`show`、`pull`、`push`、`verify`、
+  `version`、`env`。これらは引数を位置引数として直接 Helm に転送します。
 
 !!! note "`uninstall` は特殊ケース"
     `uninstall` は名前だけでリリースを削除し、技術的にはレンダリング済み Chart を必要としません。一貫性の

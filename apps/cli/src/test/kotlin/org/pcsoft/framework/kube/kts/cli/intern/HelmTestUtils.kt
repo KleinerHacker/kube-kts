@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (c) KleinerHacker alias Pfeiffer C Soft 2026.
  * This work is licensed under the Apache License, Version 2.0.
  * You may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.intern
 import org.junit.jupiter.api.Assertions
 import org.pcsoft.framework.kube.kts.cli.GlobalFlags
 import org.pcsoft.framework.kube.kts.cli.MainCommand
-import org.pcsoft.framework.kube.kts.cli.commands.BaseHelmCommand
+import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmCommandLineProvider
 import picocli.CommandLine
 
 /** A repository path that exists in the test resources; used so positional parsing succeeds. */
@@ -29,17 +29,21 @@ val TEST_VALUES_FILE: String =
  * Parses the given CLI arguments without executing the command and returns the Helm command line
  * that would be passed to the `helm` executable.
  *
- * No real Helm process is started: only [BaseHelmCommand.buildHelmCommandLine] is evaluated, so this
- * verifies that all flags are translated and forwarded correctly.
+ * No real Helm process is started: only [HelmCommandLineProvider.buildHelmCommandLine] is evaluated,
+ * so this verifies that all flags are translated and forwarded correctly. Works for both render-based
+ * and render-less Helm commands.
  */
 fun buildHelmCommandLine(vararg args: String): List<String> {
     // MainCommand is a singleton object whose @Mixin state is reused across CommandLine instances;
     // reset it so global flags (e.g. --debug) do not leak between tests.
     MainCommand.globalFlags = GlobalFlags()
-    val parseResult = CommandLine(MainCommand).parseArgs(*args)
-    val subResult = parseResult.subcommand()
+    var subResult = CommandLine(MainCommand).parseArgs(*args).subcommand()
         ?: error("No subcommand was parsed for arguments: ${args.joinToString(" ")}")
-    val command = subResult.commandSpec().userObject() as BaseHelmCommand
+    // Descend to the innermost (leaf) subcommand so nested commands (e.g. `get values`) resolve.
+    while (subResult.hasSubcommand()) {
+        subResult = subResult.subcommand()
+    }
+    val command = subResult.commandSpec().userObject() as HelmCommandLineProvider
     return command.buildHelmCommandLine()
 }
 
