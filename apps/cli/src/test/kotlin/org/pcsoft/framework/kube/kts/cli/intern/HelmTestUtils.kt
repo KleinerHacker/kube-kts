@@ -37,9 +37,12 @@ fun buildHelmCommandLine(vararg args: String): List<String> {
     // MainCommand is a singleton object whose @Mixin state is reused across CommandLine instances;
     // reset it so global flags (e.g. --debug) do not leak between tests.
     MainCommand.globalFlags = GlobalFlags()
-    val parseResult = CommandLine(MainCommand).parseArgs(*args)
-    val subResult = parseResult.subcommand()
+    var subResult = CommandLine(MainCommand).parseArgs(*args).subcommand()
         ?: error("No subcommand was parsed for arguments: ${args.joinToString(" ")}")
+    // Descend to the innermost (leaf) subcommand so nested commands (e.g. `get values`) resolve.
+    while (subResult.hasSubcommand()) {
+        subResult = subResult.subcommand()
+    }
     val command = subResult.commandSpec().userObject() as HelmCommandLineProvider
     return command.buildHelmCommandLine()
 }

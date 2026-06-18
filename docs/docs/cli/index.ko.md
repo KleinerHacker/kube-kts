@@ -57,7 +57,24 @@ CLI 는 성공 시 `0`, 실패 시 0 이 아닌 종료 코드를 반환합니다
 | `install` | [install](install.md) | 렌더링 후 `helm install` 로 클러스터에 설치합니다. |
 | `upgrade` | [upgrade](upgrade.md) | 렌더링 후 `helm upgrade` 로 릴리스를 업그레이드(또는 설치)합니다. |
 | `uninstall` | [uninstall](uninstall.md) | 렌더링 후 `helm uninstall` 로 하나 이상의 릴리스를 제거합니다. |
+| `package` | [package](package.md) | 렌더링 후 `helm package` 로 chart 를 아카이브로 패키징합니다. |
+| `dependency` | [dependency](dependency.md) | 렌더링 후 `helm dependency` 로 chart 의존성을 관리합니다(build/update/list). |
+| `diff` | [diff](diff.md) | 렌더링 후 `helm-diff` 플러그인으로 변경 사항을 미리 봅니다(`diff upgrade`). |
 | `status` | [status](status.md) | `helm status` 로 릴리스 상태를 표시합니다(렌더링 불필요). |
+| `list` | [list](list.md) | `helm list` 로 릴리스를 나열합니다(렌더링 불필요). |
+| `history` | [history](history.md) | `helm history` 로 릴리스의 리비전 기록을 표시합니다(렌더링 불필요). |
+| `rollback` | [rollback](rollback.md) | `helm rollback` 으로 릴리스를 롤백합니다(렌더링 불필요). |
+| `test` | [test](test.md) | `helm test` 로 릴리스의 테스트를 실행합니다(렌더링 불필요). |
+| `get` | [get](get.md) | `helm get …` 로 릴리스 확장 정보를 다운로드합니다(렌더링 불필요). |
+| `repo` | [repo](repo.md) | `helm repo …` 로 chart 저장소를 관리합니다(렌더링 불필요). |
+| `search` | [search](search.md) | `helm search …` 로 chart 를 검색합니다(렌더링 불필요). |
+| `registry` | [registry](registry.md) | `helm registry …` 로 OCI 레지스트리에 로그인/로그아웃합니다(렌더링 불필요). |
+| `show` | [show](show.md) | `helm show …` 로 chart 정보를 표시합니다(렌더링 불필요). |
+| `pull` | [pull](pull.md) | `helm pull` 로 chart 를 다운로드합니다(렌더링 불필요). |
+| `push` | [push](push.md) | `helm push` 로 chart 패키지를 업로드합니다(렌더링 불필요). |
+| `verify` | [verify](verify.md) | `helm verify` 로 패키징된 chart 의 서명을 검증합니다(렌더링 불필요). |
+| `version` | [version](version.md) | `helm version` 으로 Helm 버전을 출력합니다(렌더링 불필요). |
+| `env` | [env](env.md) | `helm env` 로 Helm 환경을 출력합니다(렌더링 불필요). |
 
 ## 이 명령들은 렌더링이 필요한가? (KTS 관련성)
 
@@ -65,11 +82,12 @@ CLI 는 성공 시 `0`, 실패 시 0 이 아닌 종료 코드를 반환합니다
 명령에 **저장소**(KTS, 순수 YAML 또는 혼합)를 전달해야 하는지 — 알 수 있습니다.
 
 - **렌더링 필요 → 저장소 필수 (KTS 관련):** `validate`, `compile`, `render`, `lint`, `template`,
-  `install`, `upgrade` 는 모두 *스캔 → 컴파일 → 렌더링* 파이프라인을 실행하므로 KTS 스크립트에 의존하며,
-  저장소를 전달해야 합니다.
+  `install`, `upgrade`, `package`, `dependency`, `diff` 는 모두 *스캔 → 컴파일 → 렌더링* 파이프라인을
+  실행하므로 KTS 스크립트에 의존하며, 저장소를 전달해야 합니다.
 - **렌더링과 무관 → 저장소 불필요 (KTS 무관):** 이미 설치된 릴리스, 클러스터 또는 리포지토리에 작용하는
-  작업(예: 향후 `status`, `list`, `rollback`)은 렌더링된 Chart 가 필요 없으므로 KTS 스크립트가 관여하지
-  않습니다.
+  작업은 렌더링된 Chart 가 필요 없으므로 KTS 스크립트가 관여하지 않습니다: `status`, `list`, `history`,
+  `rollback`, `test`, `get`, `repo`, `search`, `registry`, `show`, `pull`, `push`, `verify`, `version`,
+  `env`. 이들은 인자를 위치 인자로 그대로 Helm 에 전달합니다.
 
 !!! note "`uninstall` 은 특수한 경우"
     `uninstall` 은 이름만으로 릴리스를 제거하며 기술적으로 렌더링된 Chart 가 필요 없습니다. 일관성을 위해

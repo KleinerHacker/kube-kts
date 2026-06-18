@@ -64,7 +64,24 @@ the full stack trace when diagnosing a failure.
 | `install` | [install](install.md) | Render and install the chart into a cluster via `helm install`. |
 | `upgrade` | [upgrade](upgrade.md) | Render and upgrade (or install) a release via `helm upgrade`. |
 | `uninstall` | [uninstall](uninstall.md) | Render and uninstall one or more releases via `helm uninstall`. |
+| `package` | [package](package.md) | Render and package the chart into an archive via `helm package`. |
+| `dependency` | [dependency](dependency.md) | Render and manage chart dependencies via `helm dependency` (build/update/list). |
+| `diff` | [diff](diff.md) | Render and preview changes via the `helm-diff` plugin (`diff upgrade`). |
 | `status` | [status](status.md) | Show the status of a release via `helm status` (no rendering). |
+| `list` | [list](list.md) | List releases via `helm list` (no rendering). |
+| `history` | [history](history.md) | Show a release's revision history via `helm history` (no rendering). |
+| `rollback` | [rollback](rollback.md) | Roll a release back via `helm rollback` (no rendering). |
+| `test` | [test](test.md) | Run a release's tests via `helm test` (no rendering). |
+| `get` | [get](get.md) | Download extended release information via `helm get …` (no rendering). |
+| `repo` | [repo](repo.md) | Manage chart repositories via `helm repo …` (no rendering). |
+| `search` | [search](search.md) | Search for charts via `helm search …` (no rendering). |
+| `registry` | [registry](registry.md) | Log in/out of OCI registries via `helm registry …` (no rendering). |
+| `show` | [show](show.md) | Show chart information via `helm show …` (no rendering). |
+| `pull` | [pull](pull.md) | Download a chart via `helm pull` (no rendering). |
+| `push` | [push](push.md) | Upload a chart package via `helm push` (no rendering). |
+| `verify` | [verify](verify.md) | Verify a packaged chart's signature via `helm verify` (no rendering). |
+| `version` | [version](version.md) | Print the Helm version via `helm version` (no rendering). |
+| `env` | [env](env.md) | Print Helm's environment via `helm env` (no rendering). |
 
 ## Do these commands need rendering? (KTS relevance)
 
@@ -73,13 +90,14 @@ that command at all — and therefore whether you need to point it at a reposito
 mixed) in the first place:
 
 - **Needs rendering → repository required (KTS relevant):** `validate`, `compile`, `render`, `lint`,
-  `template`, `install` and `upgrade` all run the *scan → compile → render* pipeline and therefore
-  depend on your KTS scripts. You must pass (or stand in) a repository for them.
+  `template`, `install`, `upgrade`, `package`, `dependency` and `diff` all run the
+  *scan → compile → render* pipeline and therefore depend on your KTS scripts. You must pass (or
+  stand in) a repository for them.
 - **Independent of rendering → no repository needed (KTS not relevant):** operations that act on an
   already installed release, the cluster, or a repository do not need a rendered chart, so the KTS
-  scripts play no role for them. `status` is the first such command (it takes the release name as a
-  positional and forwards it straight to Helm); future ones like `list` or `rollback` will follow the
-  same pattern.
+  scripts play no role for them: `status`, `list`, `history`, `rollback`, `test`, `get`, `repo`,
+  `search`, `registry`, `show`, `pull`, `push`, `verify`, `version` and `env`. They take their
+  arguments as positionals and forward them straight to Helm.
 
 !!! note "`uninstall` is a special case"
     `uninstall` removes a release purely by name and does not technically need a rendered chart.

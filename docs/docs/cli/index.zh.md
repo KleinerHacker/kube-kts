@@ -56,17 +56,36 @@ kube-kts [全局选项] <命令> <REPOSITORY> [TARGET] [命令选项]
 | `install` | [install](install.md) | 渲染并通过 `helm install` 安装到集群。 |
 | `upgrade` | [upgrade](upgrade.md) | 渲染并通过 `helm upgrade` 升级（或安装）发布。 |
 | `uninstall` | [uninstall](uninstall.md) | 渲染并通过 `helm uninstall` 卸载一个或多个发布。 |
+| `package` | [package](package.md) | 渲染并通过 `helm package` 将 chart 打包为归档。 |
+| `dependency` | [dependency](dependency.md) | 渲染并通过 `helm dependency` 管理 chart 依赖（build/update/list）。 |
+| `diff` | [diff](diff.md) | 渲染并通过 `helm-diff` 插件预览变更（`diff upgrade`）。 |
 | `status` | [status](status.md) | 通过 `helm status` 显示发布状态（无需渲染）。 |
+| `list` | [list](list.md) | 通过 `helm list` 列出发布（无需渲染）。 |
+| `history` | [history](history.md) | 通过 `helm history` 显示发布的修订历史（无需渲染）。 |
+| `rollback` | [rollback](rollback.md) | 通过 `helm rollback` 回滚发布（无需渲染）。 |
+| `test` | [test](test.md) | 通过 `helm test` 运行发布的测试（无需渲染）。 |
+| `get` | [get](get.md) | 通过 `helm get …` 下载扩展的发布信息（无需渲染）。 |
+| `repo` | [repo](repo.md) | 通过 `helm repo …` 管理 chart 仓库（无需渲染）。 |
+| `search` | [search](search.md) | 通过 `helm search …` 搜索 chart（无需渲染）。 |
+| `registry` | [registry](registry.md) | 通过 `helm registry …` 登录/登出 OCI 注册表（无需渲染）。 |
+| `show` | [show](show.md) | 通过 `helm show …` 显示 chart 信息（无需渲染）。 |
+| `pull` | [pull](pull.md) | 通过 `helm pull` 下载 chart（无需渲染）。 |
+| `push` | [push](push.md) | 通过 `helm push` 上传 chart 包（无需渲染）。 |
+| `verify` | [verify](verify.md) | 通过 `helm verify` 验证打包好的 chart 签名（无需渲染）。 |
+| `version` | [version](version.md) | 通过 `helm version` 打印 Helm 版本（无需渲染）。 |
+| `env` | [env](env.md) | 通过 `helm env` 打印 Helm 环境（无需渲染）。 |
 
 ## 这些命令是否需要渲染？（KTS 相关性）
 
 一个命令是否渲染 KTS 仓库，决定了你的 Kotlin 脚本对该命令是否相关——也就决定了是否需要为该命令提供一个
 **仓库**（KTS、纯 YAML 或混合）：
 
-- **需要渲染 → 需要仓库（KTS 相关）：** `validate`、`compile`、`render`、`lint`、`template`、`install`
-  和 `upgrade` 都会运行 *扫描 → 编译 → 渲染* 流程，因此依赖你的 KTS 脚本，必须为它们提供仓库。
-- **与渲染无关 → 无需仓库（KTS 不相关）：** 针对已安装发布、集群或仓库的操作（例如将来的 `status`、
-  `list`、`rollback`）不需要渲染后的 Chart，因此 KTS 脚本对它们不起作用。
+- **需要渲染 → 需要仓库（KTS 相关）：** `validate`、`compile`、`render`、`lint`、`template`、`install`、
+  `upgrade`、`package`、`dependency` 和 `diff` 都会运行 *扫描 → 编译 → 渲染* 流程，因此依赖你的 KTS
+  脚本，必须为它们提供仓库。
+- **与渲染无关 → 无需仓库（KTS 不相关）：** 针对已安装发布、集群或仓库的操作不需要渲染后的 Chart，因此
+  KTS 脚本对它们不起作用：`status`、`list`、`history`、`rollback`、`test`、`get`、`repo`、`search`、
+  `registry`、`show`、`pull`、`push`、`verify`、`version` 和 `env`。它们将参数作为位置参数直接转发给 Helm。
 
 !!! note "`uninstall` 是特例"
     `uninstall` 仅按名称移除发布，技术上不需要渲染后的 Chart。出于一致性，它当前在调用 Helm 前仍会
