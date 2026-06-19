@@ -29,13 +29,15 @@ class KubeRepositoryTest : RepositoryTest() {
         val ktsRepo =
             KubeKtsRepositoryScanner.DEFAULT.scan(Paths.get(this::class.java.getResource("/kts/helm").toURI()))
         Assertions.assertNotNull(ktsRepo)
-        Assertions.assertEquals(5, ktsRepo.specFiles.size)
+        Assertions.assertEquals(7, ktsRepo.specFiles.size)
         Assertions.assertEquals(1, ktsRepo.specFiles.filter { it.isChart }.size)
         Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "Chart" } }
         Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "service" } }
         Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "ingress" } }
         Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "deployment" } }
         Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "configmap" } }
+        Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "secret" } }
+        Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "sealedsecret" } }
         Assertions.assertEquals(1, ktsRepo.libFiles.size)
         Assertions.assertTrue { ktsRepo.libFiles.any { it.subject == "helpers" } }
         Assertions.assertEquals(1, ktsRepo.legacyFiles.size)
@@ -43,7 +45,7 @@ class KubeRepositoryTest : RepositoryTest() {
 
         val helmRepo = KubeKtsRepositoryBuilder.createDefault().build(ktsRepo, arrayOf())
         Assertions.assertNotNull(helmRepo)
-        Assertions.assertEquals(5, helmRepo.specFiles.size)
+        Assertions.assertEquals(7, helmRepo.specFiles.size)
         Assertions.assertEquals(1, helmRepo.specFiles.filter { it.isChart }.size)
         Assertions.assertEquals(1, helmRepo.legacyFiles.size)
         Assertions.assertEquals(1, helmRepo.legacyFiles.filter { it.isValues }.size)
@@ -53,6 +55,8 @@ class KubeRepositoryTest : RepositoryTest() {
         Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "ingress" } }
         Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "deployment" } }
         Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "configmap" } }
+        Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "secret" } }
+        Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "sealedsecret" } }
         Assertions.assertTrue { helmRepo.legacyFiles.any { it.subject == "values" } }
 
         val targetPath = Files.createTempDirectory("helm")
@@ -76,6 +80,14 @@ class KubeRepositoryTest : RepositoryTest() {
         assertYaml(
             targetPath.resolve("templates/configmap.yaml"),
             Paths.get(this::class.java.getResource("/kts/expected/templates/configmap.yaml").toURI())
+        )
+        assertYaml(
+            targetPath.resolve("templates/secret.yaml"),
+            Paths.get(this::class.java.getResource("/kts/expected/templates/secret.yaml").toURI())
+        )
+        assertYaml(
+            targetPath.resolve("templates/sealedsecret.yaml"),
+            Paths.get(this::class.java.getResource("/kts/expected/templates/sealedsecret.yaml").toURI())
         )
         assertYaml(
             targetPath.resolve("values.yaml"),

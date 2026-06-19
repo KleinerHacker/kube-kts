@@ -19,12 +19,16 @@ import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.ChartSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ConfigMapSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.IngressSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.SealedSecretSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.SecretSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.FlatTemplateSpec
 import org.pcsoft.framework.kube.kts.api.values.ValueAccess
 import org.pcsoft.framework.kube.kts.core.intern.assertions.ChartAssertion
 import org.pcsoft.framework.kube.kts.core.intern.assertions.ConfigMapAssertion
+import org.pcsoft.framework.kube.kts.core.intern.assertions.SealedSecretAssertion
+import org.pcsoft.framework.kube.kts.core.intern.assertions.SecretAssertion
 import org.pcsoft.framework.kube.kts.core.intern.assertions.ServiceAssertion
 import org.pcsoft.framework.kube.kts.core.intern.setupTestLogger
 import tools.jackson.databind.JsonNode
@@ -137,6 +141,58 @@ class DefaultKotlinScriptProcessorTest {
 
         val configMapSpec = (configMapSpecEither as Either.Success).value
         ConfigMapAssertion.assertMax(configMapSpec)
+    }
+
+    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    @Test
+    fun testSecret() {
+        val compiledScriptEither =
+            compiler.compile(
+                "secret",
+                Path.of(this::class.java.getResource("/kts/helm/templates/secret.spec.kts").toURI()),
+                emptyList(),
+                false
+            )
+        Assertions.assertNotNull(compiledScriptEither)
+        Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
+
+        val compiledScript = (compiledScriptEither as Either.Success).value
+        val secretSpecEither = compiler.execute<FlatTemplateSpec<SecretSpec>>(
+            "secret",
+            compiledScript,
+            ValueAccess.ofRoot(getValuesNode())
+        )
+        Assertions.assertNotNull(secretSpecEither)
+        Assertions.assertInstanceOf(Either.Success::class.java, secretSpecEither)
+
+        val secretSpec = (secretSpecEither as Either.Success).value
+        SecretAssertion.assertMax(secretSpec)
+    }
+
+    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    @Test
+    fun testSealedSecret() {
+        val compiledScriptEither =
+            compiler.compile(
+                "sealedsecret",
+                Path.of(this::class.java.getResource("/kts/helm/templates/sealedsecret.spec.kts").toURI()),
+                emptyList(),
+                false
+            )
+        Assertions.assertNotNull(compiledScriptEither)
+        Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
+
+        val compiledScript = (compiledScriptEither as Either.Success).value
+        val sealedSecretSpecEither = compiler.execute<ExplicitTemplateSpec<SealedSecretSpec>>(
+            "sealedsecret",
+            compiledScript,
+            ValueAccess.ofRoot(getValuesNode())
+        )
+        Assertions.assertNotNull(sealedSecretSpecEither)
+        Assertions.assertInstanceOf(Either.Success::class.java, sealedSecretSpecEither)
+
+        val sealedSecretSpec = (sealedSecretSpecEither as Either.Success).value
+        SealedSecretAssertion.assertMax(sealedSecretSpec)
     }
 
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")

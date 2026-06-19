@@ -61,6 +61,8 @@ plugins:
             Service: 服务
             Ingress: Ingress
             ConfigMap: ConfigMap
+            Secret: 密钥
+            SealedSecret: SealedSecret
             Deployment: 部署
             Overview: 概览
             Selector: 选择器
@@ -87,6 +89,8 @@ plugins:
             Service: サービス
             Ingress: Ingress
             ConfigMap: ConfigMap
+            Secret: シークレット
+            SealedSecret: SealedSecret
             Deployment: デプロイメント
             Overview: 概要
             Selector: セレクター
@@ -113,6 +117,8 @@ plugins:
             Service: 서비스
             Ingress: Ingress
             ConfigMap: ConfigMap
+            Secret: 시크릿
+            SealedSecret: SealedSecret
             Deployment: 디플로이먼트
             Overview: 개요
             Selector: 셀렉터
@@ -164,6 +170,8 @@ nav:
           - Service: kts/service.md
           - Ingress: kts/ingress.md
           - ConfigMap: kts/configmap.md
+          - Secret: kts/secret.md
+          - SealedSecret: kts/sealedsecret.md
           - Deployment:
               - Overview: kts/deployment.md
               - Selector: kts/deployment/selector.md
