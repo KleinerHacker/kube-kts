@@ -134,4 +134,40 @@ class ChartSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    @Test
+    fun testMinContent() {
+        val minChart = chart("name", "1.0.0") {}
+
+        Assertions.assertEquals(ChartSpec.API_VERSION, minChart.apiVersion)
+        Assertions.assertEquals("name", minChart.name)
+        Assertions.assertEquals("1.0.0", minChart.version)
+        Assertions.assertNull(minChart.kubeVersion)
+        Assertions.assertNull(minChart.description)
+        Assertions.assertNull(minChart.type)
+        Assertions.assertNull(minChart.keywords)
+        Assertions.assertNull(minChart.home)
+        Assertions.assertNull(minChart.sources)
+        Assertions.assertNull(minChart.dependencies)
+        Assertions.assertNull(minChart.maintainers)
+        Assertions.assertNull(minChart.icon)
+        Assertions.assertNull(minChart.appVersion)
+        Assertions.assertNull(minChart.deprecated)
+        Assertions.assertNull(minChart.annotations)
+    }
+
+    @Test
+    fun testMinYaml() {
+        val minChart = chart("name", "1.0.0") {}
+
+        JSONAssert.assertEquals(
+            """{
+              |  "apiVersion": "v2",
+              |  "name": "name",
+              |  "version": "1.0.0"
+              |}""".trimMargin(),
+            minChart.toJson(),
+            JSONCompareMode.LENIENT
+        )
+    }
+
 }

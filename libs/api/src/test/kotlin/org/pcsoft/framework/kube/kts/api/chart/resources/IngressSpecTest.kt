@@ -123,4 +123,117 @@ class IngressSpecTest {
 
     }
 
+    @Test
+    fun testMinContent() {
+        val minSpec = IngressSpecBuilder().build()
+
+        Assertions.assertNull(minSpec.ingressClassName)
+        Assertions.assertNull(minSpec.defaultBackend)
+        Assertions.assertNull(minSpec.tls)
+        Assertions.assertNull(minSpec.rules)
+    }
+
+    @Test
+    fun testMinYaml() {
+        val minSpec = IngressSpecBuilder().build()
+
+        JSONAssert.assertEquals("""{}""", minSpec.toJson(), JSONCompareMode.LENIENT)
+    }
+
+    @Test
+    fun testMinTlsContent() {
+        val spec = IngressSpecBuilder().apply {
+            addTls { }
+        }.build()
+
+        Assertions.assertNotNull(spec.tls)
+        KotlinAssertions.assertList(1, spec.tls!!) {
+            Assertions.assertNull(it.secretName)
+            Assertions.assertNull(it.hosts)
+        }
+    }
+
+    @Test
+    fun testMinTlsYaml() {
+        val spec = IngressSpecBuilder().apply {
+            addTls { }
+        }.build()
+
+        JSONAssert.assertEquals(
+            """{
+              |  "tls": [
+              |    {}
+              |  ]
+              |}""".trimMargin(),
+            spec.toJson(),
+            JSONCompareMode.LENIENT
+        )
+    }
+
+    @Test
+    fun testMinRuleContent() {
+        val spec = IngressSpecBuilder().apply {
+            addRule {
+                addHttpPath(RulesSpec.HttpPathConfig.PathType.ImplementationSpecific) {
+                    serviceBackend("ruleService") {
+                        port(80)
+                    }
+                }
+            }
+        }.build()
+
+        Assertions.assertNotNull(spec.rules)
+        KotlinAssertions.assertList(1, spec.rules!!) {
+            Assertions.assertNull(it.host)
+            KotlinAssertions.assertList(1, it.http) {
+                Assertions.assertNull(it.path)
+                Assertions.assertEquals(RulesSpec.HttpPathConfig.PathType.ImplementationSpecific, it.pathType)
+                KotlinAssertions.assertInstanceOf<ServiceBackendSpec>(it.backend) {
+                    Assertions.assertEquals("ruleService", it.name)
+                    Assertions.assertEquals(80, it.port.number)
+                    Assertions.assertNull(it.port.name)
+                }
+            }
+        }
+    }
+
+    @Test
+    fun testMinRuleYaml() {
+        val spec = IngressSpecBuilder().apply {
+            addRule {
+                addHttpPath(RulesSpec.HttpPathConfig.PathType.ImplementationSpecific) {
+                    serviceBackend("ruleService") {
+                        port(80)
+                    }
+                }
+            }
+        }.build()
+
+        JSONAssert.assertEquals(
+            """{
+              |  "rules": [
+              |    {
+              |      "http": {
+              |        "paths": [
+              |          {
+              |            "pathType": "ImplementationSpecific",
+              |            "backend": {
+              |              "service": {
+              |                "name": "ruleService",
+              |                "port": {
+              |                  "number": 80
+              |                }
+              |              }
+              |            }
+              |          }
+              |        ]
+              |      }
+              |    }
+              |  ]
+              |}""".trimMargin(),
+            spec.toJson(),
+            JSONCompareMode.LENIENT
+        )
+    }
+
 }

@@ -140,4 +140,61 @@ class ServiceSpecTest {
 
     }
 
+    @Test
+    fun testMinContent() {
+        val minSpec = ServiceSpecBuilder().apply {
+            addPort("port", 9999) {}
+        }.build()
+
+        Assertions.assertNull(minSpec.type)
+        Assertions.assertNull(minSpec.selector)
+
+        Assertions.assertEquals(1, minSpec.ports.size)
+        Assertions.assertEquals("port", minSpec.ports[0].name)
+        Assertions.assertEquals(9999, minSpec.ports[0].port)
+        Assertions.assertNull(minSpec.ports[0].targetPort)
+        Assertions.assertNull(minSpec.ports[0].nodePort)
+        Assertions.assertNull(minSpec.ports[0].protocol)
+        Assertions.assertNull(minSpec.ports[0].appProtocol)
+
+        Assertions.assertNull(minSpec.clusterIP)
+        Assertions.assertNull(minSpec.clusterIPs)
+        Assertions.assertNull(minSpec.ipFamilies)
+        Assertions.assertNull(minSpec.ipFamilyPolicy)
+        Assertions.assertNull(minSpec.externalIPs)
+        Assertions.assertNull(minSpec.externalName)
+        Assertions.assertNull(minSpec.externalTrafficPolicy)
+        Assertions.assertNull(minSpec.internalTrafficPolicy)
+        Assertions.assertNull(minSpec.allocateLoadBalancerNodePorts)
+        @Suppress("DEPRECATION")
+        Assertions.assertNull(minSpec.loadBalancerIP)
+        Assertions.assertNull(minSpec.loadBalancerClass)
+        Assertions.assertNull(minSpec.loadBalancerSourceRanges)
+        Assertions.assertNull(minSpec.sessionAffinity)
+        Assertions.assertNull(minSpec.sessionAffinityConfig)
+        Assertions.assertNull(minSpec.publishNotReadyAddresses)
+        Assertions.assertNull(minSpec.healthCheckNodePort)
+        Assertions.assertNull(minSpec.trafficDistribution)
+    }
+
+    @Test
+    fun testMinYaml() {
+        val minSpec = ServiceSpecBuilder().apply {
+            addPort("port", 9999) {}
+        }.build()
+
+        JSONAssert.assertEquals(
+            """{
+              |  "ports": [
+              |    {
+              |      "name": "port",
+              |      "port": 9999
+              |    }
+              |  ]
+              |}""".trimMargin(),
+            minSpec.toJson(),
+            JSONCompareMode.LENIENT
+        )
+    }
+
 }
