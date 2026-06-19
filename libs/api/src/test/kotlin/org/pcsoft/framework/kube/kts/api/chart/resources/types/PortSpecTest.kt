@@ -13,13 +13,13 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.pcsoft.framework.kube.kts.api.types.mCpu
 import org.pcsoft.framework.kube.kts.api.types.miBytes
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -27,22 +27,20 @@ import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
 class PortSpecTest {
+    companion object {
+        private val nameSpec = PortSpecBuilder("demo").build()
+        private val numberSpec = PortSpecBuilder(8080).build()
+    }
 
     @Test
     fun testNameContent() {
-        val portSpec = PortSpecBuilder("demo")
-            .build()
-
-        assertNull(portSpec.number)
-        assertEquals("demo", portSpec.name)
+        assertNull(nameSpec.number)
+        assertEquals("demo", nameSpec.name)
     }
 
     @Test
     fun testNameYaml() {
-        val portSpec = PortSpecBuilder("demo")
-            .build()
-
-        val actualJson = portSpec.toJson()
+        val actualJson = nameSpec.toJson()
         val expectedJson = "{\"name\":\"demo\"}"
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
@@ -50,19 +48,13 @@ class PortSpecTest {
 
     @Test
     fun testNumberContent() {
-        val portSpec = PortSpecBuilder(8080)
-            .build()
-
-        assertNull(portSpec.name)
-        assertEquals(8080, portSpec.number)
+        assertNull(numberSpec.name)
+        assertEquals(8080, numberSpec.number)
     }
 
     @Test
     fun testNumberYaml() {
-        val portSpec = PortSpecBuilder(8080)
-            .build()
-
-        val actualJson = portSpec.toJson()
+        val actualJson = numberSpec.toJson()
         val expectedJson = "{\"number\":8080}"
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
@@ -70,23 +62,22 @@ class PortSpecTest {
 
     @Test
     fun testEmptyNameContent() {
-        assertThrows<IllegalArgumentException> { PortSpecBuilder("").build() }
+        assertFailsWith<IllegalArgumentException> { PortSpecBuilder("").build() }
     }
 
     @Test
     fun testNegativePortNumber() {
-        assertThrows<IllegalArgumentException> { PortSpecBuilder(-1).build() }
+        assertFailsWith<IllegalArgumentException> { PortSpecBuilder(-1).build() }
     }
 
     @Test
     fun testPortNumberExceedsMaximum() {
-        assertThrows<IllegalArgumentException> { PortSpecBuilder(65536).build() }
+        assertFailsWith<IllegalArgumentException> { PortSpecBuilder(65536).build() }
     }
 
 }
 
 class PodTemplateSpecTest {
-
     companion object {
         private val maxSpec = PodTemplateSpecBuilder().apply {
             metadata {
@@ -219,6 +210,16 @@ class PodTemplateSpecTest {
 
                 shareProcessNamespace = true
                 setHostnameAsFQDN = false
+            }
+        }.build()
+
+        private val minSpec = PodTemplateSpecBuilder().apply {
+            spec {
+                containers {
+                    container("name", "image") {
+
+                    }
+                }
             }
         }.build()
     }
@@ -448,15 +449,7 @@ class PodTemplateSpecTest {
 
     @Test
     fun testMinContent() {
-        val templateSpec = PodTemplateSpecBuilder().apply {
-            spec {
-                containers {
-                    container("name", "image") {
-
-                    }
-                }
-            }
-        }.build()
+        val templateSpec = minSpec
 
         assertNull(templateSpec.metadata)
 
@@ -502,26 +495,16 @@ class PodTemplateSpecTest {
 
     @Test
     fun testMinYaml() {
-        val templateSpec = PodTemplateSpecBuilder().apply {
-            spec {
-                containers {
-                    container("name", "image") {
-
-                    }
-                }
-            }
-        }.build()
-
         JSONAssert.assertEquals(
             """{"spec":{"containers":[{"name":"name","image":"image"}]}}""",
-            templateSpec.toJson(),
+            minSpec.toJson(),
             JSONCompareMode.LENIENT
         )
     }
 
     @Test
     fun testMissingSpecContent() {
-        assertThrows<IllegalArgumentException> { PodTemplateSpecBuilder().build() }
+        assertFailsWith<IllegalArgumentException> { PodTemplateSpecBuilder().build() }
     }
 
 }

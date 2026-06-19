@@ -326,7 +326,7 @@ class PodAffinityTermSpecTest {
 
 class WeightedPodAffinityTermSpecTest {
     companion object {
-        val maxSpec = WeightedPodAffinityTermSpecBuilder(99).apply {
+        private val maxSpec = WeightedPodAffinityTermSpecBuilder(99).apply {
             podAffinityTerm("key") {
                 labelSelector {
                     matchLabels {
