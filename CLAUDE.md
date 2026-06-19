@@ -24,6 +24,54 @@ Kube KTS ist ein **Helm-Wrapper für Kubernetes**, der YAML-Dateien mit Go-Templ
 | `libs:core` | `libs/core` | Kern-Engine (Kompilierung, Rendering, Validierung) |
 | `apps:cli` | `apps/cli` | CLI-Applikation (`kube-kts` Kommando) |
 
+Abhängigkeitsfluss: `cli` → `core` → (`api`, `definition`) → `logging`. Die Pipeline ist immer
+**scan → compile → render → (merge) → Helm**.
+
+### Wofür ist welches Modul zuständig? (Wo suche ich was?)
+
+**`libs:logging`** — Reine Logging-/Konsolen-Hilfsmittel, keine Fachlogik.
+- `LoggerUtils.kt` (Logger-Factory `logger()`), `AnsiUtils.kt` (ANSI-Farben), `SymbolUtils.kt`
+  (Status-Symbole wie `symbolSubProcess` in Log-Ausgaben).
+- *Hierher bei:* Änderungen an Log-Format, Farben, Symbolen.
+
+**`libs:api`** — Die **öffentliche DSL**, die KTS-Skripte benutzen. Größtes Modul. Pro K8s-Konzept
+ein Paar aus Datenmodell und Builder.
+- `*Spec.kt` = Datenmodell (mit `@NoArg` für Jackson), `*SpecBuilder.kt` = Kotlin-Lambda-DSL
+  (`deployment { }`, `service { }`, `container { } `, …). Einstieg/Wurzeltyp: `KubeSpec.kt`.
+- Wert-Typen & Einheiten: `CpuValue.kt`, `MemoryValue.kt`, `RelativeValue.kt`, `KubeVersion.kt`,
+  `Protocol.kt`, `MailAddress.kt` (Extensions wie `250.mCpu`, `1.giBytes`, `25.percent`).
+- Values-Zugriff aus Skripten: `ValueAccess.kt` (`value`, `valueOrNull`, `array`, `map`, `exists`).
+- Spezielle YAML-Serialisierung: `intern/jackson/*Serializer.kt` (z. B. `ProbeSpecSerializer`,
+  `VolumeSpecSerializer`, `DurationInSecondsSerializer`), Jackson-Setup in `intern/utils/JsonUtils.kt`.
+- *Hierher bei:* neue/erweiterte K8s-Ressource, neue DSL-Funktion, neues Feld, geänderte
+  YAML-Ausgabeform einer Ressource.
+
+**`libs:definition`** — Verbindet die DSL mit dem **Kotlin-Scripting-Host**: Definition der
+Script-Templates und ihrer Compile-/Eval-Konfiguration (Default-Imports, Receiver).
+- `SpecTemplate.kt` / `LibTemplate.kt` (Script-Definitionen für `*.spec.kts` bzw. `*.lib.kts`).
+- `KubeKtsSpecCompilationConfiguration.kt` / `KubeKtsLibCompilationConfiguration.kt` (Default-Imports —
+  hier wird festgelegt, was ohne `import` verfügbar ist) und die `*EvaluationConfiguration.kt`.
+- *Hierher bei:* neue Default-Imports, Änderungen am Script-Receiver/-Kontext, Verhalten von
+  `*.spec.kts` vs. `*.lib.kts`.
+
+**`libs:core`** — Die **Engine**, die ein Repository einliest, kompiliert, rendert und YAML mergt.
+- `scanner/` — `KubeKtsRepositoryScanner` + `Default…`: Verzeichnisbaum scannen, Dateitypen einordnen
+  (`KubeKtsFile`, `KubeFile`).
+- `builder/` — `DefaultKubeKtsRepositoryBuilder` (Orchestrierung) und `DefaultKotlinScriptProcessor`
+  (Kompilieren/Ausführen der KTS; **Safe-/Unsafe-Prüfung** für `import`/FQN lebt hier).
+- `renderer/` — `DefaultKubeHelmRenderer` / `DefaultKubeHelmRepositoryRenderer`: Specs → Helm-YAML-Dateien.
+- `merge/` — `HelmYamlMerging` (Helm-Semantik) und `DefaultYamlMerging` (internes, `--experimental`-
+  Verfahren mit Array-Merge-Strategien, `YamlMergeStrategy`).
+- *Hierher bei:* Scan-/Compile-/Render-/Merge-Verhalten, Safe-vs-Unsafe-Logik, Fehler in der Pipeline.
+
+**`apps:cli`** — Die ausführbare CLI (`kube-kts`), gebaut mit picocli; dünne Schicht über `core`.
+- Einstieg: `Runner.kt` / `MainCommand.kt`; gemeinsame Basisklassen `Base*Command.kt`
+  (z. B. `BaseRenderCommand`, `BaseRenderedHelmCommand`, `BaseDirectHelmCommand`).
+- Ein Command pro CLI-Befehl: `RenderCommand.kt`, `TemplateCommand.kt`, `InstallCommand.kt`, … ;
+  Helm-Weiterleitung gruppiert unter `commands/helm/` (`HelmArgsProvider`, `Helm*Options`).
+- Globale Flags: `Flags.kt` (`--unsafe`, `--experimental`, `--debug`, …).
+- *Hierher bei:* neuer/angepasster CLI-Befehl oder -Flag (dann auch `HELM_SUPPORT.md` + `docs/` pflegen).
+
 ## Helm-Repository-Struktur
 
 ```
