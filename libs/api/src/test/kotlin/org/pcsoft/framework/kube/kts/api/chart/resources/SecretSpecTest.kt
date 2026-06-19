@@ -13,13 +13,16 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
 import org.apache.commons.io.IOUtils
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.template.FlatTemplateSpecBuilder
 import org.pcsoft.framework.kube.kts.api.utils.convertToJson
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
+import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class SecretSpecTest {
     companion object {
@@ -49,23 +52,26 @@ class SecretSpecTest {
         }.build()
 
         private val minSpec = SecretSpecBuilder().build()
+        private val minTemplate = FlatTemplateSpecBuilder(SecretSpec.API_VERSION, SecretSpec.KIND, SecretSpecBuilder()).apply {
+            metadata("name") {}
+        }.build()
     }
 
     @Test
     fun testMaxContent() {
-        Assertions.assertEquals(SecretSpec.Type.Opaque, maxSpec.type)
-        Assertions.assertNotNull(maxSpec.data)
-        Assertions.assertArrayEquals("test".toByteArray(), maxSpec.data!!["binKey"])
-        Assertions.assertEquals(mapOf("username" to "admin", "password" to "s3cr3t"), maxSpec.stringData)
-        Assertions.assertEquals(true, maxSpec.immutable)
+        assertEquals(SecretSpec.Type.Opaque, maxSpec.type)
+        assertNotNull(maxSpec.data)
+        assertContentEquals("test".toByteArray(), maxSpec.data["binKey"])
+        assertEquals(mapOf("username" to "admin", "password" to "s3cr3t"), maxSpec.stringData)
+        assertEquals(true, maxSpec.immutable)
     }
 
     @Test
     fun testMinContent() {
-        Assertions.assertNull(minSpec.type)
-        Assertions.assertNull(minSpec.data)
-        Assertions.assertNull(minSpec.stringData)
-        Assertions.assertNull(minSpec.immutable)
+        assertNull(minSpec.type)
+        assertNull(minSpec.data)
+        assertNull(minSpec.stringData)
+        assertNull(minSpec.immutable)
     }
 
     @Test
@@ -74,18 +80,11 @@ class SecretSpecTest {
         val expectedJson = convertToJson(expectedYaml)
         val actualJson = maxTemplate.toJson()
 
-        println(actualJson)
-        println(expectedJson)
-
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testMinYaml() {
-        val template = FlatTemplateSpecBuilder(SecretSpec.API_VERSION, SecretSpec.KIND, SecretSpecBuilder()).apply {
-            metadata("name") {}
-        }.build()
-
         JSONAssert.assertEquals(
             """{
               |  "apiVersion": "v1",
@@ -94,7 +93,7 @@ class SecretSpecTest {
               |    "name": "name"
               |  }
               |}""".trimMargin(),
-            template.toJson(),
+            minTemplate.toJson(),
             JSONCompareMode.LENIENT
         )
     }
@@ -108,11 +107,11 @@ class SecretSpecTest {
             }
         }.build()
 
-        Assertions.assertNotNull(spec.data)
-        Assertions.assertEquals(2, spec.data!!.size)
-        Assertions.assertArrayEquals("test1".toByteArray(), spec.data["bin1"])
-        Assertions.assertArrayEquals("test2".toByteArray(), spec.data["bin2"])
-        Assertions.assertNull(spec.stringData)
+        assertNotNull(spec.data)
+        assertEquals(2, spec.data.size)
+        assertContentEquals("test1".toByteArray(), spec.data["bin1"])
+        assertContentEquals("test2".toByteArray(), spec.data["bin2"])
+        assertNull(spec.stringData)
     }
 
     @Test
@@ -124,8 +123,8 @@ class SecretSpecTest {
             }
         }.build()
 
-        Assertions.assertEquals(mapOf("username" to "admin", "password" to "s3cr3t"), spec.stringData)
-        Assertions.assertNull(spec.data)
+        assertEquals(mapOf("username" to "admin", "password" to "s3cr3t"), spec.stringData)
+        assertNull(spec.data)
     }
 
     @Test

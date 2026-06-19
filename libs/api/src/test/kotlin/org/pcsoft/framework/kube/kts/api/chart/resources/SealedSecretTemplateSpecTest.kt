@@ -12,53 +12,56 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class SealedSecretTemplateSpecTest {
+    companion object {
+        private val templateMaxSpec = SealedSecretTemplateSpecBuilder().apply {
+            type = SecretSpec.Type.Tls
+            immutable = true
+            metadata {
+                labels {
+                    label("app", "demo")
+                }
+                annotations {
+                    annotation("description", "secret template")
+                }
+            }
+        }.build()
+
+        private val templateMinSpec = SealedSecretTemplateSpecBuilder().build()
+
+        private val metadataMaxSpec = SealedSecretTemplateMetadataSpecBuilder().apply {
+            labels {
+                label("app", "demo")
+            }
+            annotations {
+                annotation("description", "secret template")
+            }
+        }.build()
+
+        private val metadataMinSpec = SealedSecretTemplateMetadataSpecBuilder().build()
+    }
 
     // ============ Template — Maximal ============
 
     @Test
     fun testTemplateMaxContent() {
-        val spec = SealedSecretTemplateSpecBuilder().apply {
-            type = SecretSpec.Type.Tls
-            immutable = true
-            metadata {
-                labels {
-                    label("app", "demo")
-                }
-                annotations {
-                    annotation("description", "secret template")
-                }
-            }
-        }.build()
-
-        Assertions.assertEquals(SecretSpec.Type.Tls, spec.type)
-        Assertions.assertEquals(true, spec.immutable)
-        Assertions.assertNotNull(spec.metadata)
-        Assertions.assertEquals(mapOf("app" to "demo"), spec.metadata!!.labels)
-        Assertions.assertEquals(mapOf("description" to "secret template"), spec.metadata.annotations)
+        assertEquals(SecretSpec.Type.Tls, templateMaxSpec.type)
+        assertEquals(true, templateMaxSpec.immutable)
+        assertNotNull(templateMaxSpec.metadata)
+        assertEquals(mapOf("app" to "demo"), templateMaxSpec.metadata.labels)
+        assertEquals(mapOf("description" to "secret template"), templateMaxSpec.metadata.annotations)
     }
 
     @Test
     fun testTemplateMaxYaml() {
-        val spec = SealedSecretTemplateSpecBuilder().apply {
-            type = SecretSpec.Type.Tls
-            immutable = true
-            metadata {
-                labels {
-                    label("app", "demo")
-                }
-                annotations {
-                    annotation("description", "secret template")
-                }
-            }
-        }.build()
-
         JSONAssert.assertEquals(
             """{
               |  "type": "kubernetes.io/tls",
@@ -72,7 +75,7 @@ class SealedSecretTemplateSpecTest {
               |    }
               |  }
               |}""".trimMargin(),
-            spec.toJson(),
+            templateMaxSpec.toJson(),
             JSONCompareMode.LENIENT
         )
     }
@@ -81,48 +84,26 @@ class SealedSecretTemplateSpecTest {
 
     @Test
     fun testTemplateMinContent() {
-        val spec = SealedSecretTemplateSpecBuilder().build()
-
-        Assertions.assertNull(spec.type)
-        Assertions.assertNull(spec.immutable)
-        Assertions.assertNull(spec.metadata)
+        assertNull(templateMinSpec.type)
+        assertNull(templateMinSpec.immutable)
+        assertNull(templateMinSpec.metadata)
     }
 
     @Test
     fun testTemplateMinYaml() {
-        val spec = SealedSecretTemplateSpecBuilder().build()
-
-        JSONAssert.assertEquals("{}", spec.toJson(), JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals("{}", templateMinSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     // ============ Template Metadata — Maximal ============
 
     @Test
     fun testMetadataMaxContent() {
-        val spec = SealedSecretTemplateMetadataSpecBuilder().apply {
-            labels {
-                label("app", "demo")
-            }
-            annotations {
-                annotation("description", "secret template")
-            }
-        }.build()
-
-        Assertions.assertEquals(mapOf("app" to "demo"), spec.labels)
-        Assertions.assertEquals(mapOf("description" to "secret template"), spec.annotations)
+        assertEquals(mapOf("app" to "demo"), metadataMaxSpec.labels)
+        assertEquals(mapOf("description" to "secret template"), metadataMaxSpec.annotations)
     }
 
     @Test
     fun testMetadataMaxYaml() {
-        val spec = SealedSecretTemplateMetadataSpecBuilder().apply {
-            labels {
-                label("app", "demo")
-            }
-            annotations {
-                annotation("description", "secret template")
-            }
-        }.build()
-
         JSONAssert.assertEquals(
             """{
               |  "labels": {
@@ -132,7 +113,7 @@ class SealedSecretTemplateSpecTest {
               |    "description": "secret template"
               |  }
               |}""".trimMargin(),
-            spec.toJson(),
+            metadataMaxSpec.toJson(),
             JSONCompareMode.LENIENT
         )
     }
@@ -141,16 +122,12 @@ class SealedSecretTemplateSpecTest {
 
     @Test
     fun testMetadataMinContent() {
-        val spec = SealedSecretTemplateMetadataSpecBuilder().build()
-
-        Assertions.assertNull(spec.labels)
-        Assertions.assertNull(spec.annotations)
+        assertNull(metadataMinSpec.labels)
+        assertNull(metadataMinSpec.annotations)
     }
 
     @Test
     fun testMetadataMinYaml() {
-        val spec = SealedSecretTemplateMetadataSpecBuilder().build()
-
-        JSONAssert.assertEquals("{}", spec.toJson(), JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals("{}", metadataMinSpec.toJson(), JSONCompareMode.LENIENT)
     }
 }

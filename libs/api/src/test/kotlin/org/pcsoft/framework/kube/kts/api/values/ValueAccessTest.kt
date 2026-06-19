@@ -12,13 +12,18 @@
 
 package org.pcsoft.framework.kube.kts.api.values
 
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.utils.KotlinAssertions
 import tools.jackson.databind.JsonNode
 import tools.jackson.databind.exc.JsonNodeException
 import tools.jackson.dataformat.yaml.YAMLMapper
 import java.nio.file.Path
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
+import kotlin.test.fail
 
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class ValueAccessTest {
@@ -32,30 +37,30 @@ class ValueAccessTest {
     @Test
     fun testValueSuccessfully() {
         KotlinAssertions.assertNotNull(access.value<Int>("object.child.value1")) {
-            Assertions.assertEquals(123, it)
+            assertEquals(123, it)
         }
         KotlinAssertions.assertNotNull(access.value<String>("object.child.value2")) {
-            Assertions.assertEquals("test", it)
+            assertEquals("test", it)
         }
     }
 
     @Test
     fun testValueFailed() {
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             access.value<Int>("object.child.value3")
         }
-        Assertions.assertNull(access.valueOrNull<String>("object.child.value3"))
+        assertNull(access.valueOrNull<String>("object.child.value3"))
 
-        Assertions.assertThrows(JsonNodeException::class.java) {
+        assertFailsWith<JsonNodeException> {
             access.value<Int>("object.child.value2")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             access.value<String>("array.items1")
         }
-        Assertions.assertThrows(JsonNodeException::class.java) {
+        assertFailsWith<JsonNodeException> {
             access.valueOrNull<Int>("object.child.value2")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             access.valueOrNull<String>("array.items1")
         }
     }
@@ -63,40 +68,40 @@ class ValueAccessTest {
     @Test
     fun testArraySuccessfully() {
         access.array<Int>("array.items1") { index, value ->
-            Assertions.assertEquals(arrayOf(1,2,3)[index], value)
+            assertEquals(arrayOf(1, 2, 3)[index], value)
         }
         access.array<String>("array.items2") { index, value ->
-            Assertions.assertEquals(arrayOf("test1", "test2", "test3")[index], value)
+            assertEquals(arrayOf("test1", "test2", "test3")[index], value)
         }
         access.array("array.items3") { value ->
-            Assertions.assertEquals("name", value.value<String>("name"))
-            Assertions.assertEquals(123, value.value<Int>("value"))
+            assertEquals("name", value.value<String>("name"))
+            assertEquals(123, value.value<Int>("value"))
         }
     }
 
     @Test
     fun testArrayFailed() {
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             access.array<Int>("array.items99")
         }
-        Assertions.assertNull(access.arrayOrNull<String>("array.items99"))
+        assertNull(access.arrayOrNull<String>("array.items99"))
         access.arrayOrNull<String>("array.items99") { _, _ ->
-            Assertions.fail("Should not be called")
+            fail("Should not be called")
         }
         access.arrayOrNull("array.items99") { _, _ ->
-            Assertions.fail("Should not be called")
+            fail("Should not be called")
         }
 
-        Assertions.assertThrows(JsonNodeException::class.java) {
+        assertFailsWith<JsonNodeException> {
             access.array<Int>("array.items2")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             access.array<String>("object.child.value2")
         }
-        Assertions.assertThrows(JsonNodeException::class.java) {
+        assertFailsWith<JsonNodeException> {
             access.arrayOrNull<Int>("array.items2")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             access.arrayOrNull<String>("object.child.value2")
         }
     }
@@ -104,52 +109,52 @@ class ValueAccessTest {
     @Test
     fun testMapSuccessfully() {
         access.map<Int>("map.items1") { key, value ->
-            Assertions.assertEquals(mapOf("key1" to 1, "key2" to 2)[key], value)
+            assertEquals(mapOf("key1" to 1, "key2" to 2)[key], value)
         }
         access.map<String>("map.items2") { key, value ->
-            Assertions.assertEquals(mapOf("key1" to "test1", "key2" to "test2")[key], value)
+            assertEquals(mapOf("key1" to "test1", "key2" to "test2")[key], value)
         }
         access.map("map.items3") { _, value ->
-            Assertions.assertEquals("name", value.value<String>("name"))
-            Assertions.assertEquals(123, value.value<Int>("value"))
+            assertEquals("name", value.value<String>("name"))
+            assertEquals(123, value.value<Int>("value"))
         }
     }
 
     @Test
     fun testMapFailed() {
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             access.map<Int>("map.items99")
         }
-        Assertions.assertNull(access.mapOrNull<String>("map.items99"))
+        assertNull(access.mapOrNull<String>("map.items99"))
         access.mapOrNull<String>("map.items99") { _, _ ->
-            Assertions.fail("Should not be called")
+            fail("Should not be called")
         }
         access.mapOrNull("map.items99") { _, _ ->
-            Assertions.fail("Should not be called")
+            fail("Should not be called")
         }
 
-        Assertions.assertThrows(JsonNodeException::class.java) {
+        assertFailsWith<JsonNodeException> {
             access.map<Int>("map.items2")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             access.map<String>("array.items1")
         }
-        Assertions.assertThrows(JsonNodeException::class.java) {
+        assertFailsWith<JsonNodeException> {
             access.mapOrNull<Int>("map.items2")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             access.mapOrNull<String>("array.items1")
         }
     }
 
     @Test
     fun testExists() {
-        Assertions.assertTrue(access.exists("object.child.value1"))
-        Assertions.assertTrue(access.exists("array.items1"))
-        Assertions.assertTrue(access.exists("map.items1"))
-        Assertions.assertFalse(access.exists("map.items99"))
-        Assertions.assertFalse(access.exists("array.items99"))
-        Assertions.assertFalse(access.exists("object.child.value99"))
+        assertTrue(access.exists("object.child.value1"))
+        assertTrue(access.exists("array.items1"))
+        assertTrue(access.exists("map.items1"))
+        assertFalse(access.exists("map.items99"))
+        assertFalse(access.exists("array.items99"))
+        assertFalse(access.exists("object.child.value99"))
 
         KotlinAssertions.assertCalled {
             access.exists("object.child.value1") {
@@ -158,7 +163,7 @@ class ValueAccessTest {
         }
 
         access.exists("object.child.value99") {
-            Assertions.fail("Should not be called")
+            fail("Should not be called")
         }
     }
 

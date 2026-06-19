@@ -13,8 +13,8 @@
 package org.pcsoft.framework.kube.kts.api.types
 
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 
 class RelativeValueTest {
@@ -29,12 +29,12 @@ class RelativeValueTest {
 
     @Test
     fun testPercentNegative() {
-        assertThrows<IllegalArgumentException> { (-1).percent }
+        assertFailsWith<IllegalArgumentException> { (-1).percent }
     }
 
     @Test
     fun testPercentTooLarge() {
-        assertThrows<IllegalArgumentException> { 101.percent }
+        assertFailsWith<IllegalArgumentException> { 101.percent }
     }
 
     @Test
@@ -47,6 +47,6 @@ class RelativeValueTest {
 
     @Test
     fun testAbsoluteNegative() {
-        assertThrows<IllegalArgumentException> { (-1).absolute }
+        assertFailsWith<IllegalArgumentException> { (-1).absolute }
     }
 }

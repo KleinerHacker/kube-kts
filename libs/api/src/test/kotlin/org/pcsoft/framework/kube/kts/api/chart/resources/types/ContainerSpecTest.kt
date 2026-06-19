@@ -5,7 +5,7 @@
  * You may obtain a copy of the License at:
  * http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, this software is distributed on an “AS IS” BASIS, 
+ * Unless required by applicable law or agreed to in writing, this software is distributed on an “AS IS” BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and limitations.
  */
@@ -23,65 +23,137 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class ContainerSpecTest {
+    companion object {
+        private val maxSpec = ContainerSpecBuilder("container", "nginx:latest").apply {
+            imagePullPolicy = ContainerSpec.ImagePullPolicy.Always
+            ports {
+                port(8080) {
+                    name = "http"
+                    protocol = Protocol.TCP
+                }
+            }
+            env("ENVIRONMENT") {
+                from {
+                    value("production")
+                }
+            }
+            envFrom {
+                prefix = "APP_"
+                configMapRef("app-config") {
+                    optional = true
+                }
+            }
+            resources {
+                limits {
+                    cpu = 0.5f.cpu
+                    memory = 256.miBytes
+                }
+            }
+            volumeMounts {
+                volumeMount("config", "/etc/config") {
+                    readOnly = true
+                }
+            }
+            volumeDevices {
+                volumeDevice("device", "/dev/xvda")
+            }
+            livenessProbe {
+                httpGet(8080) {
+                    path = "/health"
+                }
+            }
+            readinessProbe {
+                tcpSocket(8080)
+            }
+            startupProbe {
+                exec {
+                    command("test", "-f", "/tmp/started")
+                }
+            }
+            lifecycle {
+                postStart {
+                    exec {
+                        command("echo", "started")
+                    }
+                }
+                preStop {
+                    exec {
+                        command("echo", "stopped")
+                    }
+                }
+            }
+            terminationMessagePath = "/dev/termination-log"
+            terminationMessagePolicy = ContainerSpec.TerminationMessagePolicy.FallbackToLogsOnError
+            stdin = true
+            stdinOnce = true
+            tty = true
+            securityContext {
+                runAsUser = 1000L
+            }
+            command("/bin/sh", "-c")
+            args("echo", "started")
+            workingDir = "/app"
+        }.build()
+
+        private val minSpec = ContainerSpecBuilder("container", "nginx:latest").build()
+    }
 
     @Test
     fun testMaxContent() {
-        val spec = buildMaxSpec()
+        assertEquals("container", maxSpec.name)
+        assertEquals("nginx:latest", maxSpec.image)
+        assertEquals(ContainerSpec.ImagePullPolicy.Always, maxSpec.imagePullPolicy)
 
-        assertEquals("container", spec.name)
-        assertEquals("nginx:latest", spec.image)
-        assertEquals(ContainerSpec.ImagePullPolicy.Always, spec.imagePullPolicy)
+        assertNotNull(maxSpec.ports)
+        assertEquals("http", maxSpec.ports.first().name)
+        assertEquals(8080, maxSpec.ports.first().containerPort)
+        assertEquals(Protocol.TCP, maxSpec.ports.first().protocol)
 
-        assertNotNull(spec.ports)
-        assertEquals("http", spec.ports.first().name)
-        assertEquals(8080, spec.ports.first().containerPort)
-        assertEquals(Protocol.TCP, spec.ports.first().protocol)
+        assertNotNull(maxSpec.env)
+        assertEquals("ENVIRONMENT", maxSpec.env.name)
+        assertEquals("production", (maxSpec.env.source as SingleEnvironmentSpec.ValueSource).value)
 
-        assertNotNull(spec.env)
-        assertEquals("ENVIRONMENT", spec.env.name)
-        assertEquals("production", (spec.env.source as SingleEnvironmentSpec.ValueSource).value)
+        assertNotNull(maxSpec.envFrom)
+        assertEquals("APP_", maxSpec.envFrom.prefix)
+        assertEquals(CompleteEnvironmentSpec.SourceType.ConfigMap, maxSpec.envFrom.source.type)
+        assertEquals("app-config", maxSpec.envFrom.source.name)
+        assertEquals(true, maxSpec.envFrom.source.optional)
 
-        assertNotNull(spec.envFrom)
-        assertEquals("APP_", spec.envFrom.prefix)
-        assertEquals(CompleteEnvironmentSpec.SourceType.ConfigMap, spec.envFrom.source.type)
-        assertEquals("app-config", spec.envFrom.source.name)
-        assertEquals(true, spec.envFrom.source.optional)
+        assertNotNull(maxSpec.resources)
+        val limits = assertNotNull(maxSpec.resources.limits)
+        assertEquals(0.5f.cpu, limits.cpu)
+        assertEquals(256.miBytes, limits.memory)
 
-        assertNotNull(spec.resources)
-        assertNotNull(spec.resources.limits)
-        assertEquals(0.5f.cpu, spec.resources.limits!!.cpu)
-        assertEquals(256.miBytes, spec.resources.limits!!.memory)
+        assertNotNull(maxSpec.volumeMounts)
+        assertEquals("config", maxSpec.volumeMounts.first().name)
+        assertEquals("/etc/config", maxSpec.volumeMounts.first().mountPath)
+        assertEquals(true, maxSpec.volumeMounts.first().readOnly)
 
-        assertNotNull(spec.volumeMounts)
-        assertEquals("config", spec.volumeMounts.first().name)
-        assertEquals("/etc/config", spec.volumeMounts.first().mountPath)
-        assertEquals(true, spec.volumeMounts.first().readOnly)
+        assertNotNull(maxSpec.volumeDevices)
+        assertEquals("device", maxSpec.volumeDevices.first().name)
+        assertEquals("/dev/xvda", maxSpec.volumeDevices.first().devicePath)
 
-        assertNotNull(spec.volumeDevices)
-        assertEquals("device", spec.volumeDevices.first().name)
-        assertEquals("/dev/xvda", spec.volumeDevices.first().devicePath)
+        assertNotNull(maxSpec.livenessProbe)
+        assertNotNull(maxSpec.readinessProbe)
+        assertNotNull(maxSpec.startupProbe)
+        assertNotNull(maxSpec.lifecycle)
 
-        assertNotNull(spec.livenessProbe)
-        assertNotNull(spec.readinessProbe)
-        assertNotNull(spec.startupProbe)
-        assertNotNull(spec.lifecycle)
+        assertEquals("/dev/termination-log", maxSpec.terminationMessagePath)
+        assertEquals(ContainerSpec.TerminationMessagePolicy.FallbackToLogsOnError, maxSpec.terminationMessagePolicy)
+        assertEquals(true, maxSpec.stdin)
+        assertEquals(true, maxSpec.stdinOnce)
+        assertEquals(true, maxSpec.tty)
 
-        assertEquals("/dev/termination-log", spec.terminationMessagePath)
-        assertEquals(ContainerSpec.TerminationMessagePolicy.FallbackToLogsOnError, spec.terminationMessagePolicy)
-        assertEquals(true, spec.stdin)
-        assertEquals(true, spec.stdinOnce)
-        assertEquals(true, spec.tty)
-
-        assertNotNull(spec.securityContext)
-        assertEquals(1000L, spec.securityContext.runAsUser)
-        assertEquals(listOf("/bin/sh", "-c"), spec.command)
-        assertEquals(listOf("echo", "started"), spec.args)
-        assertEquals("/app", spec.workingDir)
+        assertNotNull(maxSpec.securityContext)
+        assertEquals(1000L, maxSpec.securityContext.runAsUser)
+        assertEquals(listOf("/bin/sh", "-c"), maxSpec.command)
+        assertEquals(listOf("echo", "started"), maxSpec.args)
+        assertEquals("/app", maxSpec.workingDir)
     }
 
     @Test
     fun testMaxYaml() {
-        val actualJson = buildMaxSpec().toJson()
+        val actualJson = maxSpec.toJson()
         val expectedJson = """{
           |  "name": "container",
           |  "image": "nginx:latest",
@@ -140,108 +212,33 @@ class ContainerSpecTest {
 
     @Test
     fun testMinContent() {
-        val spec = ContainerSpecBuilder("container", "nginx:latest").build()
-
-        assertEquals("container", spec.name)
-        assertEquals("nginx:latest", spec.image)
-        assertNull(spec.imagePullPolicy)
-        assertNull(spec.ports)
-        assertNull(spec.env)
-        assertNull(spec.envFrom)
-        assertNull(spec.resources)
-        assertNull(spec.volumeMounts)
-        assertNull(spec.volumeDevices)
-        assertNull(spec.livenessProbe)
-        assertNull(spec.readinessProbe)
-        assertNull(spec.startupProbe)
-        assertNull(spec.lifecycle)
-        assertNull(spec.terminationMessagePath)
-        assertNull(spec.terminationMessagePolicy)
-        assertNull(spec.stdin)
-        assertNull(spec.stdinOnce)
-        assertNull(spec.tty)
-        assertNull(spec.securityContext)
-        assertNull(spec.command)
-        assertNull(spec.args)
-        assertNull(spec.workingDir)
+        assertEquals("container", minSpec.name)
+        assertEquals("nginx:latest", minSpec.image)
+        assertNull(minSpec.imagePullPolicy)
+        assertNull(minSpec.ports)
+        assertNull(minSpec.env)
+        assertNull(minSpec.envFrom)
+        assertNull(minSpec.resources)
+        assertNull(minSpec.volumeMounts)
+        assertNull(minSpec.volumeDevices)
+        assertNull(minSpec.livenessProbe)
+        assertNull(minSpec.readinessProbe)
+        assertNull(minSpec.startupProbe)
+        assertNull(minSpec.lifecycle)
+        assertNull(minSpec.terminationMessagePath)
+        assertNull(minSpec.terminationMessagePolicy)
+        assertNull(minSpec.stdin)
+        assertNull(minSpec.stdinOnce)
+        assertNull(minSpec.tty)
+        assertNull(minSpec.securityContext)
+        assertNull(minSpec.command)
+        assertNull(minSpec.args)
+        assertNull(minSpec.workingDir)
     }
 
     @Test
     fun testMinYaml() {
-        val spec = ContainerSpecBuilder("container", "nginx:latest").build()
-
-        JSONAssert.assertEquals("""{"name":"container","image":"nginx:latest"}""", spec.toJson(), JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals("""{"name":"container","image":"nginx:latest"}""", minSpec.toJson(), JSONCompareMode.LENIENT)
     }
-
-    private fun buildMaxSpec() = ContainerSpecBuilder("container", "nginx:latest").apply {
-        imagePullPolicy = ContainerSpec.ImagePullPolicy.Always
-        ports {
-            port(8080) {
-                name = "http"
-                protocol = Protocol.TCP
-            }
-        }
-        env("ENVIRONMENT") {
-            from {
-                value("production")
-            }
-        }
-        envFrom {
-            prefix = "APP_"
-            configMapRef("app-config") {
-                optional = true
-            }
-        }
-        resources {
-            limits {
-                cpu = 0.5f.cpu
-                memory = 256.miBytes
-            }
-        }
-        volumeMounts {
-            volumeMount("config", "/etc/config") {
-                readOnly = true
-            }
-        }
-        volumeDevices {
-            volumeDevice("device", "/dev/xvda")
-        }
-        livenessProbe {
-            httpGet(8080) {
-                path = "/health"
-            }
-        }
-        readinessProbe {
-            tcpSocket(8080)
-        }
-        startupProbe {
-            exec {
-                command("test", "-f", "/tmp/started")
-            }
-        }
-        lifecycle {
-            postStart {
-                exec {
-                    command("echo", "started")
-                }
-            }
-            preStop {
-                exec {
-                    command("echo", "stopped")
-                }
-            }
-        }
-        terminationMessagePath = "/dev/termination-log"
-        terminationMessagePolicy = ContainerSpec.TerminationMessagePolicy.FallbackToLogsOnError
-        stdin = true
-        stdinOnce = true
-        tty = true
-        securityContext {
-            runAsUser = 1000L
-        }
-        command("/bin/sh", "-c")
-        args("echo", "started")
-        workingDir = "/app"
-    }.build()
 
 }

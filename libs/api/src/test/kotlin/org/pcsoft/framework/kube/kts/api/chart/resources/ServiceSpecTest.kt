@@ -13,7 +13,6 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
 import org.apache.commons.io.IOUtils
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.Protocol
 import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpecBuilder
@@ -22,6 +21,8 @@ import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 import java.util.*
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
@@ -85,46 +86,50 @@ class ServiceSpecTest {
                 }
             }
         }.build()
+
+        private val minSpec = ServiceSpecBuilder().apply {
+            addPort("port", 9999) {}
+        }.build()
     }
 
     @Test
     fun testMaxContent() {
-        Assertions.assertEquals(ServiceSpec.Type.LoadBalancer, maxSpec.type)
+        assertEquals(ServiceSpec.Type.LoadBalancer, maxSpec.type)
 
-        Assertions.assertEquals(1, maxSpec.ports.size)
-        Assertions.assertEquals("port", maxSpec.ports[0].name)
-        Assertions.assertEquals(9999, maxSpec.ports[0].port)
-        Assertions.assertEquals(8888, maxSpec.ports[0].targetPort)
-        Assertions.assertEquals(7777, maxSpec.ports[0].nodePort)
-        Assertions.assertEquals(Protocol.SCTP, maxSpec.ports[0].protocol)
-        Assertions.assertEquals("https", maxSpec.ports[0].appProtocol)
+        assertEquals(1, maxSpec.ports.size)
+        assertEquals("port", maxSpec.ports[0].name)
+        assertEquals(9999, maxSpec.ports[0].port)
+        assertEquals(8888, maxSpec.ports[0].targetPort)
+        assertEquals(7777, maxSpec.ports[0].nodePort)
+        assertEquals(Protocol.SCTP, maxSpec.ports[0].protocol)
+        assertEquals("https", maxSpec.ports[0].appProtocol)
 
-        Assertions.assertEquals("clusterIP", maxSpec.clusterIP)
-        Assertions.assertEquals(listOf("clusterIP"), maxSpec.clusterIPs)
+        assertEquals("clusterIP", maxSpec.clusterIP)
+        assertEquals(listOf("clusterIP"), maxSpec.clusterIPs)
 
-        Assertions.assertEquals(setOf(ServiceSpec.IPFamily.IPv4, ServiceSpec.IPFamily.IPv6), maxSpec.ipFamilies)
-        Assertions.assertEquals(ServiceSpec.FamilyPolicy.RequireDualStack, maxSpec.ipFamilyPolicy)
+        assertEquals(setOf(ServiceSpec.IPFamily.IPv4, ServiceSpec.IPFamily.IPv6), maxSpec.ipFamilies)
+        assertEquals(ServiceSpec.FamilyPolicy.RequireDualStack, maxSpec.ipFamilyPolicy)
 
-        Assertions.assertEquals(listOf("externalIP"), maxSpec.externalIPs)
-        Assertions.assertEquals("externalName", maxSpec.externalName)
+        assertEquals(listOf("externalIP"), maxSpec.externalIPs)
+        assertEquals("externalName", maxSpec.externalName)
 
-        Assertions.assertEquals(ServiceSpec.TrafficPolicy.Local, maxSpec.externalTrafficPolicy)
-        Assertions.assertEquals(ServiceSpec.TrafficPolicy.Local, maxSpec.internalTrafficPolicy)
+        assertEquals(ServiceSpec.TrafficPolicy.Local, maxSpec.externalTrafficPolicy)
+        assertEquals(ServiceSpec.TrafficPolicy.Local, maxSpec.internalTrafficPolicy)
 
-        Assertions.assertEquals(false, maxSpec.allocateLoadBalancerNodePorts)
-        Assertions.assertEquals("loadBalancerIP", maxSpec.loadBalancerIP)
-        Assertions.assertEquals("loadBalancerClass", maxSpec.loadBalancerClass)
-        Assertions.assertEquals(listOf("loadBalancerSourceRange"), maxSpec.loadBalancerSourceRanges)
+        assertEquals(false, maxSpec.allocateLoadBalancerNodePorts)
+        assertEquals("loadBalancerIP", maxSpec.loadBalancerIP)
+        assertEquals("loadBalancerClass", maxSpec.loadBalancerClass)
+        assertEquals(listOf("loadBalancerSourceRange"), maxSpec.loadBalancerSourceRanges)
 
-        Assertions.assertEquals(ServiceSpec.SessionAffinity.None, maxSpec.sessionAffinity)
-        Assertions.assertEquals(
+        assertEquals(ServiceSpec.SessionAffinity.None, maxSpec.sessionAffinity)
+        assertEquals(
             ServiceSpec.SessionAffinityConfig(ServiceSpec.ClientIPConfig(30.seconds.toJavaDuration())),
             maxSpec.sessionAffinityConfig
         )
 
-        Assertions.assertEquals(true, maxSpec.publishNotReadyAddresses)
-        Assertions.assertEquals(3000, maxSpec.healthCheckNodePort)
-        Assertions.assertEquals(ServiceSpec.TrafficDistribution.PreferClose, maxSpec.trafficDistribution)
+        assertEquals(true, maxSpec.publishNotReadyAddresses)
+        assertEquals(3000, maxSpec.healthCheckNodePort)
+        assertEquals(ServiceSpec.TrafficDistribution.PreferClose, maxSpec.trafficDistribution)
     }
 
     @Test
@@ -133,56 +138,43 @@ class ServiceSpecTest {
         val expectedJson = convertToJson(expectedYaml)
         val actualJson = maxTemplate.toJson()
 
-        println(actualJson)
-        println(expectedJson)
-
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
-
     }
 
     @Test
     fun testMinContent() {
-        val minSpec = ServiceSpecBuilder().apply {
-            addPort("port", 9999) {}
-        }.build()
+        assertNull(minSpec.type)
+        assertNull(minSpec.selector)
 
-        Assertions.assertNull(minSpec.type)
-        Assertions.assertNull(minSpec.selector)
+        assertEquals(1, minSpec.ports.size)
+        assertEquals("port", minSpec.ports[0].name)
+        assertEquals(9999, minSpec.ports[0].port)
+        assertNull(minSpec.ports[0].targetPort)
+        assertNull(minSpec.ports[0].nodePort)
+        assertNull(minSpec.ports[0].protocol)
+        assertNull(minSpec.ports[0].appProtocol)
 
-        Assertions.assertEquals(1, minSpec.ports.size)
-        Assertions.assertEquals("port", minSpec.ports[0].name)
-        Assertions.assertEquals(9999, minSpec.ports[0].port)
-        Assertions.assertNull(minSpec.ports[0].targetPort)
-        Assertions.assertNull(minSpec.ports[0].nodePort)
-        Assertions.assertNull(minSpec.ports[0].protocol)
-        Assertions.assertNull(minSpec.ports[0].appProtocol)
-
-        Assertions.assertNull(minSpec.clusterIP)
-        Assertions.assertNull(minSpec.clusterIPs)
-        Assertions.assertNull(minSpec.ipFamilies)
-        Assertions.assertNull(minSpec.ipFamilyPolicy)
-        Assertions.assertNull(minSpec.externalIPs)
-        Assertions.assertNull(minSpec.externalName)
-        Assertions.assertNull(minSpec.externalTrafficPolicy)
-        Assertions.assertNull(minSpec.internalTrafficPolicy)
-        Assertions.assertNull(minSpec.allocateLoadBalancerNodePorts)
-        @Suppress("DEPRECATION")
-        Assertions.assertNull(minSpec.loadBalancerIP)
-        Assertions.assertNull(minSpec.loadBalancerClass)
-        Assertions.assertNull(minSpec.loadBalancerSourceRanges)
-        Assertions.assertNull(minSpec.sessionAffinity)
-        Assertions.assertNull(minSpec.sessionAffinityConfig)
-        Assertions.assertNull(minSpec.publishNotReadyAddresses)
-        Assertions.assertNull(minSpec.healthCheckNodePort)
-        Assertions.assertNull(minSpec.trafficDistribution)
+        assertNull(minSpec.clusterIP)
+        assertNull(minSpec.clusterIPs)
+        assertNull(minSpec.ipFamilies)
+        assertNull(minSpec.ipFamilyPolicy)
+        assertNull(minSpec.externalIPs)
+        assertNull(minSpec.externalName)
+        assertNull(minSpec.externalTrafficPolicy)
+        assertNull(minSpec.internalTrafficPolicy)
+        assertNull(minSpec.allocateLoadBalancerNodePorts)
+        assertNull(minSpec.loadBalancerIP)
+        assertNull(minSpec.loadBalancerClass)
+        assertNull(minSpec.loadBalancerSourceRanges)
+        assertNull(minSpec.sessionAffinity)
+        assertNull(minSpec.sessionAffinityConfig)
+        assertNull(minSpec.publishNotReadyAddresses)
+        assertNull(minSpec.healthCheckNodePort)
+        assertNull(minSpec.trafficDistribution)
     }
 
     @Test
     fun testMinYaml() {
-        val minSpec = ServiceSpecBuilder().apply {
-            addPort("port", 9999) {}
-        }.build()
-
         JSONAssert.assertEquals(
             """{
               |  "ports": [

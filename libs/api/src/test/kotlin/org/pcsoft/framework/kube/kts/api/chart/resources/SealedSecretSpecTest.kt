@@ -13,14 +13,16 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
 import org.apache.commons.io.IOUtils
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpecBuilder
 import org.pcsoft.framework.kube.kts.api.utils.convertToJson
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class SealedSecretSpecTest {
     companion object {
@@ -59,32 +61,38 @@ class SealedSecretSpecTest {
                 }
             }.build()
 
-        private val minSpec = SealedSecretSpecBuilder().apply {
+        private val minSpecBuilder = SealedSecretSpecBuilder().apply {
             addEncryptedData("password", "AgBy3i4OJSWK+PiTySYZZA9rO")
-        }.build()
+        }
+
+        private val minSpec = minSpecBuilder.build()
+        private val minTemplate =
+            ExplicitTemplateSpecBuilder(SealedSecretSpec.API_VERSION, SealedSecretSpec.KIND, minSpecBuilder).apply {
+                metadata("name") {}
+            }.build()
     }
 
     @Test
     fun testMaxContent() {
-        Assertions.assertEquals(
+        assertEquals(
             mapOf(
                 "password" to "AgBy3i4OJSWK+PiTySYZZA9rO",
                 "username" to "AgAKv2H8x9Qm0pLrT3uVwX1yZ"
             ),
             maxSpec.encryptedData
         )
-        Assertions.assertNotNull(maxSpec.template)
-        Assertions.assertEquals(SecretSpec.Type.Opaque, maxSpec.template!!.type)
-        Assertions.assertEquals(true, maxSpec.template.immutable)
-        Assertions.assertNotNull(maxSpec.template.metadata)
-        Assertions.assertEquals(mapOf("key" to "value"), maxSpec.template.metadata!!.labels)
-        Assertions.assertEquals(mapOf("key" to "value"), maxSpec.template.metadata.annotations)
+        assertNotNull(maxSpec.template)
+        assertEquals(SecretSpec.Type.Opaque, maxSpec.template.type)
+        assertEquals(true, maxSpec.template.immutable)
+        assertNotNull(maxSpec.template.metadata)
+        assertEquals(mapOf("key" to "value"), maxSpec.template.metadata.labels)
+        assertEquals(mapOf("key" to "value"), maxSpec.template.metadata.annotations)
     }
 
     @Test
     fun testMinContent() {
-        Assertions.assertEquals(mapOf("password" to "AgBy3i4OJSWK+PiTySYZZA9rO"), minSpec.encryptedData)
-        Assertions.assertNull(minSpec.template)
+        assertEquals(mapOf("password" to "AgBy3i4OJSWK+PiTySYZZA9rO"), minSpec.encryptedData)
+        assertNull(minSpec.template)
     }
 
     @Test
@@ -93,22 +101,11 @@ class SealedSecretSpecTest {
         val expectedJson = convertToJson(expectedYaml)
         val actualJson = maxTemplate.toJson()
 
-        println(actualJson)
-        println(expectedJson)
-
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testMinYaml() {
-        val specBuilder = SealedSecretSpecBuilder().apply {
-            addEncryptedData("password", "AgBy3i4OJSWK+PiTySYZZA9rO")
-        }
-        val template =
-            ExplicitTemplateSpecBuilder(SealedSecretSpec.API_VERSION, SealedSecretSpec.KIND, specBuilder).apply {
-                metadata("name") {}
-            }.build()
-
         JSONAssert.assertEquals(
             """{
               |  "apiVersion": "bitnami.com/v1alpha1",
@@ -122,7 +119,7 @@ class SealedSecretSpecTest {
               |    }
               |  }
               |}""".trimMargin(),
-            template.toJson(),
+            minTemplate.toJson(),
             JSONCompareMode.LENIENT
         )
     }
@@ -136,13 +133,13 @@ class SealedSecretSpecTest {
             }
         }.build()
 
-        Assertions.assertEquals(mapOf("a" to "encA", "b" to "encB"), spec.encryptedData)
-        Assertions.assertNull(spec.template)
+        assertEquals(mapOf("a" to "encA", "b" to "encB"), spec.encryptedData)
+        assertNull(spec.template)
     }
 
     @Test
     fun testMissingEncryptedDataContent() {
-        assertThrows<IllegalArgumentException> {
+        assertFailsWith<IllegalArgumentException> {
             SealedSecretSpecBuilder().build()
         }
     }

@@ -13,13 +13,16 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
 import org.apache.commons.io.IOUtils
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.template.FlatTemplateSpecBuilder
 import org.pcsoft.framework.kube.kts.api.utils.convertToJson
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
+import kotlin.test.assertContentEquals
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class ConfigMapSpecTest {
     companion object {
@@ -52,17 +55,17 @@ class ConfigMapSpecTest {
 
     @Test
     fun testMaxContent() {
-        Assertions.assertEquals(mapOf("key1" to "value1", "key2" to "value2"), maxSpec.data)
-        Assertions.assertNotNull(maxSpec.binaryData)
-        Assertions.assertArrayEquals("test".toByteArray(), maxSpec.binaryData!!["binKey"])
-        Assertions.assertEquals(true, maxSpec.immutable)
+        assertEquals(mapOf("key1" to "value1", "key2" to "value2"), maxSpec.data)
+        assertNotNull(maxSpec.binaryData)
+        assertContentEquals("test".toByteArray(), maxSpec.binaryData["binKey"])
+        assertEquals(true, maxSpec.immutable)
     }
 
     @Test
     fun testMinContent() {
-        Assertions.assertNull(minSpec.data)
-        Assertions.assertNull(minSpec.binaryData)
-        Assertions.assertNull(minSpec.immutable)
+        assertNull(minSpec.data)
+        assertNull(minSpec.binaryData)
+        assertNull(minSpec.immutable)
     }
 
     @Test
@@ -70,9 +73,6 @@ class ConfigMapSpecTest {
         val expectedYaml = IOUtils.resourceToString("/configmap.yaml", Charsets.UTF_8)
         val expectedJson = convertToJson(expectedYaml)
         val actualJson = maxTemplate.toJson()
-
-        println(actualJson)
-        println(expectedJson)
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
@@ -84,11 +84,11 @@ class ConfigMapSpecTest {
             addBinaryData("bin2", "test2".toByteArray())
         }.build()
 
-        Assertions.assertNotNull(spec.binaryData)
-        Assertions.assertEquals(2, spec.binaryData!!.size)
-        Assertions.assertArrayEquals("test1".toByteArray(), spec.binaryData["bin1"])
-        Assertions.assertArrayEquals("test2".toByteArray(), spec.binaryData["bin2"])
-        Assertions.assertNull(spec.data)
+        assertNotNull(spec.binaryData)
+        assertEquals(2, spec.binaryData.size)
+        assertContentEquals("test1".toByteArray(), spec.binaryData["bin1"])
+        assertContentEquals("test2".toByteArray(), spec.binaryData["bin2"])
+        assertNull(spec.data)
     }
 
     @Test
@@ -100,11 +100,11 @@ class ConfigMapSpecTest {
             }
         }.build()
 
-        Assertions.assertNotNull(spec.binaryData)
-        Assertions.assertEquals(2, spec.binaryData!!.size)
-        Assertions.assertArrayEquals("test1".toByteArray(), spec.binaryData["bin1"])
-        Assertions.assertArrayEquals("test2".toByteArray(), spec.binaryData["bin2"])
-        Assertions.assertNull(spec.data)
+        assertNotNull(spec.binaryData)
+        assertEquals(2, spec.binaryData.size)
+        assertContentEquals("test1".toByteArray(), spec.binaryData["bin1"])
+        assertContentEquals("test2".toByteArray(), spec.binaryData["bin2"])
+        assertNull(spec.data)
     }
 
     @Test
@@ -120,9 +120,6 @@ class ConfigMapSpecTest {
         val expectedYaml = IOUtils.resourceToString("/configmap-binaryonly.yaml", Charsets.UTF_8)
         val expectedJson = convertToJson(expectedYaml)
         val actualJson = template.toJson()
-
-        println(actualJson)
-        println(expectedJson)
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }

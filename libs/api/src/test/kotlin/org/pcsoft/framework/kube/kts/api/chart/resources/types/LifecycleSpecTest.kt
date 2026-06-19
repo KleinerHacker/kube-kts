@@ -13,21 +13,19 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertIs
 import kotlin.test.assertNull
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
 class LifecycleSpecTest {
-
-    @Test
-    fun testExecMaxContent() {
-        val lifecycleSpec = LifecycleSpecBuilder().apply {
+    companion object {
+        private val execMaxSpec = LifecycleSpecBuilder().apply {
             postStart {
                 exec {
                     command("echo", "Hello, World!")
@@ -40,28 +38,70 @@ class LifecycleSpecTest {
             }
         }.build()
 
-        assertIs<LifecycleSpec.ExecAction>(lifecycleSpec.postStart)
-        assertEquals(listOf("echo", "Hello, World!"), lifecycleSpec.postStart.command)
-        assertIs<LifecycleSpec.ExecAction>(lifecycleSpec.preStop)
-        assertEquals(listOf("echo", "Goodbye, World!"), lifecycleSpec.preStop.command)
+        private val execMinSpec = LifecycleSpecBuilder().apply {
+            postStart {
+                exec { command("echo") }
+            }
+            preStop {
+                exec { command("run") }
+            }
+        }.build()
+
+        private val httpGetMaxSpec = LifecycleSpecBuilder().apply {
+            postStart {
+                httpGet(9999) {
+                    path = "/health"
+                    host = "localhost"
+                    scheme = ProtocolScheme.HTTPS
+                    httpHeaders {
+                        httpHeader("X-Custom-Header", "value1")
+                        httpHeader("Authorization", "Bearer token")
+                    }
+                }
+            }
+            preStop {
+                httpGet(8888) {
+                    path = "/shutdown"
+                    host = "localhost"
+                    scheme = ProtocolScheme.HTTP
+                    httpHeaders {
+                        httpHeader("X-Shutdown", "graceful")
+                    }
+                }
+            }
+        }.build()
+
+        private val httpGetMinSpec = LifecycleSpecBuilder().apply {
+            postStart {
+                httpGet(9999)
+            }
+            preStop {
+                httpGet(8888)
+            }
+        }.build()
+
+        private val sleepMaxSpec = LifecycleSpecBuilder().apply {
+            postStart {
+                sleep(10.seconds.toJavaDuration())
+            }
+            preStop {
+                sleep(5.seconds.toJavaDuration())
+            }
+        }.build()
+
+        private val minSpec = LifecycleSpecBuilder().build()
+    }
+
+    @Test
+    fun testExecMaxContent() {
+        assertIs<LifecycleSpec.ExecAction>(execMaxSpec.postStart)
+        assertEquals(listOf("echo", "Hello, World!"), execMaxSpec.postStart.command)
+        assertIs<LifecycleSpec.ExecAction>(execMaxSpec.preStop)
+        assertEquals(listOf("echo", "Goodbye, World!"), execMaxSpec.preStop.command)
     }
 
     @Test
     fun testExecMaxYaml() {
-        val lifecycleSpec = LifecycleSpecBuilder().apply {
-            postStart {
-                exec {
-                    command("echo", "Hello, World!")
-                }
-            }
-            preStop {
-                exec {
-                    command("echo", "Goodbye, World!")
-                }
-            }
-        }.build()
-
-        val actualJson = lifecycleSpec.toJson()
         val expectedJson = """{
         |  "postStart": {
         |    "exec": {
@@ -81,38 +121,19 @@ class LifecycleSpecTest {
         |  }
         |}""".trimMargin()
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, execMaxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testExecMinContent() {
-        val lifecycleSpec = LifecycleSpecBuilder().apply {
-            postStart {
-                exec { command("echo") }
-            }
-            preStop {
-                exec { command("run") }
-            }
-        }.build()
-
-        assertIs<LifecycleSpec.ExecAction>(lifecycleSpec.postStart)
-        assertEquals(listOf("echo"), lifecycleSpec.postStart.command)
-        assertIs<LifecycleSpec.ExecAction>(lifecycleSpec.preStop)
-        assertEquals(listOf("run"), lifecycleSpec.preStop.command)
+        assertIs<LifecycleSpec.ExecAction>(execMinSpec.postStart)
+        assertEquals(listOf("echo"), execMinSpec.postStart.command)
+        assertIs<LifecycleSpec.ExecAction>(execMinSpec.preStop)
+        assertEquals(listOf("run"), execMinSpec.preStop.command)
     }
 
     @Test
     fun testExecMinYaml() {
-        val lifecycleSpec = LifecycleSpecBuilder().apply {
-            postStart {
-                exec { command("echo") }
-            }
-            preStop {
-                exec { command("run") }
-            }
-        }.build()
-
-        val actualJson = lifecycleSpec.toJson()
         val expectedJson = """{
         |  "postStart": {
         |    "exec": {
@@ -130,15 +151,15 @@ class LifecycleSpecTest {
         |  }
         |}""".trimMargin()
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, execMinSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testExecMissingCommand() {
-        assertThrows<IllegalArgumentException> {
+        assertFailsWith<IllegalArgumentException> {
             LifecycleSpecBuilder().apply {
                 postStart {
-                    exec {  }
+                    exec { }
                 }
             }.build()
         }
@@ -146,74 +167,25 @@ class LifecycleSpecTest {
 
     @Test
     fun testHttpGetMaxContent() {
-        val lifecycleSpec = LifecycleSpecBuilder().apply {
-            postStart {
-                httpGet(9999) {
-                    path="/health"
-                    host="localhost"
-                    scheme=ProtocolScheme.HTTPS
-                    httpHeaders {
-                        httpHeader("X-Custom-Header", "value1")
-                        httpHeader("Authorization", "Bearer token")
-                    }
-                }
-            }
-            preStop {
-                httpGet(8888) {
-                    path="/shutdown"
-                    host="localhost"
-                    scheme=ProtocolScheme.HTTP
-                    httpHeaders {
-                        httpHeader("X-Shutdown", "graceful")
-                    }
-                }
-            }
-        }.build()
-
-        assertIs<LifecycleSpec.HttpGetAction>(lifecycleSpec.postStart)
-        assertEquals("/health", lifecycleSpec.postStart.path)
-        assertEquals(9999, lifecycleSpec.postStart.port)
-        assertEquals("localhost", lifecycleSpec.postStart.host)
-        assertEquals(ProtocolScheme.HTTPS, lifecycleSpec.postStart.scheme)
+        assertIs<LifecycleSpec.HttpGetAction>(httpGetMaxSpec.postStart)
+        assertEquals("/health", httpGetMaxSpec.postStart.path)
+        assertEquals(9999, httpGetMaxSpec.postStart.port)
+        assertEquals("localhost", httpGetMaxSpec.postStart.host)
+        assertEquals(ProtocolScheme.HTTPS, httpGetMaxSpec.postStart.scheme)
         assertEquals(
             mapOf("X-Custom-Header" to "value1", "Authorization" to "Bearer token"),
-            lifecycleSpec.postStart.httpHeaders
+            httpGetMaxSpec.postStart.httpHeaders
         )
-        assertIs<LifecycleSpec.HttpGetAction>(lifecycleSpec.preStop)
-        assertEquals("/shutdown", lifecycleSpec.preStop.path)
-        assertEquals(8888, lifecycleSpec.preStop.port)
-        assertEquals("localhost", lifecycleSpec.preStop.host)
-        assertEquals(ProtocolScheme.HTTP, lifecycleSpec.preStop.scheme)
-        assertEquals(mapOf("X-Shutdown" to "graceful"), lifecycleSpec.preStop.httpHeaders)
+        assertIs<LifecycleSpec.HttpGetAction>(httpGetMaxSpec.preStop)
+        assertEquals("/shutdown", httpGetMaxSpec.preStop.path)
+        assertEquals(8888, httpGetMaxSpec.preStop.port)
+        assertEquals("localhost", httpGetMaxSpec.preStop.host)
+        assertEquals(ProtocolScheme.HTTP, httpGetMaxSpec.preStop.scheme)
+        assertEquals(mapOf("X-Shutdown" to "graceful"), httpGetMaxSpec.preStop.httpHeaders)
     }
 
     @Test
     fun testHttpGetMaxYaml() {
-        val lifecycleSpec = LifecycleSpecBuilder().apply {
-            postStart {
-                httpGet(9999) {
-                    path="/health"
-                    host="localhost"
-                    scheme=ProtocolScheme.HTTPS
-                    httpHeaders {
-                        httpHeader("X-Custom-Header", "value1")
-                        httpHeader("Authorization", "Bearer token")
-                    }
-                }
-            }
-            preStop {
-                httpGet(8888) {
-                    path="/shutdown"
-                    host="localhost"
-                    scheme=ProtocolScheme.HTTP
-                    httpHeaders {
-                        httpHeader("X-Shutdown", "graceful")
-                    }
-                }
-            }
-        }.build()
-
-        val actualJson = lifecycleSpec.toJson()
         val expectedJson = """{
         |  "postStart": {
         |    "httpGet": {
@@ -240,38 +212,19 @@ class LifecycleSpecTest {
         |  }
         |}""".trimMargin()
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, httpGetMaxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testHttpGetMinContent() {
-        val lifecycleSpec = LifecycleSpecBuilder().apply {
-            postStart {
-                httpGet(9999)
-            }
-            preStop {
-                httpGet(8888)
-            }
-        }.build()
-
-        assertIs<LifecycleSpec.HttpGetAction>(lifecycleSpec.postStart)
-        assertEquals(9999, lifecycleSpec.postStart.port)
-        assertIs<LifecycleSpec.HttpGetAction>(lifecycleSpec.preStop)
-        assertEquals(8888, lifecycleSpec.preStop.port)
+        assertIs<LifecycleSpec.HttpGetAction>(httpGetMinSpec.postStart)
+        assertEquals(9999, httpGetMinSpec.postStart.port)
+        assertIs<LifecycleSpec.HttpGetAction>(httpGetMinSpec.preStop)
+        assertEquals(8888, httpGetMinSpec.preStop.port)
     }
 
     @Test
     fun testHttpGetMinYaml() {
-        val lifecycleSpec = LifecycleSpecBuilder().apply {
-            postStart {
-                httpGet(9999)
-            }
-            preStop {
-                httpGet(8888)
-            }
-        }.build()
-
-        val actualJson = lifecycleSpec.toJson()
         val expectedJson = """{
         |  "postStart": {
         |    "httpGet": {
@@ -285,38 +238,19 @@ class LifecycleSpecTest {
         |  }
         |}""".trimMargin()
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, httpGetMinSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testSleepMaxContent() {
-        val lifecycleSpec = LifecycleSpecBuilder().apply {
-            postStart {
-                sleep(10.seconds.toJavaDuration())
-            }
-            preStop {
-                sleep(5.seconds.toJavaDuration())
-            }
-        }.build()
-
-        assertIs<LifecycleSpec.SleepAction>(lifecycleSpec.postStart)
-        assertEquals(10.seconds.toJavaDuration(), lifecycleSpec.postStart.seconds)
-        assertIs<LifecycleSpec.SleepAction>(lifecycleSpec.preStop)
-        assertEquals(5.seconds.toJavaDuration(), lifecycleSpec.preStop.seconds)
+        assertIs<LifecycleSpec.SleepAction>(sleepMaxSpec.postStart)
+        assertEquals(10.seconds.toJavaDuration(), sleepMaxSpec.postStart.seconds)
+        assertIs<LifecycleSpec.SleepAction>(sleepMaxSpec.preStop)
+        assertEquals(5.seconds.toJavaDuration(), sleepMaxSpec.preStop.seconds)
     }
 
     @Test
     fun testSleepMaxYaml() {
-        val lifecycleSpec = LifecycleSpecBuilder().apply {
-            postStart {
-                sleep(10.seconds.toJavaDuration())
-            }
-            preStop {
-                sleep(5.seconds.toJavaDuration())
-            }
-        }.build()
-
-        val actualJson = lifecycleSpec.toJson()
         val expectedJson = """{
         |  "postStart": {
         |    "sleep": {
@@ -330,22 +264,18 @@ class LifecycleSpecTest {
         |  }
         |}""".trimMargin()
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, sleepMaxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testMinContent() {
-        val lifecycleSpec = LifecycleSpecBuilder().build()
-
-        assertNull(lifecycleSpec.postStart)
-        assertNull(lifecycleSpec.preStop)
+        assertNull(minSpec.postStart)
+        assertNull(minSpec.preStop)
     }
 
     @Test
     fun testMinYaml() {
-        val lifecycleSpec = LifecycleSpecBuilder().build()
-
-        assertEquals("""{}""", lifecycleSpec.toJson())
+        assertEquals("""{}""", minSpec.toJson())
     }
 
 }

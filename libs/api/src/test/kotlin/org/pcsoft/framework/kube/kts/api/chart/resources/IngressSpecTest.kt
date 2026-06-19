@@ -13,7 +13,6 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
 import org.apache.commons.io.IOUtils
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.RulesSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.ServiceBackendSpec
@@ -24,6 +23,9 @@ import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 import java.util.UUID
+import kotlin.test.assertEquals
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 @Suppress("DEPRECATION")
 class IngressSpecTest {
@@ -73,41 +75,57 @@ class IngressSpecTest {
                 }
             }
         }.build()
+
+        private val minSpec = IngressSpecBuilder().build()
+
+        private val minTlsSpec = IngressSpecBuilder().apply {
+            addTls { }
+        }.build()
+
+        private val minRuleSpec = IngressSpecBuilder().apply {
+            addRule {
+                addHttpPath(RulesSpec.HttpPathConfig.PathType.ImplementationSpecific) {
+                    serviceBackend("ruleService") {
+                        port(80)
+                    }
+                }
+            }
+        }.build()
     }
 
     @Test
     fun testMaxContent() {
-        Assertions.assertEquals("className", maxSpec.ingressClassName)
+        assertEquals("className", maxSpec.ingressClassName)
 
-        Assertions.assertNotNull(maxSpec.defaultBackend)
-        KotlinAssertions.assertInstanceOf<ServiceBackendSpec>(maxSpec.defaultBackend!!) {
-            Assertions.assertEquals("service", it.name)
-            Assertions.assertNotNull(it.port)
-            Assertions.assertEquals(9999, it.port.number)
-            Assertions.assertNull(it.port.name)
+        assertNotNull(maxSpec.defaultBackend)
+        KotlinAssertions.assertInstanceOf<ServiceBackendSpec>(maxSpec.defaultBackend) {
+            assertEquals("service", it.name)
+            assertNotNull(it.port)
+            assertEquals(9999, it.port.number)
+            assertNull(it.port.name)
         }
 
-        Assertions.assertNotNull(maxSpec.tls)
-        KotlinAssertions.assertList(1, maxSpec.tls!!) {
-            Assertions.assertEquals("secretName", it.secretName)
-            Assertions.assertNotNull(it.hosts)
-            KotlinAssertions.assertList(1, it.hosts!!) {
-                Assertions.assertEquals("host.example.com", it)
+        assertNotNull(maxSpec.tls)
+        KotlinAssertions.assertList(1, maxSpec.tls) {
+            assertEquals("secretName", it.secretName)
+            assertNotNull(it.hosts)
+            KotlinAssertions.assertList(1, it.hosts) {
+                assertEquals("host.example.com", it)
             }
         }
 
-        Assertions.assertNotNull(maxSpec.rules)
-        KotlinAssertions.assertList(1, maxSpec.rules!!) {
-            Assertions.assertEquals("rule.example.com", it.host)
+        assertNotNull(maxSpec.rules)
+        KotlinAssertions.assertList(1, maxSpec.rules) {
+            assertEquals("rule.example.com", it.host)
             KotlinAssertions.assertList(1, it.http) {
-                Assertions.assertEquals("path", it.path)
-                Assertions.assertEquals(RulesSpec.HttpPathConfig.PathType.Exact, it.pathType)
-                Assertions.assertNotNull(it.backend)
+                assertEquals("path", it.path)
+                assertEquals(RulesSpec.HttpPathConfig.PathType.Exact, it.pathType)
+                assertNotNull(it.backend)
                 KotlinAssertions.assertInstanceOf<ServiceBackendSpec>(it.backend) {
-                    Assertions.assertEquals("ruleService", it.name)
-                    Assertions.assertNotNull(it.port)
-                    Assertions.assertEquals(7777, it.port.number)
-                    Assertions.assertNull(it.port.name)
+                    assertEquals("ruleService", it.name)
+                    assertNotNull(it.port)
+                    assertEquals(7777, it.port.number)
+                    assertNull(it.port.name)
                 }
             }
         }
@@ -120,78 +138,55 @@ class IngressSpecTest {
         val actualJson = maxTemplate.toJson()
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
-
     }
 
     @Test
     fun testMinContent() {
-        val minSpec = IngressSpecBuilder().build()
-
-        Assertions.assertNull(minSpec.ingressClassName)
-        Assertions.assertNull(minSpec.defaultBackend)
-        Assertions.assertNull(minSpec.tls)
-        Assertions.assertNull(minSpec.rules)
+        assertNull(minSpec.ingressClassName)
+        assertNull(minSpec.defaultBackend)
+        assertNull(minSpec.tls)
+        assertNull(minSpec.rules)
     }
 
     @Test
     fun testMinYaml() {
-        val minSpec = IngressSpecBuilder().build()
-
         JSONAssert.assertEquals("""{}""", minSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testMinTlsContent() {
-        val spec = IngressSpecBuilder().apply {
-            addTls { }
-        }.build()
-
-        Assertions.assertNotNull(spec.tls)
-        KotlinAssertions.assertList(1, spec.tls!!) {
-            Assertions.assertNull(it.secretName)
-            Assertions.assertNull(it.hosts)
+        assertNotNull(minTlsSpec.tls)
+        KotlinAssertions.assertList(1, minTlsSpec.tls) {
+            assertNull(it.secretName)
+            assertNull(it.hosts)
         }
     }
 
     @Test
     fun testMinTlsYaml() {
-        val spec = IngressSpecBuilder().apply {
-            addTls { }
-        }.build()
-
         JSONAssert.assertEquals(
             """{
               |  "tls": [
               |    {}
               |  ]
               |}""".trimMargin(),
-            spec.toJson(),
+            minTlsSpec.toJson(),
             JSONCompareMode.LENIENT
         )
     }
 
     @Test
     fun testMinRuleContent() {
-        val spec = IngressSpecBuilder().apply {
-            addRule {
-                addHttpPath(RulesSpec.HttpPathConfig.PathType.ImplementationSpecific) {
-                    serviceBackend("ruleService") {
-                        port(80)
-                    }
-                }
-            }
-        }.build()
-
-        Assertions.assertNotNull(spec.rules)
-        KotlinAssertions.assertList(1, spec.rules!!) {
-            Assertions.assertNull(it.host)
+        assertNotNull(minRuleSpec.rules)
+        KotlinAssertions.assertList(1, minRuleSpec.rules) {
+            assertNull(it.host)
             KotlinAssertions.assertList(1, it.http) {
-                Assertions.assertNull(it.path)
-                Assertions.assertEquals(RulesSpec.HttpPathConfig.PathType.ImplementationSpecific, it.pathType)
+                assertNull(it.path)
+                assertEquals(RulesSpec.HttpPathConfig.PathType.ImplementationSpecific, it.pathType)
                 KotlinAssertions.assertInstanceOf<ServiceBackendSpec>(it.backend) {
-                    Assertions.assertEquals("ruleService", it.name)
-                    Assertions.assertEquals(80, it.port.number)
-                    Assertions.assertNull(it.port.name)
+                    assertEquals("ruleService", it.name)
+                    assertEquals(80, it.port.number)
+                    assertNull(it.port.name)
                 }
             }
         }
@@ -199,16 +194,6 @@ class IngressSpecTest {
 
     @Test
     fun testMinRuleYaml() {
-        val spec = IngressSpecBuilder().apply {
-            addRule {
-                addHttpPath(RulesSpec.HttpPathConfig.PathType.ImplementationSpecific) {
-                    serviceBackend("ruleService") {
-                        port(80)
-                    }
-                }
-            }
-        }.build()
-
         JSONAssert.assertEquals(
             """{
               |  "rules": [
@@ -231,7 +216,7 @@ class IngressSpecTest {
               |    }
               |  ]
               |}""".trimMargin(),
-            spec.toJson(),
+            minRuleSpec.toJson(),
             JSONCompareMode.LENIENT
         )
     }

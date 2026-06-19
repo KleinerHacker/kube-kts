@@ -12,17 +12,20 @@
 
 package org.pcsoft.framework.kube.kts.api.utils
 
-import org.junit.jupiter.api.Assertions
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertNotNull
+import kotlin.test.assertTrue
 
 object KotlinAssertions {
     inline fun <reified T> assertInstanceOf(actual: Any, andThen: (T) -> Unit) {
-        Assertions.assertInstanceOf(T::class.java, actual)
-        andThen(actual as T)
+        val typed = assertIs<T>(actual)
+        andThen(typed)
     }
 
     fun <T> assertList(expectedSize: Int, actual: Iterable<T>, visitor: (T, Int) -> Unit) {
-        Assertions.assertEquals(expectedSize, actual.count())
+        assertEquals(expectedSize, actual.count())
 
         for ((index, item) in actual.withIndex()) {
             visitor(item, index)
@@ -33,13 +36,13 @@ object KotlinAssertions {
         assertList(expectedSize, actual.asIterable()) { item, _ -> visitor(item) }
 
     fun <T> assertNotNull(actual: T?, andThen: (T) -> Unit) {
-        Assertions.assertNotNull(actual)
-        andThen(actual!!)
+        val notNull = assertNotNull(actual)
+        andThen(notNull)
     }
 
     fun assertCalled(action: (AtomicBoolean) -> Unit) {
         val executed = AtomicBoolean(false)
         action(executed)
-        Assertions.assertTrue(executed.get())
+        assertTrue(executed.get())
     }
 }

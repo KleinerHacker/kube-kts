@@ -13,7 +13,6 @@
 package org.pcsoft.framework.kube.kts.api.chart
 
 import org.apache.commons.io.IOUtils
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.types.DependencySpec
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
@@ -23,6 +22,10 @@ import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 import java.net.URI
+import kotlin.test.assertEquals
+import kotlin.test.assertIs
+import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 class ChartSpecTest {
     companion object {
@@ -61,14 +64,16 @@ class ChartSpecTest {
 
             addAnnotation("annotation", "value")
         }
+
+        private val minChart = chart("name", "1.0.0") {}
     }
 
     @Test
     fun testMaxContent() {
-        Assertions.assertEquals(ChartSpec.API_VERSION, maxChart.apiVersion)
-        Assertions.assertEquals("name", maxChart.name)
-        Assertions.assertEquals("1.0.0", maxChart.version)
-        Assertions.assertEquals(
+        assertEquals(ChartSpec.API_VERSION, maxChart.apiVersion)
+        assertEquals("name", maxChart.name)
+        assertEquals("1.0.0", maxChart.version)
+        assertEquals(
             KubeVersion(
                 listOf(
                     KubeVersion.Item("1.0.0", KubeVersion.ItemEquality.GREATER_EQUAL),
@@ -76,53 +81,47 @@ class ChartSpecTest {
                 )
             ), maxChart.kubeVersion
         )
-        Assertions.assertEquals("description", maxChart.description)
-        Assertions.assertEquals(ChartSpec.Type.Library, maxChart.type)
-        Assertions.assertEquals(setOf("keyword"), maxChart.keywords)
-        Assertions.assertEquals("home", maxChart.home)
-        Assertions.assertEquals(listOf(URI("https://source.example.com")), maxChart.sources)
+        assertEquals("description", maxChart.description)
+        assertEquals(ChartSpec.Type.Library, maxChart.type)
+        assertEquals(setOf("keyword"), maxChart.keywords)
+        assertEquals("home", maxChart.home)
+        assertEquals(listOf(URI("https://source.example.com")), maxChart.sources)
 
-        Assertions.assertNotNull(maxChart.dependencies)
-        Assertions.assertEquals(1, maxChart.dependencies!!.size)
-        Assertions.assertEquals("dependency", maxChart.dependencies[0].name)
-        Assertions.assertEquals("1.0.0", maxChart.dependencies[0].version)
-        Assertions.assertEquals(URI("https://repo.example.com"), maxChart.dependencies[0].repository)
-        Assertions.assertEquals("alias", maxChart.dependencies[0].alias)
-        Assertions.assertEquals("condition", maxChart.dependencies[0].condition)
-        Assertions.assertEquals(setOf("tag"), maxChart.dependencies[0].tags)
-        Assertions.assertNotNull(maxChart.dependencies[0].importValues)
-        Assertions.assertEquals(2, maxChart.dependencies[0].importValues!!.size)
-        Assertions.assertInstanceOf(
-            DependencySpec.PathImportValue::class.java,
-            maxChart.dependencies[0].importValues!![0]
-        )
-        Assertions.assertEquals(
+        assertNotNull(maxChart.dependencies)
+        assertEquals(1, maxChart.dependencies.size)
+        assertEquals("dependency", maxChart.dependencies[0].name)
+        assertEquals("1.0.0", maxChart.dependencies[0].version)
+        assertEquals(URI("https://repo.example.com"), maxChart.dependencies[0].repository)
+        assertEquals("alias", maxChart.dependencies[0].alias)
+        assertEquals("condition", maxChart.dependencies[0].condition)
+        assertEquals(setOf("tag"), maxChart.dependencies[0].tags)
+        assertNotNull(maxChart.dependencies[0].importValues)
+        assertEquals(2, maxChart.dependencies[0].importValues!!.size)
+        assertIs<DependencySpec.PathImportValue>(maxChart.dependencies[0].importValues!![0])
+        assertEquals(
             "path",
             (maxChart.dependencies[0].importValues!![0] as DependencySpec.PathImportValue).path
         )
-        Assertions.assertInstanceOf(
-            DependencySpec.MappingImportValue::class.java,
-            maxChart.dependencies[0].importValues!![1]
-        )
-        Assertions.assertEquals(
+        assertIs<DependencySpec.MappingImportValue>(maxChart.dependencies[0].importValues!![1])
+        assertEquals(
             "key",
             (maxChart.dependencies[0].importValues!![1] as DependencySpec.MappingImportValue).child
         )
-        Assertions.assertEquals(
+        assertEquals(
             "value",
             (maxChart.dependencies[0].importValues!![1] as DependencySpec.MappingImportValue).parent
         )
 
-        Assertions.assertNotNull(maxChart.maintainers)
-        Assertions.assertEquals(1, maxChart.maintainers!!.size)
-        Assertions.assertEquals("maintainer", maxChart.maintainers[0].name)
-        Assertions.assertEquals(MailAddress.parse("maintainer@mail.com"), maxChart.maintainers[0].email)
-        Assertions.assertEquals(URI("https://url.example.com"), maxChart.maintainers[0].url)
+        assertNotNull(maxChart.maintainers)
+        assertEquals(1, maxChart.maintainers.size)
+        assertEquals("maintainer", maxChart.maintainers[0].name)
+        assertEquals(MailAddress.parse("maintainer@mail.com"), maxChart.maintainers[0].email)
+        assertEquals(URI("https://url.example.com"), maxChart.maintainers[0].url)
 
-        Assertions.assertEquals(URI("https://icon.example.com"), maxChart.icon)
-        Assertions.assertEquals("appVersion", maxChart.appVersion)
-        Assertions.assertEquals(true, maxChart.deprecated)
-        Assertions.assertEquals(mapOf("annotation" to "value"), maxChart.annotations)
+        assertEquals(URI("https://icon.example.com"), maxChart.icon)
+        assertEquals("appVersion", maxChart.appVersion)
+        assertEquals(true, maxChart.deprecated)
+        assertEquals(mapOf("annotation" to "value"), maxChart.annotations)
     }
 
     @Test
@@ -136,29 +135,25 @@ class ChartSpecTest {
 
     @Test
     fun testMinContent() {
-        val minChart = chart("name", "1.0.0") {}
-
-        Assertions.assertEquals(ChartSpec.API_VERSION, minChart.apiVersion)
-        Assertions.assertEquals("name", minChart.name)
-        Assertions.assertEquals("1.0.0", minChart.version)
-        Assertions.assertNull(minChart.kubeVersion)
-        Assertions.assertNull(minChart.description)
-        Assertions.assertNull(minChart.type)
-        Assertions.assertNull(minChart.keywords)
-        Assertions.assertNull(minChart.home)
-        Assertions.assertNull(minChart.sources)
-        Assertions.assertNull(minChart.dependencies)
-        Assertions.assertNull(minChart.maintainers)
-        Assertions.assertNull(minChart.icon)
-        Assertions.assertNull(minChart.appVersion)
-        Assertions.assertNull(minChart.deprecated)
-        Assertions.assertNull(minChart.annotations)
+        assertEquals(ChartSpec.API_VERSION, minChart.apiVersion)
+        assertEquals("name", minChart.name)
+        assertEquals("1.0.0", minChart.version)
+        assertNull(minChart.kubeVersion)
+        assertNull(minChart.description)
+        assertNull(minChart.type)
+        assertNull(minChart.keywords)
+        assertNull(minChart.home)
+        assertNull(minChart.sources)
+        assertNull(minChart.dependencies)
+        assertNull(minChart.maintainers)
+        assertNull(minChart.icon)
+        assertNull(minChart.appVersion)
+        assertNull(minChart.deprecated)
+        assertNull(minChart.annotations)
     }
 
     @Test
     fun testMinYaml() {
-        val minChart = chart("name", "1.0.0") {}
-
         JSONAssert.assertEquals(
             """{
               |  "apiVersion": "v2",
