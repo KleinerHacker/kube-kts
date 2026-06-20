@@ -149,6 +149,14 @@ class PodSpecTest {
             shareProcessNamespace = true
             setHostnameAsFQDN = false
         }.build()
+
+        private val minSpec = PodSpecBuilder().apply {
+            containers {
+                container("name", "image") {
+
+                }
+            }
+        }.build()
     }
 
     @Test
@@ -361,13 +369,7 @@ class PodSpecTest {
 
     @Test
     fun testMinContent() {
-        val spec = PodSpecBuilder().apply {
-            containers {
-                container("name", "image") {
-
-                }
-            }
-        }.build()
+        val spec = minSpec
 
         assertEquals("name", spec.containers.first().name)
         assertEquals("image", spec.containers.first().image)
@@ -410,15 +412,7 @@ class PodSpecTest {
 
     @Test
     fun testMinYaml() {
-        val spec = PodSpecBuilder().apply {
-            containers {
-                container("name", "image") {
-
-                }
-            }
-        }.build()
-
-        JSONAssert.assertEquals("""{"containers":[{"name":"name","image":"image"}]}""", spec.toJson(), JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals("""{"containers":[{"name":"name","image":"image"}]}""", minSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
 }

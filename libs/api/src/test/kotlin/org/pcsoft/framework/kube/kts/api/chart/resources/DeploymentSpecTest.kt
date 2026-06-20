@@ -14,7 +14,7 @@ package org.pcsoft.framework.kube.kts.api.chart.resources
 
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertFailsWith
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.DeploymentStrategySpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.LabelSelectorRequirementSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.PodSpec
@@ -107,6 +107,24 @@ class DeploymentSpecTest {
                 }
             }
         }.build()
+
+        private val minSpec = DeploymentSpecBuilder().apply {
+            selector {
+                matchLabels {
+                    label("app", "demo")
+                }
+            }
+
+            template {
+                spec {
+                    containers {
+                        container("name", "image") {
+
+                        }
+                    }
+                }
+            }
+        }.build()
     }
 
     @Test
@@ -151,23 +169,7 @@ class DeploymentSpecTest {
 
     @Test
     fun testMinContent() {
-        val deploymentSpec = DeploymentSpecBuilder().apply {
-            selector {
-                matchLabels {
-                    label("app", "demo")
-                }
-            }
-
-            template {
-                spec {
-                    containers {
-                        container("name", "image") {
-
-                        }
-                    }
-                }
-            }
-        }.build()
+        val deploymentSpec = minSpec
 
         assertNull(deploymentSpec.replicas)
         assertEquals("demo", deploymentSpec.selector.matchLabels!!["app"])
@@ -185,24 +187,6 @@ class DeploymentSpecTest {
 
     @Test
     fun testMinYaml() {
-        val deploymentSpec = DeploymentSpecBuilder().apply {
-            selector {
-                matchLabels {
-                    label("app", "demo")
-                }
-            }
-
-            template {
-                spec {
-                    containers {
-                        container("name", "image") {
-
-                        }
-                    }
-                }
-            }
-        }.build()
-
         JSONAssert.assertEquals(
             """{
               |  "selector": {
@@ -221,14 +205,14 @@ class DeploymentSpecTest {
               |    }
               |  }
               |}""".trimMargin(),
-            deploymentSpec.toJson(),
+            minSpec.toJson(),
             JSONCompareMode.LENIENT
         )
     }
 
     @Test
     fun testMissingSelectorContent() {
-        assertThrows<IllegalArgumentException> {
+        assertFailsWith<IllegalArgumentException> {
             DeploymentSpecBuilder().apply {
                 template {
                     spec {
@@ -245,7 +229,7 @@ class DeploymentSpecTest {
 
     @Test
     fun testMissingTemplateContent() {
-        assertThrows<IllegalArgumentException> {
+        assertFailsWith<IllegalArgumentException> {
             DeploymentSpecBuilder().apply {
                 selector {
                     matchLabels {

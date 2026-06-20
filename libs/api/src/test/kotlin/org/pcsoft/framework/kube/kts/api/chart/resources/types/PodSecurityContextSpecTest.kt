@@ -24,10 +24,8 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class PodSecurityContextSpecTest {
-
-    @Test
-    fun testMaxContent() {
-        val spec = PodSecurityContextSpecBuilder().apply {
+    companion object {
+        private val maxSpec = PodSecurityContextSpecBuilder().apply {
             runAsUser = 1000
             runAsGroup = 2000
             runAsNonRoot = true
@@ -61,76 +59,70 @@ class PodSecurityContextSpecTest {
             }
         }.build()
 
-        assertEquals(1000, spec.runAsUser)
-        assertEquals(2000, spec.runAsGroup)
-        assertEquals(true, spec.runAsNonRoot)
+        private val mediumSpec = PodSecurityContextSpecBuilder().apply {
+            runAsUser = 1000
+            runAsGroup = 2000
+            runAsNonRoot = true
+            seLinuxOptions {
 
-        assertNotNull(spec.seLinuxOptions)
-        assertEquals("s0:c123,c456", spec.seLinuxOptions.level)
-        assertEquals("role", spec.seLinuxOptions.role)
-        assertEquals("type", spec.seLinuxOptions.type)
-        assertEquals("user", spec.seLinuxOptions.user)
+            }
+            seccompProfile(SecurityContextSpec.ProfileType.RuntimeDefault) {
 
-        assertNotNull(spec.seccompProfile)
-        assertEquals(SecurityContextSpec.ProfileType.Localhost, spec.seccompProfile.type)
-        assertNotNull(spec.seccompProfile.localhostProfile)
-        assertEquals("localhost", spec.seccompProfile.localhostProfile)
+            }
+            appArmorProfile(SecurityContextSpec.ProfileType.RuntimeDefault) {
 
-        assertNotNull(spec.appArmorProfile)
-        assertEquals(SecurityContextSpec.ProfileType.Localhost, spec.appArmorProfile.type)
-        assertNotNull(spec.appArmorProfile.localhostProfile)
-        assertEquals("localhost", spec.appArmorProfile.localhostProfile)
+            }
+            windowsOptions {
 
-        assertNotNull(spec.windowsOptions)
-        assertEquals("gmsaCredentialSpecName", spec.windowsOptions.gmsaCredentialSpecName)
-        assertEquals("gmsaCredentialSpec", spec.windowsOptions.gmsaCredentialSpec)
-        assertEquals("runAsUserName", spec.windowsOptions.runAsUserName)
-        assertEquals(true, spec.windowsOptions.hostProcess)
+            }
+            supplementalGroups {
 
-        assertEquals(9999L, spec.fsGroup)
-        assertEquals(FSGroupChangePolicy.OnRootMismatch, spec.fsGroupChangePolicy)
-        assertEquals(listOf(1000L, 2000L), spec.supplementalGroups)
-        assertEquals(SupplementalGroupsPolicy.Merge, spec.supplementalGroupsPolicy)
-        assertEquals(mapOf("net.ipv4.ip_forward" to "1"), spec.sysctls)
+            }
+            sysctls {
+
+            }
+        }.build()
+
+        private val minSpec = PodSecurityContextSpecBuilder().build()
+    }
+
+    @Test
+    fun testMaxContent() {
+        assertEquals(1000, maxSpec.runAsUser)
+        assertEquals(2000, maxSpec.runAsGroup)
+        assertEquals(true, maxSpec.runAsNonRoot)
+
+        assertNotNull(maxSpec.seLinuxOptions)
+        assertEquals("s0:c123,c456", maxSpec.seLinuxOptions.level)
+        assertEquals("role", maxSpec.seLinuxOptions.role)
+        assertEquals("type", maxSpec.seLinuxOptions.type)
+        assertEquals("user", maxSpec.seLinuxOptions.user)
+
+        assertNotNull(maxSpec.seccompProfile)
+        assertEquals(SecurityContextSpec.ProfileType.Localhost, maxSpec.seccompProfile.type)
+        assertNotNull(maxSpec.seccompProfile.localhostProfile)
+        assertEquals("localhost", maxSpec.seccompProfile.localhostProfile)
+
+        assertNotNull(maxSpec.appArmorProfile)
+        assertEquals(SecurityContextSpec.ProfileType.Localhost, maxSpec.appArmorProfile.type)
+        assertNotNull(maxSpec.appArmorProfile.localhostProfile)
+        assertEquals("localhost", maxSpec.appArmorProfile.localhostProfile)
+
+        assertNotNull(maxSpec.windowsOptions)
+        assertEquals("gmsaCredentialSpecName", maxSpec.windowsOptions.gmsaCredentialSpecName)
+        assertEquals("gmsaCredentialSpec", maxSpec.windowsOptions.gmsaCredentialSpec)
+        assertEquals("runAsUserName", maxSpec.windowsOptions.runAsUserName)
+        assertEquals(true, maxSpec.windowsOptions.hostProcess)
+
+        assertEquals(9999L, maxSpec.fsGroup)
+        assertEquals(FSGroupChangePolicy.OnRootMismatch, maxSpec.fsGroupChangePolicy)
+        assertEquals(listOf(1000L, 2000L), maxSpec.supplementalGroups)
+        assertEquals(SupplementalGroupsPolicy.Merge, maxSpec.supplementalGroupsPolicy)
+        assertEquals(mapOf("net.ipv4.ip_forward" to "1"), maxSpec.sysctls)
     }
 
     @Test
     fun testMaxYaml() {
-        val spec = PodSecurityContextSpecBuilder().apply {
-            runAsUser = 1000
-            runAsGroup = 2000
-            runAsNonRoot = true
-            seLinuxOptions {
-                level = "s0:c123,c456"
-                role = "role"
-                type = "type"
-                user = "user"
-            }
-            seccompProfile(SecurityContextSpec.ProfileType.Localhost) {
-                localhostProfile = "localhost"
-            }
-            appArmorProfile(SecurityContextSpec.ProfileType.Localhost) {
-                localhostProfile = "localhost"
-            }
-            windowsOptions {
-                gmsaCredentialSpecName = "gmsaCredentialSpecName"
-                gmsaCredentialSpec = "gmsaCredentialSpec"
-                runAsUserName = "runAsUserName"
-                hostProcess = true
-            }
-            fsGroup = 9999
-            fsGroupChangePolicy = FSGroupChangePolicy.OnRootMismatch
-            supplementalGroups {
-                group(1000)
-                group(2000)
-            }
-            supplementalGroupsPolicy = SupplementalGroupsPolicy.Merge
-            sysctls {
-                sysctl("net.ipv4.ip_forward", "1")
-            }
-        }.build()
-
-        val actualJson = spec.toJson()
         val expectedJson = """{
             |  "runAsUser": 1000,
             |  "runAsGroup": 2000,
@@ -167,96 +159,44 @@ class PodSecurityContextSpecTest {
             |  ]
             |}""".trimMargin()
 
-        println(actualJson)
-        println(expectedJson.lines().joinToString("") { it.trim().replace(": ", ":") })
-
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, maxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testMediumContent() {
-        val spec = PodSecurityContextSpecBuilder().apply {
-            runAsUser = 1000
-            runAsGroup = 2000
-            runAsNonRoot = true
-            seLinuxOptions {
+        assertEquals(1000, mediumSpec.runAsUser)
+        assertEquals(2000, mediumSpec.runAsGroup)
+        assertEquals(true, mediumSpec.runAsNonRoot)
 
-            }
-            seccompProfile(SecurityContextSpec.ProfileType.RuntimeDefault) {
+        assertNotNull(mediumSpec.seLinuxOptions)
+        assertNull(mediumSpec.seLinuxOptions.level)
+        assertNull(mediumSpec.seLinuxOptions.role)
+        assertNull(mediumSpec.seLinuxOptions.type)
+        assertNull(mediumSpec.seLinuxOptions.user)
 
-            }
-            appArmorProfile(SecurityContextSpec.ProfileType.RuntimeDefault) {
+        assertNotNull(mediumSpec.seccompProfile)
+        assertEquals(SecurityContextSpec.ProfileType.RuntimeDefault, mediumSpec.seccompProfile.type)
+        assertNull(mediumSpec.seccompProfile.localhostProfile)
 
-            }
-            windowsOptions {
+        assertNotNull(mediumSpec.appArmorProfile)
+        assertEquals(SecurityContextSpec.ProfileType.RuntimeDefault, mediumSpec.appArmorProfile.type)
+        assertNull(mediumSpec.appArmorProfile.localhostProfile)
 
-            }
-            supplementalGroups {
+        assertNotNull(mediumSpec.windowsOptions)
+        assertNull(mediumSpec.windowsOptions.gmsaCredentialSpecName)
+        assertNull(mediumSpec.windowsOptions.gmsaCredentialSpec)
+        assertNull(mediumSpec.windowsOptions.runAsUserName)
+        assertNull(mediumSpec.windowsOptions.hostProcess)
 
-            }
-            sysctls {
-
-            }
-        }.build()
-
-        assertEquals(1000, spec.runAsUser)
-        assertEquals(2000, spec.runAsGroup)
-        assertEquals(true, spec.runAsNonRoot)
-
-        assertNotNull(spec.seLinuxOptions)
-        assertNull(spec.seLinuxOptions.level)
-        assertNull(spec.seLinuxOptions.role)
-        assertNull(spec.seLinuxOptions.type)
-        assertNull(spec.seLinuxOptions.user)
-
-        assertNotNull(spec.seccompProfile)
-        assertEquals(SecurityContextSpec.ProfileType.RuntimeDefault, spec.seccompProfile.type)
-        assertNull(spec.seccompProfile.localhostProfile)
-
-        assertNotNull(spec.appArmorProfile)
-        assertEquals(SecurityContextSpec.ProfileType.RuntimeDefault, spec.appArmorProfile.type)
-        assertNull(spec.appArmorProfile.localhostProfile)
-
-        assertNotNull(spec.windowsOptions)
-        assertNull(spec.windowsOptions.gmsaCredentialSpecName)
-        assertNull(spec.windowsOptions.gmsaCredentialSpec)
-        assertNull(spec.windowsOptions.runAsUserName)
-        assertNull(spec.windowsOptions.hostProcess)
-
-        assertNull(spec.fsGroup)
-        assertNull(spec.fsGroupChangePolicy)
-        assertNull(spec.supplementalGroups)
-        assertNull(spec.supplementalGroupsPolicy)
-        assertNull(spec.sysctls)
+        assertNull(mediumSpec.fsGroup)
+        assertNull(mediumSpec.fsGroupChangePolicy)
+        assertNull(mediumSpec.supplementalGroups)
+        assertNull(mediumSpec.supplementalGroupsPolicy)
+        assertNull(mediumSpec.sysctls)
     }
 
     @Test
     fun testMediumYaml() {
-        val spec = PodSecurityContextSpecBuilder().apply {
-            runAsUser = 1000
-            runAsGroup = 2000
-            runAsNonRoot = true
-            seLinuxOptions {
-
-            }
-            seccompProfile(SecurityContextSpec.ProfileType.RuntimeDefault) {
-
-            }
-            appArmorProfile(SecurityContextSpec.ProfileType.RuntimeDefault) {
-
-            }
-            windowsOptions {
-
-            }
-            supplementalGroups {
-
-            }
-            sysctls {
-
-            }
-        }.build()
-
-        val actualJson = spec.toJson()
         val expectedJson = """{
             |  "runAsUser": 1000,
             |  "runAsGroup": 2000,
@@ -271,32 +211,28 @@ class PodSecurityContextSpecTest {
             |  "windowsOptions": {}
             |}""".trimMargin()
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, mediumSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testMinContent() {
-        val spec = PodSecurityContextSpecBuilder().build()
-
-        assertNull(spec.runAsUser)
-        assertNull(spec.runAsGroup)
-        assertNull(spec.runAsNonRoot)
-        assertNull(spec.seLinuxOptions)
-        assertNull(spec.seccompProfile)
-        assertNull(spec.appArmorProfile)
-        assertNull(spec.windowsOptions)
-        assertNull(spec.fsGroup)
-        assertNull(spec.fsGroupChangePolicy)
-        assertNull(spec.supplementalGroups)
-        assertNull(spec.supplementalGroupsPolicy)
-        assertNull(spec.sysctls)
+        assertNull(minSpec.runAsUser)
+        assertNull(minSpec.runAsGroup)
+        assertNull(minSpec.runAsNonRoot)
+        assertNull(minSpec.seLinuxOptions)
+        assertNull(minSpec.seccompProfile)
+        assertNull(minSpec.appArmorProfile)
+        assertNull(minSpec.windowsOptions)
+        assertNull(minSpec.fsGroup)
+        assertNull(minSpec.fsGroupChangePolicy)
+        assertNull(minSpec.supplementalGroups)
+        assertNull(minSpec.supplementalGroupsPolicy)
+        assertNull(minSpec.sysctls)
     }
 
     @Test
     fun testMinYaml() {
-        val spec = PodSecurityContextSpecBuilder().build()
-
-        JSONAssert.assertEquals("""{}""", spec.toJson(), JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals("""{}""", minSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test

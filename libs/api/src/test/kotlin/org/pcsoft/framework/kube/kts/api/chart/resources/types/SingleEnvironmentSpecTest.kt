@@ -20,90 +20,68 @@ import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
 class SingleEnvironmentSpecTest {
-
-    @Test
-    fun testValueContent() {
-        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
+    companion object {
+        private val valueSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
             from {
                 value("my-static-value")
             }
         }.build()
 
-        assertEquals("MY_VAR", envSpec.name)
-        assertIs<SingleEnvironmentSpec.ValueSource>(envSpec.source)
-        assertEquals("my-static-value", envSpec.source.value)
-    }
-
-    @Test
-    fun testValueYaml() {
-        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
-            from {
-                value("my-static-value")
-            }
-        }.build()
-
-        val actualJson = envSpec.toJson()
-        val expectedJson = """{"name":"MY_VAR","value":"my-static-value"}"""
-
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
-    }
-
-    @Test
-    fun testFromFieldContent() {
-        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
+        private val fieldSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
             from {
                 fieldReference("my-field")
             }
         }.build()
 
-        assertEquals("MY_VAR", envSpec.name)
-        assertIs<SingleEnvironmentSpec.FieldReferenceSource>(envSpec.source)
-        assertEquals("my-field", envSpec.source.fieldPath)
-    }
-
-    @Test
-    fun testFromResourceFieldContentYaml() {
-        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
+        private val resourceFieldSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
             from {
                 resourceFieldReference("my-field")
             }
         }.build()
 
-        val actualJson = envSpec.toJson()
-        val expectedJson = """{
-          |  "name": "MY_VAR",
-          |  "valueFrom": {
-          |    "resourceFieldRef": {
-          |      "resource": "my-field"
-          |    }
-          |  }
-          |}""".trimMargin()
+        private val secretSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
+            from {
+                secretKeyReference("my-secret", "my-key")
+            }
+        }.build()
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        private val configMapSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
+            from {
+                configMapKeyReference("my-config-map", "my-key")
+            }
+        }.build()
+    }
+
+    @Test
+    fun testValueContent() {
+        assertEquals("MY_VAR", valueSpec.name)
+        assertIs<SingleEnvironmentSpec.ValueSource>(valueSpec.source)
+        assertEquals("my-static-value", valueSpec.source.value)
+    }
+
+    @Test
+    fun testValueYaml() {
+        val expectedJson = """{"name":"MY_VAR","value":"my-static-value"}"""
+
+        JSONAssert.assertEquals(expectedJson, valueSpec.toJson(), JSONCompareMode.LENIENT)
+    }
+
+    @Test
+    fun testFromFieldContent() {
+        assertEquals("MY_VAR", fieldSpec.name)
+        assertIs<SingleEnvironmentSpec.FieldReferenceSource>(fieldSpec.source)
+        assertEquals("my-field", fieldSpec.source.fieldPath)
     }
 
     @Test
     fun testFromResourceFieldContent() {
-        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
-            from {
-                resourceFieldReference("my-field")
-            }
-        }.build()
-
-        assertEquals("MY_VAR", envSpec.name)
-        assertIs<SingleEnvironmentSpec.ResourceFieldReferenceSource>(envSpec.source)
-        assertEquals("my-field", envSpec.source.resource)
+        assertEquals("MY_VAR", resourceFieldSpec.name)
+        assertIs<SingleEnvironmentSpec.ResourceFieldReferenceSource>(resourceFieldSpec.source)
+        assertEquals("my-field", resourceFieldSpec.source.resource)
     }
 
     @Test
     fun testFromResourceFieldYaml() {
-        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
-            from {
-                resourceFieldReference("my-field")
-            }
-        }.build()
-
-        val actualJson = envSpec.toJson()
         val expectedJson = """{
           |  "name": "MY_VAR",
           |  "valueFrom": {
@@ -113,32 +91,19 @@ class SingleEnvironmentSpecTest {
           |  }
           |}""".trimMargin()
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, resourceFieldSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testFromSecretContent() {
-        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
-            from {
-                secretKeyReference("my-secret", "my-key")
-            }
-        }.build()
-
-        assertEquals("MY_VAR", envSpec.name)
-        assertIs<SingleEnvironmentSpec.SecretKeyReferenceSource>(envSpec.source)
-        assertEquals("my-key", envSpec.source.key)
-        assertEquals("my-secret", envSpec.source.name)
+        assertEquals("MY_VAR", secretSpec.name)
+        assertIs<SingleEnvironmentSpec.SecretKeyReferenceSource>(secretSpec.source)
+        assertEquals("my-key", secretSpec.source.key)
+        assertEquals("my-secret", secretSpec.source.name)
     }
 
     @Test
     fun testFromSecretYaml() {
-        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
-            from {
-                secretKeyReference("my-secret", "my-key")
-            }
-        }.build()
-
-        val actualJson = envSpec.toJson()
         val expectedJson = """{
           |  "name": "MY_VAR",
           |  "valueFrom": {
@@ -149,32 +114,19 @@ class SingleEnvironmentSpecTest {
           |  }
           |}""".trimMargin()
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, secretSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testFromConfigMapContent() {
-        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
-            from {
-                configMapKeyReference("my-config-map", "my-key")
-            }
-        }.build()
-
-        assertEquals("MY_VAR", envSpec.name)
-        assertIs<SingleEnvironmentSpec.ConfigMapKeyReferenceSource>(envSpec.source)
-        assertEquals("my-key", envSpec.source.key)
-        assertEquals("my-config-map", envSpec.source.name)
+        assertEquals("MY_VAR", configMapSpec.name)
+        assertIs<SingleEnvironmentSpec.ConfigMapKeyReferenceSource>(configMapSpec.source)
+        assertEquals("my-key", configMapSpec.source.key)
+        assertEquals("my-config-map", configMapSpec.source.name)
     }
 
     @Test
     fun testFromConfigMapYaml() {
-        val envSpec = SingleEnvironmentSpecBuilder("MY_VAR").apply {
-            from {
-                configMapKeyReference("my-config-map", "my-key")
-            }
-        }.build()
-
-        val actualJson = envSpec.toJson()
         val expectedJson = """{
           |  "name": "MY_VAR",
           |  "valueFrom": {
@@ -185,6 +137,6 @@ class SingleEnvironmentSpecTest {
           |  }
           |}""".trimMargin()
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, configMapSpec.toJson(), JSONCompareMode.LENIENT)
     }
 }

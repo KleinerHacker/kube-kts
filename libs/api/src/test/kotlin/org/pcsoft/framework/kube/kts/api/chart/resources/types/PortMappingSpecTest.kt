@@ -13,43 +13,39 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNull
 
 class PortMappingSpecTest {
-
-    @Test
-    fun testMaxContent() {
-        val spec = PortMappingSpecBuilder("name", 9999).apply {
+    companion object {
+        private val maxSpec = PortMappingSpecBuilder("name", 9999).apply {
             targetPort = 8888
             nodePort = 7777
             appProtocol = "http"
             protocol = Protocol.UDP
         }.build(ServiceSpec.Type.NodePort)
 
-        assertEquals("name", spec.name)
-        assertEquals(9999, spec.port)
-        assertEquals(8888, spec.targetPort)
-        assertEquals(7777, spec.nodePort)
-        assertEquals("http", spec.appProtocol)
-        assertEquals(Protocol.UDP, spec.protocol)
+        private val minSpec = PortMappingSpecBuilder("name", 9999).build(ServiceSpec.Type.LoadBalancer)
+    }
+
+    @Test
+    fun testMaxContent() {
+        assertEquals("name", maxSpec.name)
+        assertEquals(9999, maxSpec.port)
+        assertEquals(8888, maxSpec.targetPort)
+        assertEquals(7777, maxSpec.nodePort)
+        assertEquals("http", maxSpec.appProtocol)
+        assertEquals(Protocol.UDP, maxSpec.protocol)
     }
 
     @Test
     fun testMaxYaml() {
-        val spec = PortMappingSpecBuilder("name", 9999).apply {
-            this.targetPort = 8888
-            this.nodePort = 7777
-            this.appProtocol = "http"
-            this.protocol = Protocol.UDP
-        }.build(ServiceSpec.Type.NodePort)
-
-        val actualJson = spec.toJson()
+        val actualJson = maxSpec.toJson()
         val expectedJson = """{
           |  "name": "name",
           |  "port": 9999,
@@ -64,23 +60,17 @@ class PortMappingSpecTest {
 
     @Test
     fun testMinContent() {
-        val spec = PortMappingSpecBuilder("name", 9999).apply {
-        }.build(ServiceSpec.Type.LoadBalancer)
-
-        assertEquals("name", spec.name)
-        assertEquals(9999, spec.port)
-        assertNull(spec.targetPort)
-        assertNull(spec.nodePort)
-        assertNull(spec.appProtocol)
-        assertNull(spec.protocol)
-
+        assertEquals("name", minSpec.name)
+        assertEquals(9999, minSpec.port)
+        assertNull(minSpec.targetPort)
+        assertNull(minSpec.nodePort)
+        assertNull(minSpec.appProtocol)
+        assertNull(minSpec.protocol)
     }
 
     @Test
     fun testMinYaml() {
-        val spec = PortMappingSpecBuilder("name", 9999).build(ServiceSpec.Type.LoadBalancer)
-
-        val actualJson = spec.toJson()
+        val actualJson = minSpec.toJson()
         val expectedJson = """{"name":"name","port":9999}"""
 
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
@@ -88,7 +78,7 @@ class PortMappingSpecTest {
 
     @Test
     fun testNodePortNotFound() {
-        assertThrows<IllegalArgumentException> {
+        assertFailsWith<IllegalArgumentException> {
             PortMappingSpecBuilder("name", 9999).build(ServiceSpec.Type.NodePort)
         }
     }

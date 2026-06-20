@@ -23,10 +23,8 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class ContainerSecurityContextSpecTest {
-
-    @Test
-    fun testMaxContent() {
-        val spec = ContainerSecurityContextSpecBuilder().apply {
+    companion object {
+        private val maxSpec = ContainerSecurityContextSpecBuilder().apply {
             runAsUser = 1000
             runAsGroup = 2000
             runAsNonRoot = true
@@ -58,78 +56,75 @@ class ContainerSecurityContextSpecTest {
             }
         }.build()
 
-        assertEquals(1000, spec.runAsUser)
-        assertEquals(2000, spec.runAsGroup)
-        assertEquals(true, spec.runAsNonRoot)
-        assertEquals(true, spec.privileged)
-        assertEquals(true, spec.readOnlyRootFilesystem)
-        assertEquals(true, spec.allowPrivilegeEscalation)
-        assertEquals(ProcMountType.Unmasked, spec.procMount)
+        private val mediumSpec = ContainerSecurityContextSpecBuilder().apply {
+            runAsUser = 1000
+            runAsGroup = 2000
+            runAsNonRoot = true
+            privileged = true
+            readOnlyRootFilesystem = true
+            allowPrivilegeEscalation = true
+            procMount = ProcMountType.Unmasked
+            capabilities {
 
-        assertNotNull(spec.capabilities)
-        assertNotNull(spec.capabilities.add)
-        assertEquals("NET_ADMIN", spec.capabilities.add.first())
-        assertNotNull(spec.capabilities.drop)
-        assertEquals("ALL", spec.capabilities.drop.first())
+            }
+            seLinuxOptions {
 
-        assertNotNull(spec.seLinuxOptions)
-        assertEquals("s0:c123,c456", spec.seLinuxOptions.level)
-        assertEquals("role", spec.seLinuxOptions.role)
-        assertEquals("type", spec.seLinuxOptions.type)
-        assertEquals("user", spec.seLinuxOptions.user)
+            }
+            seccompProfile(SecurityContextSpec.ProfileType.RuntimeDefault) {
 
-        assertNotNull(spec.seccompProfile)
-        assertEquals(SecurityContextSpec.ProfileType.Localhost, spec.seccompProfile.type)
-        assertNotNull(spec.seccompProfile.localhostProfile)
-        assertEquals("localhost", spec.seccompProfile.localhostProfile)
+            }
+            appArmorProfile(SecurityContextSpec.ProfileType.RuntimeDefault) {
 
-        assertNotNull(spec.appArmorProfile)
-        assertEquals(SecurityContextSpec.ProfileType.Localhost, spec.appArmorProfile.type)
-        assertNotNull(spec.appArmorProfile.localhostProfile)
-        assertEquals("localhost", spec.appArmorProfile.localhostProfile)
+            }
+            windowsOptions {
 
-        assertNotNull(spec.windowsOptions)
-        assertEquals("gmsaCredentialSpecName", spec.windowsOptions.gmsaCredentialSpecName)
-        assertEquals("gmsaCredentialSpec", spec.windowsOptions.gmsaCredentialSpec)
-        assertEquals("runAsUserName", spec.windowsOptions.runAsUserName)
-        assertEquals(true, spec.windowsOptions.hostProcess)
+            }
+        }.build()
+
+        private val minSpec = ContainerSecurityContextSpecBuilder().build()
+    }
+
+    @Test
+    fun testMaxContent() {
+        assertEquals(1000, maxSpec.runAsUser)
+        assertEquals(2000, maxSpec.runAsGroup)
+        assertEquals(true, maxSpec.runAsNonRoot)
+        assertEquals(true, maxSpec.privileged)
+        assertEquals(true, maxSpec.readOnlyRootFilesystem)
+        assertEquals(true, maxSpec.allowPrivilegeEscalation)
+        assertEquals(ProcMountType.Unmasked, maxSpec.procMount)
+
+        assertNotNull(maxSpec.capabilities)
+        assertNotNull(maxSpec.capabilities.add)
+        assertEquals("NET_ADMIN", maxSpec.capabilities.add.first())
+        assertNotNull(maxSpec.capabilities.drop)
+        assertEquals("ALL", maxSpec.capabilities.drop.first())
+
+        assertNotNull(maxSpec.seLinuxOptions)
+        assertEquals("s0:c123,c456", maxSpec.seLinuxOptions.level)
+        assertEquals("role", maxSpec.seLinuxOptions.role)
+        assertEquals("type", maxSpec.seLinuxOptions.type)
+        assertEquals("user", maxSpec.seLinuxOptions.user)
+
+        assertNotNull(maxSpec.seccompProfile)
+        assertEquals(SecurityContextSpec.ProfileType.Localhost, maxSpec.seccompProfile.type)
+        assertNotNull(maxSpec.seccompProfile.localhostProfile)
+        assertEquals("localhost", maxSpec.seccompProfile.localhostProfile)
+
+        assertNotNull(maxSpec.appArmorProfile)
+        assertEquals(SecurityContextSpec.ProfileType.Localhost, maxSpec.appArmorProfile.type)
+        assertNotNull(maxSpec.appArmorProfile.localhostProfile)
+        assertEquals("localhost", maxSpec.appArmorProfile.localhostProfile)
+
+        assertNotNull(maxSpec.windowsOptions)
+        assertEquals("gmsaCredentialSpecName", maxSpec.windowsOptions.gmsaCredentialSpecName)
+        assertEquals("gmsaCredentialSpec", maxSpec.windowsOptions.gmsaCredentialSpec)
+        assertEquals("runAsUserName", maxSpec.windowsOptions.runAsUserName)
+        assertEquals(true, maxSpec.windowsOptions.hostProcess)
     }
 
     @Test
     fun testMaxYaml() {
-        val spec = ContainerSecurityContextSpecBuilder().apply {
-            runAsUser = 1000
-            runAsGroup = 2000
-            runAsNonRoot = true
-            privileged = true
-            readOnlyRootFilesystem = true
-            allowPrivilegeEscalation = true
-            procMount = ProcMountType.Unmasked
-            capabilities {
-                add("NET_ADMIN")
-                drop("ALL")
-            }
-            seLinuxOptions {
-                level = "s0:c123,c456"
-                role = "role"
-                type = "type"
-                user = "user"
-            }
-            seccompProfile(SecurityContextSpec.ProfileType.Localhost) {
-                localhostProfile = "localhost"
-            }
-            appArmorProfile(SecurityContextSpec.ProfileType.Localhost) {
-                localhostProfile = "localhost"
-            }
-            windowsOptions {
-                gmsaCredentialSpecName = "gmsaCredentialSpecName"
-                gmsaCredentialSpec = "gmsaCredentialSpec"
-                runAsUserName = "runAsUserName"
-                hostProcess = true
-            }
-        }.build()
-
-        val actualJson = spec.toJson()
         val expectedJson = """{
             |  "runAsUser": 1000,
             |  "runAsGroup": 2000,
@@ -166,97 +161,46 @@ class ContainerSecurityContextSpecTest {
             |  }
             |}""".trimMargin()
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, maxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testMediumContent() {
-        val spec = ContainerSecurityContextSpecBuilder().apply {
-            runAsUser = 1000
-            runAsGroup = 2000
-            runAsNonRoot = true
-            privileged = true
-            readOnlyRootFilesystem = true
-            allowPrivilegeEscalation = true
-            procMount = ProcMountType.Unmasked
-            capabilities {
+        assertEquals(1000, mediumSpec.runAsUser)
+        assertEquals(2000, mediumSpec.runAsGroup)
+        assertEquals(true, mediumSpec.runAsNonRoot)
+        assertEquals(true, mediumSpec.privileged)
+        assertEquals(true, mediumSpec.readOnlyRootFilesystem)
+        assertEquals(true, mediumSpec.allowPrivilegeEscalation)
+        assertEquals(ProcMountType.Unmasked, mediumSpec.procMount)
 
-            }
-            seLinuxOptions {
+        assertNotNull(mediumSpec.capabilities)
+        assertNull(mediumSpec.capabilities.add)
+        assertNull(mediumSpec.capabilities.drop)
 
-            }
-            seccompProfile(SecurityContextSpec.ProfileType.RuntimeDefault) {
+        assertNotNull(mediumSpec.seLinuxOptions)
+        assertNull(mediumSpec.seLinuxOptions.level)
+        assertNull(mediumSpec.seLinuxOptions.role)
+        assertNull(mediumSpec.seLinuxOptions.type)
+        assertNull(mediumSpec.seLinuxOptions.user)
 
-            }
-            appArmorProfile(SecurityContextSpec.ProfileType.RuntimeDefault) {
+        assertNotNull(mediumSpec.seccompProfile)
+        assertEquals(SecurityContextSpec.ProfileType.RuntimeDefault, mediumSpec.seccompProfile.type)
+        assertNull(mediumSpec.seccompProfile.localhostProfile)
 
-            }
-            windowsOptions {
+        assertNotNull(mediumSpec.appArmorProfile)
+        assertEquals(SecurityContextSpec.ProfileType.RuntimeDefault, mediumSpec.appArmorProfile.type)
+        assertNull(mediumSpec.appArmorProfile.localhostProfile)
 
-            }
-        }.build()
-
-        assertEquals(1000, spec.runAsUser)
-        assertEquals(2000, spec.runAsGroup)
-        assertEquals(true, spec.runAsNonRoot)
-        assertEquals(true, spec.privileged)
-        assertEquals(true, spec.readOnlyRootFilesystem)
-        assertEquals(true, spec.allowPrivilegeEscalation)
-        assertEquals(ProcMountType.Unmasked, spec.procMount)
-
-        assertNotNull(spec.capabilities)
-        assertNull(spec.capabilities.add)
-        assertNull(spec.capabilities.drop)
-
-        assertNotNull(spec.seLinuxOptions)
-        assertNull(spec.seLinuxOptions.level)
-        assertNull(spec.seLinuxOptions.role)
-        assertNull(spec.seLinuxOptions.type)
-        assertNull(spec.seLinuxOptions.user)
-
-        assertNotNull(spec.seccompProfile)
-        assertEquals(SecurityContextSpec.ProfileType.RuntimeDefault, spec.seccompProfile.type)
-        assertNull(spec.seccompProfile.localhostProfile)
-
-        assertNotNull(spec.appArmorProfile)
-        assertEquals(SecurityContextSpec.ProfileType.RuntimeDefault, spec.appArmorProfile.type)
-        assertNull(spec.appArmorProfile.localhostProfile)
-
-        assertNotNull(spec.windowsOptions)
-        assertNull(spec.windowsOptions.gmsaCredentialSpecName)
-        assertNull(spec.windowsOptions.gmsaCredentialSpec)
-        assertNull(spec.windowsOptions.runAsUserName)
-        assertNull(spec.windowsOptions.hostProcess)
+        assertNotNull(mediumSpec.windowsOptions)
+        assertNull(mediumSpec.windowsOptions.gmsaCredentialSpecName)
+        assertNull(mediumSpec.windowsOptions.gmsaCredentialSpec)
+        assertNull(mediumSpec.windowsOptions.runAsUserName)
+        assertNull(mediumSpec.windowsOptions.hostProcess)
     }
 
     @Test
     fun testMediumYaml() {
-        val spec = ContainerSecurityContextSpecBuilder().apply {
-            runAsUser = 1000
-            runAsGroup = 2000
-            runAsNonRoot = true
-            privileged = true
-            readOnlyRootFilesystem = true
-            allowPrivilegeEscalation = true
-            procMount = ProcMountType.Unmasked
-            capabilities {
-
-            }
-            seLinuxOptions {
-
-            }
-            seccompProfile(SecurityContextSpec.ProfileType.RuntimeDefault) {
-
-            }
-            appArmorProfile(SecurityContextSpec.ProfileType.RuntimeDefault) {
-
-            }
-            windowsOptions {
-
-            }
-        }.build()
-
-        val actualJson = spec.toJson()
         val expectedJson = """{
             |  "runAsUser": 1000,
             |  "runAsGroup": 2000,
@@ -276,32 +220,28 @@ class ContainerSecurityContextSpecTest {
             |  "windowsOptions": {}
             |}""".trimMargin()
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, mediumSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testMinContent() {
-        val spec = ContainerSecurityContextSpecBuilder().build()
-
-        assertNull(spec.runAsUser)
-        assertNull(spec.runAsGroup)
-        assertNull(spec.runAsNonRoot)
-        assertNull(spec.privileged)
-        assertNull(spec.readOnlyRootFilesystem)
-        assertNull(spec.allowPrivilegeEscalation)
-        assertNull(spec.procMount)
-        assertNull(spec.capabilities)
-        assertNull(spec.seLinuxOptions)
-        assertNull(spec.seccompProfile)
-        assertNull(spec.appArmorProfile)
-        assertNull(spec.windowsOptions)
+        assertNull(minSpec.runAsUser)
+        assertNull(minSpec.runAsGroup)
+        assertNull(minSpec.runAsNonRoot)
+        assertNull(minSpec.privileged)
+        assertNull(minSpec.readOnlyRootFilesystem)
+        assertNull(minSpec.allowPrivilegeEscalation)
+        assertNull(minSpec.procMount)
+        assertNull(minSpec.capabilities)
+        assertNull(minSpec.seLinuxOptions)
+        assertNull(minSpec.seccompProfile)
+        assertNull(minSpec.appArmorProfile)
+        assertNull(minSpec.windowsOptions)
     }
 
     @Test
     fun testMinYaml() {
-        val spec = ContainerSecurityContextSpecBuilder().build()
-
-        JSONAssert.assertEquals("""{}""", spec.toJson(), JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals("""{}""", minSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test

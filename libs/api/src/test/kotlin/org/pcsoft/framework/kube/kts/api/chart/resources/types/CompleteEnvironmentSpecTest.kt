@@ -20,32 +20,40 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class CompleteEnvironmentSpecTest {
-
-    @Test
-    fun testConfigMapRefContentMax() {
-        val spec = CompleteEnvironmentSpecBuilder().apply {
+    companion object {
+        private val configMapMaxSpec = CompleteEnvironmentSpecBuilder().apply {
             prefix = "prefix"
             configMapRef("config-map") {
                 optional = true
             }
         }.build()
 
-        assertEquals("prefix", spec.prefix)
-        assertEquals(CompleteEnvironmentSpec.SourceType.ConfigMap, spec.source.type)
-        assertEquals("config-map", spec.source.name)
-        assertEquals(true, spec.source.optional)
+        private val configMapMinSpec = CompleteEnvironmentSpecBuilder().apply {
+            configMapRef("config-map")
+        }.build()
+
+        private val secretMaxSpec = CompleteEnvironmentSpecBuilder().apply {
+            prefix = "prefix"
+            secretRef("secret") {
+                optional = true
+            }
+        }.build()
+
+        private val secretMinSpec = CompleteEnvironmentSpecBuilder().apply {
+            secretRef("secret")
+        }.build()
+    }
+
+    @Test
+    fun testConfigMapRefContentMax() {
+        assertEquals("prefix", configMapMaxSpec.prefix)
+        assertEquals(CompleteEnvironmentSpec.SourceType.ConfigMap, configMapMaxSpec.source.type)
+        assertEquals("config-map", configMapMaxSpec.source.name)
+        assertEquals(true, configMapMaxSpec.source.optional)
     }
 
     @Test
     fun testConfigMapRefYamlMax() {
-        val spec = CompleteEnvironmentSpecBuilder().apply {
-            prefix = "prefix"
-            configMapRef("config-map") {
-                optional = true
-            }
-        }.build()
-
-        val actualJson = spec.toJson()
         val expectedJson = """{
           |  "prefix": "prefix",
           |  "configMapRef": {
@@ -54,58 +62,34 @@ class CompleteEnvironmentSpecTest {
           |  }
           |}""".trimMargin()
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, configMapMaxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testConfigMapRefContentMin() {
-        val spec = CompleteEnvironmentSpecBuilder().apply {
-            configMapRef("config-map")
-        }.build()
-
-        assertEquals(CompleteEnvironmentSpec.SourceType.ConfigMap, spec.source.type)
-        assertNull(spec.prefix)
-        assertEquals("config-map", spec.source.name)
-        assertNull(spec.source.optional)
+        assertEquals(CompleteEnvironmentSpec.SourceType.ConfigMap, configMapMinSpec.source.type)
+        assertNull(configMapMinSpec.prefix)
+        assertEquals("config-map", configMapMinSpec.source.name)
+        assertNull(configMapMinSpec.source.optional)
     }
 
     @Test
     fun testConfigMapRefYamlMin() {
-        val spec = CompleteEnvironmentSpecBuilder().apply {
-            configMapRef("config-map")
-        }.build()
-
-        val actualJson = spec.toJson()
         val expectedJson = """{"configMapRef":{"name":"config-map"}}"""
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, configMapMinSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testSecretRefContentMax() {
-        val spec = CompleteEnvironmentSpecBuilder().apply {
-            prefix = "prefix"
-            secretRef("secret") {
-                optional = true
-            }
-        }.build()
-
-        assertEquals("prefix", spec.prefix)
-        assertEquals(CompleteEnvironmentSpec.SourceType.Secret, spec.source.type)
-        assertEquals("secret", spec.source.name)
-        assertEquals(true, spec.source.optional)
+        assertEquals("prefix", secretMaxSpec.prefix)
+        assertEquals(CompleteEnvironmentSpec.SourceType.Secret, secretMaxSpec.source.type)
+        assertEquals("secret", secretMaxSpec.source.name)
+        assertEquals(true, secretMaxSpec.source.optional)
     }
 
     @Test
     fun testSecretRefYamlMax() {
-        val spec = CompleteEnvironmentSpecBuilder().apply {
-            prefix = "prefix"
-            secretRef("secret") {
-                optional = true
-            }
-        }.build()
-
-        val actualJson = spec.toJson()
         val expectedJson = """{
           |  "prefix": "prefix",
           |  "secretRef": {
@@ -114,31 +98,22 @@ class CompleteEnvironmentSpecTest {
           |  }
           |}""".trimMargin()
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, secretMaxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testSecretRefContentMin() {
-        val spec = CompleteEnvironmentSpecBuilder().apply {
-            secretRef("secret")
-        }.build()
-
-        assertEquals(CompleteEnvironmentSpec.SourceType.Secret, spec.source.type)
-        assertNull(spec.prefix)
-        assertEquals("secret", spec.source.name)
-        assertNull(spec.source.optional)
+        assertEquals(CompleteEnvironmentSpec.SourceType.Secret, secretMinSpec.source.type)
+        assertNull(secretMinSpec.prefix)
+        assertEquals("secret", secretMinSpec.source.name)
+        assertNull(secretMinSpec.source.optional)
     }
 
     @Test
     fun testSecretRefYamlMin() {
-        val spec = CompleteEnvironmentSpecBuilder().apply {
-            secretRef("secret")
-        }.build()
-
-        val actualJson = spec.toJson()
         val expectedJson = """{"secretRef":{"name":"secret"}}"""
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(expectedJson, secretMinSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
 }

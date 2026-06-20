@@ -25,10 +25,8 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class HardwareResourceSpecTest {
-
-    @Test
-    fun testMaxContent() {
-        val spec = HardwareResourceSpecBuilder().apply {
+    companion object {
+        private val maxSpec = HardwareResourceSpecBuilder().apply {
             limits {
                 cpu = 0.01f.cpu
                 memory = 256.miBytes
@@ -41,39 +39,31 @@ class HardwareResourceSpecTest {
             }
         }.build()
 
-        assertNotNull(spec.limits)
-        assertNotNull(spec.limits!!.cpu)
-        assertEquals(0.01f.cpu, spec.limits!!.cpu)
-        assertNotNull(spec.limits!!.memory)
-        assertEquals(256.miBytes, spec.limits!!.memory)
-        assertNotNull(spec.limits!!.ephemeralStorage)
-        assertEquals(1.giBytes, spec.limits!!.ephemeralStorage)
-        assertNotNull(spec.limits!!.extendedResources)
-        assertEquals(mapOf("nvidia.com/gpu" to "1"), spec.limits!!.extendedResources)
+        private val minSpec = HardwareResourceSpecBuilder().build()
+    }
 
-        assertNotNull(spec.requests)
-        assertNull(spec.requests!!.cpu)
-        assertNull(spec.requests!!.memory)
-        assertNull(spec.requests!!.ephemeralStorage)
-        assertNull(spec.requests!!.extendedResources)
+    @Test
+    fun testMaxContent() {
+        val limits = assertNotNull(maxSpec.limits)
+        assertNotNull(limits.cpu)
+        assertEquals(0.01f.cpu, limits.cpu)
+        assertNotNull(limits.memory)
+        assertEquals(256.miBytes, limits.memory)
+        assertNotNull(limits.ephemeralStorage)
+        assertEquals(1.giBytes, limits.ephemeralStorage)
+        assertNotNull(limits.extendedResources)
+        assertEquals(mapOf("nvidia.com/gpu" to "1"), limits.extendedResources)
+
+        val requests = assertNotNull(maxSpec.requests)
+        assertNull(requests.cpu)
+        assertNull(requests.memory)
+        assertNull(requests.ephemeralStorage)
+        assertNull(requests.extendedResources)
     }
 
     @Test
     fun testMaxYaml() {
-        val spec = HardwareResourceSpecBuilder().apply {
-            limits {
-                cpu = 0.01f.cpu
-                memory = 256.miBytes
-                ephemeralStorage = 1.giBytes
-                extendedResources {
-                    extendedResource("nvidia.com/gpu", "1")
-                }
-            }
-            requests {
-            }
-        }.build()
-
-        val actualJson = spec.toJson()
+        val actualJson = maxSpec.toJson()
         val expectedJson = """{
           |  "limits": {
           |    "cpu": "10m",
@@ -84,25 +74,18 @@ class HardwareResourceSpecTest {
           |  "requests": {}
           |}""".trimMargin()
 
-        println(actualJson)
-        println(expectedJson)
-
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testMinContent() {
-        val spec = HardwareResourceSpecBuilder().build()
-
-        assertNull(spec.limits)
-        assertNull(spec.requests)
+        assertNull(minSpec.limits)
+        assertNull(minSpec.requests)
     }
 
     @Test
     fun testMinYaml() {
-        val spec = HardwareResourceSpecBuilder().build()
-
-        assertEquals("""{}""", spec.toJson())
+        assertEquals("""{}""", minSpec.toJson())
     }
 
     @Test
@@ -146,6 +129,5 @@ class HardwareResourceSpecTest {
             }.build()
         }
     }
-
 
 }

@@ -21,13 +21,93 @@ import kotlin.test.assertEquals
 import kotlin.test.assertIs
 
 class VolumeSpecTest {
+    companion object {
+        private val configMapMaxSpec = VolumeSpecBuilder("config-volume").apply {
+            from {
+                configMap {
+                    name = "app-config"
+                    optional = true
+                    defaultMode = 420
+                    items {
+                        item("application.yaml", "config/application.yaml") {
+                            mode = 384
+                        }
+                    }
+                }
+            }
+        }.build()
+
+        private val configMapMinSpec = VolumeSpecBuilder("config-volume").apply {
+            from {
+                configMap {}
+            }
+        }.build()
+
+        private val secretMaxSpec = VolumeSpecBuilder("secret-volume").apply {
+            from {
+                secret {
+                    name = "app-secret"
+                    optional = true
+                    defaultMode = 420
+                    items {
+                        item("password", "secret/password") {
+                            mode = 384
+                        }
+                    }
+                }
+            }
+        }.build()
+
+        private val secretMinSpec = VolumeSpecBuilder("secret-volume").apply {
+            from {
+                secret {}
+            }
+        }.build()
+
+        private val persistentVolumeClaimMaxSpec = VolumeSpecBuilder("pvc-volume").apply {
+            from {
+                persistentVolumeClaim("app-pvc") {
+                    readOnly = true
+                }
+            }
+        }.build()
+
+        private val persistentVolumeClaimMinSpec = VolumeSpecBuilder("pvc-volume").apply {
+            from {
+                persistentVolumeClaim("app-pvc")
+            }
+        }.build()
+
+        private val hostPathMaxSpec = VolumeSpecBuilder("host-volume").apply {
+            from {
+                hostPath("/data") {
+                    type = VolumeSpec.HostPathSourceSpec.Type.DirectoryOrCreate
+                }
+            }
+        }.build()
+
+        private val hostPathMinSpec = VolumeSpecBuilder("host-volume").apply {
+            from {
+                hostPath("/data")
+            }
+        }.build()
+
+        private val emptyDirMaxSpec = VolumeSpecBuilder("empty-volume").apply {
+            emptyDir {
+                medium = VolumeSpec.EmptyDirSourceSpec.MediumType.Memory
+                sizeLimit = 64.miBytes
+            }
+        }.build()
+
+        private val emptyDirMinSpec = VolumeSpecBuilder("empty-volume").apply {
+            emptyDir {}
+        }.build()
+    }
 
     @Test
     fun testConfigMapSourceMaxContent() {
-        val spec = buildConfigMapMaxSpec()
-
-        assertEquals("config-volume", spec.name)
-        val source = assertIs<VolumeSpec.ConfigMapSourceSpec>(spec.source)
+        assertEquals("config-volume", configMapMaxSpec.name)
+        val source = assertIs<VolumeSpec.ConfigMapSourceSpec>(configMapMaxSpec.source)
         assertMaxFileSource(source, "app-config", "application.yaml", "config/application.yaml")
     }
 
@@ -47,16 +127,14 @@ class VolumeSpecTest {
               |    }]
               |  }
               |}""".trimMargin(),
-            buildConfigMapMaxSpec()
+            configMapMaxSpec
         )
     }
 
     @Test
     fun testConfigMapSourceMinContent() {
-        val spec = buildConfigMapMinSpec()
-
-        assertEquals("config-volume", spec.name)
-        val source = assertIs<VolumeSpec.ConfigMapSourceSpec>(spec.source)
+        assertEquals("config-volume", configMapMinSpec.name)
+        val source = assertIs<VolumeSpec.ConfigMapSourceSpec>(configMapMinSpec.source)
         assertMinFileSource(source)
     }
 
@@ -67,16 +145,14 @@ class VolumeSpecTest {
               |  "name": "config-volume",
               |  "configMap": {}
               |}""".trimMargin(),
-            buildConfigMapMinSpec()
+            configMapMinSpec
         )
     }
 
     @Test
     fun testSecretSourceMaxContent() {
-        val spec = buildSecretMaxSpec()
-
-        assertEquals("secret-volume", spec.name)
-        val source = assertIs<VolumeSpec.SecretSourceSpec>(spec.source)
+        assertEquals("secret-volume", secretMaxSpec.name)
+        val source = assertIs<VolumeSpec.SecretSourceSpec>(secretMaxSpec.source)
         assertMaxFileSource(source, "app-secret", "password", "secret/password")
     }
 
@@ -96,16 +172,14 @@ class VolumeSpecTest {
               |    }]
               |  }
               |}""".trimMargin(),
-            buildSecretMaxSpec()
+            secretMaxSpec
         )
     }
 
     @Test
     fun testSecretSourceMinContent() {
-        val spec = buildSecretMinSpec()
-
-        assertEquals("secret-volume", spec.name)
-        val source = assertIs<VolumeSpec.SecretSourceSpec>(spec.source)
+        assertEquals("secret-volume", secretMinSpec.name)
+        val source = assertIs<VolumeSpec.SecretSourceSpec>(secretMinSpec.source)
         assertMinFileSource(source)
     }
 
@@ -116,16 +190,14 @@ class VolumeSpecTest {
               |  "name": "secret-volume",
               |  "secret": {}
               |}""".trimMargin(),
-            buildSecretMinSpec()
+            secretMinSpec
         )
     }
 
     @Test
     fun testPersistentVolumeClaimSourceMaxContent() {
-        val spec = buildPersistentVolumeClaimMaxSpec()
-
-        assertEquals("pvc-volume", spec.name)
-        val source = assertIs<VolumeSpec.PersistentVolumeClaimSourceSpec>(spec.source)
+        assertEquals("pvc-volume", persistentVolumeClaimMaxSpec.name)
+        val source = assertIs<VolumeSpec.PersistentVolumeClaimSourceSpec>(persistentVolumeClaimMaxSpec.source)
         assertEquals("app-pvc", source.claimName)
         assertEquals(true, source.readOnly)
     }
@@ -140,16 +212,14 @@ class VolumeSpecTest {
               |    "readOnly": true
               |  }
               |}""".trimMargin(),
-            buildPersistentVolumeClaimMaxSpec()
+            persistentVolumeClaimMaxSpec
         )
     }
 
     @Test
     fun testPersistentVolumeClaimSourceMinContent() {
-        val spec = buildPersistentVolumeClaimMinSpec()
-
-        assertEquals("pvc-volume", spec.name)
-        val source = assertIs<VolumeSpec.PersistentVolumeClaimSourceSpec>(spec.source)
+        assertEquals("pvc-volume", persistentVolumeClaimMinSpec.name)
+        val source = assertIs<VolumeSpec.PersistentVolumeClaimSourceSpec>(persistentVolumeClaimMinSpec.source)
         assertEquals("app-pvc", source.claimName)
         assertEquals(null, source.readOnly)
     }
@@ -163,16 +233,14 @@ class VolumeSpecTest {
               |    "claimName": "app-pvc"
               |  }
               |}""".trimMargin(),
-            buildPersistentVolumeClaimMinSpec()
+            persistentVolumeClaimMinSpec
         )
     }
 
     @Test
     fun testHostPathSourceMaxContent() {
-        val spec = buildHostPathMaxSpec()
-
-        assertEquals("host-volume", spec.name)
-        val source = assertIs<VolumeSpec.HostPathSourceSpec>(spec.source)
+        assertEquals("host-volume", hostPathMaxSpec.name)
+        val source = assertIs<VolumeSpec.HostPathSourceSpec>(hostPathMaxSpec.source)
         assertEquals("/data", source.path)
         assertEquals(VolumeSpec.HostPathSourceSpec.Type.DirectoryOrCreate, source.type)
     }
@@ -187,16 +255,14 @@ class VolumeSpecTest {
               |    "type": "DirectoryOrCreate"
               |  }
               |}""".trimMargin(),
-            buildHostPathMaxSpec()
+            hostPathMaxSpec
         )
     }
 
     @Test
     fun testHostPathSourceMinContent() {
-        val spec = buildHostPathMinSpec()
-
-        assertEquals("host-volume", spec.name)
-        val source = assertIs<VolumeSpec.HostPathSourceSpec>(spec.source)
+        assertEquals("host-volume", hostPathMinSpec.name)
+        val source = assertIs<VolumeSpec.HostPathSourceSpec>(hostPathMinSpec.source)
         assertEquals("/data", source.path)
         assertEquals(null, source.type)
     }
@@ -210,16 +276,14 @@ class VolumeSpecTest {
               |    "path": "/data"
               |  }
               |}""".trimMargin(),
-            buildHostPathMinSpec()
+            hostPathMinSpec
         )
     }
 
     @Test
     fun testEmptyDirSourceMaxContent() {
-        val spec = buildEmptyDirMaxSpec()
-
-        assertEquals("empty-volume", spec.name)
-        val source = assertIs<VolumeSpec.EmptyDirSourceSpec>(spec.source)
+        assertEquals("empty-volume", emptyDirMaxSpec.name)
+        val source = assertIs<VolumeSpec.EmptyDirSourceSpec>(emptyDirMaxSpec.source)
         assertEquals(VolumeSpec.EmptyDirSourceSpec.MediumType.Memory, source.medium)
         assertEquals(64.miBytes, source.sizeLimit)
     }
@@ -234,16 +298,14 @@ class VolumeSpecTest {
               |    "sizeLimit": "64Mi"
               |  }
               |}""".trimMargin(),
-            buildEmptyDirMaxSpec()
+            emptyDirMaxSpec
         )
     }
 
     @Test
     fun testEmptyDirSourceMinContent() {
-        val spec = buildEmptyDirMinSpec()
-
-        assertEquals("empty-volume", spec.name)
-        val source = assertIs<VolumeSpec.EmptyDirSourceSpec>(spec.source)
+        assertEquals("empty-volume", emptyDirMinSpec.name)
+        val source = assertIs<VolumeSpec.EmptyDirSourceSpec>(emptyDirMinSpec.source)
         assertEquals(null, source.medium)
         assertEquals(null, source.sizeLimit)
     }
@@ -255,90 +317,9 @@ class VolumeSpecTest {
               |  "name": "empty-volume",
               |  "emptyDir": {}
               |}""".trimMargin(),
-            buildEmptyDirMinSpec()
+            emptyDirMinSpec
         )
     }
-
-    private fun buildConfigMapMaxSpec() = VolumeSpecBuilder("config-volume").apply {
-        from {
-            configMap {
-                name = "app-config"
-                optional = true
-                defaultMode = 420
-                items {
-                    item("application.yaml", "config/application.yaml") {
-                        mode = 384
-                    }
-                }
-            }
-        }
-    }.build()
-
-    private fun buildConfigMapMinSpec() = VolumeSpecBuilder("config-volume").apply {
-        from {
-            configMap {}
-        }
-    }.build()
-
-    private fun buildSecretMaxSpec() = VolumeSpecBuilder("secret-volume").apply {
-        from {
-            secret {
-                name = "app-secret"
-                optional = true
-                defaultMode = 420
-                items {
-                    item("password", "secret/password") {
-                        mode = 384
-                    }
-                }
-            }
-        }
-    }.build()
-
-    private fun buildSecretMinSpec() = VolumeSpecBuilder("secret-volume").apply {
-        from {
-            secret {}
-        }
-    }.build()
-
-    private fun buildPersistentVolumeClaimMaxSpec() = VolumeSpecBuilder("pvc-volume").apply {
-        from {
-            persistentVolumeClaim("app-pvc") {
-                readOnly = true
-            }
-        }
-    }.build()
-
-    private fun buildPersistentVolumeClaimMinSpec() = VolumeSpecBuilder("pvc-volume").apply {
-        from {
-            persistentVolumeClaim("app-pvc")
-        }
-    }.build()
-
-    private fun buildHostPathMaxSpec() = VolumeSpecBuilder("host-volume").apply {
-        from {
-            hostPath("/data") {
-                type = VolumeSpec.HostPathSourceSpec.Type.DirectoryOrCreate
-            }
-        }
-    }.build()
-
-    private fun buildHostPathMinSpec() = VolumeSpecBuilder("host-volume").apply {
-        from {
-            hostPath("/data")
-        }
-    }.build()
-
-    private fun buildEmptyDirMaxSpec() = VolumeSpecBuilder("empty-volume").apply {
-        emptyDir {
-            medium = VolumeSpec.EmptyDirSourceSpec.MediumType.Memory
-            sizeLimit = 64.miBytes
-        }
-    }.build()
-
-    private fun buildEmptyDirMinSpec() = VolumeSpecBuilder("empty-volume").apply {
-        emptyDir {}
-    }.build()
 
     private fun assertMaxFileSource(source: VolumeSpec.FileSourceSpec, name: String, key: String, path: String) {
         assertEquals(name, source.name)

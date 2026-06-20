@@ -22,7 +22,7 @@ import kotlin.time.toJavaDuration
 
 class TolerationSpecTest {
     companion object {
-        val maxSpec = TolerationSpecBuilder().apply {
+        private val maxSpec = TolerationSpecBuilder().apply {
             key = "key"
             operator = TolerationSpec.Operator.Equal
             value = "value"
@@ -30,7 +30,7 @@ class TolerationSpecTest {
             tolerationSeconds = 100.seconds.toJavaDuration()
         }.build()
 
-        val minSpec = TolerationSpecBuilder().build()
+        private val minSpec = TolerationSpecBuilder().build()
     }
 
     @Test

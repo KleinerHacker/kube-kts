@@ -61,6 +61,8 @@ plugins:
             Service: 服务
             Ingress: Ingress
             ConfigMap: ConfigMap
+            Secret: 密钥
+            SealedSecret: SealedSecret
             Deployment: 部署
             Overview: 概览
             Selector: 选择器
@@ -87,6 +89,8 @@ plugins:
             Service: サービス
             Ingress: Ingress
             ConfigMap: ConfigMap
+            Secret: シークレット
+            SealedSecret: SealedSecret
             Deployment: デプロイメント
             Overview: 概要
             Selector: セレクター
@@ -113,6 +117,8 @@ plugins:
             Service: 서비스
             Ingress: Ingress
             ConfigMap: ConfigMap
+            Secret: 시크릿
+            SealedSecret: SealedSecret
             Deployment: 디플로이먼트
             Overview: 개요
             Selector: 셀렉터
@@ -131,39 +137,43 @@ nav:
   - Home: index.md
   - CLI:
       - Overview: cli/index.md
-      - validate: cli/validate.md
-      - compile: cli/compile.md
-      - render: cli/render.md
-      - lint: cli/lint.md
-      - template: cli/template.md
-      - install: cli/install.md
-      - upgrade: cli/upgrade.md
-      - uninstall: cli/uninstall.md
-      - package: cli/package.md
-      - dependency: cli/dependency.md
-      - diff: cli/diff.md
-      - status: cli/status.md
-      - list: cli/list.md
-      - history: cli/history.md
-      - rollback: cli/rollback.md
-      - test: cli/test.md
-      - get: cli/get.md
-      - repo: cli/repo.md
-      - search: cli/search.md
-      - registry: cli/registry.md
-      - show: cli/show.md
-      - pull: cli/pull.md
-      - push: cli/push.md
-      - verify: cli/verify.md
-      - version: cli/version.md
-      - env: cli/env.md
+      - Commands:
+        - validate: cli/validate.md
+        - compile: cli/compile.md
+        - render: cli/render.md
+        - lint: cli/lint.md
+        - template: cli/template.md
+        - install: cli/install.md
+        - upgrade: cli/upgrade.md
+        - uninstall: cli/uninstall.md
+        - package: cli/package.md
+        - dependency: cli/dependency.md
+        - diff: cli/diff.md
+        - status: cli/status.md
+        - list: cli/list.md
+        - history: cli/history.md
+        - rollback: cli/rollback.md
+        - test: cli/test.md
+        - get: cli/get.md
+        - repo: cli/repo.md
+        - search: cli/search.md
+        - registry: cli/registry.md
+        - show: cli/show.md
+        - pull: cli/pull.md
+        - push: cli/push.md
+        - verify: cli/verify.md
+        - version: cli/version.md
+        - env: cli/env.md
   - Kotlin Scripts Repository:
+      - Overview: kts/index.md
       - Chart: kts/chart.md
       - Templates:
           - Metadata: kts/metadata.md
           - Service: kts/service.md
           - Ingress: kts/ingress.md
           - ConfigMap: kts/configmap.md
+          - Secret: kts/secret.md
+          - SealedSecret: kts/sealedsecret.md
           - Deployment:
               - Overview: kts/deployment.md
               - Selector: kts/deployment/selector.md

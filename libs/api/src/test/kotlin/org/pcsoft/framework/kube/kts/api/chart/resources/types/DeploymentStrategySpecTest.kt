@@ -23,10 +23,8 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class DeploymentStrategySpecTest {
-
-    @Test
-    fun testMaxContent() {
-        val deploymentStrategySpec = DeploymentStrategySpecBuilder().apply {
+    companion object {
+        private val maxSpec = DeploymentStrategySpecBuilder().apply {
             type = DeploymentStrategySpec.Type.RollingUpdate
             rollingUpdate {
                 maxSurge = 10.percent
@@ -34,23 +32,25 @@ class DeploymentStrategySpecTest {
             }
         }.build()
 
-        assertEquals(DeploymentStrategySpec.Type.RollingUpdate, deploymentStrategySpec.type)
-        assertNotNull(deploymentStrategySpec.rollingUpdate)
-        assertEquals(10.percent, deploymentStrategySpec.rollingUpdate.maxSurge)
-        assertEquals(3.absolute, deploymentStrategySpec.rollingUpdate.maxUnavailable)
+        private val minSpec = DeploymentStrategySpecBuilder().build()
+
+        private val rollingUpdateMinSpec = DeploymentStrategySpecBuilder().apply {
+            rollingUpdate {
+            }
+        }.build()
+    }
+
+    @Test
+    fun testMaxContent() {
+        assertEquals(DeploymentStrategySpec.Type.RollingUpdate, maxSpec.type)
+        assertNotNull(maxSpec.rollingUpdate)
+        assertEquals(10.percent, maxSpec.rollingUpdate.maxSurge)
+        assertEquals(3.absolute, maxSpec.rollingUpdate.maxUnavailable)
     }
 
     @Test
     fun testMaxContentYaml() {
-        val deploymentStrategySpec = DeploymentStrategySpecBuilder().apply {
-            type = DeploymentStrategySpec.Type.RollingUpdate
-            rollingUpdate {
-                maxSurge = 10.percent
-                maxUnavailable = 3.absolute
-            }
-        }.build()
-
-        val actualJson = deploymentStrategySpec.toJson()
+        val actualJson = maxSpec.toJson()
         val expectedJson = """{
           |  "type": "RollingUpdate",
           |  "rollingUpdate": {
@@ -59,47 +59,30 @@ class DeploymentStrategySpecTest {
           |  }
           |}""".trimMargin()
 
-        println(actualJson)
-        println(expectedJson)
-
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
     @Test
     fun testMinContent() {
-        val deploymentStrategySpec = DeploymentStrategySpecBuilder().build()
-
-        assertNull(deploymentStrategySpec.type)
-        assertNull(deploymentStrategySpec.rollingUpdate)
+        assertNull(minSpec.type)
+        assertNull(minSpec.rollingUpdate)
     }
 
     @Test
     fun testMinContentYaml() {
-        val deploymentStrategySpec = DeploymentStrategySpecBuilder().build()
-
-        assertEquals("""{}""", deploymentStrategySpec.toJson())
+        assertEquals("""{}""", minSpec.toJson())
     }
 
     @Test
     fun testRollingUpdateMinContent() {
-        val deploymentStrategySpec = DeploymentStrategySpecBuilder().apply {
-            rollingUpdate {
-            }
-        }.build()
-
-        assertNull(deploymentStrategySpec.type)
-        assertNotNull(deploymentStrategySpec.rollingUpdate)
-        assertNull(deploymentStrategySpec.rollingUpdate.maxSurge)
-        assertNull(deploymentStrategySpec.rollingUpdate.maxUnavailable)
+        assertNull(rollingUpdateMinSpec.type)
+        assertNotNull(rollingUpdateMinSpec.rollingUpdate)
+        assertNull(rollingUpdateMinSpec.rollingUpdate.maxSurge)
+        assertNull(rollingUpdateMinSpec.rollingUpdate.maxUnavailable)
     }
 
     @Test
     fun testRollingUpdateMinContentYaml() {
-        val deploymentStrategySpec = DeploymentStrategySpecBuilder().apply {
-            rollingUpdate {
-            }
-        }.build()
-
-        assertEquals("""{"rollingUpdate":{}}""", deploymentStrategySpec.toJson())
+        assertEquals("""{"rollingUpdate":{}}""", rollingUpdateMinSpec.toJson())
     }
 }

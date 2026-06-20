@@ -12,88 +12,89 @@
 
 package org.pcsoft.framework.kube.kts.api.types
 
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class MailAddressTest {
 
     @Test
     fun testParseSuccessfully() {
-        Assertions.assertEquals(MailAddress("test", "example.com"), MailAddress.parse("test@example.com"))
-        Assertions.assertEquals(MailAddress("a", "b.c"), MailAddress.parse("a@b.c"))
-        Assertions.assertEquals(MailAddress("a.b.c.d.e", "a.c"), MailAddress.parse("a.b.c.d.e@a.c"))
-        Assertions.assertEquals(MailAddress("a", "com.de"), MailAddress.parse("a@com.de"))
+        assertEquals(MailAddress("test", "example.com"), MailAddress.parse("test@example.com"))
+        assertEquals(MailAddress("a", "b.c"), MailAddress.parse("a@b.c"))
+        assertEquals(MailAddress("a.b.c.d.e", "a.c"), MailAddress.parse("a.b.c.d.e@a.c"))
+        assertEquals(MailAddress("a", "com.de"), MailAddress.parse("a@com.de"))
     }
 
     @Test
     fun testCreateSuccessfully() {
-        Assertions.assertEquals("test@example.com", MailAddress("test", "example.com").toString())
-        Assertions.assertEquals("a@b.c", MailAddress("a", "b.c").toString())
-        Assertions.assertEquals("a.b.c.d.e@a.c", MailAddress("a.b.c.d.e", "a.c").toString())
-        Assertions.assertEquals("a@com.de", MailAddress("a", "com.de").toString())
+        assertEquals("test@example.com", MailAddress("test", "example.com").toString())
+        assertEquals("a@b.c", MailAddress("a", "b.c").toString())
+        assertEquals("a.b.c.d.e@a.c", MailAddress("a.b.c.d.e", "a.c").toString())
+        assertEquals("a@com.de", MailAddress("a", "com.de").toString())
     }
 
     @Test
     fun testParseFailure() {
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress.parse("test")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress.parse("test@")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress.parse("@example.com")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress.parse("test@example")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress.parse("test@example@e.de")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress.parse("test.@example")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress.parse(".test@example")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress.parse("test@.example")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress.parse("test@example.")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress.parse("test@example..de")
         }
     }
 
     @Test
     fun testCreateFailure() {
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress("test", "")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress("", "example.com")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress("test", "example")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress("test", "example@com.de")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress("test.", "example")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress(".test", "example")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress("test", ".example")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress("test", "example.")
         }
-        Assertions.assertThrows(IllegalArgumentException::class.java) {
+        assertFailsWith<IllegalArgumentException> {
             MailAddress("test", "example..de")
         }
     }
