@@ -1,0 +1,25 @@
+---
+apiVersion: "route.openshift.io/v1"
+kind: "Route"
+metadata:
+  name: "metadata"
+  generateName: "generateName"
+  namespace: "namespace"
+spec:
+  host: "www.example.com"
+  path: "/app"
+  to:
+    kind: "Service"
+    name: "main-service"
+    weight: 100
+  alternateBackends:
+    - kind: "Service"
+      name: "canary-service"
+      weight: 20
+  port:
+    targetPort: 8080
+  tls:
+    termination: "edge"
+    insecureEdgeTerminationPolicy: "Redirect"
+    certificate: "secretName"
+  wildcardPolicy: "None"

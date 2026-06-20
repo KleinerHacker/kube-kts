@@ -60,6 +60,7 @@ plugins:
             Metadata: 元数据
             Service: 服务
             Ingress: Ingress
+            Route: 路由
             ConfigMap: ConfigMap
             Secret: 密钥
             SealedSecret: SealedSecret
@@ -88,6 +89,7 @@ plugins:
             Metadata: メタデータ
             Service: サービス
             Ingress: Ingress
+            Route: ルート
             ConfigMap: ConfigMap
             Secret: シークレット
             SealedSecret: SealedSecret
@@ -116,6 +118,7 @@ plugins:
             Metadata: 메타데이터
             Service: 서비스
             Ingress: Ingress
+            Route: 라우트
             ConfigMap: ConfigMap
             Secret: 시크릿
             SealedSecret: SealedSecret
@@ -171,6 +174,7 @@ nav:
           - Metadata: kts/metadata.md
           - Service: kts/service.md
           - Ingress: kts/ingress.md
+          - Route: kts/route.md
           - ConfigMap: kts/configmap.md
           - Secret: kts/secret.md
           - SealedSecret: kts/sealedsecret.md
