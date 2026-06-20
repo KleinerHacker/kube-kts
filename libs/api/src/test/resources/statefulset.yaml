@@ -1,0 +1,67 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: name
+  namespace: namespace
+  generateName: generateName
+  labels:
+    key: value
+  annotations:
+    key: value
+  finalizers:
+    - finalizer
+  ownerReferences:
+    - apiVersion: apiVersion
+      kind: kind
+      name: name
+      uid: 2fade68b-1f49-403a-b5e8-4e640d3c6594
+      controller: true
+      blockOwnerDeletion: true
+spec:
+  replicas: 3
+  serviceName: my-service
+  podManagementPolicy: Parallel
+  revisionHistoryLimit: 5
+  minReadySeconds: 10
+  ordinals:
+    start: 1
+  selector:
+    matchLabels:
+      app: demo
+    matchExpressions:
+      - key: tier
+        operator: In
+        values:
+          - backend
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      partition: 1
+      maxUnavailable: 1
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          type: ssd
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: standard
+        volumeMode: Filesystem
+        resources:
+          requests:
+            storage: 1Gi
+          limits:
+            storage: 2Gi
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Delete
+    whenScaled: Retain
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+        - name: name
+          image: image

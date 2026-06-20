@@ -116,6 +116,7 @@ Wichtige Flags: `--unsafe` (erlaubt Imports in KTS), `--experimental` (YAML-Merg
 | Ingress | `ingress { }` | `IngressSpec` / `IngressSpecBuilder` |
 | Route (OpenShift, kein Standard-K8s) | `route { }` | `RouteSpec` / `RouteSpecBuilder` |
 | Job | `job { }` | `JobSpec` / `JobSpecBuilder` |
+| StatefulSet | `statefulSet { }` | `StatefulSetSpec` / `StatefulSetSpecBuilder` |
 
 ### Values-Zugriff in KTS-Skripten
 
