@@ -1,0 +1,42 @@
+---
+apiVersion: "batch/v1"
+kind: "Job"
+metadata:
+  name: "metadata"
+  generateName: "generateName"
+  namespace: "namespace"
+spec:
+  parallelism: 2
+  completions: 5
+  completionMode: "Indexed"
+  backoffLimit: 4
+  backoffLimitPerIndex: 2
+  maxFailedIndexes: 3
+  suspend: false
+  manualSelector: true
+  podReplacementPolicy: "Failed"
+  selector:
+    matchLabels:
+      app: "demo"
+  podFailurePolicy:
+    rules:
+      - action: "FailJob"
+        onExitCodes:
+          containerName: "name"
+          operator: "In"
+          values:
+            - 1
+            - 42
+  successPolicy:
+    rules:
+      - succeededIndexes: "0-2"
+        succeededCount: 2
+  template:
+    metadata:
+      labels:
+        app: "demo"
+    spec:
+      containers:
+        - name: "name"
+          image: "image"
+      restartPolicy: "Never"

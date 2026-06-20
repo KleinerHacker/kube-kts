@@ -65,6 +65,7 @@ plugins:
             Secret: 密钥
             SealedSecret: SealedSecret
             Deployment: 部署
+            Job: Job
             Overview: 概览
             Selector: 选择器
             Pod Template: Pod 模板
@@ -94,6 +95,7 @@ plugins:
             Secret: シークレット
             SealedSecret: SealedSecret
             Deployment: デプロイメント
+            Job: ジョブ
             Overview: 概要
             Selector: セレクター
             Pod Template: Pod テンプレート
@@ -123,6 +125,7 @@ plugins:
             Secret: 시크릿
             SealedSecret: SealedSecret
             Deployment: 디플로이먼트
+            Job: 잡
             Overview: 개요
             Selector: 셀렉터
             Pod Template: Pod 템플릿
@@ -187,6 +190,7 @@ nav:
               - Probes: kts/deployment/probes.md
               - Volumes: kts/deployment/volumes.md
               - Strategy: kts/deployment/strategy.md
+          - Job: kts/job.md
       - Library Files: kts/lib.md
       - Values Handling: kts/values.md
   - API Docs: dokka/html/index.html

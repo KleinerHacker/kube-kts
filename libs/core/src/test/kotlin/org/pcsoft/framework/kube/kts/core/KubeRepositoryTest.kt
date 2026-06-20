@@ -29,12 +29,13 @@ class KubeRepositoryTest : RepositoryTest() {
         val ktsRepo =
             KubeKtsRepositoryScanner.DEFAULT.scan(Paths.get(this::class.java.getResource("/kts/helm").toURI()))
         Assertions.assertNotNull(ktsRepo)
-        Assertions.assertEquals(8, ktsRepo.specFiles.size)
+        Assertions.assertEquals(9, ktsRepo.specFiles.size)
         Assertions.assertEquals(1, ktsRepo.specFiles.filter { it.isChart }.size)
         Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "Chart" } }
         Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "service" } }
         Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "ingress" } }
         Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "route" } }
+        Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "job" } }
         Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "deployment" } }
         Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "configmap" } }
         Assertions.assertTrue { ktsRepo.specFiles.any { it.subject == "secret" } }
@@ -46,7 +47,7 @@ class KubeRepositoryTest : RepositoryTest() {
 
         val helmRepo = KubeKtsRepositoryBuilder.createDefault().build(ktsRepo, arrayOf())
         Assertions.assertNotNull(helmRepo)
-        Assertions.assertEquals(8, helmRepo.specFiles.size)
+        Assertions.assertEquals(9, helmRepo.specFiles.size)
         Assertions.assertEquals(1, helmRepo.specFiles.filter { it.isChart }.size)
         Assertions.assertEquals(1, helmRepo.legacyFiles.size)
         Assertions.assertEquals(1, helmRepo.legacyFiles.filter { it.isValues }.size)
@@ -55,6 +56,7 @@ class KubeRepositoryTest : RepositoryTest() {
         Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "service" } }
         Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "ingress" } }
         Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "route" } }
+        Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "job" } }
         Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "deployment" } }
         Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "configmap" } }
         Assertions.assertTrue { helmRepo.specFiles.any { it.subject == "secret" } }
@@ -78,6 +80,10 @@ class KubeRepositoryTest : RepositoryTest() {
         assertYaml(
             targetPath.resolve("templates/route.yaml"),
             Paths.get(this::class.java.getResource("/kts/expected/templates/route.yaml").toURI())
+        )
+        assertYaml(
+            targetPath.resolve("templates/job.yaml"),
+            Paths.get(this::class.java.getResource("/kts/expected/templates/job.yaml").toURI())
         )
         assertYaml(
             targetPath.resolve("templates/deployment.yaml"),

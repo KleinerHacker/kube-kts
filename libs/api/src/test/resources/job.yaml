@@ -1,0 +1,66 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: name
+  namespace: namespace
+  generateName: generateName
+  labels:
+    key: value
+  annotations:
+    key: value
+  finalizers:
+    - finalizer
+  ownerReferences:
+    - apiVersion: apiVersion
+      kind: kind
+      name: name
+      uid: 2fade68b-1f49-403a-b5e8-4e640d3c6594
+      controller: true
+      blockOwnerDeletion: true
+spec:
+  parallelism: 2
+  completions: 5
+  completionMode: Indexed
+  backoffLimit: 4
+  backoffLimitPerIndex: 2
+  maxFailedIndexes: 3
+  activeDeadlineSeconds: 100
+  ttlSecondsAfterFinished: 200
+  suspend: false
+  manualSelector: true
+  podReplacementPolicy: Failed
+  selector:
+    matchLabels:
+      app: demo
+    matchExpressions:
+      - key: tier
+        operator: In
+        values:
+          - backend
+  podFailurePolicy:
+    rules:
+      - action: FailJob
+        onExitCodes:
+          containerName: worker
+          operator: In
+          values:
+            - 1
+            - 42
+      - action: Ignore
+        onPodConditions:
+          - type: DisruptionTarget
+            status: "True"
+  successPolicy:
+    rules:
+      - succeededIndexes: "0-2"
+        succeededCount: 2
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+        - name: name
+          image: image
+      restartPolicy: Never
