@@ -1,0 +1,1767 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <url>
+        <loc>None./</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="None"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/"/>
+    </url>
+    <url>
+        <loc>Nonecli/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/"/>
+    </url>
+    <url>
+        <loc>Nonecli/compile/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/compile/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/compile/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/compile/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/compile/"/>
+    </url>
+    <url>
+        <loc>Nonecli/dependency/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/dependency/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/dependency/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/dependency/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/dependency/"/>
+    </url>
+    <url>
+        <loc>Nonecli/diff/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/diff/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/diff/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/diff/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/diff/"/>
+    </url>
+    <url>
+        <loc>Nonecli/env/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/env/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/env/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/env/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/env/"/>
+    </url>
+    <url>
+        <loc>Nonecli/get/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/get/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/get/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/get/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/get/"/>
+    </url>
+    <url>
+        <loc>Nonecli/history/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/history/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/history/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/history/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/history/"/>
+    </url>
+    <url>
+        <loc>Nonecli/install/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/install/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/install/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/install/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/install/"/>
+    </url>
+    <url>
+        <loc>Nonecli/lint/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/lint/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/lint/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/lint/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/lint/"/>
+    </url>
+    <url>
+        <loc>Nonecli/list/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/list/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/list/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/list/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/list/"/>
+    </url>
+    <url>
+        <loc>Nonecli/package/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/package/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/package/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/package/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/package/"/>
+    </url>
+    <url>
+        <loc>Nonecli/pull/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/pull/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/pull/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/pull/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/pull/"/>
+    </url>
+    <url>
+        <loc>Nonecli/push/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/push/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/push/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/push/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/push/"/>
+    </url>
+    <url>
+        <loc>Nonecli/registry/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/registry/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/registry/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/registry/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/registry/"/>
+    </url>
+    <url>
+        <loc>Nonecli/render/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/render/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/render/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/render/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/render/"/>
+    </url>
+    <url>
+        <loc>Nonecli/repo/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/repo/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/repo/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/repo/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/repo/"/>
+    </url>
+    <url>
+        <loc>Nonecli/rollback/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/rollback/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/rollback/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/rollback/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/rollback/"/>
+    </url>
+    <url>
+        <loc>Nonecli/search/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/search/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/search/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/search/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/search/"/>
+    </url>
+    <url>
+        <loc>Nonecli/show/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/show/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/show/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/show/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/show/"/>
+    </url>
+    <url>
+        <loc>Nonecli/status/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/status/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/status/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/status/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/status/"/>
+    </url>
+    <url>
+        <loc>Nonecli/template/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/template/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/template/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/template/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/template/"/>
+    </url>
+    <url>
+        <loc>Nonecli/test/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/test/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/test/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/test/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/test/"/>
+    </url>
+    <url>
+        <loc>Nonecli/uninstall/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/uninstall/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/uninstall/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/uninstall/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/uninstall/"/>
+    </url>
+    <url>
+        <loc>Nonecli/upgrade/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/upgrade/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/upgrade/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/upgrade/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/upgrade/"/>
+    </url>
+    <url>
+        <loc>Nonecli/validate/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/validate/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/validate/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/validate/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/validate/"/>
+    </url>
+    <url>
+        <loc>Nonecli/verify/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/verify/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/verify/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/verify/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/verify/"/>
+    </url>
+    <url>
+        <loc>Nonecli/version/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/version/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/version/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/version/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/version/"/>
+    </url>
+    <url>
+        <loc>Nonekts/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/"/>
+    </url>
+    <url>
+        <loc>Nonekts/chart/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/chart/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/chart/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/chart/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/chart/"/>
+    </url>
+    <url>
+        <loc>Nonekts/configmap/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/configmap/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/configmap/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/configmap/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/configmap/"/>
+    </url>
+    <url>
+        <loc>Nonekts/deployment/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/"/>
+    </url>
+    <url>
+        <loc>Nonekts/ingress/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/ingress/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/ingress/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/ingress/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/ingress/"/>
+    </url>
+    <url>
+        <loc>Nonekts/job/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/job/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/job/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/job/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/job/"/>
+    </url>
+    <url>
+        <loc>Nonekts/lib/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/lib/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/lib/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/lib/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/lib/"/>
+    </url>
+    <url>
+        <loc>Nonekts/metadata/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/metadata/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/metadata/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/metadata/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/metadata/"/>
+    </url>
+    <url>
+        <loc>Nonekts/route/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/route/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/route/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/route/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/route/"/>
+    </url>
+    <url>
+        <loc>Nonekts/sealedsecret/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/sealedsecret/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/sealedsecret/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/sealedsecret/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/sealedsecret/"/>
+    </url>
+    <url>
+        <loc>Nonekts/secret/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/secret/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/secret/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/secret/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/secret/"/>
+    </url>
+    <url>
+        <loc>Nonekts/service/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/service/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/service/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/service/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/service/"/>
+    </url>
+    <url>
+        <loc>Nonekts/statefulset/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/statefulset/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/statefulset/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/statefulset/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/statefulset/"/>
+    </url>
+    <url>
+        <loc>Nonekts/values/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/values/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/values/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/values/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/values/"/>
+    </url>
+    <url>
+        <loc>Nonekts/deployment/containers/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/containers/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/containers/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/containers/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/containers/"/>
+    </url>
+    <url>
+        <loc>Nonekts/deployment/pod-spec/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/pod-spec/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/pod-spec/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/pod-spec/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/pod-spec/"/>
+    </url>
+    <url>
+        <loc>Nonekts/deployment/probes/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/probes/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/probes/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/probes/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/probes/"/>
+    </url>
+    <url>
+        <loc>Nonekts/deployment/selector/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/selector/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/selector/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/selector/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/selector/"/>
+    </url>
+    <url>
+        <loc>Nonekts/deployment/strategy/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/strategy/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/strategy/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/strategy/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/strategy/"/>
+    </url>
+    <url>
+        <loc>Nonekts/deployment/template/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/template/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/template/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/template/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/template/"/>
+    </url>
+    <url>
+        <loc>Nonekts/deployment/volumes/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/volumes/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/volumes/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/volumes/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/volumes/"/>
+    </url>
+    <url>
+        <loc>Nonezh/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="None"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/compile/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/compile/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/compile/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/compile/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/compile/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/dependency/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/dependency/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/dependency/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/dependency/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/dependency/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/diff/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/diff/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/diff/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/diff/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/diff/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/env/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/env/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/env/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/env/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/env/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/get/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/get/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/get/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/get/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/get/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/history/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/history/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/history/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/history/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/history/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/install/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/install/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/install/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/install/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/install/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/lint/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/lint/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/lint/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/lint/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/lint/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/list/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/list/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/list/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/list/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/list/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/package/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/package/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/package/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/package/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/package/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/pull/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/pull/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/pull/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/pull/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/pull/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/push/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/push/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/push/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/push/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/push/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/registry/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/registry/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/registry/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/registry/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/registry/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/render/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/render/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/render/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/render/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/render/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/repo/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/repo/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/repo/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/repo/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/repo/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/rollback/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/rollback/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/rollback/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/rollback/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/rollback/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/search/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/search/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/search/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/search/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/search/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/show/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/show/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/show/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/show/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/show/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/status/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/status/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/status/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/status/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/status/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/template/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/template/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/template/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/template/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/template/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/test/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/test/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/test/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/test/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/test/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/uninstall/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/uninstall/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/uninstall/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/uninstall/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/uninstall/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/upgrade/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/upgrade/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/upgrade/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/upgrade/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/upgrade/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/validate/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/validate/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/validate/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/validate/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/validate/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/verify/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/verify/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/verify/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/verify/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/verify/"/>
+    </url>
+    <url>
+        <loc>Nonezh/cli/version/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/version/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/version/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/version/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/version/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/chart/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/chart/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/chart/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/chart/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/chart/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/configmap/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/configmap/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/configmap/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/configmap/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/configmap/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/deployment/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/ingress/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/ingress/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/ingress/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/ingress/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/ingress/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/job/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/job/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/job/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/job/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/job/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/lib/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/lib/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/lib/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/lib/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/lib/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/metadata/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/metadata/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/metadata/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/metadata/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/metadata/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/route/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/route/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/route/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/route/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/route/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/sealedsecret/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/sealedsecret/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/sealedsecret/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/sealedsecret/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/sealedsecret/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/secret/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/secret/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/secret/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/secret/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/secret/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/service/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/service/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/service/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/service/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/service/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/statefulset/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/statefulset/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/statefulset/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/statefulset/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/statefulset/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/values/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/values/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/values/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/values/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/values/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/deployment/containers/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/containers/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/containers/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/containers/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/containers/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/deployment/pod-spec/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/pod-spec/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/pod-spec/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/pod-spec/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/pod-spec/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/deployment/probes/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/probes/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/probes/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/probes/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/probes/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/deployment/selector/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/selector/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/selector/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/selector/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/selector/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/deployment/strategy/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/strategy/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/strategy/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/strategy/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/strategy/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/deployment/template/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/template/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/template/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/template/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/template/"/>
+    </url>
+    <url>
+        <loc>Nonezh/kts/deployment/volumes/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/volumes/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/volumes/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/volumes/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/volumes/"/>
+    </url>
+    <url>
+        <loc>Noneja/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="None"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/compile/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/compile/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/compile/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/compile/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/compile/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/dependency/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/dependency/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/dependency/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/dependency/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/dependency/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/diff/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/diff/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/diff/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/diff/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/diff/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/env/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/env/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/env/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/env/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/env/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/get/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/get/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/get/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/get/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/get/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/history/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/history/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/history/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/history/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/history/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/install/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/install/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/install/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/install/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/install/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/lint/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/lint/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/lint/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/lint/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/lint/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/list/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/list/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/list/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/list/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/list/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/package/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/package/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/package/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/package/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/package/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/pull/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/pull/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/pull/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/pull/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/pull/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/push/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/push/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/push/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/push/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/push/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/registry/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/registry/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/registry/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/registry/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/registry/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/render/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/render/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/render/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/render/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/render/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/repo/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/repo/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/repo/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/repo/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/repo/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/rollback/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/rollback/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/rollback/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/rollback/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/rollback/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/search/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/search/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/search/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/search/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/search/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/show/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/show/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/show/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/show/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/show/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/status/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/status/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/status/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/status/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/status/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/template/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/template/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/template/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/template/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/template/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/test/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/test/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/test/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/test/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/test/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/uninstall/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/uninstall/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/uninstall/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/uninstall/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/uninstall/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/upgrade/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/upgrade/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/upgrade/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/upgrade/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/upgrade/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/validate/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/validate/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/validate/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/validate/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/validate/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/verify/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/verify/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/verify/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/verify/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/verify/"/>
+    </url>
+    <url>
+        <loc>Noneja/cli/version/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/version/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/version/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/version/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/version/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/chart/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/chart/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/chart/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/chart/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/chart/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/configmap/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/configmap/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/configmap/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/configmap/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/configmap/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/deployment/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/ingress/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/ingress/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/ingress/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/ingress/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/ingress/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/job/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/job/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/job/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/job/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/job/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/lib/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/lib/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/lib/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/lib/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/lib/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/metadata/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/metadata/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/metadata/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/metadata/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/metadata/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/route/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/route/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/route/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/route/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/route/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/sealedsecret/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/sealedsecret/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/sealedsecret/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/sealedsecret/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/sealedsecret/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/secret/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/secret/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/secret/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/secret/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/secret/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/service/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/service/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/service/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/service/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/service/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/statefulset/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/statefulset/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/statefulset/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/statefulset/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/statefulset/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/values/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/values/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/values/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/values/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/values/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/deployment/containers/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/containers/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/containers/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/containers/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/containers/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/deployment/pod-spec/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/pod-spec/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/pod-spec/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/pod-spec/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/pod-spec/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/deployment/probes/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/probes/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/probes/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/probes/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/probes/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/deployment/selector/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/selector/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/selector/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/selector/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/selector/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/deployment/strategy/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/strategy/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/strategy/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/strategy/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/strategy/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/deployment/template/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/template/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/template/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/template/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/template/"/>
+    </url>
+    <url>
+        <loc>Noneja/kts/deployment/volumes/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/volumes/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/volumes/"/>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/volumes/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/volumes/"/>
+    </url>
+    <url>
+        <loc>Noneko/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="None"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/compile/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/compile/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/compile/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/compile/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/compile/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/dependency/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/dependency/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/dependency/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/dependency/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/dependency/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/diff/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/diff/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/diff/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/diff/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/diff/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/env/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/env/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/env/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/env/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/env/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/get/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/get/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/get/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/get/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/get/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/history/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/history/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/history/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/history/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/history/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/install/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/install/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/install/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/install/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/install/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/lint/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/lint/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/lint/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/lint/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/lint/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/list/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/list/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/list/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/list/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/list/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/package/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/package/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/package/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/package/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/package/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/pull/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/pull/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/pull/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/pull/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/pull/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/push/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/push/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/push/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/push/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/push/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/registry/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/registry/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/registry/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/registry/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/registry/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/render/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/render/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/render/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/render/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/render/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/repo/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/repo/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/repo/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/repo/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/repo/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/rollback/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/rollback/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/rollback/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/rollback/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/rollback/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/search/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/search/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/search/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/search/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/search/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/show/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/show/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/show/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/show/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/show/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/status/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/status/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/status/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/status/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/status/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/template/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/template/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/template/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/template/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/template/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/test/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/test/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/test/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/test/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/test/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/uninstall/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/uninstall/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/uninstall/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/uninstall/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/uninstall/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/upgrade/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/upgrade/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/upgrade/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/upgrade/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/upgrade/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/validate/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/validate/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/validate/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/validate/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/validate/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/verify/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/verify/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/verify/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/verify/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/verify/"/>
+    </url>
+    <url>
+        <loc>Noneko/cli/version/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/cli/version/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonecli/version/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/cli/version/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/cli/version/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/chart/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/chart/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/chart/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/chart/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/chart/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/configmap/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/configmap/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/configmap/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/configmap/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/configmap/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/deployment/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/ingress/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/ingress/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/ingress/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/ingress/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/ingress/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/job/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/job/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/job/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/job/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/job/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/lib/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/lib/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/lib/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/lib/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/lib/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/metadata/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/metadata/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/metadata/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/metadata/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/metadata/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/route/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/route/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/route/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/route/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/route/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/sealedsecret/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/sealedsecret/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/sealedsecret/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/sealedsecret/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/sealedsecret/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/secret/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/secret/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/secret/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/secret/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/secret/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/service/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/service/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/service/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/service/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/service/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/statefulset/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/statefulset/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/statefulset/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/statefulset/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/statefulset/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/values/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/values/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/values/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/values/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/values/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/deployment/containers/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/containers/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/containers/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/containers/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/containers/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/deployment/pod-spec/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/pod-spec/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/pod-spec/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/pod-spec/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/pod-spec/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/deployment/probes/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/probes/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/probes/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/probes/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/probes/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/deployment/selector/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/selector/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/selector/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/selector/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/selector/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/deployment/strategy/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/strategy/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/strategy/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/strategy/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/strategy/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/deployment/template/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/template/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/template/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/template/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/template/"/>
+    </url>
+    <url>
+        <loc>Noneko/kts/deployment/volumes/</loc>
+        <lastmod>2026-06-20</lastmod>
+        <changefreq>daily</changefreq>
+        <xhtml:link rel="alternate" hreflang="ko" href="Noneko/kts/deployment/volumes/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="Nonekts/deployment/volumes/"/>
+        <xhtml:link rel="alternate" hreflang="ja" href="Noneja/kts/deployment/volumes/"/>
+        <xhtml:link rel="alternate" hreflang="zh" href="Nonezh/kts/deployment/volumes/"/>
+    </url>
+</urlset>

@@ -1,0 +1,119 @@
+/*
+ * Custom theme for Kube KTS — colours and shapes derived from the logo:
+ *   - dark graphite heptagon background
+ *   - "KTS" gradient: blue -> magenta/pink -> orange
+ */
+
+:root {
+  /* Logo gradient stops */
+  --kts-blue:    #4d6bff;
+  --kts-purple:  #a13bd6;
+  --kts-magenta: #e0379b;
+  --kts-pink:    #f0457e;
+  --kts-orange:  #ff7a2f;
+  --kts-graphite:       #2b2b30;
+  --kts-graphite-light: #3a3a42;
+  --kts-graphite-dark:  #1d1d20;
+
+  --kts-gradient: linear-gradient(
+    100deg,
+    var(--kts-blue) 0%,
+    var(--kts-purple) 35%,
+    var(--kts-magenta) 60%,
+    var(--kts-orange) 100%
+  );
+}
+
+/* ----- Light scheme ----- */
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color:        var(--kts-graphite);
+  --md-primary-fg-color--light: var(--kts-graphite-light);
+  --md-primary-fg-color--dark:  var(--kts-graphite-dark);
+  --md-primary-bg-color:        #ffffff;
+  --md-primary-bg-color--light: #ffffffb3;
+
+  --md-accent-fg-color:         var(--kts-magenta);
+  --md-accent-fg-color--transparent: #e0379b1a;
+
+  --md-typeset-a-color:         var(--kts-purple);
+}
+
+/* ----- Dark scheme (matches the dark logo) ----- */
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color:        var(--kts-graphite);
+  --md-primary-fg-color--light: var(--kts-graphite-light);
+  --md-primary-fg-color--dark:  var(--kts-graphite-dark);
+
+  --md-accent-fg-color:         var(--kts-pink);
+  --md-accent-fg-color--transparent: #f0457e1a;
+
+  --md-typeset-a-color:         var(--kts-magenta);
+
+  --md-default-bg-color:        #18181b;
+}
+
+/* Enlarge the heptagon icon logo in the header */
+.md-header__button.md-logo {
+  padding: 0.3rem 0.4rem;
+  margin: 0;
+}
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 2.6rem;
+  width: 2.6rem;
+}
+
+/* Make the header tall enough for the larger logo + banner */
+.md-header__inner {
+  min-height: 3.4rem;
+}
+
+/* Replace the textual site title with the banner wordmark */
+.md-header__title {
+  display: flex;
+  align-items: center;
+  height: 2.8rem;
+  width: 11rem;
+  background-image: url("../images/banner.png");
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: contain;
+}
+.md-header__title .md-header__topic {
+  /* hide the original text but keep it for screen readers */
+  opacity: 0;
+}
+
+/* Gradient page title to echo the "KTS" logo lettering */
+.md-typeset h1 {
+  background: var(--kts-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+/* Gradient accent bar under the header */
+.md-header {
+  border-bottom: 3px solid transparent;
+  border-image: var(--kts-gradient) 1;
+}
+
+/* Rounded, heptagon-inspired soft corners on code blocks and admonitions */
+.md-typeset pre > code,
+.md-typeset .admonition,
+.md-typeset details {
+  border-radius: 10px;
+}
+
+/* Gradient hover for navigation/search accents */
+.md-nav__link:hover,
+.md-nav__link--active {
+  color: var(--md-accent-fg-color);
+}
+
+/* Search highlight & selection in logo colours */
+::selection {
+  background: var(--kts-magenta);
+  color: #ffffff;
+}
