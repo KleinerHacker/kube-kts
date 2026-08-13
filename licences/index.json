@@ -1,0 +1,191 @@
+{
+    "dependencies": [
+        {
+            "moduleName": "ch.qos.reload4j:reload4j",
+            "moduleUrl": "https://reload4j.qos.ch/",
+            "moduleVersion": "1.2.22",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "com.fasterxml.jackson.core:jackson-annotations",
+            "moduleUrl": "https://github.com/FasterXML/jackson",
+            "moduleVersion": "2.21",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "commons-io:commons-io",
+            "moduleUrl": "https://commons.apache.org/proper/commons-io/",
+            "moduleVersion": "2.21.0",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "info.picocli:picocli",
+            "moduleUrl": "https://picocli.info",
+            "moduleVersion": "4.7.7",
+            "moduleLicense": "The Apache Software License, version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-compiler-embeddable",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.3.20",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-daemon-embeddable",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.3.20",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-reflect",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.3.20",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-script-runtime",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.3.20",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-scripting-common",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.3.20",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.3.20",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-scripting-compiler-impl-embeddable",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.3.20",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-scripting-dependencies",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.3.20",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-scripting-jvm",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.3.20",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-scripting-jvm-host",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.3.20",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-stdlib",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.3.20",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-coroutines-bom",
+            "moduleVersion": "1.10.2"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-coroutines-core",
+            "moduleVersion": "1.10.2"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx.coroutines",
+            "moduleVersion": "1.10.2",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains:annotations",
+            "moduleUrl": "http://www.jetbrains.org",
+            "moduleVersion": "13.0",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains:annotations",
+            "moduleUrl": "https://github.com/JetBrains/java-annotations",
+            "moduleVersion": "23.0.0",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.slf4j:slf4j-api",
+            "moduleUrl": "http://www.slf4j.org",
+            "moduleVersion": "2.0.17",
+            "moduleLicense": "MIT",
+            "moduleLicenseUrl": "https://opensource.org/license/mit"
+        },
+        {
+            "moduleName": "org.slf4j:slf4j-reload4j",
+            "moduleUrl": "http://reload4j.qos.ch",
+            "moduleVersion": "2.0.17",
+            "moduleLicense": "MIT",
+            "moduleLicenseUrl": "https://opensource.org/license/mit"
+        },
+        {
+            "moduleName": "org.snakeyaml:snakeyaml-engine",
+            "moduleUrl": "https://bitbucket.org/snakeyaml/snakeyaml-engine",
+            "moduleVersion": "3.0.1",
+            "moduleLicense": "Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "tools.jackson.core:jackson-core",
+            "moduleUrl": "https://github.com/FasterXML/jackson-core",
+            "moduleVersion": "3.1.2",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "tools.jackson.core:jackson-databind",
+            "moduleUrl": "https://github.com/FasterXML/jackson",
+            "moduleVersion": "3.1.2",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "tools.jackson.dataformat:jackson-dataformat-yaml",
+            "moduleUrl": "https://github.com/FasterXML/jackson-dataformats-text",
+            "moduleVersion": "3.1.2",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "tools.jackson.module:jackson-module-kotlin",
+            "moduleUrl": "https://github.com/FasterXML/jackson-module-kotlin",
+            "moduleVersion": "3.1.2",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "tools.jackson:jackson-bom",
+            "moduleVersion": "3.1.2"
+        }
+    ]
+}
