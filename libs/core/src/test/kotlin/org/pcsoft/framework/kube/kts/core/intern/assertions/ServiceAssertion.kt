@@ -20,6 +20,7 @@ import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
+@Suppress("DEPRECATION")
 object ServiceAssertion {
 
     fun assertMax(serviceSpec: ExplicitTemplateSpec<ServiceSpec>) {

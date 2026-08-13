@@ -24,6 +24,7 @@ import kotlin.test.assertNull
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
+@Suppress("DEPRECATION")
 class ProbeSpecTest {
     companion object {
         private val httpGetMaxSpec = ProbeSpecBuilder().apply {

@@ -307,6 +307,7 @@ class MetadataTemplateSpecBuilder internal constructor(private val name: String)
      *         annotations, finalizers, ownerReferences, and clusterName (if applicable).
      *         If owner references are present, they are deeply built using their respective builders.
      */
+    @Suppress("DEPRECATION")
     override fun build(): MetadataTemplateSpec {
         require(name.isNotBlank()) { "Name is required" }
         namespace?.let { require(it.isNotBlank()) { "Namespace is empty" } }

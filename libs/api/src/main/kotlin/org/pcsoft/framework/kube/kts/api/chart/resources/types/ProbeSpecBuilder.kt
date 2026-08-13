@@ -415,6 +415,7 @@ class ProbeSpecBuilder internal constructor() {
          *
          * @return A `TCPSocketAction` instance configured with the specified port.
          */
+        @Suppress("DEPRECATION")
         override fun build() : ProbeSpec.TCPSocketAction {
             require(port > 0) { "Port must be greater than 0" }
             require(port <= 65535) { "Port must be less or equals to 65535" }
