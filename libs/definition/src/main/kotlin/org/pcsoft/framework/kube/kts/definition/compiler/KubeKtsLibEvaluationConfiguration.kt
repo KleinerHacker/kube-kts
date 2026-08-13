@@ -15,6 +15,13 @@ package org.pcsoft.framework.kube.kts.definition.compiler
 import kotlin.script.experimental.api.ScriptEvaluationConfiguration
 import kotlin.script.experimental.api.scriptsInstancesSharing
 
+/**
+ * Evaluation configuration for Kube KTS library scripts (`*.lib.kts`).
+ *
+ * It only enables script instance sharing, so a library script included by several spec scripts is
+ * evaluated exactly once. No implicit receiver is registered: library scripts inherit the value
+ * receiver of the spec script that includes them.
+ */
 @Suppress("JavaIoSerializableObjectMustHaveReadResolve")
 object KubeKtsLibEvaluationConfiguration : ScriptEvaluationConfiguration({
     scriptsInstancesSharing(true)

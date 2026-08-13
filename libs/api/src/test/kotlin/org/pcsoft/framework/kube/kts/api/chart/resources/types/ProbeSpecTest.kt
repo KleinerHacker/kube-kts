@@ -102,6 +102,13 @@ class ProbeSpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal ProbeSpec definition of the http get flavour is built into the
+     * expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testHttpGetMaxContent() {
         assertIs<ProbeSpec.HttpGetAction>(httpGetMaxSpec.action)
@@ -125,6 +132,13 @@ class ProbeSpecTest {
         assertEquals(60, httpGetMaxSpec.terminationGracePeriodSeconds.toSeconds())
     }
 
+    /**
+     * Verifies that the maximal ProbeSpec definition of the http get flavour is serialised into
+     * the expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testHttpGetMaxYaml() {
         val expectedJson = """{
@@ -148,6 +162,13 @@ class ProbeSpecTest {
         JSONAssert.assertEquals(expectedJson, httpGetMaxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal ProbeSpec definition of the http get flavour is built into the
+     * expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testHttpGetMinContent() {
         assertIs<ProbeSpec.HttpGetAction>(httpGetMinSpec.action)
@@ -164,11 +185,25 @@ class ProbeSpecTest {
         assertNull(httpGetMinSpec.terminationGracePeriodSeconds)
     }
 
+    /**
+     * Verifies that the minimal ProbeSpec definition of the http get flavour is serialised into
+     * the expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testHttpGetMinYaml() {
         JSONAssert.assertEquals("""{"httpGet":{"port":9999}}""", httpGetMinSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the maximal ProbeSpec definition of the exec flavour is built into the
+     * expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testExecMaxContent() {
         assertIs<ProbeSpec.ExecAction>(execMaxSpec.action)
@@ -187,6 +222,13 @@ class ProbeSpecTest {
         assertEquals(60, execMaxSpec.terminationGracePeriodSeconds.toSeconds())
     }
 
+    /**
+     * Verifies that the maximal ProbeSpec definition of the exec flavour is serialised into the
+     * expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testExecMaxYaml() {
         val expectedJson = """{
@@ -207,6 +249,13 @@ class ProbeSpecTest {
         JSONAssert.assertEquals(expectedJson, execMaxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal ProbeSpec definition of the exec flavour is built into the
+     * expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testExecMinContent() {
         assertIs<ProbeSpec.ExecAction>(execMinSpec.action)
@@ -219,11 +268,24 @@ class ProbeSpecTest {
         assertNull(execMinSpec.terminationGracePeriodSeconds)
     }
 
+    /**
+     * Verifies that the minimal ProbeSpec definition of the exec flavour is serialised into the
+     * expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testExecMinYaml() {
         JSONAssert.assertEquals("""{"exec":{"command":["demo"]}}""", execMinSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that building a [ProbeSpec] fails when no command is given.
+     *
+     * The builder must reject the input for exec no command with an exception instead of producing
+     * an incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testExecNoCommand() {
         assertFailsWith<IllegalArgumentException> {
@@ -233,6 +295,13 @@ class ProbeSpecTest {
         }
     }
 
+    /**
+     * Verifies that the maximal ProbeSpec definition of the tcp socket flavour is built into the
+     * expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testTcpSocketMaxContent() {
         assertIs<ProbeSpec.TCPSocketAction>(tcpSocketMaxSpec.action)
@@ -252,6 +321,13 @@ class ProbeSpecTest {
         assertEquals(60, tcpSocketMaxSpec.terminationGracePeriodSeconds.toSeconds())
     }
 
+    /**
+     * Verifies that the maximal ProbeSpec definition of the tcp socket flavour is serialised into
+     * the expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testTcpSocketMaxYaml() {
         val expectedJson = """{
@@ -270,6 +346,13 @@ class ProbeSpecTest {
         JSONAssert.assertEquals(expectedJson, tcpSocketMaxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal ProbeSpec definition of the tcp socket flavour is built into the
+     * expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testTcpSocketMinContent() {
         assertIs<ProbeSpec.TCPSocketAction>(tcpSocketMinSpec.action)
@@ -283,11 +366,25 @@ class ProbeSpecTest {
         assertNull(tcpSocketMinSpec.terminationGracePeriodSeconds)
     }
 
+    /**
+     * Verifies that the minimal ProbeSpec definition of the tcp socket flavour is serialised into
+     * the expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testTcpSocketMinYaml() {
         JSONAssert.assertEquals("""{"tcpSocket":{"port":9999}}""", tcpSocketMinSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the maximal ProbeSpec definition of the grpc flavour is built into the
+     * expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testGrpcMaxContent() {
         assertIs<ProbeSpec.GRPCAction>(grpcMaxSpec.action)
@@ -307,6 +404,13 @@ class ProbeSpecTest {
         assertEquals(60, grpcMaxSpec.terminationGracePeriodSeconds.toSeconds())
     }
 
+    /**
+     * Verifies that the maximal ProbeSpec definition of the grpc flavour is serialised into the
+     * expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testGrpcMaxYaml() {
         val expectedJson = """{
@@ -325,6 +429,13 @@ class ProbeSpecTest {
         JSONAssert.assertEquals(expectedJson, grpcMaxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal ProbeSpec definition of the grpc flavour is built into the
+     * expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testGrpcMinContent() {
         assertIs<ProbeSpec.GRPCAction>(grpcMinSpec.action)
@@ -338,6 +449,13 @@ class ProbeSpecTest {
         assertNull(grpcMinSpec.terminationGracePeriodSeconds)
     }
 
+    /**
+     * Verifies that the minimal ProbeSpec definition of the grpc flavour is serialised into the
+     * expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testGrpcMinYaml() {
         JSONAssert.assertEquals("""{"grpc":{"port":9999}}""", grpcMinSpec.toJson(), JSONCompareMode.LENIENT)

@@ -51,6 +51,13 @@ class SealedSecretTemplateSpecTest {
 
     // ============ Template — Maximal ============
 
+    /**
+     * Verifies that the maximal SealedSecretTemplateSpec definition of the template flavour is
+     * built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testTemplateMaxContent() {
         assertEquals(SecretSpec.Type.Tls, templateMaxSpec.type)
@@ -60,6 +67,13 @@ class SealedSecretTemplateSpecTest {
         assertEquals(mapOf("description" to "secret template"), templateMaxSpec.metadata.annotations)
     }
 
+    /**
+     * Verifies that the maximal SealedSecretTemplateSpec definition of the template flavour is
+     * serialised into the expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testTemplateMaxYaml() {
         JSONAssert.assertEquals(
@@ -82,6 +96,13 @@ class SealedSecretTemplateSpecTest {
 
     // ============ Template — Minimal ============
 
+    /**
+     * Verifies that the minimal SealedSecretTemplateSpec definition of the template flavour is
+     * built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testTemplateMinContent() {
         assertNull(templateMinSpec.type)
@@ -89,6 +110,13 @@ class SealedSecretTemplateSpecTest {
         assertNull(templateMinSpec.metadata)
     }
 
+    /**
+     * Verifies that the minimal SealedSecretTemplateSpec definition of the template flavour is
+     * serialised into the expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testTemplateMinYaml() {
         JSONAssert.assertEquals("{}", templateMinSpec.toJson(), JSONCompareMode.LENIENT)
@@ -96,12 +124,26 @@ class SealedSecretTemplateSpecTest {
 
     // ============ Template Metadata — Maximal ============
 
+    /**
+     * Verifies that the maximal SealedSecretTemplateSpec definition of the metadata flavour is
+     * built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMetadataMaxContent() {
         assertEquals(mapOf("app" to "demo"), metadataMaxSpec.labels)
         assertEquals(mapOf("description" to "secret template"), metadataMaxSpec.annotations)
     }
 
+    /**
+     * Verifies that the maximal SealedSecretTemplateSpec definition of the metadata flavour is
+     * serialised into the expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMetadataMaxYaml() {
         JSONAssert.assertEquals(
@@ -120,12 +162,26 @@ class SealedSecretTemplateSpecTest {
 
     // ============ Template Metadata — Minimal ============
 
+    /**
+     * Verifies that the minimal SealedSecretTemplateSpec definition of the metadata flavour is
+     * built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMetadataMinContent() {
         assertNull(metadataMinSpec.labels)
         assertNull(metadataMinSpec.annotations)
     }
 
+    /**
+     * Verifies that the minimal SealedSecretTemplateSpec definition of the metadata flavour is
+     * serialised into the expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMetadataMinYaml() {
         JSONAssert.assertEquals("{}", metadataMinSpec.toJson(), JSONCompareMode.LENIENT)

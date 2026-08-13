@@ -86,6 +86,13 @@ class PodSecurityContextSpecTest {
         private val minSpec = PodSecurityContextSpecBuilder().build()
     }
 
+    /**
+     * Verifies that the maximal PodSecurityContextSpec definition is built into the expected spec
+     * object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertEquals(1000, maxSpec.runAsUser)
@@ -121,6 +128,13 @@ class PodSecurityContextSpecTest {
         assertEquals(mapOf("net.ipv4.ip_forward" to "1"), maxSpec.sysctls)
     }
 
+    /**
+     * Verifies that the maximal PodSecurityContextSpec definition is serialised into the expected
+     * YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val expectedJson = """{
@@ -162,6 +176,13 @@ class PodSecurityContextSpecTest {
         JSONAssert.assertEquals(expectedJson, maxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the partially filled PodSecurityContextSpec definition is built into the
+     * expected spec object.
+     *
+     * Only a subset of the optional fields is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMediumContent() {
         assertEquals(1000, mediumSpec.runAsUser)
@@ -195,6 +216,13 @@ class PodSecurityContextSpecTest {
         assertNull(mediumSpec.sysctls)
     }
 
+    /**
+     * Verifies that the partially filled PodSecurityContextSpec definition is serialised into the
+     * expected YAML document.
+     *
+     * Only a subset of the optional fields is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMediumYaml() {
         val expectedJson = """{
@@ -214,6 +242,13 @@ class PodSecurityContextSpecTest {
         JSONAssert.assertEquals(expectedJson, mediumSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal PodSecurityContextSpec definition is built into the expected spec
+     * object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.runAsUser)
@@ -230,11 +265,25 @@ class PodSecurityContextSpecTest {
         assertNull(minSpec.sysctls)
     }
 
+    /**
+     * Verifies that the minimal PodSecurityContextSpec definition is serialised into the expected
+     * YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         JSONAssert.assertEquals("""{}""", minSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that building a [PodSecurityContextSpec] fails when a value outside the allowed set
+     * is used.
+     *
+     * The builder must reject the input for not allowed profile with an exception instead of
+     * producing an incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testNotAllowedProfile() {
         assertFailsWith<IllegalArgumentException> {

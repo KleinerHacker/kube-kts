@@ -32,12 +32,26 @@ class PortSpecTest {
         private val numberSpec = PortSpecBuilder(8080).build()
     }
 
+    /**
+     * Verifies that the PortSpec definition of the name flavour is built into the expected spec
+     * object.
+     *
+     * The fields relevant for this case are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testNameContent() {
         assertNull(nameSpec.number)
         assertEquals("demo", nameSpec.name)
     }
 
+    /**
+     * Verifies that the PortSpec definition of the name flavour is serialised into the expected
+     * YAML document.
+     *
+     * The fields relevant for this case are set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testNameYaml() {
         val actualJson = nameSpec.toJson()
@@ -46,12 +60,26 @@ class PortSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the PortSpec definition of the number flavour is built into the expected spec
+     * object.
+     *
+     * The fields relevant for this case are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testNumberContent() {
         assertNull(numberSpec.name)
         assertEquals(8080, numberSpec.number)
     }
 
+    /**
+     * Verifies that the PortSpec definition of the number flavour is serialised into the expected
+     * YAML document.
+     *
+     * The fields relevant for this case are set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testNumberYaml() {
         val actualJson = numberSpec.toJson()
@@ -60,16 +88,34 @@ class PortSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that building a [PortSpec] fails when an empty value is used.
+     *
+     * The builder must reject the input for name with an exception instead of producing an
+     * incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testEmptyNameContent() {
         assertFailsWith<IllegalArgumentException> { PortSpecBuilder("").build() }
     }
 
+    /**
+     * Verifies that building a [PortSpec] fails when a negative value is used.
+     *
+     * The builder must reject the input for port number with an exception instead of producing an
+     * incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testNegativePortNumber() {
         assertFailsWith<IllegalArgumentException> { PortSpecBuilder(-1).build() }
     }
 
+    /**
+     * Verifies that building a [PortSpec] fails when the value exceeds the allowed maximum.
+     *
+     * The builder must reject the input for port number maximum with an exception instead of
+     * producing an incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testPortNumberExceedsMaximum() {
         assertFailsWith<IllegalArgumentException> { PortSpecBuilder(65536).build() }
@@ -224,6 +270,12 @@ class PodTemplateSpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal PodTemplateSpec definition is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         val templateSpec = maxSpec
@@ -323,6 +375,13 @@ class PodTemplateSpecTest {
         assertEquals(false, spec.setHostnameAsFQDN)
     }
 
+    /**
+     * Verifies that the maximal PodTemplateSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val actualJson = maxSpec.toJson()
@@ -447,6 +506,12 @@ class PodTemplateSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal PodTemplateSpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         val templateSpec = minSpec
@@ -493,6 +558,13 @@ class PodTemplateSpecTest {
         assertNull(spec.resourceClaims)
     }
 
+    /**
+     * Verifies that the minimal PodTemplateSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         JSONAssert.assertEquals(
@@ -502,6 +574,12 @@ class PodTemplateSpecTest {
         )
     }
 
+    /**
+     * Verifies that building a [PodTemplateSpec] fails when a mandatory field is not set.
+     *
+     * The builder must reject the input for spec with an exception instead of producing an
+     * incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testMissingSpecContent() {
         assertFailsWith<IllegalArgumentException> { PodTemplateSpecBuilder().build() }

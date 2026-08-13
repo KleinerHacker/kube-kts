@@ -82,6 +82,11 @@ class HelpRenderTest {
         }
     }
 
+    /**
+     * Verifies that the help of `install` lists its options with the Helm forwarding marker.
+     *
+     * Every option that is passed on to Helm must be marked with `---->` so users can tell them apart from the CLI's own flags.
+     */
     @Test
     fun installHelp() {
         val usage = usageOf("install")
@@ -94,6 +99,11 @@ class HelpRenderTest {
         assertNoRawMarker(usage)
     }
 
+    /**
+     * Verifies that the help of `uninstall` renders its options and markers.
+     *
+     * Includes the repeatable `--name` option used to uninstall several releases at once.
+     */
     @Test
     fun uninstallHelp() {
         val usage = usageOf("uninstall")
@@ -105,6 +115,11 @@ class HelpRenderTest {
         assertNoRawMarker(usage)
     }
 
+    /**
+     * Verifies that the help of `lint` renders its options and markers.
+     *
+     * Covers the lint specific flags on top of the shared value and global flags.
+     */
     @Test
     fun lintHelp() {
         val usage = usageOf("lint")
@@ -116,6 +131,11 @@ class HelpRenderTest {
         assertNoRawMarker(usage)
     }
 
+    /**
+     * Verifies that the help of `template` renders its options and markers.
+     *
+     * Covers the rendering flags that only exist for `template`.
+     */
     @Test
     fun templateHelp() {
         val usage = usageOf("template")
@@ -128,6 +148,11 @@ class HelpRenderTest {
         assertNoRawMarker(usage)
     }
 
+    /**
+     * Verifies that the help of the direct command `list` renders its options and markers.
+     *
+     * Direct commands take no repository, so no positional repository parameter may be shown.
+     */
     @Test
     fun listHelp() {
         val usage = usageOf("list")
@@ -137,6 +162,11 @@ class HelpRenderTest {
         assertNoRawMarker(usage)
     }
 
+    /**
+     * Verifies that the help of `pull` renders its options and markers.
+     *
+     * Covers the download and verification flags of the chart source.
+     */
     @Test
     fun pullHelp() {
         val usage = usageOf("pull")
@@ -146,6 +176,11 @@ class HelpRenderTest {
         assertNoRawMarker(usage)
     }
 
+    /**
+     * Verifies that the help of `package` renders its options and markers.
+     *
+     * Covers the packaging and signing flags.
+     */
     @Test
     fun packageHelp() {
         val usage = usageOf("package")
@@ -155,6 +190,11 @@ class HelpRenderTest {
         assertNoRawMarker(usage)
     }
 
+    /**
+     * Verifies that the help of the nested command `get values` is rendered.
+     *
+     * The usage line must show the full command path, not just the leaf command.
+     */
     @Test
     fun nestedGetValuesHelp() {
         val usage = usageOf("get", "values")
@@ -164,6 +204,11 @@ class HelpRenderTest {
         assertNoRawMarker(usage)
     }
 
+    /**
+     * Verifies that the help of the nested command `diff upgrade` is rendered.
+     *
+     * Same expectation as for `get values`, but for a render based nested command.
+     */
     @Test
     fun nestedDiffUpgradeHelp() {
         val usage = usageOf("diff", "upgrade")
@@ -173,6 +218,11 @@ class HelpRenderTest {
         assertNoRawMarker(usage)
     }
 
+    /**
+     * Verifies that experimental options are marked with `*` in the help.
+     *
+     * The YAML merge flags are only usable together with `--experimental` and must be recognisable as such.
+     */
     @Test
     fun experimentalFlagsCarryMarker() {
         val usage = usageOf("install")
@@ -184,6 +234,11 @@ class HelpRenderTest {
         }
     }
 
+    /**
+     * Verifies that the security relevant `--unsafe` flag is marked with `!!!` in the help.
+     *
+     * `--unsafe` disables the script safety model, so its marker must warn the user.
+     */
     @Test
     fun dangerousFlagCarriesMarker() {
         val usage = usageOf("install")
@@ -192,6 +247,11 @@ class HelpRenderTest {
         Assertions.assertTrue(row.indexOf("--unsafe") < row.indexOf(dangerHint), "Column order wrong for '--unsafe' in row: $row")
     }
 
+    /**
+     * Verifies that `--debug` carries the Helm forwarding marker in the help.
+     *
+     * The flag is consumed by the CLI and additionally passed on to Helm, which the help must state.
+     */
     @Test
     fun debugFlagIsForwardedInHelp() {
         // --debug is used internally and additionally forwarded to Helm.

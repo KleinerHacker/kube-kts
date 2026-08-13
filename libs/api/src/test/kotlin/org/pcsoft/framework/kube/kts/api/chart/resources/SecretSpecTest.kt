@@ -57,6 +57,12 @@ class SecretSpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal SecretSpec definition is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertEquals(SecretSpec.Type.Opaque, maxSpec.type)
@@ -66,6 +72,12 @@ class SecretSpecTest {
         assertEquals(true, maxSpec.immutable)
     }
 
+    /**
+     * Verifies that the minimal SecretSpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.type)
@@ -74,6 +86,13 @@ class SecretSpecTest {
         assertNull(minSpec.immutable)
     }
 
+    /**
+     * Verifies that the maximal SecretSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val expectedYaml = IOUtils.resourceToString("/secret.yaml", Charsets.UTF_8)
@@ -83,6 +102,13 @@ class SecretSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal SecretSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         JSONAssert.assertEquals(
@@ -98,6 +124,12 @@ class SecretSpecTest {
         )
     }
 
+    /**
+     * Verifies the SecretSpec definition of the data builder dsl flavour.
+     *
+     * The fields relevant for this case are set and the resulting specification is checked against
+     * the expectation.
+     */
     @Test
     fun testDataBuilderDsl() {
         val spec = SecretSpecBuilder().apply {
@@ -114,6 +146,12 @@ class SecretSpecTest {
         assertNull(spec.stringData)
     }
 
+    /**
+     * Verifies the SecretSpec definition of the string data builder dsl flavour.
+     *
+     * The fields relevant for this case are set and the resulting specification is checked against
+     * the expectation.
+     */
     @Test
     fun testStringDataBuilderDsl() {
         val spec = SecretSpecBuilder().apply {
@@ -127,6 +165,13 @@ class SecretSpecTest {
         assertNull(spec.data)
     }
 
+    /**
+     * Verifies that the SecretSpec definition of the tls type flavour is serialised into the
+     * expected YAML document.
+     *
+     * The fields relevant for this case are set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testTlsTypeYaml() {
         val specBuilder = SecretSpecBuilder().apply {

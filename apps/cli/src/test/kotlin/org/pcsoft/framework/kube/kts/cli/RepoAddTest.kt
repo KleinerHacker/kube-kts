@@ -51,6 +51,11 @@ class RepoAddTest {
         BaseDirectHelmCommand.helmExecutor = ProcessHelmExecutor
     }
 
+    /**
+     * Verifies that name, URL and `--force-update` of `repo add` are forwarded to Helm.
+     *
+     * Both positional arguments must keep their order, since Helm distinguishes them by position.
+     */
     @Test
     fun nameAndUrlForwarded() {
         val exitCode = runCli(arrayOf("repo", "add", "bitnami", "https://charts.bitnami.com/bitnami", "--force-update"))
@@ -62,6 +67,11 @@ class RepoAddTest {
         Assertions.assertTrue(args.contains("--force-update"), "force-update forwarded: $args")
     }
 
+    /**
+     * Verifies that `repo add` without the URL fails without invoking Helm.
+     *
+     * The missing second positional argument must be rejected during parsing.
+     */
     @Test
     fun failsWhenArgumentsMissing() {
         val exitCode = runCli(arrayOf("repo", "add", "bitnami"))

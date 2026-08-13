@@ -67,6 +67,83 @@ Spec scripts may not use `import` statements or fully qualified class names; onl
 available. This keeps templates declarative and reviewable. The restriction can be lifted with the
 dangerous `--unsafe` flag.
 
+## Getting Started
+
+### Prerequisites
+
+| Requirement | Notes |
+|---|---|
+| JDK 25 | The Gradle toolchain resolves it automatically (foojay resolver) if it is not installed. |
+| Git | To check out the repository. |
+| `helm` on the `PATH` | Required at runtime for every Helm-backed command and for the integration tests. |
+| Python 3 | Only required to build the MkDocs documentation. |
+| `helm diff` plugin | Only required for `diff upgrade`. |
+
+### Check out and build
+
+```bash
+git clone https://github.com/KleinerHacker/kube-kts.git
+cd kube-kts
+./gradlew build
+```
+
+On Windows use `gradlew.bat` instead of `./gradlew`.
+
+### Run the tests
+
+Tests are split into two categories, distinguished by the class name suffix:
+
+| Task | Contains | Class name |
+|---|---|---|
+| `./gradlew developerTest` | Unit tests without external tooling. | `*Test` |
+| `./gradlew integrationTest` | Complete features, running the whole scan → compile → render pipeline. | `*IT` |
+| `./gradlew test` | Both categories. | — |
+
+Code coverage is measured with [Kover](https://github.com/Kotlin/kotlinx-kover); the aggregated
+report is created with `./gradlew koverHtmlReport` and written to `build/reports/kover`.
+
+### Run the CLI
+
+The build produces a runnable JAR in `apps/cli/build/libs`:
+
+```bash
+./gradlew :apps:cli:build
+java -jar apps/cli/build/libs/kube-kts-<version>.jar render ./helm ./build/helm
+java -jar apps/cli/build/libs/kube-kts-<version>.jar --help
+```
+
+### Build the documentation
+
+```bash
+./gradlew buildDocs   # builds the MkDocs site into build/docs (strict mode)
+./gradlew runDocs     # serves the site locally and opens the browser
+```
+
+## Consuming the artifacts
+
+### CLI
+
+The `kube-kts` CLI is published as a runnable JAR with every tagged release. Download
+`kube-kts-<version>.jar` from the
+[GitHub releases](https://github.com/KleinerHacker/kube-kts/releases) and run it with
+`java -jar`. A `helm` binary must be available on the `PATH`.
+
+### Libraries
+
+The modules are built as plain JARs (`libs/*/build/libs`) using the group `org.pcsoft.tooling`:
+
+| Module | Artifact |
+|---|---|
+| `libs/api` | `kube-kts-api` — the KTS DSL, needed to write and compile spec scripts. |
+| `libs/definition` | `kube-kts-definition` — the script definitions for IntelliJ. |
+| `libs/core` | `kube-kts-core` — scanner, script processor, renderer, YAML merging. |
+| `libs/logging` | `kube-kts-logging` — console logging and output styling. |
+
+> The libraries are not published to a Maven repository yet. Until then, consume them either by
+> including this repository as a
+> [composite build](https://docs.gradle.org/current/userguide/composite_builds.html)
+> (`includeBuild("../kube-kts")`) or by adding the built JARs as a flat-dir/file dependency.
+
 ## Supported Templates
 
 Every template is written as a typed Kotlin DSL function. Anything not covered by the DSL can still

@@ -15,9 +15,9 @@ package org.pcsoft.framework.kube.kts.cli
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.cli.commands.BaseRenderedHelmCommand
 import org.pcsoft.framework.kube.kts.cli.commands.HelmExecutor
 import org.pcsoft.framework.kube.kts.cli.commands.ProcessHelmExecutor
@@ -25,18 +25,20 @@ import org.pcsoft.framework.kube.kts.cli.intern.RepoType
 import java.nio.file.Path
 
 /**
- * Tests for the nested, render based `diff upgrade` command (helm-diff plugin) using a mocked
- * [HelmExecutor]. The release name is passed via `--name` and forwarded as the positional RELEASE.
+ * Tests for the `package` command using a mocked [HelmExecutor]: the full pipeline (scan, compile,
+ * render) runs for real, but Helm itself is never invoked.
  */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class DiffTest {
+class PackageIT {
 
     private class CapturingHelmExecutor : HelmExecutor {
         var capturedArgs: List<String>? = null
+        var capturedWorkingDir: Path? = null
         var invocations = 0
 
         override fun execute(args: List<String>, workingDir: Path): Int {
             capturedArgs = args
+            capturedWorkingDir = workingDir
             invocations++
             return 0
         }
@@ -55,23 +57,33 @@ class DiffTest {
         BaseRenderedHelmCommand.helmExecutor = ProcessHelmExecutor
     }
 
+    /**
+     * Verifies that the repository is rendered first and `helm package .` is invoked afterwards.
+     *
+     * The parameter selects the repository layout; `--version` must be forwarded so the packaged
+     * chart carries the requested version.
+     */
     @ParameterizedTest
     @EnumSource(RepoType::class)
-    fun rendersThenDiffsUpgrade(type: RepoType) {
-        val exitCode = runCli(
-            arrayOf("diff", "upgrade", "src/test/resources/${type.path}", "--name", "demo", "--detailed-exitcode")
-        )
+    fun rendersThenPackages(type: RepoType) {
+        val exitCode = runCli(arrayOf("package", "src/test/resources/${type.path}", "--version", "1.2.3"))
 
         Assertions.assertEquals(0, exitCode)
         Assertions.assertEquals(1, executor.invocations)
         val args = executor.capturedArgs!!
-        Assertions.assertEquals(listOf("diff", "upgrade", "demo", "."), args.subList(0, 4))
-        Assertions.assertTrue(args.contains("--detailed-exitcode"), "detailed-exitcode forwarded: $args")
+        Assertions.assertEquals(listOf("package", "."), args.subList(0, 2))
+        Assertions.assertTrue(args.containsAll(listOf("--version", "1.2.3")), "version forwarded: $args")
+        Assertions.assertNotNull(executor.capturedWorkingDir)
     }
 
+    /**
+     * Verifies that a missing repository fails before Helm is invoked.
+     *
+     * Rendering fails first, so the executor must not have been called at all.
+     */
     @Test
     fun failsWithoutInvokingHelmWhenRepositoryMissing() {
-        val exitCode = runCli(arrayOf("diff", "upgrade", "abc", "--name", "demo"))
+        val exitCode = runCli(arrayOf("package", "abc"))
 
         Assertions.assertNotEquals(0, exitCode)
         Assertions.assertEquals(0, executor.invocations, "Helm must not be invoked when the repository is missing")

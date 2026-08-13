@@ -33,6 +33,20 @@ import kotlin.script.experimental.jvm.dependenciesFromClassContext
 import kotlin.script.experimental.jvm.dependenciesFromCurrentContext
 import kotlin.script.experimental.jvm.jvm
 
+/**
+ * Compilation configuration for Kube KTS spec scripts (`*.spec.kts`).
+ *
+ * It makes the complete DSL of `libs/api` available without any `import` statement — which is
+ * mandatory, because the script safety model forbids imports in spec scripts. On top of the
+ * default imports it:
+ * - resolves the JVM dependencies from the current class context so the DSL classes are on the
+ *   script classpath,
+ * - pins the JVM target of the compiled scripts to the one used by the modules,
+ * - accepts scripts in every IDE location so IntelliJ resolves the DSL inside a `helm` directory,
+ * - discovers the sibling `*.lib.kts` files before compiling and adds them as imported scripts,
+ * - registers [ValueAccess] as implicit receiver, which enables the top level `value(...)`,
+ *   `array(...)` and `exists(...)` calls.
+ */
 @Suppress("JavaIoSerializableObjectMustHaveReadResolve")
 object KubeKtsSpecCompilationConfiguration : ScriptCompilationConfiguration({
     defaultImports("${ChartSpec::class.java.packageName}.*")

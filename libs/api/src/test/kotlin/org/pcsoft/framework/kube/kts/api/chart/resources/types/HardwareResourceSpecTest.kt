@@ -42,6 +42,13 @@ class HardwareResourceSpecTest {
         private val minSpec = HardwareResourceSpecBuilder().build()
     }
 
+    /**
+     * Verifies that the maximal HardwareResourceSpec definition is built into the expected spec
+     * object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         val limits = assertNotNull(maxSpec.limits)
@@ -61,6 +68,13 @@ class HardwareResourceSpecTest {
         assertNull(requests.extendedResources)
     }
 
+    /**
+     * Verifies that the maximal HardwareResourceSpec definition is serialised into the expected
+     * YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val actualJson = maxSpec.toJson()
@@ -77,17 +91,38 @@ class HardwareResourceSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal HardwareResourceSpec definition is built into the expected spec
+     * object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.limits)
         assertNull(minSpec.requests)
     }
 
+    /**
+     * Verifies that the minimal HardwareResourceSpec definition is serialised into the expected
+     * YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         assertEquals("""{}""", minSpec.toJson())
     }
 
+    /**
+     * Verifies that building a [HardwareResourceSpec] fails when an invalid combination of values
+     * is used.
+     *
+     * The builder must reject the input for cpu limit smaller than request with an exception
+     * instead of producing an incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testInvalidCpuLimitSmallerThanRequest() {
         assertFailsWith<IllegalArgumentException> {
@@ -102,6 +137,13 @@ class HardwareResourceSpecTest {
         }
     }
 
+    /**
+     * Verifies that building a [HardwareResourceSpec] fails when an invalid combination of values
+     * is used.
+     *
+     * The builder must reject the input for memory limit smaller than request with an exception
+     * instead of producing an incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testInvalidMemoryLimitSmallerThanRequest() {
         assertFailsWith<IllegalArgumentException> {
@@ -116,6 +158,14 @@ class HardwareResourceSpecTest {
         }
     }
 
+    /**
+     * Verifies that building a [HardwareResourceSpec] fails when an invalid combination of values
+     * is used.
+     *
+     * The builder must reject the input for ephemeral storage limit smaller than request with an
+     * exception instead of producing an incomplete specification that the API server would refuse
+     * later.
+     */
     @Test
     fun testInvalidEphemeralStorageLimitSmallerThanRequest() {
         assertFailsWith<IllegalArgumentException> {

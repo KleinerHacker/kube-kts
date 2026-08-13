@@ -18,6 +18,11 @@ import kotlin.test.assertFailsWith
 
 class MailAddressTest {
 
+    /**
+     * Verifies that a valid mail address is parsed successfully.
+     *
+     * Maintainer entries of a chart carry mail addresses, which are validated on parsing.
+     */
     @Test
     fun testParseSuccessfully() {
         assertEquals(MailAddress("test", "example.com"), MailAddress.parse("test@example.com"))
@@ -26,6 +31,12 @@ class MailAddressTest {
         assertEquals(MailAddress("a", "com.de"), MailAddress.parse("a@com.de"))
     }
 
+    /**
+     * Verifies that a valid mail address can be created from its parts.
+     *
+     * The constructor takes the local part and the domain separately and must accept a valid
+     * combination.
+     */
     @Test
     fun testCreateSuccessfully() {
         assertEquals("test@example.com", MailAddress("test", "example.com").toString())
@@ -34,6 +45,11 @@ class MailAddressTest {
         assertEquals("a@com.de", MailAddress("a", "com.de").toString())
     }
 
+    /**
+     * Verifies that a malformed mail address is rejected on parsing.
+     *
+     * An invalid address must fail fast instead of ending up in the rendered `Chart.yaml`.
+     */
     @Test
     fun testParseFailure() {
         assertFailsWith<IllegalArgumentException> {
@@ -68,6 +84,11 @@ class MailAddressTest {
         }
     }
 
+    /**
+     * Verifies that invalid parts are rejected when creating a mail address.
+     *
+     * The same validation as for parsing must apply to the part based constructor.
+     */
     @Test
     fun testCreateFailure() {
         assertFailsWith<IllegalArgumentException> {

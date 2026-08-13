@@ -33,6 +33,12 @@ class PortMappingSpecTest {
         private val minSpec = PortMappingSpecBuilder("name", 9999).build(ServiceSpec.Type.LoadBalancer)
     }
 
+    /**
+     * Verifies that the maximal PortMappingSpec definition is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertEquals("name", maxSpec.name)
@@ -43,6 +49,13 @@ class PortMappingSpecTest {
         assertEquals(Protocol.UDP, maxSpec.protocol)
     }
 
+    /**
+     * Verifies that the maximal PortMappingSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val actualJson = maxSpec.toJson()
@@ -58,6 +71,12 @@ class PortMappingSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal PortMappingSpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertEquals("name", minSpec.name)
@@ -68,6 +87,13 @@ class PortMappingSpecTest {
         assertNull(minSpec.protocol)
     }
 
+    /**
+     * Verifies that the minimal PortMappingSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         val actualJson = minSpec.toJson()
@@ -76,6 +102,12 @@ class PortMappingSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that building a [PortMappingSpec] fails when a referenced entry does not exist.
+     *
+     * The builder must reject the input for node port not found with an exception instead of
+     * producing an incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testNodePortNotFound() {
         assertFailsWith<IllegalArgumentException> {

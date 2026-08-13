@@ -28,6 +28,11 @@ class HelmArgsTest {
     // install
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `install` is translated into the Helm sub-command with `.` as the chart path.
+     *
+     * The rendered chart is always passed as the current directory, because Helm is executed inside the render target.
+     */
     @Test
     fun install_subcommandAndChartPath() {
         val args = buildHelmCommandLine("install", TEST_REPOSITORY)
@@ -35,12 +40,22 @@ class HelmArgsTest {
         Assertions.assertEquals(".", args.last { it == "." })
     }
 
+    /**
+     * Verifies that the release name given via `--name` becomes a positional argument.
+     *
+     * Helm expects `install <release> <chart>`, so the option must not be forwarded as an option.
+     */
     @Test
     fun install_namePassedAsPositional() {
         val args = buildHelmCommandLine("install", TEST_REPOSITORY, "--name", "my-release")
         Assertions.assertEquals(listOf("install", "my-release", "."), args)
     }
 
+    /**
+     * Verifies that every supported `install` flag is forwarded to Helm.
+     *
+     * Covers the global flags, the value flags, the chart source and verification flags as well as the install specific flags in a single command line.
+     */
     @Test
     fun install_allFlagsForwarded() {
         val args = buildHelmCommandLine(
@@ -113,6 +128,11 @@ class HelmArgsTest {
         assertHasFlag(args, "--wait-for-jobs")
     }
 
+    /**
+     * Verifies that flags which were not given do not appear on the Helm command line.
+     *
+     * Forwarding a defaulted boolean as `--flag=false` would change Helm's behaviour, so unset options must be omitted entirely.
+     */
     @Test
     fun install_unsetFlagsAreNotForwarded() {
         val args = buildHelmCommandLine("install", TEST_REPOSITORY, "--name", "rel")
@@ -127,6 +147,11 @@ class HelmArgsTest {
     // uninstall
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that several releases and the uninstall flags are forwarded to Helm.
+     *
+     * `helm uninstall` accepts multiple releases in one call; the repeated `--name` options must become positional arguments in order.
+     */
     @Test
     fun uninstall_releasesAndFlags() {
         val args = buildHelmCommandLine(
@@ -151,12 +176,22 @@ class HelmArgsTest {
     // status (render-less: no REPOSITORY positional, forwarded directly to helm)
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that the release of the direct command `status` is forwarded as a positional argument.
+     *
+     * Direct commands take the release name as a plain positional, unlike the render based commands which use `--name`.
+     */
     @Test
     fun status_releasePassedAsPositional() {
         val args = buildHelmCommandLine("status", "my-release")
         Assertions.assertEquals(listOf("status", "my-release"), args)
     }
 
+    /**
+     * Verifies that the `status` flags are forwarded to Helm.
+     *
+     * Covers `--revision`, `--show-resources`, the output format and the global flags.
+     */
     @Test
     fun status_flagsForwarded() {
         val args = buildHelmCommandLine(
@@ -171,6 +206,11 @@ class HelmArgsTest {
         assertHasFlag(args, "--show-resources")
     }
 
+    /**
+     * Verifies that unset `status` flags do not appear on the Helm command line.
+     *
+     * Only options explicitly given by the user may be forwarded.
+     */
     @Test
     fun status_unsetFlagsAreNotForwarded() {
         val args = buildHelmCommandLine("status", "rel")
@@ -185,6 +225,11 @@ class HelmArgsTest {
     // lint
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `lint` is translated into `helm lint .` including its flags.
+     *
+     * Covers `--strict`, `--with-subcharts`, the value flags and the global flags.
+     */
     @Test
     fun lint_subcommandAndFlags() {
         val args = buildHelmCommandLine(
@@ -203,6 +248,11 @@ class HelmArgsTest {
     // template
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `template` passes the release name positionally and expands `-n`.
+     *
+     * `-n` is reserved for `--namespace` to match Helm, while the release name is given via `--name`.
+     */
     @Test
     fun template_namePositionalAndNamespaceShorthand() {
         val args = buildHelmCommandLine("template", TEST_REPOSITORY, "--name", "rel", "-n", "ns")
@@ -211,6 +261,11 @@ class HelmArgsTest {
         assertHasOption(args, "--namespace", "ns")
     }
 
+    /**
+     * Verifies that every supported `template` flag is forwarded to Helm.
+     *
+     * Covers the rendering flags such as `--include-crds`, `--show-only` and `--output-dir` together with the value and global flags.
+     */
     @Test
     fun template_allFlagsForwarded() {
         val args = buildHelmCommandLine(
@@ -237,6 +292,11 @@ class HelmArgsTest {
     // list (render-less)
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `list` is translated into `helm list` including all its filter flags.
+     *
+     * Covers the status filters, `--all-namespaces`, the selector, the output format and the pagination options.
+     */
     @Test
     fun list_subcommandAndFlags() {
         val args = buildHelmCommandLine(
@@ -271,6 +331,11 @@ class HelmArgsTest {
     // history
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `history` forwards the release, `--max` and the output format.
+     *
+     * The release name is a positional argument of the direct command.
+     */
     @Test
     fun history_releaseAndFlags() {
         val args = buildHelmCommandLine("history", "rel", "--max", "3", "-o", "json")
@@ -283,6 +348,11 @@ class HelmArgsTest {
     // rollback
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `rollback` forwards release, revision and all rollback flags.
+     *
+     * Covers `--force`, `--wait`, `--cleanup-on-fail` and the timeout; release and revision must keep their positional order.
+     */
     @Test
     fun rollback_releaseRevisionAndFlags() {
         val args = buildHelmCommandLine(
@@ -302,6 +372,11 @@ class HelmArgsTest {
         assertHasFlag(args, "--wait-for-jobs")
     }
 
+    /**
+     * Verifies that the optional revision may be omitted for `rollback`.
+     *
+     * Without a revision Helm rolls back to the previous release, so only the release name is forwarded.
+     */
     @Test
     fun rollback_revisionOptional() {
         val args = buildHelmCommandLine("rollback", "rel")
@@ -312,6 +387,11 @@ class HelmArgsTest {
     // test
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `test` forwards the release together with `--filter`, `--logs` and the timeout.
+     *
+     * `test` runs the Helm test hooks of an installed release and needs no repository.
+     */
     @Test
     fun test_releaseAndFlags() {
         val args = buildHelmCommandLine(
@@ -329,6 +409,11 @@ class HelmArgsTest {
     // pull
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `pull` forwards the chart reference and all download flags.
+     *
+     * Covers `--destination`, `--untar`, `--prov`, the version and the repository/verification flags.
+     */
     @Test
     fun pull_chartAndFlags() {
         val args = buildHelmCommandLine(
@@ -355,6 +440,11 @@ class HelmArgsTest {
     // push
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `push` forwards the chart archive, the remote and the registry flags.
+     *
+     * Chart and remote are positional arguments and must keep their order.
+     */
     @Test
     fun push_chartRemoteAndFlags() {
         val args = buildHelmCommandLine(
@@ -373,6 +463,11 @@ class HelmArgsTest {
     // verify / version / env
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `verify` forwards the chart path and `--keyring`.
+     *
+     * The keyring decides which public keys are used to check the provenance file.
+     */
     @Test
     fun verify_pathAndKeyring() {
         val args = buildHelmCommandLine("verify", "chart.tgz", "--keyring", "kr")
@@ -380,6 +475,11 @@ class HelmArgsTest {
         assertHasOption(args, "--keyring", "kr")
     }
 
+    /**
+     * Verifies that `version` forwards `--short` and `--template`.
+     *
+     * Both flags only change how Helm formats its own version output.
+     */
     @Test
     fun version_flags() {
         val args = buildHelmCommandLine("version", "--short", "--template", "{{.Version}}")
@@ -388,6 +488,11 @@ class HelmArgsTest {
         assertHasOption(args, "--template", "{{.Version}}")
     }
 
+    /**
+     * Verifies that `env` works with and without an environment variable name.
+     *
+     * Without a name Helm prints all variables; with a name only that single value.
+     */
     @Test
     fun env_optionalName() {
         Assertions.assertEquals(listOf("env"), buildHelmCommandLine("env"))
@@ -398,6 +503,11 @@ class HelmArgsTest {
     // get (nested)
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that the nested command `get all` is flattened and forwarded.
+     *
+     * Nested picocli commands must be resolved down to the leaf before the Helm command line is built.
+     */
     @Test
     fun get_all() {
         val args = buildHelmCommandLine("get", "all", "rel", "--revision", "2", "--template", "t", "-o", "json")
@@ -407,6 +517,11 @@ class HelmArgsTest {
         assertHasOption(args, "--output", "json")
     }
 
+    /**
+     * Verifies that `get values` forwards `--all`, the output format and the JSONPath option.
+     *
+     * `get values` is the only `get` variant that additionally supports `--jsonpath`.
+     */
     @Test
     fun get_values() {
         val args = buildHelmCommandLine("get", "values", "rel", "-a", "--revision", "1", "-o", "yaml")
@@ -416,6 +531,11 @@ class HelmArgsTest {
         assertHasOption(args, "--output", "yaml")
     }
 
+    /**
+     * Verifies that the remaining `get` variants are forwarded correctly.
+     *
+     * Covers `manifest`, `hooks`, `notes` and `metadata` in one test, since they share the same option set.
+     */
     @Test
     fun get_manifestHooksNotesMetadata() {
         Assertions.assertEquals(listOf("get", "manifest", "rel"), buildHelmCommandLine("get", "manifest", "rel"))
@@ -430,6 +550,11 @@ class HelmArgsTest {
     // repo (nested)
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `repo add` forwards name, URL and all authentication and TLS flags.
+     *
+     * Covers `--username`, `--password`, the certificate options and `--force-update`.
+     */
     @Test
     fun repo_add() {
         val args = buildHelmCommandLine(
@@ -451,6 +576,11 @@ class HelmArgsTest {
         assertHasFlag(args, "--allow-deprecated-repos")
     }
 
+    /**
+     * Verifies that the remaining `repo` sub-commands and their aliases are forwarded.
+     *
+     * Covers `update`/`up`, `list`/`ls` and `remove`/`rm`, which must all map to the long Helm sub-command.
+     */
     @Test
     fun repo_updateListRemove() {
         val up = buildHelmCommandLine("repo", "update", "r1", "r2", "--fail-on-repo-update-fail")
@@ -469,6 +599,11 @@ class HelmArgsTest {
     // search (nested)
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `search repo` forwards the keyword and its search flags.
+     *
+     * Covers `--regexp`, `--versions`, `--devel` and the output format.
+     */
     @Test
     fun search_repo() {
         val args = buildHelmCommandLine(
@@ -485,6 +620,11 @@ class HelmArgsTest {
         assertHasFlag(args, "--versions")
     }
 
+    /**
+     * Verifies that `search hub` forwards the keyword, `--endpoint` and `--max-col-width`.
+     *
+     * `search hub` queries the Artifact Hub instead of the locally configured repositories.
+     */
     @Test
     fun search_hub() {
         val args = buildHelmCommandLine(
@@ -503,6 +643,11 @@ class HelmArgsTest {
     // registry (nested)
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `registry login` and `registry logout` are forwarded with their flags.
+     *
+     * Covers the credentials, `--password-stdin` and the TLS options of the OCI registry.
+     */
     @Test
     fun registry_loginLogout() {
         val login = buildHelmCommandLine(
@@ -530,6 +675,11 @@ class HelmArgsTest {
     // show (nested)
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that all `show` variants and the `inspect` alias are forwarded.
+     *
+     * Covers `all`, `chart`, `values`, `readme` and `crds` including the chart source flags.
+     */
     @Test
     fun show_variants() {
         val all = buildHelmCommandLine("show", "all", "bitnami/nginx", "--version", "1.0", "--repo", "https://r")
@@ -550,6 +700,11 @@ class HelmArgsTest {
     // package (render based)
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `package` is translated into `helm package .` including its flags.
+     *
+     * Covers `--version`, `--app-version`, `--destination`, `--dependency-update` and the signing options.
+     */
     @Test
     fun package_subcommandAndFlags() {
         val args = buildHelmCommandLine(
@@ -571,6 +726,11 @@ class HelmArgsTest {
     // dependency (nested, render based)
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that the `dependency` sub-commands and their aliases are forwarded.
+     *
+     * Covers `build`, `update`/`up` and `list`/`ls`, each operating on the rendered chart `.`.
+     */
     @Test
     fun dependency_buildUpdateList() {
         val build = buildHelmCommandLine("dependency", "build", TEST_REPOSITORY, "--keyring", "kr", "--skip-refresh", "--verify")
@@ -591,6 +751,11 @@ class HelmArgsTest {
     // diff (nested, render based, plugin)
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that `diff upgrade` is forwarded to the helm-diff plugin.
+     *
+     * The release name given via `--name` becomes the positional RELEASE, followed by the rendered chart `.`.
+     */
     @Test
     fun diff_upgrade() {
         val args = buildHelmCommandLine(
@@ -614,12 +779,22 @@ class HelmArgsTest {
     // shared: values files and debug forwarding
     // ---------------------------------------------------------------------------------------------
 
+    /**
+     * Verifies that values files are forwarded as `-f` and keep their order.
+     *
+     * Helm applies overlays in the given order, so a reordering would change the effective values.
+     */
     @Test
     fun valuesFilesForwardedAsDashF() {
         val args = buildHelmCommandLine("template", TEST_REPOSITORY, "--name", "rel", "-f", TEST_VALUES_FILE)
         assertHasOption(args, "-f", TEST_VALUES_FILE)
     }
 
+    /**
+     * Verifies that the CLI's own `--debug` flag is additionally forwarded to Helm.
+     *
+     * `--debug` is one of the few own flags that are not consumed by the CLI alone.
+     */
     @Test
     fun debugFlagForwardedToHelm() {
         val args = buildHelmCommandLine("--debug", "lint", TEST_REPOSITORY)

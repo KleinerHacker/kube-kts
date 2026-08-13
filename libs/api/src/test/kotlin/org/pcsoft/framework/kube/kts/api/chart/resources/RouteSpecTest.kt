@@ -83,6 +83,12 @@ class RouteSpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal RouteSpec definition is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertEquals("www.example.com", maxSpec.host)
@@ -117,6 +123,13 @@ class RouteSpecTest {
         }
     }
 
+    /**
+     * Verifies that the maximal RouteSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val expectedYaml = IOUtils.resourceToString("/route.yaml", Charsets.UTF_8)
@@ -126,6 +139,12 @@ class RouteSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal RouteSpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.host)
@@ -137,11 +156,25 @@ class RouteSpecTest {
         assertNull(minSpec.wildcardPolicy)
     }
 
+    /**
+     * Verifies that the minimal RouteSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         JSONAssert.assertEquals("""{}""", minSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the RouteSpec definition of the named port flavour is built into the expected
+     * spec object.
+     *
+     * The fields relevant for this case are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testNamedPortContent() {
         KotlinAssertions.assertNotNull(namedPortSpec.port) {
@@ -150,6 +183,13 @@ class RouteSpecTest {
         }
     }
 
+    /**
+     * Verifies that the RouteSpec definition of the named port flavour is serialised into the
+     * expected YAML document.
+     *
+     * The fields relevant for this case are set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testNamedPortYaml() {
         JSONAssert.assertEquals(

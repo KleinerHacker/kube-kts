@@ -19,9 +19,22 @@ import org.junit.jupiter.params.provider.EnumSource
 import org.pcsoft.framework.kube.kts.cli.intern.RepoType
 import java.nio.file.Path
 
+/**
+ * Integration tests for the `render` command, i.e. the complete scan → compile → render pipeline
+ * that turns a KTS repository into a plain Helm chart.
+ *
+ * Both repository layouts are covered via the [RepoType] parameter, with and without an explicit
+ * target directory.
+ */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class RenderTest {
+class RenderIT {
 
+    /**
+     * Verifies that a repository is rendered into an explicitly given target directory.
+     *
+     * The parameter selects the repository layout; an additional values file is passed via `-f` so
+     * the value merging is part of the rendering.
+     */
     @ParameterizedTest
     @EnumSource(RepoType::class)
     fun testSuccessfully(type: RepoType) {
@@ -34,6 +47,12 @@ class RenderTest {
         Assertions.assertEquals(0, exitCode)
     }
 
+    /**
+     * Verifies that rendering without a target directory falls back to a temporary directory.
+     *
+     * The parameter selects the repository layout; the command must succeed although no output
+     * location is given.
+     */
     @ParameterizedTest
     @EnumSource(RepoType::class)
     fun testSuccessfully_Tmp(type: RepoType) {
@@ -41,6 +60,11 @@ class RenderTest {
         Assertions.assertEquals(0, exitCode)
     }
 
+    /**
+     * Verifies that rendering a non-existing repository fails.
+     *
+     * The missing directory must be reported through a non-zero exit code.
+     */
     @Test
     fun testFailed_NotFound() {
         val exitCode = runCli(arrayOf("compile", "abc"))

@@ -33,6 +33,12 @@ class TolerationSpecTest {
         private val minSpec = TolerationSpecBuilder().build()
     }
 
+    /**
+     * Verifies that the maximal TolerationSpec definition is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertEquals("key", maxSpec.key)
@@ -42,6 +48,13 @@ class TolerationSpecTest {
         assertEquals(100.seconds.toJavaDuration(), maxSpec.tolerationSeconds)
     }
 
+    /**
+     * Verifies that the maximal TolerationSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val actualJson = maxSpec.toJson()
@@ -57,6 +70,12 @@ class TolerationSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal TolerationSpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertEquals(null, minSpec.key)
@@ -66,6 +85,13 @@ class TolerationSpecTest {
         assertEquals(null, minSpec.tolerationSeconds)
     }
 
+    /**
+     * Verifies that the minimal TolerationSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         val actualJson = minSpec.toJson()

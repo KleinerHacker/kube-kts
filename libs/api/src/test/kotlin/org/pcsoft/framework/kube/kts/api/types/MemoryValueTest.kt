@@ -17,6 +17,12 @@ import kotlin.test.assertEquals
 
 class MemoryValueTest {
 
+    /**
+     * Verifies that a memory value is serialised in Kubernetes notation.
+     *
+     * Kubernetes uses binary suffixes such as `Mi` and `Gi`; the serialised form must use exactly
+     * that notation.
+     */
     @Test
     fun testYaml() {
         assertEquals("100", 100.bytes.toYamlValue())
@@ -26,6 +32,11 @@ class MemoryValueTest {
         assertEquals("10Gi", 10.giBytes.toYamlValue())
     }
 
+    /**
+     * Verifies that a memory value is parsed back from its Kubernetes notation.
+     *
+     * Parsing must be the inverse of the serialisation for every supported suffix.
+     */
     @Test
     fun testParse() {
         assertEquals(100.bytes, MemoryValue.parse("100"))

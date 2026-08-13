@@ -21,9 +21,23 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class KubeRepositoryTest : RepositoryTest() {
+/**
+ * Integration test for the complete pipeline of a pure KTS repository: scan, build and render.
+ *
+ * It covers the end-to-end use case of `kube-kts render` for the fixture repository below
+ * `/kts/helm`, which contains one script per supported template plus a library script and a legacy
+ * `values.yaml`. The rendered chart is compared against the expected YAML below `/kts/expected`.
+ */
+class KubeRepositoryIT : RepositoryTestBase() {
 
     @Suppress("UNCHECKED_CAST")
+    /**
+     * Verifies that a pure KTS repository is scanned, built and rendered into the expected chart.
+     *
+     * The scan must find all ten spec files (one of them the chart), the library script and the
+     * legacy `values.yaml`; the build must carry them over unchanged; and the rendered output must
+     * match the expected `Chart.yaml`, every template below `templates/` and `values.yaml`.
+     */
     @Test
     fun testSuccessfully() {
         val ktsRepo =

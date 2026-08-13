@@ -21,9 +21,24 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class KubeMixRepositoryTest : RepositoryTest() {
+/**
+ * Integration test for a mixed repository, i.e. KTS spec scripts and classic Helm files side by
+ * side.
+ *
+ * This is the backward compatibility use case: `*.yaml` files are kept as Go-templates, `*.tpl`
+ * files are copied verbatim, and only the `*.spec.kts` files are compiled. The rendered chart is
+ * compared against the expected output below `/mix/expected`.
+ */
+class KubeMixRepositoryIT : RepositoryTestBase() {
 
     @Suppress("UNCHECKED_CAST")
+    /**
+     * Verifies that a mixed repository is scanned, built and rendered without losing legacy files.
+     *
+     * The scan must classify three files as spec scripts and three as legacy files (ingress
+     * template, helper `.tpl` and `values.yaml`); the rendered chart must contain the compiled
+     * templates as well as the unchanged legacy files.
+     */
     @Test
     fun testSuccessfully() {
         val ktsRepo = KubeKtsRepositoryScanner.DEFAULT.scan(Paths.get(this::class.java.getResource("/mix/helm").toURI()))

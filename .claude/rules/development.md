@@ -50,6 +50,18 @@ name: development
 * Every use case MUST be tested
 * Code coverage should reach at least 100%
 * The package structure of the production code MUST be mirrored
-* Tests MUST be split into two categories
+* Tests MUST be split into two categories, distinguished by the class name suffix
     * **Developer tests** - Simple unit tests covering individual pieces of functionality
+        * The class name MUST end with `Test` (e.g. `PortSpecTest`)
+        * They MUST NOT depend on external tools (e.g. the `helm` binary) or on the network
+        * They are executed by the Gradle task `developerTest`
     * **Integration tests** - Tests covering complete features or aiming at performance
+        * The class name MUST end with `IT` (e.g. `InstallIT`)
+        * They MAY start external processes and run the complete pipeline
+        * They are executed by the Gradle task `integrationTest`
+    * The Gradle task `test` MUST execute both categories
+
+## Coverage
+
+* Code coverage MUST be measured with Kover
+* The aggregated report is created with the Gradle task `koverHtmlReport`

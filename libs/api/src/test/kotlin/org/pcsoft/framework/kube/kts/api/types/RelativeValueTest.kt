@@ -19,6 +19,12 @@ import kotlin.test.assertIs
 
 class RelativeValueTest {
 
+    /**
+     * Verifies that a percentage value is accepted and rendered with a percent sign.
+     *
+     * Kubernetes accepts relative values such as `25%` for rollout strategies and topology
+     * constraints.
+     */
     @Test
     fun testPercent() {
         val percent = 100.percent
@@ -27,16 +33,31 @@ class RelativeValueTest {
         assertEquals("100%", percent.toYamlValue())
     }
 
+    /**
+     * Verifies that a negative percentage is rejected.
+     *
+     * A negative share is meaningless for Kubernetes and must fail when the value is created.
+     */
     @Test
     fun testPercentNegative() {
         assertFailsWith<IllegalArgumentException> { (-1).percent }
     }
 
+    /**
+     * Verifies that a percentage above the allowed maximum is rejected.
+     *
+     * Values beyond 100% would be rejected by the API server, so they must fail earlier.
+     */
     @Test
     fun testPercentTooLarge() {
         assertFailsWith<IllegalArgumentException> { 101.percent }
     }
 
+    /**
+     * Verifies that an absolute value is accepted and rendered as a plain number.
+     *
+     * The same DSL type covers absolute counts, which must not carry a percent sign.
+     */
     @Test
     fun testAbsolute() {
         val absolute = 100.absolute
@@ -45,6 +66,11 @@ class RelativeValueTest {
         assertEquals(100, absolute.toYamlValue())
     }
 
+    /**
+     * Verifies that a negative absolute value is rejected.
+     *
+     * A negative count is meaningless for Kubernetes and must fail when the value is created.
+     */
     @Test
     fun testAbsoluteNegative() {
         assertFailsWith<IllegalArgumentException> { (-1).absolute }

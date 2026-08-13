@@ -72,6 +72,13 @@ class SealedSecretSpecTest {
             }.build()
     }
 
+    /**
+     * Verifies that the maximal SealedSecretSpec definition is built into the expected spec
+     * object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertEquals(
@@ -89,12 +96,26 @@ class SealedSecretSpecTest {
         assertEquals(mapOf("key" to "value"), maxSpec.template.metadata.annotations)
     }
 
+    /**
+     * Verifies that the minimal SealedSecretSpec definition is built into the expected spec
+     * object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertEquals(mapOf("password" to "AgBy3i4OJSWK+PiTySYZZA9rO"), minSpec.encryptedData)
         assertNull(minSpec.template)
     }
 
+    /**
+     * Verifies that the maximal SealedSecretSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val expectedYaml = IOUtils.resourceToString("/sealedsecret.yaml", Charsets.UTF_8)
@@ -104,6 +125,13 @@ class SealedSecretSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal SealedSecretSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         JSONAssert.assertEquals(
@@ -124,6 +152,12 @@ class SealedSecretSpecTest {
         )
     }
 
+    /**
+     * Verifies the SealedSecretSpec definition of the encrypted data builder dsl flavour.
+     *
+     * The fields relevant for this case are set and the resulting specification is checked against
+     * the expectation.
+     */
     @Test
     fun testEncryptedDataBuilderDsl() {
         val spec = SealedSecretSpecBuilder().apply {
@@ -137,6 +171,12 @@ class SealedSecretSpecTest {
         assertNull(spec.template)
     }
 
+    /**
+     * Verifies that building a [SealedSecretSpec] fails when a mandatory field is not set.
+     *
+     * The builder must reject the input for encrypted data with an exception instead of producing
+     * an incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testMissingEncryptedDataContent() {
         assertFailsWith<IllegalArgumentException> {

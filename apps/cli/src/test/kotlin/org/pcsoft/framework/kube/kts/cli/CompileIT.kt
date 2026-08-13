@@ -19,9 +19,22 @@ import org.junit.jupiter.params.provider.EnumSource
 import org.pcsoft.framework.kube.kts.cli.intern.RepoType
 import java.nio.file.Path
 
+/**
+ * Integration tests for the `compile` command.
+ *
+ * `compile` runs the scan and the script compilation of a repository without producing any output,
+ * so it is the cheapest way to check that all `*.spec.kts` files of a repository are valid. Both
+ * repository layouts (pure KTS and mixed) are covered via the [RepoType] parameter.
+ */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class CompileTest {
+class CompileIT {
 
+    /**
+     * Verifies that a valid repository is compiled successfully with an additional values file.
+     *
+     * The parameter selects the repository layout — pure KTS and mixed KTS/Helm must both compile
+     * and exit with code 0.
+     */
     @ParameterizedTest
     @EnumSource(RepoType::class)
     fun testSuccessfully(type: RepoType) {
@@ -34,6 +47,11 @@ class CompileTest {
         Assertions.assertEquals(0, exitCode)
     }
 
+    /**
+     * Verifies that compiling a non-existing repository fails.
+     *
+     * The CLI must exit with a non-zero code instead of silently doing nothing.
+     */
     @Test
     fun testFailed_NotFound() {
         val exitCode = runCli(arrayOf("compile", "abc"))

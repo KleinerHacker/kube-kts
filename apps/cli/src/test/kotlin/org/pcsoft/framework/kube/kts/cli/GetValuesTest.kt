@@ -52,6 +52,12 @@ class GetValuesTest {
         BaseDirectHelmCommand.helmExecutor = ProcessHelmExecutor
     }
 
+    /**
+     * Verifies that the nested sub-command `get values` is resolved and forwarded to Helm.
+     *
+     * Nested commands must be flattened into `get values <release>`; `-a`, `-o` and `-n` must be
+     * expanded to their long Helm spelling.
+     */
     @Test
     fun nestedSubcommandForwarded() {
         val exitCode = runCli(arrayOf("get", "values", "rel", "-a", "-o", "json", "-n", "ns"))
@@ -65,6 +71,11 @@ class GetValuesTest {
         Assertions.assertTrue(args.containsAll(listOf("--namespace", "ns")), "namespace forwarded: $args")
     }
 
+    /**
+     * Verifies that `get values` without a release name fails without invoking Helm.
+     *
+     * The incomplete command line must be rejected during parsing.
+     */
     @Test
     fun failsWhenReleaseMissing() {
         val exitCode = runCli(arrayOf("get", "values"))
@@ -73,6 +84,12 @@ class GetValuesTest {
         Assertions.assertEquals(0, executor.invocations, "Helm must not be invoked when the release name is missing")
     }
 
+    /**
+     * Verifies that the bare command group `get` prints its usage instead of calling Helm.
+     *
+     * A group has no own Helm command, so it must exit successfully after printing the help and
+     * must never invoke the executor.
+     */
     @Test
     fun groupWithoutSubcommandPrintsUsage() {
         // Invoking the group itself must not call Helm.

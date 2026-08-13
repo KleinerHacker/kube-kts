@@ -92,6 +92,13 @@ class LifecycleSpecTest {
         private val minSpec = LifecycleSpecBuilder().build()
     }
 
+    /**
+     * Verifies that the maximal LifecycleSpec definition of the exec flavour is built into the
+     * expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testExecMaxContent() {
         assertIs<LifecycleSpec.ExecAction>(execMaxSpec.postStart)
@@ -100,6 +107,13 @@ class LifecycleSpecTest {
         assertEquals(listOf("echo", "Goodbye, World!"), execMaxSpec.preStop.command)
     }
 
+    /**
+     * Verifies that the maximal LifecycleSpec definition of the exec flavour is serialised into
+     * the expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testExecMaxYaml() {
         val expectedJson = """{
@@ -124,6 +138,13 @@ class LifecycleSpecTest {
         JSONAssert.assertEquals(expectedJson, execMaxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal LifecycleSpec definition of the exec flavour is built into the
+     * expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testExecMinContent() {
         assertIs<LifecycleSpec.ExecAction>(execMinSpec.postStart)
@@ -132,6 +153,13 @@ class LifecycleSpecTest {
         assertEquals(listOf("run"), execMinSpec.preStop.command)
     }
 
+    /**
+     * Verifies that the minimal LifecycleSpec definition of the exec flavour is serialised into
+     * the expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testExecMinYaml() {
         val expectedJson = """{
@@ -154,6 +182,12 @@ class LifecycleSpecTest {
         JSONAssert.assertEquals(expectedJson, execMinSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that building a [LifecycleSpec] fails when a mandatory field is not set.
+     *
+     * The builder must reject the input for exec command with an exception instead of producing an
+     * incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testExecMissingCommand() {
         assertFailsWith<IllegalArgumentException> {
@@ -165,6 +199,13 @@ class LifecycleSpecTest {
         }
     }
 
+    /**
+     * Verifies that the maximal LifecycleSpec definition of the http get flavour is built into the
+     * expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testHttpGetMaxContent() {
         assertIs<LifecycleSpec.HttpGetAction>(httpGetMaxSpec.postStart)
@@ -184,6 +225,13 @@ class LifecycleSpecTest {
         assertEquals(mapOf("X-Shutdown" to "graceful"), httpGetMaxSpec.preStop.httpHeaders)
     }
 
+    /**
+     * Verifies that the maximal LifecycleSpec definition of the http get flavour is serialised
+     * into the expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testHttpGetMaxYaml() {
         val expectedJson = """{
@@ -215,6 +263,13 @@ class LifecycleSpecTest {
         JSONAssert.assertEquals(expectedJson, httpGetMaxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal LifecycleSpec definition of the http get flavour is built into the
+     * expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testHttpGetMinContent() {
         assertIs<LifecycleSpec.HttpGetAction>(httpGetMinSpec.postStart)
@@ -223,6 +278,13 @@ class LifecycleSpecTest {
         assertEquals(8888, httpGetMinSpec.preStop.port)
     }
 
+    /**
+     * Verifies that the minimal LifecycleSpec definition of the http get flavour is serialised
+     * into the expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testHttpGetMinYaml() {
         val expectedJson = """{
@@ -241,6 +303,13 @@ class LifecycleSpecTest {
         JSONAssert.assertEquals(expectedJson, httpGetMinSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the maximal LifecycleSpec definition of the sleep flavour is built into the
+     * expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testSleepMaxContent() {
         assertIs<LifecycleSpec.SleepAction>(sleepMaxSpec.postStart)
@@ -249,6 +318,13 @@ class LifecycleSpecTest {
         assertEquals(5.seconds.toJavaDuration(), sleepMaxSpec.preStop.seconds)
     }
 
+    /**
+     * Verifies that the maximal LifecycleSpec definition of the sleep flavour is serialised into
+     * the expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testSleepMaxYaml() {
         val expectedJson = """{
@@ -267,12 +343,25 @@ class LifecycleSpecTest {
         JSONAssert.assertEquals(expectedJson, sleepMaxSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal LifecycleSpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.postStart)
         assertNull(minSpec.preStop)
     }
 
+    /**
+     * Verifies that the minimal LifecycleSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         assertEquals("""{}""", minSpec.toJson())

@@ -35,7 +35,16 @@ import tools.jackson.databind.JsonNode
 import tools.jackson.dataformat.yaml.YAMLMapper
 import java.nio.file.Path
 
-class DefaultKotlinScriptProcessorTest {
+/**
+ * Integration tests for [DefaultKotlinScriptProcessor], the component that compiles a `*.spec.kts`
+ * file with the Kotlin scripting host and evaluates it into a spec object.
+ *
+ * Every test runs the real two-step pipeline - `compile` followed by `execute` - against the
+ * fixture repository below `/kts/helm` and checks the resulting spec with the shared assertion
+ * helpers. Both steps return an `Either`, so success is asserted explicitly before the value is
+ * unwrapped.
+ */
+class DefaultKotlinScriptProcessorIT {
     companion object {
         private val compiler: KotlinScriptProcessor = DefaultKotlinScriptProcessor
 
@@ -47,6 +56,12 @@ class DefaultKotlinScriptProcessorTest {
     }
 
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    /**
+     * Verifies that `Chart.spec.kts` is compiled and evaluated into a complete [ChartSpec].
+     *
+     * The chart script is evaluated against empty values, since chart metadata does not depend on
+     * `values.yaml`. The result is checked against the maximal chart fixture.
+     */
     @Test
     fun testChart() {
         val compiledScriptEither =
@@ -65,6 +80,13 @@ class DefaultKotlinScriptProcessorTest {
     }
 
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    /**
+     * Verifies that `service.spec.kts` is compiled and evaluated into a [ServiceSpec].
+     *
+     * The script is evaluated against the values of the test repository, so the value lookups
+     * inside the template are exercised as well. The result is checked against the maximal service
+     * fixture.
+     */
     @Test
     fun testService() {
         val compiledScriptEither =
@@ -91,6 +113,12 @@ class DefaultKotlinScriptProcessorTest {
     }
 
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    /**
+     * Verifies that `ingress.spec.kts` is compiled and evaluated into an [IngressSpec].
+     *
+     * Only the successful compilation and evaluation are asserted; the detailed content assertions
+     * for the ingress are still open (see the TODO in the test body).
+     */
     @Test
     fun testIngress() {
         val compiledScriptEither =
@@ -118,6 +146,12 @@ class DefaultKotlinScriptProcessorTest {
     }
 
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    /**
+     * Verifies that `configmap.spec.kts` is compiled and evaluated into a [ConfigMapSpec].
+     *
+     * A ConfigMap is rendered flat, so it is executed as a [FlatTemplateSpec]. The result is
+     * checked against the maximal ConfigMap fixture, including its binary data.
+     */
     @Test
     fun testConfigMap() {
         val compiledScriptEither =
@@ -144,6 +178,12 @@ class DefaultKotlinScriptProcessorTest {
     }
 
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    /**
+     * Verifies that `secret.spec.kts` is compiled and evaluated into a [SecretSpec].
+     *
+     * Like the ConfigMap, a Secret is rendered flat and is therefore executed as a
+     * [FlatTemplateSpec].
+     */
     @Test
     fun testSecret() {
         val compiledScriptEither =
@@ -170,6 +210,12 @@ class DefaultKotlinScriptProcessorTest {
     }
 
     @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+    /**
+     * Verifies that `sealedsecret.spec.kts` is compiled and evaluated into a [SealedSecretSpec].
+     *
+     * The SealedSecret is a custom resource with an explicit `spec` node and is therefore executed
+     * as an [ExplicitTemplateSpec].
+     */
     @Test
     fun testSealedSecret() {
         val compiledScriptEither =

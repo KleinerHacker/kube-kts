@@ -17,6 +17,12 @@ import kotlin.test.assertEquals
 
 class CpuValueTest {
 
+    /**
+     * Verifies that a CPU value is serialised in Kubernetes notation.
+     *
+     * Kubernetes expects either whole cores or the milli-core suffix `m`; the serialised form must
+     * use exactly that notation.
+     */
     @Test
     fun testYaml() {
         assertEquals("100m", 0.1f.cpu.toYamlValue())
@@ -24,6 +30,11 @@ class CpuValueTest {
         assertEquals("10000m", 10f.cpu.toYamlValue())
     }
 
+    /**
+     * Verifies that a CPU value is parsed back from its Kubernetes notation.
+     *
+     * Parsing must be the inverse of the serialisation for whole cores as well as for milli-cores.
+     */
     @Test
     fun testParse() {
         assertEquals(0.1f, CpuValue.parse("100m").value)

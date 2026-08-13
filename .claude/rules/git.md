@@ -22,10 +22,10 @@ name: git and GitHub
 ### Pipeline
 
 * There MUST be a pipeline for the regular build in `ci.yml`
-    * It contains: [Build] Build -> Test, [Verify] Licences / Signature / Build and verify MkDocs
+    * It contains: [Build] Build -> Test, [Verify] Licences / Build and verify MkDocs
     * `Build` and `Verify` MUST run in parallel; everything within `Verify` MUST also run in parallel
 * There MUST be a pipeline for a tag based release named `release.yml`
-    * It contains: [Changelog] Verify against version -> ([Build] Build -> Test, [Verify] Verify licences / Create signature, [MkDocs] Build -> Deploy, [Release] Push artifacts -> Write release)
+    * It contains: [Changelog] Verify against version -> ([Build] Build -> Test, [Verify] Verify licences, [MkDocs] Build -> Deploy, [Release] Push artifacts -> Write release)
     * `Changelog` runs first
     * `Build`, `Verify` and `MkDocs` run in parallel afterwards
         * `Verify` internally runs in parallel as well

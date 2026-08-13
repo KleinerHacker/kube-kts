@@ -127,6 +127,12 @@ class DeploymentSpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal DeploymentSpec definition is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         val deploymentSpec = maxSpec
@@ -158,6 +164,13 @@ class DeploymentSpecTest {
         assertEquals(600.seconds.toJavaDuration(), deploymentSpec.progressDeadlineSeconds)
     }
 
+    /**
+     * Verifies that the maximal DeploymentSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val expectedYaml = IOUtils.resourceToString("/deployment.yaml", Charsets.UTF_8)
@@ -167,6 +180,12 @@ class DeploymentSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal DeploymentSpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         val deploymentSpec = minSpec
@@ -185,6 +204,13 @@ class DeploymentSpecTest {
         assertNull(deploymentSpec.progressDeadlineSeconds)
     }
 
+    /**
+     * Verifies that the minimal DeploymentSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         JSONAssert.assertEquals(
@@ -210,6 +236,12 @@ class DeploymentSpecTest {
         )
     }
 
+    /**
+     * Verifies that building a [DeploymentSpec] fails when a mandatory field is not set.
+     *
+     * The builder must reject the input for selector with an exception instead of producing an
+     * incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testMissingSelectorContent() {
         assertFailsWith<IllegalArgumentException> {
@@ -227,6 +259,12 @@ class DeploymentSpecTest {
         }
     }
 
+    /**
+     * Verifies that building a [DeploymentSpec] fails when a mandatory field is not set.
+     *
+     * The builder must reject the input for template with an exception instead of producing an
+     * incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testMissingTemplateContent() {
         assertFailsWith<IllegalArgumentException> {

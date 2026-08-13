@@ -93,6 +93,12 @@ class IngressSpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal IngressSpec definition is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertEquals("className", maxSpec.ingressClassName)
@@ -131,6 +137,13 @@ class IngressSpecTest {
         }
     }
 
+    /**
+     * Verifies that the maximal IngressSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val expectedYaml = IOUtils.resourceToString("/ingress.yaml", Charsets.UTF_8)
@@ -140,6 +153,12 @@ class IngressSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal IngressSpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.ingressClassName)
@@ -148,11 +167,25 @@ class IngressSpecTest {
         assertNull(minSpec.rules)
     }
 
+    /**
+     * Verifies that the minimal IngressSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         JSONAssert.assertEquals("""{}""", minSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal IngressSpec definition of the tls flavour is built into the
+     * expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinTlsContent() {
         assertNotNull(minTlsSpec.tls)
@@ -162,6 +195,13 @@ class IngressSpecTest {
         }
     }
 
+    /**
+     * Verifies that the minimal IngressSpec definition of the tls flavour is serialised into the
+     * expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinTlsYaml() {
         JSONAssert.assertEquals(
@@ -175,6 +215,13 @@ class IngressSpecTest {
         )
     }
 
+    /**
+     * Verifies that the minimal IngressSpec definition of the rule flavour is built into the
+     * expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinRuleContent() {
         assertNotNull(minRuleSpec.rules)
@@ -192,6 +239,13 @@ class IngressSpecTest {
         }
     }
 
+    /**
+     * Verifies that the minimal IngressSpec definition of the rule flavour is serialised into the
+     * expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinRuleYaml() {
         JSONAssert.assertEquals(

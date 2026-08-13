@@ -22,6 +22,13 @@ import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 import java.nio.file.Path
 
+/**
+ * Developer tests for the internal YAML merge implementation created by [YamlMerging.createDefault].
+ *
+ * The merge combines a base `values.yaml` with an arbitrary number of overlays and produces the
+ * effective values a chart is rendered with. All cases are verified against the fixtures below
+ * `/merge` and compared leniently as JSON, so key order does not matter.
+ */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class DefaultYamlMergingTest {
 
@@ -33,6 +40,12 @@ class DefaultYamlMergingTest {
         }
     }
 
+    /**
+     * Verifies that a base file and an overlay are merged into the expected effective values.
+     *
+     * Given `base.yaml` as the base and `overlay.yaml` as the single overlay, the result must equal
+     * the fixture `effective.yaml`: overlay keys win, keys only present in the base survive.
+     */
     @Test
     fun testWithBase() {
         val base = Path.of(this::class.java.getResource("/merge/base.yaml").toURI())
@@ -45,6 +58,12 @@ class DefaultYamlMergingTest {
         JSONAssert.assertEquals(expectedEffective.yamlToJson(), actualEffective!!.yamlToJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the first overlay acts as the base when no base file is given.
+     *
+     * Passing `null` as the base and `base.yaml`/`overlay.yaml` as overlays must produce the same
+     * effective values as the explicit base case.
+     */
     @Test
     fun testWithoutBase() {
         val base = Path.of(this::class.java.getResource("/merge/base.yaml").toURI())
@@ -57,6 +76,11 @@ class DefaultYamlMergingTest {
         JSONAssert.assertEquals(expectedEffective.yamlToJson(), actualEffective!!.yamlToJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that a base file without any overlay is returned unchanged.
+     *
+     * With nothing to merge in, the effective values must be identical to `base.yaml`.
+     */
     @Test
     fun testNoOverlay() {
         val base = Path.of(this::class.java.getResource("/merge/base.yaml").toURI())
@@ -68,12 +92,23 @@ class DefaultYamlMergingTest {
         JSONAssert.assertEquals(baseYaml.yamlToJson(), actualEffective!!.yamlToJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that merging without any file yields `null`.
+     *
+     * A chart without values must not produce an empty document but the explicit absence of values.
+     */
     @Test
     fun testNothing() {
         val actualEffective = YamlMerging.createDefault().merge(null)
         Assertions.assertNull(actualEffective)
     }
 
+    /**
+     * Verifies that a non-existing file is rejected.
+     *
+     * Merging a path that does not point to a regular file must fail fast with an
+     * [IllegalArgumentException] instead of silently ignoring the file.
+     */
     @Test
     fun testNoFile() {
         Assertions.assertThrows(IllegalArgumentException::class.java) {

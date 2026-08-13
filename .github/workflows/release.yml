@@ -9,8 +9,77 @@ permissions:
   contents: write
 
 jobs:
-  licences:
+  # ---------------------------------------------------------------------------
+  # [Changelog] Verify against version — runs first, everything else depends on
+  # it. The extracted section is reused as the release notes.
+  # ---------------------------------------------------------------------------
+  changelog:
+    name: Verify changelog
     runs-on: ubuntu-latest
+    outputs:
+      notes: ${{ steps.extract.outputs.notes }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract changelog entry for the tag
+        id: extract
+        run: |
+          TAG="${{ github.ref_name }}"
+          NOTES=$(awk "/^## \[$TAG\]/{found=1; next} found && /^## \[/{exit} found{print}" CHANGELOG.md)
+          NOTES=$(echo "$NOTES" | sed '/./,$!d' | sed -e :a -e '/^\n*$/{$d;N;ba}')
+          if [ -z "$NOTES" ]; then
+            echo "ERROR: No changelog entry found for tag $TAG"
+            exit 1
+          fi
+          {
+            echo "notes<<CHANGELOG_EOF"
+            echo "$NOTES"
+            echo "CHANGELOG_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+  # ---------------------------------------------------------------------------
+  # [Build] Build -> Test
+  # ---------------------------------------------------------------------------
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest
+    needs: changelog
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: gradle
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build
+        run: ./gradlew build -x test --stacktrace
+
+      - name: Run developer tests
+        run: ./gradlew developerTest --stacktrace
+
+      - name: Run integration tests
+        run: ./gradlew integrationTest --stacktrace
+
+      - name: Upload CLI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cli-jar
+          path: apps/cli/build/libs/*.jar
+
+  # ---------------------------------------------------------------------------
+  # [Verify] Verify licences — parallel to build and MkDocs
+  # ---------------------------------------------------------------------------
+  licences:
+    name: Verify licences
+    runs-on: ubuntu-latest
+    needs: changelog
 
     steps:
       - uses: actions/checkout@v4
@@ -27,33 +96,14 @@ jobs:
       - name: Check licences
         run: ./gradlew licensee --stacktrace
 
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '25'
-          cache: gradle
-
-      - name: Make Gradle wrapper executable
-        run: chmod +x ./gradlew
-
-      - name: Build
-        run: ./gradlew build --stacktrace
-
-      - name: Upload CLI artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: cli-jar
-          path: apps/cli/build/libs/*.jar
-
-  # Build the docs as a generation test (mkdocs --strict) before they get deployed.
+  # ---------------------------------------------------------------------------
+  # [MkDocs] Build — `mkdocs --strict` verifies the docs before deployment
+  # ---------------------------------------------------------------------------
   validate-docs:
+    name: Build MkDocs
     runs-on: ubuntu-latest
+    needs: changelog
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -79,10 +129,15 @@ jobs:
       - name: Build docs
         run: ./gradlew buildDocs --stacktrace --info
 
-  # Publish the docs to gh-pages (mkdocs gh-deploy --force, see the deployDocs task).
+  # ---------------------------------------------------------------------------
+  # [MkDocs] Deploy — publishes to gh-pages. A failing deployment must not fail
+  # the release, it is only reported as a warning.
+  # ---------------------------------------------------------------------------
   deploy-docs:
+    name: Deploy MkDocs
     runs-on: ubuntu-latest
     needs: validate-docs
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -113,11 +168,23 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Deploy docs
+        id: deploy
+        continue-on-error: true
         run: ./gradlew deployDocs --stacktrace --info
 
+      - name: Report deployment failure as warning
+        if: steps.deploy.outcome == 'failure'
+        run: echo "::warning title=Docs deployment failed::The documentation could not be deployed to gh-pages. The release continues."
+
+  # ---------------------------------------------------------------------------
+  # [Release] Push artifacts -> Write release. Runs last; a failed docs
+  # deployment is tolerated (deploy-docs itself never fails).
+  # ---------------------------------------------------------------------------
   release:
+    name: Publish release
     runs-on: ubuntu-latest
     needs:
+      - changelog
       - build
       - licences
       - deploy-docs
@@ -131,22 +198,10 @@ jobs:
           name: cli-jar
           path: build/release/
 
-      - name: Extract changelog
-        run: |
-          TAG="${{ github.ref_name }}"
-          NOTES=$(awk "/^## \[$TAG\]/{found=1; next} found && /^## \[/{exit} found{print}" CHANGELOG.md)
-          NOTES=$(echo "$NOTES" | sed '/./,$!d' | sed -e :a -e '/^\n*$/{$d;N;ba}')
-          if [ -z "$NOTES" ]; then
-            echo "ERROR: No changelog entry found for tag $TAG"
-            exit 1
-          fi
-          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
-          echo "$NOTES" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
+          RELEASE_NOTES: ${{ needs.changelog.outputs.notes }}
         run: |
           TAG="${{ github.ref_name }}"
           if [[ "$TAG" =~ ^(0|[a-zA-Z]) ]]; then

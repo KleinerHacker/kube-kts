@@ -68,6 +68,12 @@ class ChartSpecTest {
         private val minChart = chart("name", "1.0.0") {}
     }
 
+    /**
+     * Verifies that the maximal ChartSpec definition is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertEquals(ChartSpec.API_VERSION, maxChart.apiVersion)
@@ -124,6 +130,13 @@ class ChartSpecTest {
         assertEquals(mapOf("annotation" to "value"), maxChart.annotations)
     }
 
+    /**
+     * Verifies that the maximal ChartSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val expectedYaml = IOUtils.resourceToString("/chart.yaml", Charsets.UTF_8)
@@ -133,6 +146,12 @@ class ChartSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal ChartSpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertEquals(ChartSpec.API_VERSION, minChart.apiVersion)
@@ -152,6 +171,13 @@ class ChartSpecTest {
         assertNull(minChart.annotations)
     }
 
+    /**
+     * Verifies that the minimal ChartSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         JSONAssert.assertEquals(

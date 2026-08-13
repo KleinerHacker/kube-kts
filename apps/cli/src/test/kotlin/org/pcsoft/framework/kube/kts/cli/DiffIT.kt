@@ -25,10 +25,11 @@ import org.pcsoft.framework.kube.kts.cli.intern.RepoType
 import java.nio.file.Path
 
 /**
- * Tests for the nested, render based `dependency update` command using a mocked [HelmExecutor].
+ * Tests for the nested, render based `diff upgrade` command (helm-diff plugin) using a mocked
+ * [HelmExecutor]. The release name is passed via `--name` and forwarded as the positional RELEASE.
  */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class DependencyUpdateTest {
+class DiffIT {
 
     private class CapturingHelmExecutor : HelmExecutor {
         var capturedArgs: List<String>? = null
@@ -54,21 +55,34 @@ class DependencyUpdateTest {
         BaseRenderedHelmCommand.helmExecutor = ProcessHelmExecutor
     }
 
+    /**
+     * Verifies that the repository is rendered and `helm diff upgrade` is invoked afterwards.
+     *
+     * The parameter selects the repository layout; the release name given via `--name` becomes the
+     * positional RELEASE and `--detailed-exitcode` is forwarded to the helm-diff plugin.
+     */
     @ParameterizedTest
     @EnumSource(RepoType::class)
-    fun rendersThenUpdatesDependencies(type: RepoType) {
-        val exitCode = runCli(arrayOf("dependency", "update", "src/test/resources/${type.path}", "--skip-refresh"))
+    fun rendersThenDiffsUpgrade(type: RepoType) {
+        val exitCode = runCli(
+            arrayOf("diff", "upgrade", "src/test/resources/${type.path}", "--name", "demo", "--detailed-exitcode")
+        )
 
         Assertions.assertEquals(0, exitCode)
         Assertions.assertEquals(1, executor.invocations)
         val args = executor.capturedArgs!!
-        Assertions.assertEquals(listOf("dependency", "update", "."), args.subList(0, 3))
-        Assertions.assertTrue(args.contains("--skip-refresh"), "skip-refresh forwarded: $args")
+        Assertions.assertEquals(listOf("diff", "upgrade", "demo", "."), args.subList(0, 4))
+        Assertions.assertTrue(args.contains("--detailed-exitcode"), "detailed-exitcode forwarded: $args")
     }
 
+    /**
+     * Verifies that a missing repository fails before Helm is invoked.
+     *
+     * Rendering fails first, so the executor must not have been called at all.
+     */
     @Test
     fun failsWithoutInvokingHelmWhenRepositoryMissing() {
-        val exitCode = runCli(arrayOf("dependency", "update", "abc"))
+        val exitCode = runCli(arrayOf("diff", "upgrade", "abc", "--name", "demo"))
 
         Assertions.assertNotEquals(0, exitCode)
         Assertions.assertEquals(0, executor.invocations, "Helm must not be invoked when the repository is missing")

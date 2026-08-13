@@ -43,6 +43,13 @@ class NodeSelectorTermSpecTest {
         private val minSpec = NodeSelectorTermSpecBuilder().build()
     }
 
+    /**
+     * Verifies that the maximal NodeSelectorTermSpec definition is built into the expected spec
+     * object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertNotNull(maxSpec.matchExpressions)
@@ -61,6 +68,13 @@ class NodeSelectorTermSpecTest {
         assertEquals("value", maxSpec.matchFields[0].values?.get(0))
     }
 
+    /**
+     * Verifies that the maximal NodeSelectorTermSpec definition is serialised into the expected
+     * YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val actualJson = maxSpec.toJson()
@@ -88,12 +102,26 @@ class NodeSelectorTermSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal NodeSelectorTermSpec definition is built into the expected spec
+     * object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.matchExpressions)
         assertNull(minSpec.matchFields)
     }
 
+    /**
+     * Verifies that the minimal NodeSelectorTermSpec definition is serialised into the expected
+     * YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         val actualJson = minSpec.toJson()
@@ -132,6 +160,13 @@ class PreferredSchedulingTermSpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal PreferredSchedulingTermSpec definition is built into the expected
+     * spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertNotNull(maxSpec.preference.matchExpressions)
@@ -148,6 +183,13 @@ class PreferredSchedulingTermSpecTest {
         assertEquals("value", maxSpec.preference.matchFields[0].values!![0])
     }
 
+    /**
+     * Verifies that the maximal PreferredSchedulingTermSpec definition is serialised into the
+     * expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val actualJson = maxSpec.toJson()
@@ -179,12 +221,26 @@ class PreferredSchedulingTermSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal PreferredSchedulingTermSpec definition is built into the expected
+     * spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.preference.matchExpressions)
         assertNull(minSpec.preference.matchFields)
     }
 
+    /**
+     * Verifies that the minimal PreferredSchedulingTermSpec definition is serialised into the
+     * expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         val actualJson = minSpec.toJson()
@@ -239,6 +295,13 @@ class PodAffinityTermSpecTest {
         private val minSpec = PodAffinityTermSpecBuilder("key").build()
     }
 
+    /**
+     * Verifies that the maximal PodAffinityTermSpec definition is built into the expected spec
+     * object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertNotNull(maxSpec.labelSelector)
@@ -265,6 +328,13 @@ class PodAffinityTermSpecTest {
         assertEquals(listOf("key"), maxSpec.mismatchLabelKeys.keys)
     }
 
+    /**
+     * Verifies that the maximal PodAffinityTermSpec definition is serialised into the expected
+     * YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val actualJson = maxSpec.toJson()
@@ -312,6 +382,13 @@ class PodAffinityTermSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal PodAffinityTermSpec definition is built into the expected spec
+     * object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.labelSelector)
@@ -371,6 +448,13 @@ class WeightedPodAffinityTermSpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal WeightedPodAffinityTermSpec definition is built into the expected
+     * spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertEquals(99, maxSpec.weight)
@@ -398,6 +482,13 @@ class WeightedPodAffinityTermSpecTest {
         assertEquals(listOf("key"), maxSpec.podAffinityTerm.mismatchLabelKeys.keys)
     }
 
+    /**
+     * Verifies that the maximal WeightedPodAffinityTermSpec definition is serialised into the
+     * expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val actualJson = maxSpec.toJson()
@@ -449,6 +540,13 @@ class WeightedPodAffinityTermSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal WeightedPodAffinityTermSpec definition is built into the expected
+     * spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertEquals(99, minSpec.weight)
@@ -461,6 +559,13 @@ class WeightedPodAffinityTermSpecTest {
         assertEquals("key", minSpec.podAffinityTerm.topologyKey)
     }
 
+    /**
+     * Verifies that the minimal WeightedPodAffinityTermSpec definition is serialised into the
+     * expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         val actualJson = minSpec.toJson()

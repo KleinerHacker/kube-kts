@@ -52,6 +52,13 @@ class SingleEnvironmentSpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the SingleEnvironmentSpec definition of the value flavour is built into the
+     * expected spec object.
+     *
+     * The fields relevant for this case are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testValueContent() {
         assertEquals("MY_VAR", valueSpec.name)
@@ -59,6 +66,13 @@ class SingleEnvironmentSpecTest {
         assertEquals("my-static-value", valueSpec.source.value)
     }
 
+    /**
+     * Verifies that the SingleEnvironmentSpec definition of the value flavour is serialised into
+     * the expected YAML document.
+     *
+     * The fields relevant for this case are set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testValueYaml() {
         val expectedJson = """{"name":"MY_VAR","value":"my-static-value"}"""
@@ -66,6 +80,13 @@ class SingleEnvironmentSpecTest {
         JSONAssert.assertEquals(expectedJson, valueSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the SingleEnvironmentSpec definition of the from field flavour is built into
+     * the expected spec object.
+     *
+     * The fields relevant for this case are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testFromFieldContent() {
         assertEquals("MY_VAR", fieldSpec.name)
@@ -73,6 +94,13 @@ class SingleEnvironmentSpecTest {
         assertEquals("my-field", fieldSpec.source.fieldPath)
     }
 
+    /**
+     * Verifies that the SingleEnvironmentSpec definition of the from resource field flavour is
+     * built into the expected spec object.
+     *
+     * The fields relevant for this case are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testFromResourceFieldContent() {
         assertEquals("MY_VAR", resourceFieldSpec.name)
@@ -80,6 +108,13 @@ class SingleEnvironmentSpecTest {
         assertEquals("my-field", resourceFieldSpec.source.resource)
     }
 
+    /**
+     * Verifies that the SingleEnvironmentSpec definition of the from resource field flavour is
+     * serialised into the expected YAML document.
+     *
+     * The fields relevant for this case are set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testFromResourceFieldYaml() {
         val expectedJson = """{
@@ -94,6 +129,13 @@ class SingleEnvironmentSpecTest {
         JSONAssert.assertEquals(expectedJson, resourceFieldSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the SingleEnvironmentSpec definition of the from secret flavour is built into
+     * the expected spec object.
+     *
+     * The fields relevant for this case are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testFromSecretContent() {
         assertEquals("MY_VAR", secretSpec.name)
@@ -102,6 +144,13 @@ class SingleEnvironmentSpecTest {
         assertEquals("my-secret", secretSpec.source.name)
     }
 
+    /**
+     * Verifies that the SingleEnvironmentSpec definition of the from secret flavour is serialised
+     * into the expected YAML document.
+     *
+     * The fields relevant for this case are set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testFromSecretYaml() {
         val expectedJson = """{
@@ -117,6 +166,13 @@ class SingleEnvironmentSpecTest {
         JSONAssert.assertEquals(expectedJson, secretSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the SingleEnvironmentSpec definition of the from config map flavour is built
+     * into the expected spec object.
+     *
+     * The fields relevant for this case are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testFromConfigMapContent() {
         assertEquals("MY_VAR", configMapSpec.name)
@@ -125,6 +181,13 @@ class SingleEnvironmentSpecTest {
         assertEquals("my-config-map", configMapSpec.source.name)
     }
 
+    /**
+     * Verifies that the SingleEnvironmentSpec definition of the from config map flavour is
+     * serialised into the expected YAML document.
+     *
+     * The fields relevant for this case are set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testFromConfigMapYaml() {
         val expectedJson = """{

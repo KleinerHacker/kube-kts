@@ -24,12 +24,12 @@ import org.pcsoft.framework.kube.kts.cli.intern.RepoType
 import java.nio.file.Path
 
 /**
- * Tests for the `uninstall` command using a mocked [HelmExecutor]: the full pipeline (scan, compile,
- * render) runs for real, but Helm itself is never invoked. The executor captures the command line
- * that would have been passed to Helm so it can be asserted.
+ * Tests for the `template` command using a mocked [HelmExecutor]: the full pipeline (scan, compile,
+ * render) runs for real, but Helm itself is never invoked. Instead the executor captures the command
+ * line that would have been passed to Helm so it can be asserted.
  */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class UninstallTest {
+class TemplateIT {
 
     /** Records the arguments and working directory of the last (mocked) Helm invocation. */
     private class CapturingHelmExecutor : HelmExecutor {
@@ -58,40 +58,59 @@ class UninstallTest {
         BaseRenderedHelmCommand.helmExecutor = org.pcsoft.framework.kube.kts.cli.commands.ProcessHelmExecutor
     }
 
+    /**
+     * Verifies that the release name given via `--name` becomes the positional argument of
+     * `helm template`.
+     *
+     * The parameter selects the repository layout; in both cases Helm must be invoked exactly once
+     * with `template <name> .` inside the rendered chart directory.
+     */
     @ParameterizedTest
     @EnumSource(RepoType::class)
-    fun releasesPassedAsPositionals(type: RepoType) {
-        val exitCode = runCli(
-            arrayOf("uninstall", "src/test/resources/${type.path}", "--name", "rel1", "--name", "rel2")
-        )
+    fun namePassedAsPositional(type: RepoType) {
+        val exitCode = runCli(arrayOf("template", "src/test/resources/${type.path}", "--name", "demo"))
 
         Assertions.assertEquals(0, exitCode)
         Assertions.assertEquals(1, executor.invocations)
-        Assertions.assertEquals(listOf("uninstall", "rel1", "rel2"), executor.capturedArgs)
+        Assertions.assertEquals(listOf("template", "demo", "."), executor.capturedArgs)
         Assertions.assertNotNull(executor.capturedWorkingDir)
     }
 
+    /**
+     * Verifies that namespace, `--set`, `--include-crds` and values files are forwarded to Helm.
+     *
+     * The parameter selects the repository layout; the short option `-n` must be expanded to
+     * `--namespace`, matching Helm's own spelling.
+     */
     @ParameterizedTest
     @EnumSource(RepoType::class)
-    fun forwardsFlags(type: RepoType) {
+    fun forwardsFlagsAndValues(type: RepoType) {
+        val valuesFile = Path.of(this::class.java.getResource("/values-overlay.yaml").toURI()).toString()
+
         val exitCode = runCli(
             arrayOf(
-                "uninstall", "src/test/resources/${type.path}", "--name", "rel",
-                "-n", "ns", "--keep-history", "--timeout", "1m",
+                "template", "src/test/resources/${type.path}", "--name", "demo",
+                "-n", "ns", "--set", "a=1", "--include-crds", "-f", valuesFile,
             )
         )
 
         Assertions.assertEquals(0, exitCode)
         val args = executor.capturedArgs!!
-        Assertions.assertEquals(listOf("uninstall", "rel"), args.subList(0, 2))
+        Assertions.assertEquals(listOf("template", "demo", "."), args.subList(0, 3))
         Assertions.assertTrue(args.containsAll(listOf("--namespace", "ns")), "namespace forwarded: $args")
-        Assertions.assertTrue(args.contains("--keep-history"), "flag forwarded: $args")
-        Assertions.assertTrue(args.containsAll(listOf("--timeout", "1m")), "timeout forwarded: $args")
+        Assertions.assertTrue(args.containsAll(listOf("--set", "a=1")), "set forwarded: $args")
+        Assertions.assertTrue(args.contains("--include-crds"), "flag forwarded: $args")
+        Assertions.assertTrue(args.containsAll(listOf("-f", valuesFile)), "values forwarded: $args")
     }
 
+    /**
+     * Verifies that a missing repository fails before Helm is invoked.
+     *
+     * Rendering fails first, so the executor must not have been called at all.
+     */
     @Test
     fun failsWithoutInvokingHelmWhenRepositoryMissing() {
-        val exitCode = runCli(arrayOf("uninstall", "abc", "--name", "rel"))
+        val exitCode = runCli(arrayOf("template", "abc", "--name", "demo"))
 
         Assertions.assertNotEquals(0, exitCode)
         Assertions.assertEquals(0, executor.invocations, "Helm must not be invoked when the repository is missing")

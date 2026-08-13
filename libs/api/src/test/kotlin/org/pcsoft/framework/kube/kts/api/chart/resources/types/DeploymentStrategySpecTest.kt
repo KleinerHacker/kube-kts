@@ -40,6 +40,13 @@ class DeploymentStrategySpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal DeploymentStrategySpec definition is built into the expected spec
+     * object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertEquals(DeploymentStrategySpec.Type.RollingUpdate, maxSpec.type)
@@ -48,6 +55,13 @@ class DeploymentStrategySpecTest {
         assertEquals(3.absolute, maxSpec.rollingUpdate.maxUnavailable)
     }
 
+    /**
+     * Verifies that the maximal DeploymentStrategySpec definition is serialised into the expected
+     * YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxContentYaml() {
         val actualJson = maxSpec.toJson()
@@ -62,17 +76,38 @@ class DeploymentStrategySpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal DeploymentStrategySpec definition is built into the expected spec
+     * object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.type)
         assertNull(minSpec.rollingUpdate)
     }
 
+    /**
+     * Verifies that the minimal DeploymentStrategySpec definition is serialised into the expected
+     * YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinContentYaml() {
         assertEquals("""{}""", minSpec.toJson())
     }
 
+    /**
+     * Verifies that the minimal DeploymentStrategySpec definition of the rolling update flavour is
+     * built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testRollingUpdateMinContent() {
         assertNull(rollingUpdateMinSpec.type)
@@ -81,6 +116,13 @@ class DeploymentStrategySpecTest {
         assertNull(rollingUpdateMinSpec.rollingUpdate.maxUnavailable)
     }
 
+    /**
+     * Verifies that the minimal DeploymentStrategySpec definition of the rolling update flavour is
+     * serialised into the expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testRollingUpdateMinContentYaml() {
         assertEquals("""{"rollingUpdate":{}}""", rollingUpdateMinSpec.toJson())

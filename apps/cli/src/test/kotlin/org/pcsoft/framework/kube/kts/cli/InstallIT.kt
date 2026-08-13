@@ -24,12 +24,12 @@ import org.pcsoft.framework.kube.kts.cli.intern.RepoType
 import java.nio.file.Path
 
 /**
- * Tests for the `upgrade` command using a mocked [HelmExecutor]: the full pipeline (scan, compile,
+ * Tests for the `install` command using a mocked [HelmExecutor]: the full pipeline (scan, compile,
  * render) runs for real, but Helm itself is never invoked. The executor captures the command line
  * that would have been passed to Helm so it can be asserted.
  */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class UpgradeTest {
+class InstallIT {
 
     /** Records the arguments and working directory of the last (mocked) Helm invocation. */
     private class CapturingHelmExecutor : HelmExecutor {
@@ -58,17 +58,31 @@ class UpgradeTest {
         BaseRenderedHelmCommand.helmExecutor = org.pcsoft.framework.kube.kts.cli.commands.ProcessHelmExecutor
     }
 
+    /**
+     * Verifies that the release name given via `--name` becomes the positional argument of
+     * `helm install`.
+     *
+     * The parameter selects the repository layout; in both cases Helm must be invoked exactly once
+     * with `install <name> .` inside the rendered chart directory.
+     */
     @ParameterizedTest
     @EnumSource(RepoType::class)
     fun namePassedAsPositional(type: RepoType) {
-        val exitCode = runCli(arrayOf("upgrade", "src/test/resources/${type.path}", "--name", "demo"))
+        val exitCode = runCli(arrayOf("install", "src/test/resources/${type.path}", "--name", "demo"))
 
         Assertions.assertEquals(0, exitCode)
         Assertions.assertEquals(1, executor.invocations)
-        Assertions.assertEquals(listOf("upgrade", "demo", "."), executor.capturedArgs)
+        Assertions.assertEquals(listOf("install", "demo", "."), executor.capturedArgs)
         Assertions.assertNotNull(executor.capturedWorkingDir)
     }
 
+    /**
+     * Verifies that namespace, `--set`, `--atomic`, `--create-namespace` and values files are
+     * forwarded to Helm.
+     *
+     * The parameter selects the repository layout; the short option `-n` must be expanded to
+     * `--namespace`.
+     */
     @ParameterizedTest
     @EnumSource(RepoType::class)
     fun forwardsFlagsAndValues(type: RepoType) {
@@ -76,27 +90,29 @@ class UpgradeTest {
 
         val exitCode = runCli(
             arrayOf(
-                "upgrade", "src/test/resources/${type.path}", "--name", "demo",
-                "-n", "ns", "--set", "a=1", "--install", "--atomic", "--reuse-values",
-                "--history-max", "5", "-f", valuesFile,
+                "install", "src/test/resources/${type.path}", "--name", "demo",
+                "-n", "ns", "--set", "a=1", "--atomic", "--create-namespace", "-f", valuesFile,
             )
         )
 
         Assertions.assertEquals(0, exitCode)
         val args = executor.capturedArgs!!
-        Assertions.assertEquals(listOf("upgrade", "demo", "."), args.subList(0, 3))
+        Assertions.assertEquals(listOf("install", "demo", "."), args.subList(0, 3))
         Assertions.assertTrue(args.containsAll(listOf("--namespace", "ns")), "namespace forwarded: $args")
         Assertions.assertTrue(args.containsAll(listOf("--set", "a=1")), "set forwarded: $args")
-        Assertions.assertTrue(args.contains("--install"), "flag forwarded: $args")
         Assertions.assertTrue(args.contains("--atomic"), "flag forwarded: $args")
-        Assertions.assertTrue(args.contains("--reuse-values"), "flag forwarded: $args")
-        Assertions.assertTrue(args.containsAll(listOf("--history-max", "5")), "history-max forwarded: $args")
+        Assertions.assertTrue(args.contains("--create-namespace"), "flag forwarded: $args")
         Assertions.assertTrue(args.containsAll(listOf("-f", valuesFile)), "values forwarded: $args")
     }
 
+    /**
+     * Verifies that a missing repository fails before Helm is invoked.
+     *
+     * Rendering fails first, so the executor must not have been called at all.
+     */
     @Test
     fun failsWithoutInvokingHelmWhenRepositoryMissing() {
-        val exitCode = runCli(arrayOf("upgrade", "abc", "--name", "demo"))
+        val exitCode = runCli(arrayOf("install", "abc", "--name", "demo"))
 
         Assertions.assertNotEquals(0, exitCode)
         Assertions.assertEquals(0, executor.invocations, "Helm must not be invoked when the repository is missing")

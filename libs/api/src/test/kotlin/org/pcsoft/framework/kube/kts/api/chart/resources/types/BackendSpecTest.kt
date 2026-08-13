@@ -22,6 +22,13 @@ import kotlin.test.assertNull
 
 class BackendSpecTest {
 
+    /**
+     * Verifies that the BackendSpec definition of the service backend flavour is built into the
+     * expected spec object.
+     *
+     * The fields relevant for this case are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testServiceBackendContent() {
         val backendSpec = ServiceBackendSpecBuilder("service").apply {
@@ -34,6 +41,13 @@ class BackendSpecTest {
         assertNull(backendSpec.port.number)
     }
 
+    /**
+     * Verifies that the BackendSpec definition of the service backend flavour is serialised into
+     * the expected YAML document.
+     *
+     * The fields relevant for this case are set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testServiceBackendYaml() {
         val backendSpec = ServiceBackendSpecBuilder("service").apply {
@@ -52,6 +66,13 @@ class BackendSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the maximal BackendSpec definition of the resource backend flavour is built
+     * into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testResourceBackendMaxContent() {
         val backendSpec = ResourceBackendSpecBuilder("resource", "kind").apply {
@@ -64,6 +85,13 @@ class BackendSpecTest {
         assertEquals("group", backendSpec.apiGroup)
     }
 
+    /**
+     * Verifies that the maximal BackendSpec definition of the resource backend flavour is
+     * serialised into the expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testResourceBackendMaxYaml() {
         val backendSpec = ResourceBackendSpecBuilder("resource", "kind").apply {
@@ -81,6 +109,13 @@ class BackendSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal BackendSpec definition of the resource backend flavour is built
+     * into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testResourceBackendMinContent() {
         val backendSpec = ResourceBackendSpecBuilder("resource", "kind").build()
@@ -91,6 +126,13 @@ class BackendSpecTest {
         assertNull(backendSpec.apiGroup)
     }
 
+    /**
+     * Verifies that the minimal BackendSpec definition of the resource backend flavour is
+     * serialised into the expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testResourceBackendMinYaml() {
         val backendSpec = ResourceBackendSpecBuilder("resource", "kind").build()

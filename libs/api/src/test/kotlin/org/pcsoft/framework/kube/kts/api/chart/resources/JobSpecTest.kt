@@ -132,6 +132,12 @@ class JobSpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal JobSpec definition is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertEquals(2, maxSpec.parallelism)
@@ -168,6 +174,12 @@ class JobSpecTest {
         assertEquals(PodSpec.RestartPolicy.Never, maxSpec.template.spec.restartPolicy)
     }
 
+    /**
+     * Verifies that the maximal JobSpec definition is serialised into the expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val expectedYaml = IOUtils.resourceToString("/job.yaml", Charsets.UTF_8)
@@ -177,6 +189,12 @@ class JobSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal JobSpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.parallelism)
@@ -199,6 +217,12 @@ class JobSpecTest {
         assertNull(minSpec.template.spec.restartPolicy)
     }
 
+    /**
+     * Verifies that the minimal JobSpec definition is serialised into the expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         JSONAssert.assertEquals(
@@ -219,6 +243,12 @@ class JobSpecTest {
         )
     }
 
+    /**
+     * Verifies that building a [JobSpec] fails when a mandatory field is not set.
+     *
+     * The builder must reject the input for template with an exception instead of producing an
+     * incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testMissingTemplateContent() {
         assertFailsWith<IllegalArgumentException> {

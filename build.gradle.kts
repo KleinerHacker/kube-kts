@@ -30,6 +30,7 @@ plugins {
     id("org.jetbrains.dokka") version "2.2.0"
     id("com.github.jk1.dependency-license-report") version "2.5"
     id("app.cash.licensee") version "1.14.1" apply false
+    id("org.jetbrains.kotlinx.kover") version "0.9.2"
 }
 
 group = "org.pcsoft.tooling"
@@ -39,6 +40,15 @@ allprojects {
     repositories {
         mavenCentral()
     }
+}
+
+// Aggregate the coverage of every module into the reports of the root project.
+dependencies {
+    kover(project(":libs:logging"))
+    kover(project(":libs:api"))
+    kover(project(":libs:definition"))
+    kover(project(":libs:core"))
+    kover(project(":apps:cli"))
 }
 
 dokka {
@@ -70,6 +80,49 @@ licenseReport {
 subprojects {
     plugins.withId("org.jetbrains.kotlin.jvm") {
         apply(plugin = "app.cash.licensee")
+        apply(plugin = "org.jetbrains.kotlinx.kover")
+
+        // Test categories are distinguished by the class name suffix:
+        //   *Test -> developer test (plain unit test, no external tooling)
+        //   *IT   -> integration test (complete feature, may run the whole pipeline)
+        // `test` keeps running both categories, the two extra tasks run exactly one of them.
+        tasks.withType<Test>().configureEach {
+            useJUnitPlatform()
+        }
+
+        // Coverage is collected from the full `test` run only; the filtered category tasks would
+        // otherwise be executed a second time as part of `build`.
+        extensions.configure<kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension> {
+            currentProject {
+                instrumentation {
+                    disabledForTestTasks.addAll("developerTest", "integrationTest")
+                }
+            }
+        }
+
+        val testSourceSet = extensions.getByType<SourceSetContainer>()["test"]
+
+        tasks.register<Test>("developerTest") {
+            group = "verification"
+            description = "Runs the developer tests (classes ending with 'Test')"
+            testClassesDirs = testSourceSet.output.classesDirs
+            classpath = testSourceSet.runtimeClasspath
+            filter {
+                includeTestsMatching("*Test")
+                isFailOnNoMatchingTests = false
+            }
+        }
+
+        tasks.register<Test>("integrationTest") {
+            group = "verification"
+            description = "Runs the integration tests (classes ending with 'IT')"
+            testClassesDirs = testSourceSet.output.classesDirs
+            classpath = testSourceSet.runtimeClasspath
+            filter {
+                includeTestsMatching("*IT")
+                isFailOnNoMatchingTests = false
+            }
+        }
         plugins.withId("app.cash.licensee") {
             extensions.configure<app.cash.licensee.LicenseeExtension> {
                 listOf(

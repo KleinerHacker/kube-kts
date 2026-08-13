@@ -53,6 +53,12 @@ class ConfigMapSpecTest {
         private val minSpec = ConfigMapSpecBuilder().build()
     }
 
+    /**
+     * Verifies that the maximal ConfigMapSpec definition is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertEquals(mapOf("key1" to "value1", "key2" to "value2"), maxSpec.data)
@@ -61,6 +67,12 @@ class ConfigMapSpecTest {
         assertEquals(true, maxSpec.immutable)
     }
 
+    /**
+     * Verifies that the minimal ConfigMapSpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.data)
@@ -68,6 +80,13 @@ class ConfigMapSpecTest {
         assertNull(minSpec.immutable)
     }
 
+    /**
+     * Verifies that the maximal ConfigMapSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val expectedYaml = IOUtils.resourceToString("/configmap.yaml", Charsets.UTF_8)
@@ -77,6 +96,12 @@ class ConfigMapSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies the ConfigMapSpec definition of the binary data multiple entries flavour.
+     *
+     * The fields relevant for this case are set and the resulting specification is checked against
+     * the expectation.
+     */
     @Test
     fun testBinaryDataMultipleEntries() {
         val spec = ConfigMapSpecBuilder().apply {
@@ -91,6 +116,12 @@ class ConfigMapSpecTest {
         assertNull(spec.data)
     }
 
+    /**
+     * Verifies the ConfigMapSpec definition of the binary data builder dsl flavour.
+     *
+     * The fields relevant for this case are set and the resulting specification is checked against
+     * the expectation.
+     */
     @Test
     fun testBinaryDataBuilderDsl() {
         val spec = ConfigMapSpecBuilder().apply {
@@ -107,6 +138,13 @@ class ConfigMapSpecTest {
         assertNull(spec.data)
     }
 
+    /**
+     * Verifies that the ConfigMapSpec definition of the binary data only flavour is serialised
+     * into the expected YAML document.
+     *
+     * The fields relevant for this case are set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testBinaryDataOnlyYaml() {
         val specBuilder = ConfigMapSpecBuilder().apply {

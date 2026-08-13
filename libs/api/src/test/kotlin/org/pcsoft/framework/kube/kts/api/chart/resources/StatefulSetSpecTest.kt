@@ -145,6 +145,12 @@ class StatefulSetSpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal StatefulSetSpec definition is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertEquals(3, maxSpec.replicas)
@@ -185,6 +191,13 @@ class StatefulSetSpecTest {
         assertEquals("image", maxSpec.template.spec.containers.first().image)
     }
 
+    /**
+     * Verifies that the maximal StatefulSetSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val expectedYaml = IOUtils.resourceToString("/statefulset.yaml", Charsets.UTF_8)
@@ -194,6 +207,12 @@ class StatefulSetSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal StatefulSetSpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.replicas)
@@ -211,6 +230,13 @@ class StatefulSetSpecTest {
         assertEquals("image", minSpec.template.spec.containers.first().image)
     }
 
+    /**
+     * Verifies that the minimal StatefulSetSpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         JSONAssert.assertEquals(
@@ -237,6 +263,12 @@ class StatefulSetSpecTest {
         )
     }
 
+    /**
+     * Verifies that building a [StatefulSetSpec] fails when a mandatory field is not set.
+     *
+     * The builder must reject the input for template with an exception instead of producing an
+     * incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testMissingTemplateContent() {
         assertFailsWith<IllegalArgumentException> {
@@ -251,6 +283,12 @@ class StatefulSetSpecTest {
         }
     }
 
+    /**
+     * Verifies that building a [StatefulSetSpec] fails when a mandatory field is not set.
+     *
+     * The builder must reject the input for selector with an exception instead of producing an
+     * incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testMissingSelectorContent() {
         assertFailsWith<IllegalArgumentException> {
@@ -267,6 +305,12 @@ class StatefulSetSpecTest {
         }
     }
 
+    /**
+     * Verifies that building a [StatefulSetSpec] fails when a mandatory field is not set.
+     *
+     * The builder must reject the input for service name with an exception instead of producing an
+     * incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testMissingServiceNameContent() {
         assertFailsWith<IllegalArgumentException> {

@@ -51,6 +51,11 @@ class RollbackTest {
         BaseDirectHelmCommand.helmExecutor = ProcessHelmExecutor
     }
 
+    /**
+     * Verifies that release, revision and `--force` are forwarded to Helm.
+     *
+     * Release and revision are positional arguments and must keep their order.
+     */
     @Test
     fun releaseAndRevisionForwarded() {
         val exitCode = runCli(arrayOf("rollback", "rel", "2", "--force"))
@@ -62,6 +67,12 @@ class RollbackTest {
         Assertions.assertTrue(args.contains("--force"), "force forwarded: $args")
     }
 
+    /**
+     * Verifies that the revision may be omitted.
+     *
+     * Without a revision Helm rolls back to the previous release, so only the release name must be
+     * forwarded.
+     */
     @Test
     fun revisionOptional() {
         val exitCode = runCli(arrayOf("rollback", "rel"))
@@ -70,6 +81,11 @@ class RollbackTest {
         Assertions.assertEquals(listOf("rollback", "rel"), executor.capturedArgs)
     }
 
+    /**
+     * Verifies that `rollback` without a release name fails without invoking Helm.
+     *
+     * The incomplete command line must be rejected during parsing.
+     */
     @Test
     fun failsWhenReleaseMissing() {
         val exitCode = runCli(arrayOf("rollback"))

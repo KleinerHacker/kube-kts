@@ -52,6 +52,12 @@ class ListTest {
         BaseDirectHelmCommand.helmExecutor = ProcessHelmExecutor
     }
 
+    /**
+     * Verifies that `list` is forwarded to Helm without rendering a repository.
+     *
+     * `list` operates on the cluster, not on a chart, so Helm must be invoked exactly once with the
+     * bare sub-command and no repository argument is required.
+     */
     @Test
     fun listForwardedWithoutRepository() {
         val exitCode = runCli(arrayOf("list"))
@@ -61,6 +67,12 @@ class ListTest {
         Assertions.assertEquals(listOf("list"), executor.capturedArgs)
     }
 
+    /**
+     * Verifies that `-A`, `--output` and the namespace are forwarded to Helm.
+     *
+     * The short options must be expanded to Helm's long spelling (`--all-namespaces`,
+     * `--namespace`) so the forwarded command line is valid for Helm.
+     */
     @Test
     fun forwardsFlags() {
         val exitCode = runCli(arrayOf("list", "-A", "--output", "json", "-n", "ns"))

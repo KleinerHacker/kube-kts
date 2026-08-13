@@ -104,6 +104,13 @@ class VolumeSpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal VolumeSpec definition of the config map source flavour is built
+     * into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testConfigMapSourceMaxContent() {
         assertEquals("config-volume", configMapMaxSpec.name)
@@ -111,6 +118,13 @@ class VolumeSpecTest {
         assertMaxFileSource(source, "app-config", "application.yaml", "config/application.yaml")
     }
 
+    /**
+     * Verifies that the maximal VolumeSpec definition of the config map source flavour is
+     * serialised into the expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testConfigMapSourceMaxYaml() {
         assertYaml(
@@ -131,6 +145,13 @@ class VolumeSpecTest {
         )
     }
 
+    /**
+     * Verifies that the minimal VolumeSpec definition of the config map source flavour is built
+     * into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testConfigMapSourceMinContent() {
         assertEquals("config-volume", configMapMinSpec.name)
@@ -138,6 +159,13 @@ class VolumeSpecTest {
         assertMinFileSource(source)
     }
 
+    /**
+     * Verifies that the minimal VolumeSpec definition of the config map source flavour is
+     * serialised into the expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testConfigMapSourceMinYaml() {
         assertYaml(
@@ -149,6 +177,13 @@ class VolumeSpecTest {
         )
     }
 
+    /**
+     * Verifies that the maximal VolumeSpec definition of the secret source flavour is built into
+     * the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testSecretSourceMaxContent() {
         assertEquals("secret-volume", secretMaxSpec.name)
@@ -156,6 +191,13 @@ class VolumeSpecTest {
         assertMaxFileSource(source, "app-secret", "password", "secret/password")
     }
 
+    /**
+     * Verifies that the maximal VolumeSpec definition of the secret source flavour is serialised
+     * into the expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testSecretSourceMaxYaml() {
         assertYaml(
@@ -176,6 +218,13 @@ class VolumeSpecTest {
         )
     }
 
+    /**
+     * Verifies that the minimal VolumeSpec definition of the secret source flavour is built into
+     * the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testSecretSourceMinContent() {
         assertEquals("secret-volume", secretMinSpec.name)
@@ -183,6 +232,13 @@ class VolumeSpecTest {
         assertMinFileSource(source)
     }
 
+    /**
+     * Verifies that the minimal VolumeSpec definition of the secret source flavour is serialised
+     * into the expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testSecretSourceMinYaml() {
         assertYaml(
@@ -194,6 +250,13 @@ class VolumeSpecTest {
         )
     }
 
+    /**
+     * Verifies that the maximal VolumeSpec definition of the persistent volume claim source
+     * flavour is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testPersistentVolumeClaimSourceMaxContent() {
         assertEquals("pvc-volume", persistentVolumeClaimMaxSpec.name)
@@ -202,6 +265,13 @@ class VolumeSpecTest {
         assertEquals(true, source.readOnly)
     }
 
+    /**
+     * Verifies that the maximal VolumeSpec definition of the persistent volume claim source
+     * flavour is serialised into the expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testPersistentVolumeClaimSourceMaxYaml() {
         assertYaml(
@@ -216,6 +286,13 @@ class VolumeSpecTest {
         )
     }
 
+    /**
+     * Verifies that the minimal VolumeSpec definition of the persistent volume claim source
+     * flavour is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testPersistentVolumeClaimSourceMinContent() {
         assertEquals("pvc-volume", persistentVolumeClaimMinSpec.name)
@@ -224,6 +301,13 @@ class VolumeSpecTest {
         assertEquals(null, source.readOnly)
     }
 
+    /**
+     * Verifies that the minimal VolumeSpec definition of the persistent volume claim source
+     * flavour is serialised into the expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testPersistentVolumeClaimSourceMinYaml() {
         assertYaml(
@@ -237,6 +321,13 @@ class VolumeSpecTest {
         )
     }
 
+    /**
+     * Verifies that the maximal VolumeSpec definition of the host path source flavour is built
+     * into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testHostPathSourceMaxContent() {
         assertEquals("host-volume", hostPathMaxSpec.name)
@@ -245,6 +336,13 @@ class VolumeSpecTest {
         assertEquals(VolumeSpec.HostPathSourceSpec.Type.DirectoryOrCreate, source.type)
     }
 
+    /**
+     * Verifies that the maximal VolumeSpec definition of the host path source flavour is
+     * serialised into the expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testHostPathSourceMaxYaml() {
         assertYaml(
@@ -259,6 +357,13 @@ class VolumeSpecTest {
         )
     }
 
+    /**
+     * Verifies that the minimal VolumeSpec definition of the host path source flavour is built
+     * into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testHostPathSourceMinContent() {
         assertEquals("host-volume", hostPathMinSpec.name)
@@ -267,6 +372,13 @@ class VolumeSpecTest {
         assertEquals(null, source.type)
     }
 
+    /**
+     * Verifies that the minimal VolumeSpec definition of the host path source flavour is
+     * serialised into the expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testHostPathSourceMinYaml() {
         assertYaml(
@@ -280,6 +392,12 @@ class VolumeSpecTest {
         )
     }
 
+    /**
+     * Verifies that building a [VolumeSpec] fails when an empty value is used.
+     *
+     * The builder must reject the input for dir source max with an exception instead of producing
+     * an incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testEmptyDirSourceMaxContent() {
         assertEquals("empty-volume", emptyDirMaxSpec.name)
@@ -288,6 +406,12 @@ class VolumeSpecTest {
         assertEquals(64.miBytes, source.sizeLimit)
     }
 
+    /**
+     * Verifies that building a [VolumeSpec] fails when an empty value is used.
+     *
+     * The builder must reject the input for dir source max with an exception instead of producing
+     * an incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testEmptyDirSourceMaxYaml() {
         assertYaml(
@@ -302,6 +426,12 @@ class VolumeSpecTest {
         )
     }
 
+    /**
+     * Verifies that building a [VolumeSpec] fails when an empty value is used.
+     *
+     * The builder must reject the input for dir source min with an exception instead of producing
+     * an incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testEmptyDirSourceMinContent() {
         assertEquals("empty-volume", emptyDirMinSpec.name)
@@ -310,6 +440,12 @@ class VolumeSpecTest {
         assertEquals(null, source.sizeLimit)
     }
 
+    /**
+     * Verifies that building a [VolumeSpec] fails when an empty value is used.
+     *
+     * The builder must reject the input for dir source min with an exception instead of producing
+     * an incomplete specification that the API server would refuse later.
+     */
     @Test
     fun testEmptyDirSourceMinYaml() {
         assertYaml(

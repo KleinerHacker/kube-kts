@@ -56,6 +56,12 @@ class StatusTest {
         BaseDirectHelmCommand.helmExecutor = ProcessHelmExecutor
     }
 
+    /**
+     * Verifies that the release name is forwarded to Helm as a plain positional argument.
+     *
+     * `status` is a direct command: no repository is scanned and nothing is rendered before Helm is
+     * invoked.
+     */
     @Test
     fun releaseForwardedWithoutRepository() {
         val exitCode = runCli(arrayOf("status", "my-release"))
@@ -66,6 +72,11 @@ class StatusTest {
         Assertions.assertNotNull(executor.capturedWorkingDir)
     }
 
+    /**
+     * Verifies that namespace, `--revision` and `--output` are forwarded to Helm.
+     *
+     * The short option `-n` must be expanded to `--namespace`, matching Helm's own spelling.
+     */
     @Test
     fun forwardsFlags() {
         val exitCode = runCli(
@@ -80,6 +91,12 @@ class StatusTest {
         Assertions.assertTrue(args.containsAll(listOf("--output", "json")), "output forwarded: $args")
     }
 
+    /**
+     * Verifies that a missing release name fails without invoking Helm.
+     *
+     * Picocli rejects the incomplete command line, so the exit code must be non-zero and the
+     * executor must not have been called.
+     */
     @Test
     fun failsWhenReleaseMissing() {
         val exitCode = runCli(arrayOf("status"))

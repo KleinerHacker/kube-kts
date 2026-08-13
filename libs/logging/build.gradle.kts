@@ -19,14 +19,12 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.17")
 
     testImplementation(kotlin("test"))
+    // A real SLF4J provider is required, otherwise LoggerFactory hands out the unnamed NOP logger.
+    testImplementation("org.slf4j:slf4j-simple:2.0.17")
 }
 
 kotlin {
     jvmToolchain(25)
-}
-
-tasks.test {
-    useJUnitPlatform()
 }
 
 tasks.jar {

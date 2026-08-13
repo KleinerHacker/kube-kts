@@ -70,6 +70,12 @@ class AffinitySpecTest {
         private val minSpec = AffinitySpecBuilder().build()
     }
 
+    /**
+     * Verifies that the maximal AffinitySpec definition is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertNotNull(maxSpec.nodeAffinity)
@@ -95,6 +101,13 @@ class AffinitySpecTest {
         assertEquals("key", maxSpec.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey)
     }
 
+    /**
+     * Verifies that the maximal AffinitySpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val actualJson = maxSpec.toJson()
@@ -134,6 +147,12 @@ class AffinitySpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal AffinitySpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.nodeAffinity)
@@ -141,6 +160,13 @@ class AffinitySpecTest {
         assertNull(minSpec.podAntiAffinity)
     }
 
+    /**
+     * Verifies that the minimal AffinitySpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         val actualJson = minSpec.toJson()
@@ -177,6 +203,13 @@ class NodeAffinitySpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal NodeAffinitySpec definition is built into the expected spec
+     * object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertNotNull(maxSpec.requiredDuringSchedulingIgnoredDuringExecution)
@@ -186,6 +219,13 @@ class NodeAffinitySpecTest {
         assertEquals(1, maxSpec.preferredDuringSchedulingIgnoredDuringExecution.size)
     }
 
+    /**
+     * Verifies that the maximal NodeAffinitySpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val actualJson = maxSpec.toJson()
@@ -209,12 +249,26 @@ class NodeAffinitySpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal NodeAffinitySpec definition is built into the expected spec
+     * object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.requiredDuringSchedulingIgnoredDuringExecution)
         assertNull(minSpec.preferredDuringSchedulingIgnoredDuringExecution)
     }
 
+    /**
+     * Verifies that the minimal NodeAffinitySpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         val actualJson = minSpec.toJson()
@@ -252,6 +306,12 @@ class PodAffinitySpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal PodAffinitySpec definition is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         assertNotNull(maxSpec.requiredDuringSchedulingIgnoredDuringExecution)
@@ -263,6 +323,13 @@ class PodAffinitySpecTest {
         assertEquals("key", maxSpec.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey)
     }
 
+    /**
+     * Verifies that the maximal PodAffinitySpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val actualJson = maxSpec.toJson()
@@ -286,12 +353,25 @@ class PodAffinitySpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.STRICT)
     }
 
+    /**
+     * Verifies that the minimal PodAffinitySpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         assertNull(minSpec.requiredDuringSchedulingIgnoredDuringExecution)
         assertNull(minSpec.preferredDuringSchedulingIgnoredDuringExecution)
     }
 
+    /**
+     * Verifies that the minimal PodAffinitySpec definition is serialised into the expected YAML
+     * document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         val actualJson = minSpec.toJson()

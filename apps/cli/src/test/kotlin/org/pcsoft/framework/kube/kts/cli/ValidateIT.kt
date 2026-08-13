@@ -18,8 +18,20 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 import org.pcsoft.framework.kube.kts.cli.intern.RepoType
 
-class ValidateTest {
+/**
+ * Integration tests for the `validate` command.
+ *
+ * `validate` only checks the structure of a repository — it neither compiles the scripts nor
+ * renders anything. Both repository layouts are covered via the [RepoType] parameter.
+ */
+class ValidateIT {
 
+    /**
+     * Verifies that a structurally valid repository passes validation.
+     *
+     * The parameter selects the repository layout — pure KTS and mixed KTS/Helm must both exit with
+     * code 0.
+     */
     @ParameterizedTest
     @EnumSource(RepoType::class)
     fun testSuccessfully(type: RepoType) {
@@ -27,6 +39,11 @@ class ValidateTest {
         Assertions.assertEquals(0, exitCode)
     }
 
+    /**
+     * Verifies that validating a non-existing repository fails.
+     *
+     * The missing directory must be reported through a non-zero exit code.
+     */
     @Test
     fun testFailed_NotFound() {
         val exitCode = runCli(arrayOf("validate", "abc"))

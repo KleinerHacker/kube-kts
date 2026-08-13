@@ -159,6 +159,12 @@ class PodSpecTest {
         }.build()
     }
 
+    /**
+     * Verifies that the maximal PodSpec definition is built into the expected spec object.
+     *
+     * Every optional field of the DSL is set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMaxContent() {
         val spec = maxSpec
@@ -253,6 +259,12 @@ class PodSpecTest {
         assertEquals(false, spec.setHostnameAsFQDN)
     }
 
+    /**
+     * Verifies that the maximal PodSpec definition is serialised into the expected YAML document.
+     *
+     * Every optional field of the DSL is set; the serialised result pins the field names, the
+     * nesting and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMaxYaml() {
         val actualJson = maxSpec.toJson()
@@ -367,6 +379,12 @@ class PodSpecTest {
         JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that the minimal PodSpec definition is built into the expected spec object.
+     *
+     * Only the mandatory fields are set, so the builder must map each of them onto the
+     * corresponding property of the specification.
+     */
     @Test
     fun testMinContent() {
         val spec = minSpec
@@ -410,6 +428,12 @@ class PodSpecTest {
         assertNull(spec.resourceClaims)
     }
 
+    /**
+     * Verifies that the minimal PodSpec definition is serialised into the expected YAML document.
+     *
+     * Only the mandatory fields are set; the serialised result pins the field names, the nesting
+     * and the defaults that are omitted on purpose.
+     */
     @Test
     fun testMinYaml() {
         JSONAssert.assertEquals("""{"containers":[{"name":"name","image":"image"}]}""", minSpec.toJson(), JSONCompareMode.LENIENT)

@@ -39,10 +39,6 @@ noArg {
     invokeInitializers = true
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-
 tasks.jar {
     archiveBaseName.set("kube-kts")
     archiveVersion.set(rootProject.version.toString())

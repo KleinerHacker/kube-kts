@@ -34,6 +34,12 @@ class ValueAccessTest {
         private val access = ValueAccess.ofRoot(node)
     }
 
+    /**
+     * Verifies that a scalar value is read and converted to the requested type.
+     *
+     * `value(...)` is the central lookup of a spec script and must support all supported target
+     * types.
+     */
     @Test
     fun testValueSuccessfully() {
         KotlinAssertions.assertNotNull(access.value<Int>("object.child.value1")) {
@@ -44,6 +50,12 @@ class ValueAccessTest {
         }
     }
 
+    /**
+     * Verifies that reading a missing or wrongly typed scalar value fails.
+     *
+     * A typo in a values key must break the rendering instead of silently producing an empty
+     * template.
+     */
     @Test
     fun testValueFailed() {
         assertFailsWith<IllegalArgumentException> {
@@ -65,6 +77,11 @@ class ValueAccessTest {
         }
     }
 
+    /**
+     * Verifies that an array value is read and its elements are converted.
+     *
+     * `array(...)` is used to iterate over lists in `values.yaml`.
+     */
     @Test
     fun testArraySuccessfully() {
         access.array<Int>("array.items1") { index, value ->
@@ -79,6 +96,11 @@ class ValueAccessTest {
         }
     }
 
+    /**
+     * Verifies that reading a missing array or a non-array node fails.
+     *
+     * The mismatch must be reported instead of being treated as an empty list.
+     */
     @Test
     fun testArrayFailed() {
         assertFailsWith<IllegalArgumentException> {
@@ -106,6 +128,11 @@ class ValueAccessTest {
         }
     }
 
+    /**
+     * Verifies that a nested object is scoped via a lambda.
+     *
+     * `map(...)` narrows the value access to a sub-tree, which keeps deep lookups readable.
+     */
     @Test
     fun testMapSuccessfully() {
         access.map<Int>("map.items1") { key, value ->
@@ -120,6 +147,11 @@ class ValueAccessTest {
         }
     }
 
+    /**
+     * Verifies that scoping into a missing or non-object node fails.
+     *
+     * Otherwise all lookups inside the lambda would silently resolve against nothing.
+     */
     @Test
     fun testMapFailed() {
         assertFailsWith<IllegalArgumentException> {
@@ -147,6 +179,11 @@ class ValueAccessTest {
         }
     }
 
+    /**
+     * Verifies that the presence of a key is reported correctly.
+     *
+     * `exists(...)` lets a template react to optional values without triggering a lookup failure.
+     */
     @Test
     fun testExists() {
         assertTrue(access.exists("object.child.value1"))

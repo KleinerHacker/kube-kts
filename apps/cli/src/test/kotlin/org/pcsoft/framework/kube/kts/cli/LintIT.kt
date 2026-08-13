@@ -19,9 +19,22 @@ import org.junit.jupiter.params.provider.EnumSource
 import org.pcsoft.framework.kube.kts.cli.intern.RepoType
 import java.nio.file.Path
 
+/**
+ * Integration tests for the `lint` command, which renders the repository and then runs `helm lint`
+ * on the result.
+ *
+ * A `helm` binary must be available on the `PATH`. Both repository layouts are covered via the
+ * [RepoType] parameter, with and without an explicit target directory.
+ */
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-class LintTest {
+class LintIT {
 
+    /**
+     * Verifies that a rendered repository passes `helm lint` when a target directory is given.
+     *
+     * The parameter selects the repository layout; an additional values file is passed via `-f`, so
+     * the linted chart contains the merged values.
+     */
     @ParameterizedTest
     @EnumSource(RepoType::class)
     fun testSuccessfully(type: RepoType) {
@@ -37,6 +50,12 @@ class LintTest {
         Assertions.assertEquals(0, exitCode)
     }
 
+    /**
+     * Verifies that linting works without an explicit target directory.
+     *
+     * The parameter selects the repository layout; the chart is rendered into a temporary directory
+     * before Helm is invoked.
+     */
     @ParameterizedTest
     @EnumSource(RepoType::class)
     fun testSuccessfully_Tmp(type: RepoType) {
@@ -44,6 +63,11 @@ class LintTest {
         Assertions.assertEquals(0, exitCode)
     }
 
+    /**
+     * Verifies that linting a non-existing repository fails before Helm is invoked.
+     *
+     * The missing directory must be reported through a non-zero exit code.
+     */
     @Test
     fun testFailed_NotFound() {
         val exitCode = runCli(arrayOf("lint", "abc"))

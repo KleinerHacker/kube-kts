@@ -16,6 +16,21 @@ import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsLibCompilationCo
 import org.pcsoft.framework.kube.kts.definition.compiler.KubeKtsLibEvaluationConfiguration
 import kotlin.script.experimental.annotations.KotlinScript
 
+/**
+ * Abstract base class for Kube KTS library scripts (`*.lib.kts`).
+ *
+ * Library scripts hold shared Kotlin functions that are automatically visible in every spec script
+ * of the same `helm` directory. They use the same default imports as spec scripts but — unlike
+ * [SpecTemplate] — do not receive an implicit value receiver, because they are compiled as
+ * dependencies of the including spec script.
+ *
+ * Annotations:
+ * - `@KotlinScript`: binds the compilation and evaluation configuration and declares the file path
+ *   pattern by which a library script is recognised.
+ *
+ * Suppression:
+ * - Annotated with `@Suppress("unused")`, since the class is only referenced by the scripting host.
+ */
 @Suppress("unused")
 @KotlinScript(
     compilationConfiguration = KubeKtsLibCompilationConfiguration::class,

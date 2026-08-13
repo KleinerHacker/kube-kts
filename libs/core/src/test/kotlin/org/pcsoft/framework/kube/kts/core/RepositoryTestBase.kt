@@ -21,7 +21,7 @@ import org.skyscreamer.jsonassert.JSONCompareMode
 import java.nio.file.Files
 import java.nio.file.Path
 
-sealed class RepositoryTest {
+sealed class RepositoryTestBase {
 
     companion object {
         @BeforeAll
