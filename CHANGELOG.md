@@ -47,8 +47,7 @@ the KTS scripts (the DSL for Kubernetes resources) and the `kube-kts` CLI tool.
   global Helm flags (`--namespace`, `--kube-context`, `--kubeconfig`, `--kube-*`,
   `--burst-limit`, `--qps`, `--registry-config`, `--repository-*`), the value
   flags (`--set`, `--set-string`, `--set-file`, `--set-json`, `--set-literal`),
-  chart-source/verification flags and rendering flags. See
-  [HELM_SUPPORT.md](HELM_SUPPORT.md) for the coverage matrix.
+  chart-source/verification flags and rendering flags. 
 - **Help marker column**: the `--help` output marks each option as forwarded to
   Helm (`---->`), experimental (`*`) or dangerous/security-relevant (`!!!`).
 - `--debug` is now also forwarded to Helm.
