@@ -77,6 +77,65 @@ class VolumeClaimTemplateSpecBuilder internal constructor(private val name: Stri
     var volumeMode: VolumeClaimTemplateSpec.VolumeMode? = null
 
     /**
+     * Binds the claim to one specific PersistentVolume by name.
+     *
+     * Only relevant for statically provisioned storage; dynamic provisioning picks the volume itself.
+     */
+    var volumeName: String? = null
+
+    /**
+     * The VolumeAttributesClass applying mutable quality-of-service parameters such as IOPS or throughput.
+     */
+    var volumeAttributesClassName: String? = null
+
+    private var selector: LabelSelectorSpecBuilder? = null
+    private var dataSource: TypedObjectReferenceSpec? = null
+    private var dataSourceRef: TypedObjectReferenceSpec? = null
+
+    /**
+     * Restricts binding to PersistentVolumes carrying matching labels.
+     *
+     * Only meaningful for statically provisioned storage.
+     *
+     * @param prepare A lambda with receiver used to configure the label selector.
+     *
+     * Example:
+     * ```kotlin
+     * selector {
+     *     matchLabel("tier", "fast")
+     * }
+     * ```
+     */
+    fun selector(prepare: LabelSelectorSpecBuilder.() -> Unit) {
+        selector = LabelSelectorSpecBuilder().apply(prepare)
+    }
+
+    /**
+     * Populates the new volume from an existing snapshot or claim.
+     *
+     * Superseded by [dataSourceRef], which expresses the same thing but also accepts custom resources.
+     *
+     * @param kind     The kind of the referenced object, for example `VolumeSnapshot`.
+     * @param name     The name of the referenced object.
+     * @param apiGroup The API group of the referenced object. Omit for the core API group.
+     */
+    fun dataSource(kind: String, name: String, apiGroup: String? = null) {
+        dataSource = TypedObjectReferenceSpec(kind, name, apiGroup, null)
+    }
+
+    /**
+     * Populates the new volume from an existing object, optionally from another namespace.
+     *
+     * @param kind      The kind of the referenced object, for example `VolumeSnapshot`.
+     * @param name      The name of the referenced object.
+     * @param apiGroup  The API group of the referenced object. Omit for the core API group.
+     * @param namespace The namespace the referenced object lives in. Requires a matching ReferenceGrant.
+     */
+    fun dataSourceRef(kind: String, name: String, apiGroup: String? = null, namespace: String? = null) {
+        dataSourceRef = TypedObjectReferenceSpec(kind, name, apiGroup, namespace)
+    }
+
+    /**
      * Sets the desired access modes of the volume.
      *
      * @param modes The access modes to apply to the claim.
@@ -160,7 +219,12 @@ class VolumeClaimTemplateSpecBuilder internal constructor(private val name: Stri
                 accessModes = accessModes,
                 storageClassName = storageClassName,
                 volumeMode = volumeMode,
-                resources = resources
+                resources = resources,
+                selector = selector?.build(),
+                volumeName = volumeName,
+                dataSource = dataSource,
+                dataSourceRef = dataSourceRef,
+                volumeAttributesClassName = volumeAttributesClassName
             )
         )
     }

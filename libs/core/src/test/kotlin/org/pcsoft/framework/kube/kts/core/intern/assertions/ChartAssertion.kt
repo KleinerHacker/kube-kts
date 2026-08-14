@@ -36,7 +36,7 @@ object ChartAssertion {
         Assertions.assertEquals("description", chartSpec.description)
         Assertions.assertEquals(ChartSpec.Type.Library, chartSpec.type)
         Assertions.assertEquals(setOf("keyword"), chartSpec.keywords)
-        Assertions.assertEquals("home", chartSpec.home)
+        Assertions.assertEquals(URI("https://example.com/home"), chartSpec.home)
         Assertions.assertEquals(listOf(URI("https://source.example.com")), chartSpec.sources)
 
         Assertions.assertNotNull(chartSpec.dependencies)

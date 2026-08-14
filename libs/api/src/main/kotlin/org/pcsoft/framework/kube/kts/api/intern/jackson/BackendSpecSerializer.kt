@@ -13,7 +13,7 @@
 package org.pcsoft.framework.kube.kts.api.intern.jackson
 
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.BackendSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.IngressPortSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.ResourceBackendSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.ServiceBackendSpec
 import tools.jackson.core.JsonGenerator
@@ -94,7 +94,7 @@ internal class BackendSpecSerializer : ValueSerializer<BackendSpec>() {
  * {
  *   "service": {
  *     "name": "<service-name>",
- *     "port": { ... } // PortSpec structure
+ *     "port": { ... } // IngressPortSpec structure
  *   }
  * }
  * ```
@@ -119,9 +119,9 @@ internal class BackendSpecDeserializer : ValueDeserializer<BackendSpec>() {
                 node.get("service").let { serviceNode ->
                     val name = serviceNode.get("name").asString()
                     val port = serviceNode.get("port").let { portNode ->
-                        ctxt.readTreeAsValue<PortSpec>(
+                        ctxt.readTreeAsValue<IngressPortSpec>(
                             portNode,
-                            ctxt.typeFactory.constructType(PortSpec::class.java)
+                            ctxt.typeFactory.constructType(IngressPortSpec::class.java)
                         )
                     }
                     ServiceBackendSpec(name, port)

@@ -116,14 +116,14 @@ class ContainerSpecTest {
         assertEquals(Protocol.TCP, maxSpec.ports.first().protocol)
 
         assertNotNull(maxSpec.env)
-        assertEquals("ENVIRONMENT", maxSpec.env.name)
-        assertEquals("production", (maxSpec.env.source as SingleEnvironmentSpec.ValueSource).value)
+        assertEquals("ENVIRONMENT", maxSpec.env.first().name)
+        assertEquals("production", (maxSpec.env.first().source as SingleEnvironmentSpec.ValueSource).value)
 
         assertNotNull(maxSpec.envFrom)
-        assertEquals("APP_", maxSpec.envFrom.prefix)
-        assertEquals(CompleteEnvironmentSpec.SourceType.ConfigMap, maxSpec.envFrom.source.type)
-        assertEquals("app-config", maxSpec.envFrom.source.name)
-        assertEquals(true, maxSpec.envFrom.source.optional)
+        assertEquals("APP_", maxSpec.envFrom.first().prefix)
+        assertEquals(CompleteEnvironmentSpec.SourceType.ConfigMap, maxSpec.envFrom.first().source.type)
+        assertEquals("app-config", maxSpec.envFrom.first().source.name)
+        assertEquals(true, maxSpec.envFrom.first().source.optional)
 
         assertNotNull(maxSpec.resources)
         val limits = assertNotNull(maxSpec.resources.limits)
@@ -176,17 +176,17 @@ class ContainerSpecTest {
           |    "containerPort": 8080,
           |    "protocol": "TCP"
           |  }],
-          |  "env": {
+          |  "env": [{
           |    "name": "ENVIRONMENT",
           |    "value": "production"
-          |  },
-          |  "envFrom": {
+          |  }],
+          |  "envFrom": [{
           |    "prefix": "APP_",
           |    "configMapRef": {
           |      "name": "app-config",
           |      "optional": true
           |    }
-          |  },
+          |  }],
           |  "resources": {
           |    "limits": {
           |      "cpu": "500m",
@@ -267,4 +267,80 @@ class ContainerSpecTest {
         JSONAssert.assertEquals("""{"name":"container","image":"nginx:latest"}""", minSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that an init container declared as a native sidecar carries the restart policy.
+     *
+     * Setting `restartPolicy` to `Always` on an init container is what turns it into a sidecar that
+     * keeps running alongside the pod's main containers instead of running to completion.
+     */
+    @Test
+    fun testSidecarRestartPolicyContent() {
+        val sidecar = ContainerSpecBuilder("proxy", "envoy:latest").apply {
+            restartPolicy = ContainerSpec.RestartPolicy.Always
+        }.build()
+
+        assertEquals(ContainerSpec.RestartPolicy.Always, sidecar.restartPolicy)
+        JSONAssert.assertEquals(
+            """{"name":"proxy","image":"envoy:latest","restartPolicy":"Always"}""",
+            sidecar.toJson(),
+            JSONCompareMode.LENIENT
+        )
+    }
+
+    /**
+     * Verifies that a container declares per-resource in-place resize behaviour.
+     *
+     * CPU changes are applied to the running process while memory changes require a restart, which is
+     * the combination Kubernetes documents as the common case.
+     */
+    @Test
+    fun testResizePolicyContent() {
+        val spec = ContainerSpecBuilder("app", "nginx:latest").apply {
+            addResizePolicy(
+                ResourceResizePolicySpec.ResourceName.Cpu,
+                ResourceResizePolicySpec.RestartPolicy.NotRequired
+            )
+            addResizePolicy(
+                ResourceResizePolicySpec.ResourceName.Memory,
+                ResourceResizePolicySpec.RestartPolicy.RestartContainer
+            )
+        }.build()
+
+        assertEquals(2, spec.resizePolicy!!.size)
+        JSONAssert.assertEquals(
+            """{"resizePolicy":[
+               |  {"resourceName":"cpu","restartPolicy":"NotRequired"},
+               |  {"resourceName":"memory","restartPolicy":"RestartContainer"}
+               |]}""".trimMargin(),
+            spec.toJson(),
+            JSONCompareMode.LENIENT
+        )
+    }
+
+    /**
+     * Verifies that a container references the pod's resource claims from its resource requirements.
+     *
+     * The claim is declared on the pod; the container only opts into using it by name, optionally
+     * narrowing the usage to a single request of that claim.
+     */
+    @Test
+    fun testResourceClaimsContent() {
+        val spec = ContainerSpecBuilder("app", "nginx:latest").apply {
+            resources {
+                addClaim("gpu")
+                addClaim("fast-nic", "primary")
+            }
+        }.build()
+
+        val claims = spec.resources!!.claims!!
+        assertEquals(2, claims.size)
+        assertEquals(ResourceClaimReferenceSpec("gpu", null), claims[0])
+        assertEquals(ResourceClaimReferenceSpec("fast-nic", "primary"), claims[1])
+
+        JSONAssert.assertEquals(
+            """{"resources":{"claims":[{"name":"gpu"},{"name":"fast-nic","request":"primary"}]}}""",
+            spec.toJson(),
+            JSONCompareMode.LENIENT
+        )
+    }
 }

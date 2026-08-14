@@ -80,7 +80,7 @@ volumes {
 volumes {
     volume("host-logs") {
         fromHostPath("/var/log/demo") {
-            type = VolumeSpec.HostPathSourceSpec.Type.DirectoryOrCreate
+            type = HostPathSourceSpec.Type.DirectoryOrCreate
         }
     }
 }
@@ -94,7 +94,7 @@ HostPath 将节点上的文件系统路径绑定到 Pod 中。这会使 Pod 与�
 volumes {
     volume("cache") {
         emptyDir {
-            medium = VolumeSpec.EmptyDirSourceSpec.MediumType.Memory
+            medium = EmptyDirSourceSpec.MediumType.Memory
             sizeLimit = 512.miBytes
         }
     }
@@ -121,3 +121,61 @@ container("app", "registry.example.com/demo:1.0.0") {
 ```
 
 `volumeMounts` 用于文件系统挂载。`volumeDevices` 用于块设备。
+
+## 所有卷来源
+
+除上述来源外，该 DSL 覆盖了 Kubernetes 的全部卷来源：
+
+| Group | Sources |
+|-------|---------|
+| Config | `configMap`, `secret`, `projected`, `downwardApi` |
+| Node-local | `emptyDir`, `hostPath`, `persistentVolumeClaim`, `ephemeral`, `image`, `csi` |
+| Network | `nfs`, `iscsi`, `fibreChannel`, `rbd`, `cephFs`, `glusterFs` |
+| Cloud | `awsElasticBlockStore`, `gcePersistentDisk`, `azureDisk`, `azureFile`, `cinder`, `portworx`, `vsphereVolume` |
+
+Kubernetes 已移除的来源（`gitRepo`、`flexVolume`、`flocker`、`quobyte`、`scaleIo`、`storageOs`、`photonPersistentDisk`）仍可用于较旧的集群，但已标记为弃用。
+
+### 示例
+
+```kotlin
+volumes {
+    volume("bundle") {
+        from {
+            projected {
+                addConfigMap { name = "demo-config" }
+                addSecret { name = "demo-secret" }
+                addServiceAccountToken("token")
+            }
+        }
+    }
+
+    volume("podinfo") {
+        from {
+            downwardApi {
+                addFieldRef("labels", "metadata.labels")
+                addResourceFieldRef("cpu_limit", "limits.cpu", containerName = "app")
+            }
+        }
+    }
+
+    volume("data") {
+        from {
+            csi("ebs.csi.aws.com") {
+                fsType = "ext4"
+                addVolumeAttribute("encrypted", "true")
+            }
+        }
+    }
+
+    volume("scratch") {
+        from {
+            ephemeral {
+                spec {
+                    accessModes(VolumeClaimTemplateSpec.AccessMode.ReadWriteOnce)
+                    requests(1.giBytes)
+                }
+            }
+        }
+    }
+}
+```

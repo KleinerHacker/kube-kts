@@ -55,7 +55,7 @@ class ChartSpecBuilder internal constructor(private val name: String, private va
     /**
      * The URL of the chart's official homepage or project site.
      */
-    var home: String? = null
+    var home: URI? = null
 
     /**
      * The [URI] of the chart's icon (e.g., SVG or PNG).

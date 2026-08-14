@@ -12,6 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.types
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 /**
@@ -64,11 +65,14 @@ class MetadataTemplateSpec(
     val finalizers: List<String>?,
     val ownerReferences: List<OwnerReferenceSpec>?,
     @Deprecated(
-        message = "Cluster name is deprecated. Kubernetes resources are scoped to a single cluster. " +
-                "Cluster identification should be handled at the infrastructure level.",
+        message = "Cluster name was removed from the Kubernetes API in 1.25 and is rejected by newer API " +
+                "servers. The field is therefore excluded from the rendered YAML. Cluster identification " +
+                "should be handled at the infrastructure level.",
         replaceWith = ReplaceWith(""),
         level = DeprecationLevel.WARNING
-    ) val clusterName: String?,
+    )
+    @get:JsonIgnore
+    val clusterName: String?,
 ): MetadataBaseSpec(labels, annotations)
 
 /**

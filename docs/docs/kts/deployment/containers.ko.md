@@ -59,11 +59,22 @@ container("app", "registry.example.com/demo:1.0.0") {
     env("SPRING_PROFILES_ACTIVE") {
         fromValue("production")
     }
+    env("DB_PASSWORD") {
+        fromSecretKeyReference("demo-secret", "password")
+    }
+
+    envs {
+        variable("LOG_LEVEL") {
+            fromValue("debug")
+        }
+    }
 
     envFrom {
         configMapRef("demo-config") {
             optional = false
         }
+    }
+    envFrom {
         secretRef("demo-secret") {
             optional = true
         }
@@ -71,7 +82,7 @@ container("app", "registry.example.com/demo:1.0.0") {
 }
 ```
 
-`env`는 개별 변수를 명시적으로 설정합니다. `envFrom`은 외부 소스에서 여러 변수를 가져옵니다.
+`env`는 여러 번 호출하여 여러 변수를 정의할 수 있으며, `envs { }`는 이를 하나의 블록으로 묶습니다. `envFrom`은 호출할 때마다 소스를 하나씩 추가하고, `envsFrom { }`으로 묶을 수 있습니다. 둘 다 YAML 목록으로 렌더링됩니다.
 
 ## 리소스
 
@@ -98,12 +109,35 @@ container("app", "registry.example.com/demo:1.0.0") {
 ```kotlin
 container("app", "registry.example.com/demo:1.0.0") {
     volumeMounts {
-        volumeMount("config", "/etc/demo") {
+        volumeMount("config", "/etc/demo/application.yaml") {
             readOnly = true
+            subPath = "application.yaml"
         }
         volumeMount("data", "/var/lib/demo")
     }
 }
 ```
 
-`volumeMount`의 이름은 Pod Spec 내의 볼륨과 일치해야 합니다.
+`volumeMount`의 이름은 Pod Spec의 볼륨과 일치해야 합니다. `subPath`는 볼륨의 루트가 아닌 단일 파일 또는 디렉터리를 마운트하며, `subPathExpr`도 같은 역할을 하지만 환경 변수를 참조할 수 있습니다.
+
+## 사이드카와 리사이즈
+
+```kotlin
+containers {
+    init("proxy", "registry.example.com/envoy:1.0.0") {
+        restartPolicy = ContainerSpec.RestartPolicy.Always
+    }
+
+    container("app", "registry.example.com/demo:1.0.0") {
+        addResizePolicy(
+            ResourceResizePolicySpec.ResourceName.Cpu,
+            ResourceResizePolicySpec.RestartPolicy.NotRequired
+        )
+        resources {
+            addClaim("gpu")
+        }
+    }
+}
+```
+
+`restartPolicy = Always`를 설정한 init 컨테이너는 메인 컨테이너와 함께 계속 실행되는 네이티브 사이드카가 됩니다. `addResizePolicy`는 리소스를 제자리에서 변경할 때 재시작이 필요한지 선언하고, `addClaim`은 Pod에 선언된 리소스 클레임을 참조합니다.

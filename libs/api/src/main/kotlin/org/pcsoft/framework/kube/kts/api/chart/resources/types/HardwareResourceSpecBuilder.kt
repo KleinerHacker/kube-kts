@@ -23,6 +23,7 @@ import org.pcsoft.framework.kube.kts.api.types.MemoryValue
 class HardwareResourceSpecBuilder internal constructor() {
     private var limits: ResourceDataBuilder? = null
     private var requests: ResourceDataBuilder? = null
+    private var claims: MutableList<ResourceClaimReferenceSpec>? = null
 
     /**
      * Configures the resource limits for a containerized application.
@@ -93,7 +94,51 @@ class HardwareResourceSpecBuilder internal constructor() {
             }
         }
 
-        return HardwareResourceSpec(requests, limits)
+        return HardwareResourceSpec(requests, limits, claims?.toList())
+    }
+
+    /**
+     * Opts this container into using a resource claim declared on the pod.
+     *
+     * The claim itself is declared under the pod's `resourceClaims`; this only references it by the
+     * name used there.
+     *
+     * Example:
+     * ```kotlin
+     * resources {
+     *     addClaim("gpu")
+     * }
+     * ```
+     *
+     * @param name The name of the pod's resource claim to use.
+     * @param request An optional single request inside the claim. If omitted, all of its requests may be used.
+     */
+    fun addClaim(name: String, request: String? = null) {
+        if (claims == null) {
+            claims = mutableListOf()
+        }
+        claims!!.add(ResourceClaimReferenceSpec(name, request))
+    }
+
+    /**
+     * Opts this container into using several resource claims declared on the pod.
+     *
+     * @param prepare A lambda with receiver used to reference the claims.
+     */
+    fun claims(prepare: ClaimListBuilder.() -> Unit) =
+        ClaimListBuilder().apply(prepare)
+
+    /**
+     * Builder class for referencing a list of pod resource claims from a container.
+     */
+    inner class ClaimListBuilder internal constructor() {
+        /**
+         * Opts this container into using a resource claim declared on the pod.
+         *
+         * @param name The name of the pod's resource claim to use.
+         * @param request An optional single request inside the claim.
+         */
+        fun claim(name: String, request: String? = null) = addClaim(name, request)
     }
 
     /**

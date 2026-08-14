@@ -12,6 +12,9 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteHttpHeaderActionsSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteHttpHeaderSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteHttpHeadersSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.RoutePortSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteTargetSpecBuilder
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteTlsSpec
@@ -49,6 +52,97 @@ class RouteSpecBuilder internal constructor() : ResourceSpecBuilder<RouteSpec> {
      * An optional path the Route matches (path-based routing).
      */
     var path: String? = null
+
+    /**
+     * The subdomain the route is published under.
+     *
+     * The router combines it with the domain of the matching Ingress Controller. Mutually exclusive
+     * with [host].
+     */
+    var subdomain: String? = null
+
+    private var httpHeaders: RouteHttpHeadersSpec? = null
+
+    /**
+     * Configures HTTP header manipulations the router applies to requests and responses.
+     *
+     * Example:
+     * ```kotlin
+     * httpHeaders {
+     *     setRequestHeader("X-Forwarded-Proto", "https")
+     *     deleteResponseHeader("Server")
+     * }
+     * ```
+     *
+     * @param prepare A lambda with a receiver of [RouteHttpHeadersBuilder] to configure the header actions.
+     */
+    fun httpHeaders(prepare: RouteHttpHeadersBuilder.() -> Unit) {
+        httpHeaders = RouteHttpHeadersBuilder().apply(prepare).build()
+    }
+
+    /**
+     * A builder for the HTTP header actions of a route.
+     */
+    class RouteHttpHeadersBuilder internal constructor() {
+        private val request = mutableListOf<RouteHttpHeaderSpec>()
+        private val response = mutableListOf<RouteHttpHeaderSpec>()
+
+        /**
+         * Sets a header on requests forwarded to the backend, replacing any existing value.
+         *
+         * @param name  The name of the header.
+         * @param value The value to set.
+         */
+        fun setRequestHeader(name: String, value: String) {
+            request += RouteHttpHeaderSpec(
+                name,
+                RouteHttpHeaderSpec.Action(RouteHttpHeaderSpec.Type.Set, RouteHttpHeaderSpec.SetAction(value))
+            )
+        }
+
+        /**
+         * Removes a header from requests forwarded to the backend.
+         *
+         * @param name The name of the header.
+         */
+        fun deleteRequestHeader(name: String) {
+            request += RouteHttpHeaderSpec(name, RouteHttpHeaderSpec.Action(RouteHttpHeaderSpec.Type.Delete, null))
+        }
+
+        /**
+         * Sets a header on responses returned to the client, replacing any existing value.
+         *
+         * @param name  The name of the header.
+         * @param value The value to set.
+         */
+        fun setResponseHeader(name: String, value: String) {
+            response += RouteHttpHeaderSpec(
+                name,
+                RouteHttpHeaderSpec.Action(RouteHttpHeaderSpec.Type.Set, RouteHttpHeaderSpec.SetAction(value))
+            )
+        }
+
+        /**
+         * Removes a header from responses returned to the client.
+         *
+         * @param name The name of the header.
+         */
+        fun deleteResponseHeader(name: String) {
+            response += RouteHttpHeaderSpec(name, RouteHttpHeaderSpec.Action(RouteHttpHeaderSpec.Type.Delete, null))
+        }
+
+        /**
+         * Builds the configured header actions.
+         *
+         * @return A [RouteHttpHeadersSpec] carrying the configured request and response actions.
+         */
+        internal fun build(): RouteHttpHeadersSpec = RouteHttpHeadersSpec(
+            RouteHttpHeaderActionsSpec(
+                request = request.takeIf { it.isNotEmpty() },
+                response = response.takeIf { it.isNotEmpty() }
+            )
+        )
+    }
 
     /**
      * Controls whether the Route applies to a single exact host or to all hosts of a subdomain.
@@ -141,15 +235,21 @@ class RouteSpecBuilder internal constructor() : ResourceSpecBuilder<RouteSpec> {
         tls = RouteTlsSpecBuilder(termination).apply(prepare)
     }
 
-    override fun build(): RouteSpec = RouteSpec(
-        host,
-        path,
-        to?.build(),
-        alternateBackends?.map { it.build() },
-        port,
-        tls?.build(),
-        wildcardPolicy
-    )
+    override fun build(): RouteSpec {
+        require(to != null) { "A route must declare its primary backend via 'to'" }
+
+        return RouteSpec(
+            host = host,
+            subdomain = subdomain,
+            path = path,
+            to = to!!.build(),
+            alternateBackends = alternateBackends?.map { it.build() },
+            port = port,
+            tls = tls?.build(),
+            wildcardPolicy = wildcardPolicy,
+            httpHeaders = httpHeaders
+        )
+    }
 
     /**
      * A builder for configuring a list of alternate backends of a Route.

@@ -12,6 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.core.intern.assertions
 
+import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
 import org.junit.jupiter.api.Assertions
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec.*
@@ -32,13 +33,13 @@ object ServiceAssertion {
         Assertions.assertNotNull(serviceSpec.spec)
         Assertions.assertEquals(Type.LoadBalancer, serviceSpec.spec.type)
 
-        Assertions.assertEquals(1, serviceSpec.spec.ports.size)
-        Assertions.assertEquals("port", serviceSpec.spec.ports[0].name)
-        Assertions.assertEquals(9999, serviceSpec.spec.ports[0].port)
-        Assertions.assertEquals(8888, serviceSpec.spec.ports[0].targetPort)
-        Assertions.assertEquals(7777, serviceSpec.spec.ports[0].nodePort)
-        Assertions.assertEquals(Protocol.SCTP, serviceSpec.spec.ports[0].protocol)
-        Assertions.assertEquals("https", serviceSpec.spec.ports[0].appProtocol)
+        Assertions.assertEquals(1, serviceSpec.spec.ports!!.size)
+        Assertions.assertEquals("port", serviceSpec.spec.ports!![0].name)
+        Assertions.assertEquals(9999, serviceSpec.spec.ports!![0].port)
+        Assertions.assertEquals(ofPortNumber(8888), serviceSpec.spec.ports!![0].targetPort)
+        Assertions.assertEquals(7777, serviceSpec.spec.ports!![0].nodePort)
+        Assertions.assertEquals(Protocol.SCTP, serviceSpec.spec.ports!![0].protocol)
+        Assertions.assertEquals("https", serviceSpec.spec.ports!![0].appProtocol)
 
         Assertions.assertEquals("clusterIP", serviceSpec.spec.clusterIP)
         Assertions.assertEquals(listOf("clusterIP"), serviceSpec.spec.clusterIPs)

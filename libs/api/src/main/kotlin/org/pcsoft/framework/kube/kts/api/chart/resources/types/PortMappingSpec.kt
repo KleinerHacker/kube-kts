@@ -13,23 +13,40 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
+import org.pcsoft.framework.kube.kts.api.types.PortValue
 
 /**
- * Represents a port mapping configuration for a Service.
+ * Maps a port exposed by a Service onto a port of the Pods behind it.
  *
- * @property name The name of the port.
- * @property port The port that the service will serve on.
- * @property targetPort The port on the pods that the service should forward traffic to.
- * @property protocol The IP protocol for this port (TCP, UDP, SCTP).
- * @property appProtocol The application protocol for this port.
- * @property nodePort The port on each node on which this service is exposed (for NodePort type).
+ * @property name        The name of this port. Optional on single-port Services, but required as soon as
+ *                       a Service exposes more than one port. Must be a valid IANA service name.
+ * @property port        The port the Service itself exposes.
+ * @property targetPort  The port on the backing Pods traffic is forwarded to, either a number or the
+ *                       name of a container port. Defaults to [port] when unset.
+ * @property protocol    The transport protocol. Defaults to [Protocol.TCP] when unset.
+ * @property appProtocol A hint at the application protocol spoken on this port, for example `http` or
+ *                       `kubernetes.io/h2c`.
+ * @property nodePort    The port allocated on every node for Services of type `NodePort` or
+ *                       `LoadBalancer`. Assigned by the system when unset.
  */
 @NoArgs
 data class PortMappingSpec(
-    val name: String,
+    val name: String?,
     val port: Int,
-    val targetPort: Int?,
+    val targetPort: PortValue<*>?,
     val protocol: Protocol?,
     val appProtocol: String?,
     val nodePort: Int?
-)
+) {
+    /**
+     * Validates the port numbers and the optional port name.
+     */
+    init {
+        require(port in 1..65535) { "Port must be between 1 and 65535, but was $port" }
+        nodePort?.let { require(it in 1..65535) { "Node port must be between 1 and 65535, but was $it" } }
+        name?.let {
+            require(it.isNotBlank()) { "Port name must not be blank" }
+            require(it.length <= 15) { "Port name must not exceed 15 characters, but was '$it'" }
+        }
+    }
+}

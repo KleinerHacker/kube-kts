@@ -12,6 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
+import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsDeserializer
 import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsSerializer
 import tools.jackson.databind.annotation.JsonDeserialize
@@ -19,15 +20,21 @@ import tools.jackson.databind.annotation.JsonSerialize
 import java.time.Duration
 
 /**
- * Represents a specification for tolerations in Kubernetes-like configurations. Tolerations allow scheduling
- * rules to be applied to workloads that need to tolerate specific taints on nodes.
+ * Allows a Pod to be scheduled onto nodes carrying a matching taint.
  *
- * @property key The key of the taint that the toleration applies to. If null, the toleration applies to all keys.
- * @property operator Specifies the relationship between the key and the value. Possible values are `Equal` or `Exists`.
- * @property value Optional GPU-specific toleration, allowing tolerations to be scoped to GPU workloads.
- * @property effect Specifies the effect of the taint to tolerate. Possible values are `NoSchedule`, `PreferNoSchedule`, or `NoExecute`.
- * @property tolerationSeconds The duration in seconds for which the toleration is applicable.
+ * Taints let a node repel Pods; a toleration is the Pod's counterpart that makes it acceptable anyway.
+ * A toleration matches a taint when key, value and effect all agree - with an empty [key] and
+ * [Operator.Exists] matching every taint.
+ *
+ * @property key               The taint key this toleration applies to. An empty key together with
+ *                             [Operator.Exists] tolerates every taint.
+ * @property operator          How [value] is compared. Defaults to [Operator.Equal] when unset.
+ * @property value             The taint value to match. Must be empty when [operator] is [Operator.Exists].
+ * @property effect            The taint effect to match. Matches every effect when unset.
+ * @property tolerationSeconds How long the Pod stays bound to the node after a [Effect.NoExecute] taint
+ *                             appears. Only meaningful for that effect; unset means forever.
  */
+@NoArgs
 data class TolerationSpec(
     val key: String?,
     val operator: Operator?,
@@ -38,43 +45,38 @@ data class TolerationSpec(
     val tolerationSeconds: Duration?
 ) {
     /**
-     * Defines the operator used in toleration to specify the relationship between a key and a value.
+     * How a toleration compares itself against a taint.
      */
     @Suppress("unused")
     enum class Operator {
         /**
-         * Represents an equality operator used to specify the relationship between a key and a value.
+         * The taint's value must equal the toleration's value.
          */
         Equal,
 
         /**
-         * Represents the "Exists" operator, typically used to specify the existence of a key
-         * without requiring an associated value. It defines a condition where the presence of the key alone suffices.
+         * The taint only has to carry the key; its value is ignored.
          */
         Exists
     }
 
     /**
-     * Specifies the effects of taints that toleration can tolerate. The effect determines the impact
-     * on workload scheduling or execution when the taint is present on a node.
+     * The taint effect a toleration applies to.
      */
     @Suppress("unused")
     enum class Effect {
         /**
-         * Represents the "NoSchedule" effect, which prevents scheduling of workloads on nodes
-         * that have the specified taint.
+         * New Pods are not scheduled onto the node; running Pods stay.
          */
         NoSchedule,
 
         /**
-         * Represents the "PreferNoSchedule" effect, which prefers scheduling of workloads on nodes
-         * that have the specified taint, but allows scheduling of workloads on nodes that do not have the taint.
+         * The scheduler avoids the node but may still use it if nothing else fits.
          */
         PreferNoSchedule,
 
         /**
-         * Represents the "NoExecute" effect, which prevents scheduling of workloads on nodes
-         * that have the specified taint and prevents the pod from being rescheduled on the node.
+         * New Pods are not scheduled and running Pods are evicted.
          */
         NoExecute
     }

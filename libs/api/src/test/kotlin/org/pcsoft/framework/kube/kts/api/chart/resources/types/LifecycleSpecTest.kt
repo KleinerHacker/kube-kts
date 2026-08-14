@@ -12,6 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
+import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
@@ -210,7 +211,7 @@ class LifecycleSpecTest {
     fun testHttpGetMaxContent() {
         assertIs<LifecycleSpec.HttpGetAction>(httpGetMaxSpec.postStart)
         assertEquals("/health", httpGetMaxSpec.postStart.path)
-        assertEquals(9999, httpGetMaxSpec.postStart.port)
+        assertEquals(ofPortNumber(9999), httpGetMaxSpec.postStart.port)
         assertEquals("localhost", httpGetMaxSpec.postStart.host)
         assertEquals(ProtocolScheme.HTTPS, httpGetMaxSpec.postStart.scheme)
         assertEquals(
@@ -219,7 +220,7 @@ class LifecycleSpecTest {
         )
         assertIs<LifecycleSpec.HttpGetAction>(httpGetMaxSpec.preStop)
         assertEquals("/shutdown", httpGetMaxSpec.preStop.path)
-        assertEquals(8888, httpGetMaxSpec.preStop.port)
+        assertEquals(ofPortNumber(8888), httpGetMaxSpec.preStop.port)
         assertEquals("localhost", httpGetMaxSpec.preStop.host)
         assertEquals(ProtocolScheme.HTTP, httpGetMaxSpec.preStop.scheme)
         assertEquals(mapOf("X-Shutdown" to "graceful"), httpGetMaxSpec.preStop.httpHeaders)
@@ -241,10 +242,13 @@ class LifecycleSpecTest {
         |      "port": 9999,
         |      "host": "localhost",
         |      "scheme": "HTTPS",
-        |      "httpHeaders": {
-        |        "X-Custom-Header": "value1",
-        |        "Authorization": "Bearer token"
-        |      }
+        |      "httpHeaders": [{
+        |        "name": "X-Custom-Header",
+        |        "value": "value1"
+        |      }, {
+        |        "name": "Authorization",
+        |        "value": "Bearer token"
+        |      }]
         |    }
         |  },
         |  "preStop": {
@@ -253,9 +257,10 @@ class LifecycleSpecTest {
         |      "port": 8888,
         |      "host": "localhost",
         |      "scheme": "HTTP",
-        |      "httpHeaders": {
-        |        "X-Shutdown": "graceful"
-        |      }
+        |      "httpHeaders": [{
+        |        "name": "X-Shutdown",
+        |        "value": "graceful"
+        |      }]
         |    }
         |  }
         |}""".trimMargin()
@@ -273,9 +278,9 @@ class LifecycleSpecTest {
     @Test
     fun testHttpGetMinContent() {
         assertIs<LifecycleSpec.HttpGetAction>(httpGetMinSpec.postStart)
-        assertEquals(9999, httpGetMinSpec.postStart.port)
+        assertEquals(ofPortNumber(9999), httpGetMinSpec.postStart.port)
         assertIs<LifecycleSpec.HttpGetAction>(httpGetMinSpec.preStop)
-        assertEquals(8888, httpGetMinSpec.preStop.port)
+        assertEquals(ofPortNumber(8888), httpGetMinSpec.preStop.port)
     }
 
     /**

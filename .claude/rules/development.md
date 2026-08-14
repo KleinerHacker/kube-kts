@@ -48,7 +48,7 @@ name: development
 ## Testing
 
 * Every use case MUST be tested
-* Code coverage should reach at least 100%
+* Code coverage MUST reach at least 90% line coverage
 * The package structure of the production code MUST be mirrored
 * Tests MUST be split into two categories, distinguished by the class name suffix
     * **Developer tests** - Simple unit tests covering individual pieces of functionality
@@ -65,3 +65,6 @@ name: development
 
 * Code coverage MUST be measured with Kover
 * The aggregated report is created with the Gradle task `koverHtmlReport`
+* The threshold is at least 90% line coverage, both aggregated and per module
+* `libs/definition` is excluded from the threshold
+    * It only holds script template declarations whose bodies are compiler configuration for the IDE

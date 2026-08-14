@@ -80,12 +80,15 @@ data class KubeVersion(val items: List<Item>) {
              * @return An Item object containing the parsed version string and the associated equality operator.
              */
             fun parse(version: String): Item {
+                // The two-character operators must be tested first: ">=" also starts with ">", so
+                // checking the single-character forms first would strip only one character and leave
+                // the "=" as part of the version.
                 val equality = when {
-                    version.startsWith(">") -> ItemEquality.GREATER
-                    version.startsWith("<") -> ItemEquality.LESS
                     version.startsWith("!=") -> ItemEquality.NOT_EQUAL
                     version.startsWith(">=") -> ItemEquality.GREATER_EQUAL
                     version.startsWith("<=") -> ItemEquality.LESS_EQUAL
+                    version.startsWith(">") -> ItemEquality.GREATER
+                    version.startsWith("<") -> ItemEquality.LESS
                     else -> ItemEquality.EQUAL
                 }
 

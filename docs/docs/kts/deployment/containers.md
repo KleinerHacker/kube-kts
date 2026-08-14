@@ -59,11 +59,22 @@ container("app", "registry.example.com/demo:1.0.0") {
     env("SPRING_PROFILES_ACTIVE") {
         fromValue("production")
     }
+    env("DB_PASSWORD") {
+        fromSecretKeyReference("demo-secret", "password")
+    }
+
+    envs {
+        variable("LOG_LEVEL") {
+            fromValue("debug")
+        }
+    }
 
     envFrom {
         configMapRef("demo-config") {
             optional = false
         }
+    }
+    envFrom {
         secretRef("demo-secret") {
             optional = true
         }
@@ -71,7 +82,7 @@ container("app", "registry.example.com/demo:1.0.0") {
 }
 ```
 
-`env` sets individual variables explicitly. `envFrom` imports multiple variables from an external source.
+`env` can be called several times to define multiple variables, and `envs { }` groups them in one block. Each `envFrom` call adds one further source; `envsFrom { }` groups them. Both are rendered as YAML lists.
 
 ## Resources
 
@@ -98,12 +109,35 @@ container("app", "registry.example.com/demo:1.0.0") {
 ```kotlin
 container("app", "registry.example.com/demo:1.0.0") {
     volumeMounts {
-        volumeMount("config", "/etc/demo") {
+        volumeMount("config", "/etc/demo/application.yaml") {
             readOnly = true
+            subPath = "application.yaml"
         }
         volumeMount("data", "/var/lib/demo")
     }
 }
 ```
 
-The name in `volumeMount` must match a volume in the Pod Spec.
+The name in `volumeMount` must match a volume in the Pod Spec. `subPath` mounts a single file or directory of the volume instead of its root; `subPathExpr` does the same but may reference environment variables.
+
+## Sidecars and Resizing
+
+```kotlin
+containers {
+    init("proxy", "registry.example.com/envoy:1.0.0") {
+        restartPolicy = ContainerSpec.RestartPolicy.Always
+    }
+
+    container("app", "registry.example.com/demo:1.0.0") {
+        addResizePolicy(
+            ResourceResizePolicySpec.ResourceName.Cpu,
+            ResourceResizePolicySpec.RestartPolicy.NotRequired
+        )
+        resources {
+            addClaim("gpu")
+        }
+    }
+}
+```
+
+An init container with `restartPolicy = Always` becomes a native sidecar that keeps running alongside the main containers. `addResizePolicy` declares whether an in-place resource change requires a restart, and `addClaim` references a resource claim declared on the Pod.

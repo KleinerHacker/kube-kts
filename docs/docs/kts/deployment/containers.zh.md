@@ -59,11 +59,22 @@ container("app", "registry.example.com/demo:1.0.0") {
     env("SPRING_PROFILES_ACTIVE") {
         fromValue("production")
     }
+    env("DB_PASSWORD") {
+        fromSecretKeyReference("demo-secret", "password")
+    }
+
+    envs {
+        variable("LOG_LEVEL") {
+            fromValue("debug")
+        }
+    }
 
     envFrom {
         configMapRef("demo-config") {
             optional = false
         }
+    }
+    envFrom {
         secretRef("demo-secret") {
             optional = true
         }
@@ -71,7 +82,7 @@ container("app", "registry.example.com/demo:1.0.0") {
 }
 ```
 
-`env` 用于显式设置单个变量。`envFrom` 用于从外部来源导入多个变量。
+`env` 可多次调用以定义多个变量，`envs { }` 可将它们归入一个代码块。每次调用 `envFrom` 会添加一个来源，`envsFrom { }` 可将它们归组。两者都渲染为 YAML 列表。
 
 ## 资源
 
@@ -98,12 +109,35 @@ container("app", "registry.example.com/demo:1.0.0") {
 ```kotlin
 container("app", "registry.example.com/demo:1.0.0") {
     volumeMounts {
-        volumeMount("config", "/etc/demo") {
+        volumeMount("config", "/etc/demo/application.yaml") {
             readOnly = true
+            subPath = "application.yaml"
         }
         volumeMount("data", "/var/lib/demo")
     }
 }
 ```
 
-`volumeMount` 中的名称必须与 Pod Spec 中的某个卷匹配。
+`volumeMount` 中的名称必须与 Pod Spec 中的卷一致。`subPath` 挂载卷中的单个文件或目录而非其根目录；`subPathExpr` 作用相同，但可以引用环境变量。
+
+## 边车容器与资源调整
+
+```kotlin
+containers {
+    init("proxy", "registry.example.com/envoy:1.0.0") {
+        restartPolicy = ContainerSpec.RestartPolicy.Always
+    }
+
+    container("app", "registry.example.com/demo:1.0.0") {
+        addResizePolicy(
+            ResourceResizePolicySpec.ResourceName.Cpu,
+            ResourceResizePolicySpec.RestartPolicy.NotRequired
+        )
+        resources {
+            addClaim("gpu")
+        }
+    }
+}
+```
+
+设置了 `restartPolicy = Always` 的 init 容器会成为原生边车容器，与主容器一同持续运行。`addResizePolicy` 声明原地调整资源时是否需要重启，`addClaim` 引用 Pod 上声明的资源申领。

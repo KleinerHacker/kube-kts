@@ -13,11 +13,13 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.junit.jupiter.api.Test
+import org.pcsoft.framework.kube.kts.api.types.cpu
 import org.pcsoft.framework.kube.kts.api.types.mCpu
 import org.pcsoft.framework.kube.kts.api.types.miBytes
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
+import kotlin.test.assertFalse
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertNotNull
@@ -179,7 +181,7 @@ class PodSpecTest {
         assertEquals("image", spec.ephemeralContainers.first().image)
 
         assertNotNull(spec.imagePullSecrets)
-        assertEquals("name", spec.imagePullSecrets.first())
+        assertEquals("name", spec.imagePullSecrets.first().name)
 
         assertEquals(true, spec.automountServiceAccountToken)
         assertEquals("my-service-account", spec.serviceAccountName)
@@ -227,8 +229,8 @@ class PodSpecTest {
 
         assertNotNull(spec.volumes)
         assertEquals("my-volume", spec.volumes.first().name)
-        assertIs<VolumeSpec.SecretSourceSpec>(spec.volumes.first().source)
-        assertEquals("secret-name", (spec.volumes.first().source as VolumeSpec.SecretSourceSpec).name)
+        assertIs<SecretSourceSpec>(spec.volumes.first().source)
+        assertEquals("secret-name", (spec.volumes.first().source as SecretSourceSpec).name)
 
         assertNotNull(spec.nodeSelector)
         assertEquals("ssd", spec.nodeSelector["disktype"])
@@ -244,7 +246,7 @@ class PodSpecTest {
         assertEquals("2", spec.dnsConfig.options!!["ndots"])
 
         assertNotNull(spec.readinessGates)
-        assertEquals("custom-condition", spec.readinessGates.first())
+        assertEquals("custom-condition", spec.readinessGates.first().conditionType)
 
         assertNotNull(spec.hostAliases)
         assertEquals("127.0.0.1", spec.hostAliases.first().ip)
@@ -281,12 +283,6 @@ class PodSpecTest {
           |      "image": "image"
           |    }
           |  ],
-          |  "ephemeralContainers": [
-          |    {
-          |      "name": "name",
-          |      "image": "image"
-          |    }
-          |  ],
           |  "restartPolicy": "OnFailure",
           |  "dnsPolicy": "ClusterFirstWithHostNet",
           |  "dnsConfig": {
@@ -296,9 +292,10 @@ class PodSpecTest {
           |    "searches": [
           |      "kubernetes.io/hostname"
           |    ],
-          |    "options": {
-          |      "ndots": "2"
-          |    }
+          |    "options": [{
+          |      "name": "ndots",
+          |      "value": "2"
+          |    }]
           |  },
           |  "serviceAccountName": "my-service-account",
           |  "automountServiceAccountToken": true,
@@ -324,7 +321,7 @@ class PodSpecTest {
           |    "disktype": "ssd"
           |  },
           |  "imagePullSecrets": [
-          |    "name"
+          |    { "name": "name" }
           |  ],
           |  "volumes": [
           |    {
@@ -358,7 +355,7 @@ class PodSpecTest {
           |  "terminationGracePeriodSeconds": 30,
           |  "activeDeadlineSeconds": 600,
           |  "readinessGates": [
-          |    "custom-condition"
+          |    { "conditionType": "custom-condition" }
           |  ],
           |  "hostAliases": [
           |    {
@@ -439,4 +436,137 @@ class PodSpecTest {
         JSONAssert.assertEquals("""{"containers":[{"name":"name","image":"image"}]}""", minSpec.toJson(), JSONCompareMode.LENIENT)
     }
 
+    /**
+     * Verifies that scheduling gates keep a pod pending until a controller removes them.
+     *
+     * Each gate is rendered as an object carrying a `name`, not as a bare string, which is what the
+     * Kubernetes schema requires.
+     */
+    @Test
+    fun testSchedulingGatesContent() {
+        val spec = PodSpecBuilder().apply {
+            addContainer("app", "nginx:latest") {}
+            schedulingGates {
+                gate("example.com/await-quota")
+            }
+        }.build()
+
+        assertEquals("example.com/await-quota", spec.schedulingGates!!.first().name)
+        JSONAssert.assertEquals(
+            """{"schedulingGates":[{"name":"example.com/await-quota"}]}""",
+            spec.toJson(),
+            JSONCompareMode.LENIENT
+        )
+    }
+
+    /**
+     * Verifies that a pod can opt into its own user namespace.
+     *
+     * Setting `hostUsers` to false maps container root onto an unprivileged user on the node, which is
+     * a meaningful hardening step and therefore must survive into the manifest.
+     */
+    @Test
+    fun testHostUsersContent() {
+        val spec = PodSpecBuilder().apply {
+            addContainer("app", "nginx:latest") {}
+            hostUsers = false
+        }.build()
+
+        assertEquals(false, spec.hostUsers)
+        JSONAssert.assertEquals("""{"hostUsers":false}""", spec.toJson(), JSONCompareMode.LENIENT)
+    }
+
+    /**
+     * Verifies that pod-level resources bound the pod as a whole.
+     *
+     * These act as an envelope around the containers, so they are rendered next to the container list
+     * rather than inside it.
+     */
+    @Test
+    fun testPodLevelResourcesContent() {
+        val spec = PodSpecBuilder().apply {
+            addContainer("app", "nginx:latest") {}
+            resources {
+                limits {
+                    cpu = 2f.cpu
+                    memory = 512.miBytes
+                }
+            }
+        }.build()
+
+        assertEquals(512.miBytes, spec.resources!!.limits!!.memory)
+        JSONAssert.assertEquals(
+            """{"resources":{"limits":{"cpu":"2000m","memory":"512Mi"}}}""",
+            spec.toJson(),
+            JSONCompareMode.LENIENT
+        )
+    }
+
+    /**
+     * Verifies that the sandbox overhead accepts extended resources beyond CPU and memory.
+     *
+     * Overhead is a full resource list in Kubernetes, so restricting it to the two standard resources
+     * would drop values a runtime class may declare.
+     */
+    @Test
+    fun testOverheadWithExtendedResourcesContent() {
+        val spec = PodSpecBuilder().apply {
+            addContainer("app", "nginx:latest") {}
+            overhead {
+                cpu = 250.mCpu
+                memory = 120.miBytes
+            }
+        }.build()
+
+        assertEquals(120.miBytes, spec.overhead!!.memory)
+        JSONAssert.assertEquals(
+            """{"overhead":{"cpu":"250m","memory":"120Mi"}}""",
+            spec.toJson(),
+            JSONCompareMode.LENIENT
+        )
+    }
+
+    /**
+     * Verifies that the SELinux change policy is carried in the pod security context.
+     *
+     * Choosing the mount option avoids recursively relabelling large volumes, so the value must reach
+     * the manifest unchanged.
+     */
+    @Test
+    fun testSeLinuxChangePolicyContent() {
+        val spec = PodSpecBuilder().apply {
+            addContainer("app", "nginx:latest") {}
+            securityContext {
+                seLinuxChangePolicy = PodSecurityContextSpec.SELinuxChangePolicy.MountOption
+            }
+        }.build()
+
+        assertEquals(
+            PodSecurityContextSpec.SELinuxChangePolicy.MountOption,
+            spec.securityContext!!.seLinuxChangePolicy
+        )
+        JSONAssert.assertEquals(
+            """{"securityContext":{"seLinuxChangePolicy":"MountOption"}}""",
+            spec.toJson(),
+            JSONCompareMode.LENIENT
+        )
+    }
+
+    /**
+     * Verifies that ephemeral containers are kept out of the rendered manifest.
+     *
+     * They cannot be set through a manifest at all - Kubernetes only accepts them through the pod's
+     * `ephemeralcontainers` subresource - so emitting them would produce a manifest the API server
+     * rejects.
+     */
+    @Test
+    fun testEphemeralContainersAreNotRendered() {
+        @Suppress("DEPRECATION")
+        val spec = PodSpecBuilder().apply {
+            addContainer("app", "nginx:latest") {}
+            addEphemeralContainer("debugger", "busybox:latest") {}
+        }.build()
+
+        assertFalse(spec.toJson().contains("ephemeralContainers"))
+    }
 }

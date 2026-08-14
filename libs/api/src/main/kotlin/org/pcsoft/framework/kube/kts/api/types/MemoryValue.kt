@@ -62,6 +62,7 @@ data class MemoryValue(val value: Long) : Comparable<MemoryValue> {
          * @return The parsed StorageValue
          */
         @JsonCreator
+        @JvmStatic
         fun parse(value: String): MemoryValue {
             for (storageUnit in StorageUnit.entries.reversed()) {
                 if (storageUnit.suffix.isNotEmpty() && value.endsWith(storageUnit.suffix, true)) {

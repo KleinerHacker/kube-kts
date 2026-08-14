@@ -296,6 +296,7 @@ class PodSecurityContextSpec(
     val fsGroupChangePolicy: FSGroupChangePolicy?,
     val supplementalGroups: List<Long>?,
     val supplementalGroupsPolicy: SupplementalGroupsPolicy?,
+    val seLinuxChangePolicy: SELinuxChangePolicy?,
     @field:JsonSerialize(using = MapToNameValueSerializer::class)
     @field:JsonDeserialize(using = MapToNameValueDeserializer::class)
     val sysctls: Map<String, String>?,
@@ -333,6 +334,24 @@ class PodSecurityContextSpec(
     /**
      * Determines the policy for handling supplemental groups within the pod's security context.
      */
+    /**
+     * Controls how the SELinux label of the pod's volumes is applied.
+     */
+    @Suppress("unused")
+    enum class SELinuxChangePolicy {
+        /**
+         * The label is applied through a mount option where the volume plugin supports it, which avoids
+         * recursively relabelling every file. This is the faster option.
+         */
+        MountOption,
+
+        /**
+         * The label is applied by walking the volume and relabelling each file. Slow on large volumes,
+         * but works with every volume plugin.
+         */
+        Recursive
+    }
+
     @Suppress("unused")
     enum class SupplementalGroupsPolicy {
         /**

@@ -80,7 +80,7 @@ volumes {
 volumes {
     volume("host-logs") {
         fromHostPath("/var/log/demo") {
-            type = VolumeSpec.HostPathSourceSpec.Type.DirectoryOrCreate
+            type = HostPathSourceSpec.Type.DirectoryOrCreate
         }
     }
 }
@@ -94,7 +94,7 @@ HostPath はノードのファイルシステムパスを Pod にバインドし
 volumes {
     volume("cache") {
         emptyDir {
-            medium = VolumeSpec.EmptyDirSourceSpec.MediumType.Memory
+            medium = EmptyDirSourceSpec.MediumType.Memory
             sizeLimit = 512.miBytes
         }
     }
@@ -121,3 +121,61 @@ container("app", "registry.example.com/demo:1.0.0") {
 ```
 
 `volumeMounts` はファイルシステムマウントに使用します。`volumeDevices` はブロックデバイスに使用します。
+
+## すべてのボリュームソース
+
+上記のソースに加えて、この DSL は Kubernetes のすべてのボリュームソースに対応しています。
+
+| Group | Sources |
+|-------|---------|
+| Config | `configMap`, `secret`, `projected`, `downwardApi` |
+| Node-local | `emptyDir`, `hostPath`, `persistentVolumeClaim`, `ephemeral`, `image`, `csi` |
+| Network | `nfs`, `iscsi`, `fibreChannel`, `rbd`, `cephFs`, `glusterFs` |
+| Cloud | `awsElasticBlockStore`, `gcePersistentDisk`, `azureDisk`, `azureFile`, `cinder`, `portworx`, `vsphereVolume` |
+
+Kubernetes から削除されたソース（`gitRepo`、`flexVolume`、`flocker`、`quobyte`、`scaleIo`、`storageOs`、`photonPersistentDisk`）は、古いクラスター向けに引き続き利用できますが、非推奨としてマークされています。
+
+### 例
+
+```kotlin
+volumes {
+    volume("bundle") {
+        from {
+            projected {
+                addConfigMap { name = "demo-config" }
+                addSecret { name = "demo-secret" }
+                addServiceAccountToken("token")
+            }
+        }
+    }
+
+    volume("podinfo") {
+        from {
+            downwardApi {
+                addFieldRef("labels", "metadata.labels")
+                addResourceFieldRef("cpu_limit", "limits.cpu", containerName = "app")
+            }
+        }
+    }
+
+    volume("data") {
+        from {
+            csi("ebs.csi.aws.com") {
+                fsType = "ext4"
+                addVolumeAttribute("encrypted", "true")
+            }
+        }
+    }
+
+    volume("scratch") {
+        from {
+            ephemeral {
+                spec {
+                    accessModes(VolumeClaimTemplateSpec.AccessMode.ReadWriteOnce)
+                    requests(1.giBytes)
+                }
+            }
+        }
+    }
+}
+```

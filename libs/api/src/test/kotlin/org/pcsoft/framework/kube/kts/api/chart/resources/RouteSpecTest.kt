@@ -12,6 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteTargetSpec
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteTlsSpec
@@ -22,6 +23,7 @@ import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
 import java.util.UUID
+import kotlin.test.assertFailsWith
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
@@ -75,7 +77,9 @@ class RouteSpecTest {
             }
         }.build()
 
-        private val minSpec = RouteSpecBuilder().build()
+        private val minSpec = RouteSpecBuilder().apply {
+            to("service")
+        }.build()
 
         private val namedPortSpec = RouteSpecBuilder().apply {
             to("main-service")
@@ -96,14 +100,14 @@ class RouteSpecTest {
         assertEquals(RouteSpec.WildcardPolicy.None, maxSpec.wildcardPolicy)
 
         KotlinAssertions.assertNotNull(maxSpec.to) {
-            assertEquals("Service", it.kind)
+            assertEquals(RouteTargetSpec.Kind.Service, it.kind)
             assertEquals("main-service", it.name)
             assertEquals(100, it.weight)
         }
 
         assertNotNull(maxSpec.alternateBackends)
         KotlinAssertions.assertList(1, maxSpec.alternateBackends) {
-            assertEquals("Service", it.kind)
+            assertEquals(RouteTargetSpec.Kind.Service, it.kind)
             assertEquals("canary-service", it.name)
             assertEquals(20, it.weight)
         }
@@ -149,7 +153,8 @@ class RouteSpecTest {
     fun testMinContent() {
         assertNull(minSpec.host)
         assertNull(minSpec.path)
-        assertNull(minSpec.to)
+        assertEquals(RouteTargetSpec.Kind.Service, minSpec.to.kind)
+        assertEquals("service", minSpec.to.name)
         assertNull(minSpec.alternateBackends)
         assertNull(minSpec.port)
         assertNull(minSpec.tls)
@@ -205,5 +210,76 @@ class RouteSpecTest {
             namedPortSpec.toJson(),
             JSONCompareMode.LENIENT
         )
+    }
+
+    /**
+     * Verifies that a route published under a subdomain carries it instead of an explicit host.
+     *
+     * The router combines the subdomain with the domain of the matching Ingress Controller, which is
+     * how a route stays portable across clusters with different base domains.
+     */
+    @Test
+    fun testSubdomainContent() {
+        val spec = RouteSpecBuilder().apply {
+            subdomain = "apps"
+            to("main-service")
+        }.build()
+
+        assertEquals("apps", spec.subdomain)
+        assertNull(spec.host)
+        JSONAssert.assertEquals("""{"subdomain":"apps"}""", spec.toJson(), JSONCompareMode.LENIENT)
+    }
+
+    /**
+     * Verifies that a route rejects being given both a host and a subdomain.
+     *
+     * The two ways of publishing a route are mutually exclusive in OpenShift.
+     */
+    @Test
+    fun testRejectsHostAndSubdomain() {
+        assertFailsWith<IllegalArgumentException> {
+            RouteSpecBuilder().apply {
+                host = "www.example.com"
+                subdomain = "apps"
+                to("main-service")
+            }.build()
+        }
+    }
+
+    /**
+     * Verifies that header actions are rendered under the nested request and response lists.
+     *
+     * OpenShift groups them under `httpHeaders.actions`, separated by direction, and expresses a
+     * removal as an action without a value.
+     */
+    @Test
+    fun testHttpHeadersContent() {
+        val spec = RouteSpecBuilder().apply {
+            to("main-service")
+            httpHeaders {
+                setRequestHeader("X-Forwarded-Proto", "https")
+                deleteResponseHeader("Server")
+            }
+        }.build()
+
+        val actions = spec.httpHeaders!!.actions
+        assertEquals("X-Forwarded-Proto", actions.request!!.first().name)
+        assertEquals("Server", actions.response!!.first().name)
+
+        val expectedJson = """
+          |{
+          |  "httpHeaders": {
+          |    "actions": {
+          |      "request": [
+          |        { "name": "X-Forwarded-Proto", "action": { "type": "Set", "set": { "value": "https" } } }
+          |      ],
+          |      "response": [
+          |        { "name": "Server", "action": { "type": "Delete" } }
+          |      ]
+          |    }
+          |  }
+          |}""".trimMargin()
+
+        JSONAssert.assertEquals(expectedJson, spec.toJson(), JSONCompareMode.LENIENT)
     }
 }

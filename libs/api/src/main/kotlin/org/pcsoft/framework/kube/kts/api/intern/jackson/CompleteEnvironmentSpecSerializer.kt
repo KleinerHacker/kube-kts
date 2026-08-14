@@ -50,7 +50,7 @@ internal class CompleteEnvironmentSpecSerializer : ValueSerializer<CompleteEnvir
         }
 
         gen.writeObject {
-            gen.writeStringProperty("prefix", value.prefix)
+            value.prefix?.let { gen.writeStringProperty("prefix", it) }
             when (value.source.type) {
                 CompleteEnvironmentSpec.SourceType.ConfigMap -> gen.writeObjectPropertyStart("configMapRef")
                 CompleteEnvironmentSpec.SourceType.Secret -> gen.writeObjectPropertyStart("secretRef")
@@ -98,7 +98,7 @@ internal class CompleteEnvironmentSpecDeserializer : ValueDeserializer<CompleteE
             return null
         }
 
-        val prefix = node.get("prefix")?.asString()
+        val prefix = node.get("prefix")?.takeIf { !it.isNull }?.asString()
 
         return when {
             node.has("configMapRef") -> CompleteEnvironmentSpec(

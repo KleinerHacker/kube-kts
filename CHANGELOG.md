@@ -27,6 +27,32 @@ the KTS scripts (the DSL for Kubernetes resources) and the `kube-kts` CLI tool.
   (backward compatibility with classic Helm charts).
 - **Script security model**: imports in KTS are disabled by default and must be
   explicitly allowed via the `--unsafe` flag.
+- **StatefulSet** resources via `statefulSet { }` (`StatefulSetSpec`), **Job**
+  resources via `job { }` (`JobSpec`), **Secret**, **SealedSecret** and
+  OpenShift **Route** resources.
+- **Complete volume source coverage**: in addition to `configMap`, `secret`,
+  `persistentVolumeClaim`, `hostPath` and `emptyDir`, all remaining Kubernetes
+  sources are now available — `projected`, `downwardApi`, `csi`, `ephemeral`,
+  `image`, `nfs`, `iscsi`, `fibreChannel`, `rbd`, `cephFs`, `glusterFs`,
+  `awsElasticBlockStore`, `gcePersistentDisk`, `azureDisk`, `azureFile`,
+  `cinder`, `portworx` and `vsphereVolume`. Sources Kubernetes has removed
+  (`gitRepo`, `flexVolume`, `flocker`, `quobyte`, `scaleIo`, `storageOs`,
+  `photonPersistentDisk`) are available but marked deprecated.
+- **Named ports**: every port field that Kubernetes models as `IntOrString`
+  now accepts a container port name as well as a number — `httpGet("http")`,
+  `tcpSocket("http")` and `targetPortName` on a service port.
+- **Volume mounts** now support `subPath`, `subPathExpr`, `mountPropagation`
+  and `recursiveReadOnly`.
+- **Native sidecars**: an init container can set `restartPolicy = Always`.
+- **In-place resize**: containers can declare `addResizePolicy(...)` per resource.
+- **Dynamic Resource Allocation**: containers reference pod resource claims via
+  `resources { addClaim("gpu") }`.
+- **Container ports** now support `hostPort` and `hostIP`.
+- **Pod-level settings** added: `schedulingGates`, `hostUsers`, pod-level
+  `resources`, and `seLinuxChangePolicy` in the security context.
+- **Volume claim templates** now support `selector`, `volumeName`, `dataSource`,
+  `dataSourceRef` and `volumeAttributesClassName`.
+- **Job** gained `managedBy`, **Route** gained `subdomain` and `httpHeaders`.
 
 #### CLI (`kube-kts`)
 
@@ -57,6 +83,23 @@ the KTS scripts (the DSL for Kubernetes resources) and the `kube-kts` CLI tool.
 
 ### Changed
 
+#### KTS DSL
+
+- **Breaking:** `env { }` and `envFrom { }` on a container now produce YAML
+  lists instead of single objects, so a container can define more than one
+  environment variable. Existing scripts keep working: `env(name) { }` can now
+  simply be called several times, and the new `envs { }` / `envsFrom { }` blocks
+  group multiple entries.
+- **Breaking:** `home` in `chart { }` is now a `URI` instead of a `String`,
+  consistent with `icon` and `sources`.
+- **Breaking:** a Route must now declare its primary backend via `to(...)`, and
+  its `kind` is an enum instead of a free-form string.
+- **Breaking:** a service port name is now optional; `ports` themselves are only
+  required for service types other than `ExternalName`.
+- `ephemeralContainers` and `clusterName` are deprecated and are no longer
+  written to the rendered manifest — Kubernetes does not accept either through a
+  manifest.
+
 #### CLI (`kube-kts`)
 
 - The release name for `template` is now passed via `--name` instead of `-n`.
@@ -69,3 +112,15 @@ the KTS scripts (the DSL for Kubernetes resources) and the `kube-kts` CLI tool.
 - Dedicated CLI reference: an overview page plus one detailed page per command
   (`validate`, `compile`, `render`, `lint`, `template`, `install`, `uninstall`)
   documenting every flag, available in all four languages.
+
+### Fixed
+
+#### KTS DSL
+
+- `imagePullSecrets` and `readinessGates` were rendered as plain string lists
+  instead of the object lists Kubernetes expects, producing manifests the API
+  server rejected.
+- `dnsConfig.options` and the `httpHeaders` of probes and lifecycle hooks were
+  rendered as objects instead of `name`/`value` lists.
+- Memory and CPU values could be written but not read back, so a rendered chart
+  could not be parsed into a specification again.

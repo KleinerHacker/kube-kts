@@ -81,7 +81,7 @@ class VolumeSpecTest {
         private val hostPathMaxSpec = VolumeSpecBuilder("host-volume").apply {
             from {
                 hostPath("/data") {
-                    type = VolumeSpec.HostPathSourceSpec.Type.DirectoryOrCreate
+                    type = HostPathSourceSpec.Type.DirectoryOrCreate
                 }
             }
         }.build()
@@ -94,7 +94,7 @@ class VolumeSpecTest {
 
         private val emptyDirMaxSpec = VolumeSpecBuilder("empty-volume").apply {
             emptyDir {
-                medium = VolumeSpec.EmptyDirSourceSpec.MediumType.Memory
+                medium = EmptyDirSourceSpec.MediumType.Memory
                 sizeLimit = 64.miBytes
             }
         }.build()
@@ -114,7 +114,7 @@ class VolumeSpecTest {
     @Test
     fun testConfigMapSourceMaxContent() {
         assertEquals("config-volume", configMapMaxSpec.name)
-        val source = assertIs<VolumeSpec.ConfigMapSourceSpec>(configMapMaxSpec.source)
+        val source = assertIs<ConfigMapSourceSpec>(configMapMaxSpec.source)
         assertMaxFileSource(source, "app-config", "application.yaml", "config/application.yaml")
     }
 
@@ -155,7 +155,7 @@ class VolumeSpecTest {
     @Test
     fun testConfigMapSourceMinContent() {
         assertEquals("config-volume", configMapMinSpec.name)
-        val source = assertIs<VolumeSpec.ConfigMapSourceSpec>(configMapMinSpec.source)
+        val source = assertIs<ConfigMapSourceSpec>(configMapMinSpec.source)
         assertMinFileSource(source)
     }
 
@@ -187,7 +187,7 @@ class VolumeSpecTest {
     @Test
     fun testSecretSourceMaxContent() {
         assertEquals("secret-volume", secretMaxSpec.name)
-        val source = assertIs<VolumeSpec.SecretSourceSpec>(secretMaxSpec.source)
+        val source = assertIs<SecretSourceSpec>(secretMaxSpec.source)
         assertMaxFileSource(source, "app-secret", "password", "secret/password")
     }
 
@@ -228,7 +228,7 @@ class VolumeSpecTest {
     @Test
     fun testSecretSourceMinContent() {
         assertEquals("secret-volume", secretMinSpec.name)
-        val source = assertIs<VolumeSpec.SecretSourceSpec>(secretMinSpec.source)
+        val source = assertIs<SecretSourceSpec>(secretMinSpec.source)
         assertMinFileSource(source)
     }
 
@@ -260,7 +260,7 @@ class VolumeSpecTest {
     @Test
     fun testPersistentVolumeClaimSourceMaxContent() {
         assertEquals("pvc-volume", persistentVolumeClaimMaxSpec.name)
-        val source = assertIs<VolumeSpec.PersistentVolumeClaimSourceSpec>(persistentVolumeClaimMaxSpec.source)
+        val source = assertIs<PersistentVolumeClaimSourceSpec>(persistentVolumeClaimMaxSpec.source)
         assertEquals("app-pvc", source.claimName)
         assertEquals(true, source.readOnly)
     }
@@ -296,7 +296,7 @@ class VolumeSpecTest {
     @Test
     fun testPersistentVolumeClaimSourceMinContent() {
         assertEquals("pvc-volume", persistentVolumeClaimMinSpec.name)
-        val source = assertIs<VolumeSpec.PersistentVolumeClaimSourceSpec>(persistentVolumeClaimMinSpec.source)
+        val source = assertIs<PersistentVolumeClaimSourceSpec>(persistentVolumeClaimMinSpec.source)
         assertEquals("app-pvc", source.claimName)
         assertEquals(null, source.readOnly)
     }
@@ -331,9 +331,9 @@ class VolumeSpecTest {
     @Test
     fun testHostPathSourceMaxContent() {
         assertEquals("host-volume", hostPathMaxSpec.name)
-        val source = assertIs<VolumeSpec.HostPathSourceSpec>(hostPathMaxSpec.source)
+        val source = assertIs<HostPathSourceSpec>(hostPathMaxSpec.source)
         assertEquals("/data", source.path)
-        assertEquals(VolumeSpec.HostPathSourceSpec.Type.DirectoryOrCreate, source.type)
+        assertEquals(HostPathSourceSpec.Type.DirectoryOrCreate, source.type)
     }
 
     /**
@@ -367,7 +367,7 @@ class VolumeSpecTest {
     @Test
     fun testHostPathSourceMinContent() {
         assertEquals("host-volume", hostPathMinSpec.name)
-        val source = assertIs<VolumeSpec.HostPathSourceSpec>(hostPathMinSpec.source)
+        val source = assertIs<HostPathSourceSpec>(hostPathMinSpec.source)
         assertEquals("/data", source.path)
         assertEquals(null, source.type)
     }
@@ -401,8 +401,8 @@ class VolumeSpecTest {
     @Test
     fun testEmptyDirSourceMaxContent() {
         assertEquals("empty-volume", emptyDirMaxSpec.name)
-        val source = assertIs<VolumeSpec.EmptyDirSourceSpec>(emptyDirMaxSpec.source)
-        assertEquals(VolumeSpec.EmptyDirSourceSpec.MediumType.Memory, source.medium)
+        val source = assertIs<EmptyDirSourceSpec>(emptyDirMaxSpec.source)
+        assertEquals(EmptyDirSourceSpec.MediumType.Memory, source.medium)
         assertEquals(64.miBytes, source.sizeLimit)
     }
 
@@ -435,7 +435,7 @@ class VolumeSpecTest {
     @Test
     fun testEmptyDirSourceMinContent() {
         assertEquals("empty-volume", emptyDirMinSpec.name)
-        val source = assertIs<VolumeSpec.EmptyDirSourceSpec>(emptyDirMinSpec.source)
+        val source = assertIs<EmptyDirSourceSpec>(emptyDirMinSpec.source)
         assertEquals(null, source.medium)
         assertEquals(null, source.sizeLimit)
     }
@@ -457,18 +457,18 @@ class VolumeSpecTest {
         )
     }
 
-    private fun assertMaxFileSource(source: VolumeSpec.FileSourceSpec, name: String, key: String, path: String) {
+    private fun assertMaxFileSource(source: FileSourceSpec, name: String, key: String, path: String) {
         assertEquals(name, source.name)
         assertEquals(true, source.optional)
         assertEquals(420, source.defaultMode)
         assertEquals(1, source.items?.size)
-        val item = assertIs<VolumeSpec.FileSourceSpec.KeyToPathSpec>(source.items?.single())
+        val item = assertIs<KeyToPathSpec>(source.items?.single())
         assertEquals(key, item.key)
         assertEquals(path, item.path)
         assertEquals(384, item.mode)
     }
 
-    private fun assertMinFileSource(source: VolumeSpec.FileSourceSpec) {
+    private fun assertMinFileSource(source: FileSourceSpec) {
         assertEquals(null, source.name)
         assertEquals(null, source.optional)
         assertEquals(null, source.defaultMode)

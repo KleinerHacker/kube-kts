@@ -50,6 +50,7 @@ data class CpuValue(val value: Float) : Comparable<CpuValue> {
          * @throws NumberFormatException if the input string is not a valid number format.
          */
         @JsonCreator
+        @JvmStatic
         fun parse(value: String): CpuValue {
             if (value.endsWith("m")) {
                 return CpuValue(value.substring(0, value.length - 1).toFloat() / 1000f)

@@ -48,7 +48,7 @@ import java.time.Duration
 data class ServiceSpec(
     val type: Type?,
     val selector: Map<String, String>?, //TODO: replace with reference
-    val ports: List<PortMappingSpec>,
+    val ports: List<PortMappingSpec>?,
     val clusterIP: String?,
     val clusterIPs: List<String>?,
     val ipFamilies: Set<IPFamily>?,
@@ -68,6 +68,24 @@ data class ServiceSpec(
     val healthCheckNodePort: Int?,
     val trafficDistribution: TrafficDistribution?
 ) : ResourceSpec {
+    /**
+     * Validates the port list against the service type and the uniqueness of port names.
+     */
+    init {
+        if (type == Type.ExternalName) {
+            require(externalName != null) { "'externalName' is required for a service of type ExternalName" }
+        } else {
+            require(!ports.isNullOrEmpty()) { "At least one port is required for a service of type $type" }
+        }
+        ports?.let { list ->
+            require(list.size <= 1 || list.all { it.name != null }) {
+                "Every port must be named when a service exposes more than one port"
+            }
+            val names = list.mapNotNull { it.name }
+            require(names.size == names.distinct().size) { "Port names must be unique within a service" }
+        }
+    }
+
     companion object {
         /**
          * Represents the kind of Kubernetes resource associated with this specification.
@@ -332,6 +350,7 @@ data class ServiceSpec(
      *
      * @property clientIP Configuration for session affinity based on client IP.
      */
+    @NoArgs
     data class SessionAffinityConfig(val clientIP: ClientIPConfig)
 
     /**
@@ -343,6 +362,7 @@ data class ServiceSpec(
      * @property timeoutSeconds The duration, in seconds, defining the timeout for client IP session affinity.
      * This value is serialized and deserialized using custom serializers to handle duration-related logic.
      */
+    @NoArgs
     data class ClientIPConfig(
         @field:JsonSerialize(using = DurationInSecondsSerializer::class)
         @field:JsonDeserialize(using = DurationInSecondsDeserializer::class)

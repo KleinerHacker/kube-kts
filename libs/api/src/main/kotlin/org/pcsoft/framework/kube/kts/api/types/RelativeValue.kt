@@ -32,7 +32,8 @@ interface RelativeValue<T, R> {
                 is Number -> ofAbsolute(value.toInt())
                 is String -> {
                     require(value.endsWith("%")) { "Invalid percentage value: $value" }
-                    ofPercentage(value.dropLast(1).toFloat())
+                    // toYamlValue renders 1.0 as "100%", so parsing has to divide again to stay its inverse.
+                    ofPercentage(value.dropLast(1).toFloat() / 100f)
                 }
                 else -> throw IllegalArgumentException("Unsupported type for RelativeValue creation: ${value::class.simpleName}")
             }

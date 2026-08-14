@@ -37,6 +37,14 @@ data class HardwareResourceSpec(
      * Limits cannot be exceeded by the container.
      */
     var limits: Data?,
+    /**
+     * The resource claims of the pod this container opts into using.
+     *
+     * Dynamic Resource Allocation lets a pod declare claims for specialised hardware such as GPUs under
+     * `spec.resourceClaims`; a container references the ones it needs here. Unlike [requests] and
+     * [limits] this is not a quantity but a reference by name.
+     */
+    val claims: List<ResourceClaimReferenceSpec>?,
 ) {
 
     /**

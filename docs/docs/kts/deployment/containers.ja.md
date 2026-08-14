@@ -59,11 +59,22 @@ container("app", "registry.example.com/demo:1.0.0") {
     env("SPRING_PROFILES_ACTIVE") {
         fromValue("production")
     }
+    env("DB_PASSWORD") {
+        fromSecretKeyReference("demo-secret", "password")
+    }
+
+    envs {
+        variable("LOG_LEVEL") {
+            fromValue("debug")
+        }
+    }
 
     envFrom {
         configMapRef("demo-config") {
             optional = false
         }
+    }
+    envFrom {
         secretRef("demo-secret") {
             optional = true
         }
@@ -71,7 +82,7 @@ container("app", "registry.example.com/demo:1.0.0") {
 }
 ```
 
-`env` は個々の変数を明示的に設定します。`envFrom` は外部ソースから複数の変数をインポートします。
+`env` は複数回呼び出して複数の変数を定義でき、`envs { }` はそれらを 1 つのブロックにまとめます。`envFrom` は呼び出すたびにソースを 1 つ追加し、`envsFrom { }` でまとめられます。どちらも YAML のリストとして出力されます。
 
 ## リソース
 
@@ -98,12 +109,35 @@ container("app", "registry.example.com/demo:1.0.0") {
 ```kotlin
 container("app", "registry.example.com/demo:1.0.0") {
     volumeMounts {
-        volumeMount("config", "/etc/demo") {
+        volumeMount("config", "/etc/demo/application.yaml") {
             readOnly = true
+            subPath = "application.yaml"
         }
         volumeMount("data", "/var/lib/demo")
     }
 }
 ```
 
-`volumeMount` の名前は、Pod Spec 内のボリュームと一致する必要があります。
+`volumeMount` の名前は Pod Spec のボリュームと一致する必要があります。`subPath` はボリュームのルートではなく単一のファイルまたはディレクトリをマウントします。`subPathExpr` も同様ですが、環境変数を参照できます。
+
+## サイドカーとリサイズ
+
+```kotlin
+containers {
+    init("proxy", "registry.example.com/envoy:1.0.0") {
+        restartPolicy = ContainerSpec.RestartPolicy.Always
+    }
+
+    container("app", "registry.example.com/demo:1.0.0") {
+        addResizePolicy(
+            ResourceResizePolicySpec.ResourceName.Cpu,
+            ResourceResizePolicySpec.RestartPolicy.NotRequired
+        )
+        resources {
+            addClaim("gpu")
+        }
+    }
+}
+```
+
+`restartPolicy = Always` を設定した init コンテナは、メインコンテナと並行して動作し続けるネイティブサイドカーになります。`addResizePolicy` はリソースのインプレース変更に再起動が必要かどうかを宣言し、`addClaim` は Pod で宣言されたリソースクレームを参照します。

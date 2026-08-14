@@ -12,6 +12,9 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
+import org.pcsoft.framework.kube.kts.api.types.PortValue
+import org.pcsoft.framework.kube.kts.api.types.ofPortName
+import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
 import java.time.Duration
 
 /**
@@ -103,8 +106,18 @@ class LifecycleSpecBuilder internal constructor() {
          *                `HttpGetActionBuilder`. Within this block, properties such as the path, host,
          *                scheme, and headers for the HTTP GET request can be specified.
          */
+        fun httpGet(port: String, prepare: HttpGetActionBuilder.() -> Unit = {}) {
+            action = HttpGetActionBuilder(ofPortName(port)).apply(prepare)
+        }
+
+        /**
+         * Performs an HTTP GET request against the given container port.
+         *
+         * @param port The port number to connect to.
+         * @param prepare A lambda with receiver used to configure the `HttpGetActionBuilder`.
+         */
         fun httpGet(port: Int, prepare: HttpGetActionBuilder.() -> Unit = {}) {
-            action = HttpGetActionBuilder(port).apply(prepare)
+            action = HttpGetActionBuilder(ofPortNumber(port)).apply(prepare)
         }
 
         /**
@@ -214,7 +227,7 @@ class LifecycleSpecBuilder internal constructor() {
      * @constructor Creates an instance of the builder with the specified target port.
      * @param port The port on the target host to which the GET request will be sent.
      */
-    class HttpGetActionBuilder internal constructor(private val port: Int) : ActionBuilder<LifecycleSpec.HttpGetAction> {
+    class HttpGetActionBuilder internal constructor(private val port: PortValue<*>) : ActionBuilder<LifecycleSpec.HttpGetAction> {
         private var httpHeaders: MutableMap<String, String>? = null
 
         /**

@@ -10,29 +10,115 @@
  * See the License for the specific language governing permissions and limitations.
  */
 
+@file:Suppress("DEPRECATION")
+
 package org.pcsoft.framework.kube.kts.api.intern.jackson
 
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.*
 import org.pcsoft.framework.kube.kts.api.intern.utils.writeObject
 import tools.jackson.core.JsonGenerator
+import tools.jackson.core.JsonParser
+import tools.jackson.databind.DeserializationContext
 import tools.jackson.databind.JsonNode
 import tools.jackson.databind.SerializationContext
 import tools.jackson.databind.ValueDeserializer
 import tools.jackson.databind.ValueSerializer
 
 /**
- * A custom serializer for the [VolumeSpec] class that converts VolumeSpec instances
- * into a JSON representation based on their specific source type.
+ * Maps every volume source implementation onto the YAML property name Kubernetes expects for it.
  *
- * This serializer checks the type of the [VolumeSpec.source] property and serializes it 
- * accordingly into one of the predefined source types: secret, configMap, persistentVolumeClaim, 
- * hostPath, or emptyDir. If the value is null, it writes a JSON null value.
+ * The mapping is the single source of truth shared by [VolumeSpecSerializer] and [VolumeSpecDeserializer],
+ * which keeps writing and reading a volume symmetrical.
+ */
+internal object VolumeSourceNames {
+
+    /**
+     * All supported volume sources, paired with their YAML property name and the class they deserialize into.
+     *
+     * The order matters for deserialization: the first entry whose property is present on the node wins.
+     */
+    val ENTRIES: List<Pair<String, Class<out VolumeSpec.SourceSpec>>> = listOf(
+        "configMap" to ConfigMapSourceSpec::class.java,
+        "secret" to SecretSourceSpec::class.java,
+        "downwardAPI" to DownwardApiSourceSpec::class.java,
+        "projected" to ProjectedSourceSpec::class.java,
+        "emptyDir" to EmptyDirSourceSpec::class.java,
+        "hostPath" to HostPathSourceSpec::class.java,
+        "persistentVolumeClaim" to PersistentVolumeClaimSourceSpec::class.java,
+        "ephemeral" to EphemeralSourceSpec::class.java,
+        "image" to ImageSourceSpec::class.java,
+        "csi" to CsiSourceSpec::class.java,
+        "nfs" to NfsSourceSpec::class.java,
+        "iscsi" to IscsiSourceSpec::class.java,
+        "fc" to FibreChannelSourceSpec::class.java,
+        "rbd" to RbdSourceSpec::class.java,
+        "cephfs" to CephFsSourceSpec::class.java,
+        "glusterfs" to GlusterFsSourceSpec::class.java,
+        "awsElasticBlockStore" to AwsElasticBlockStoreSourceSpec::class.java,
+        "gcePersistentDisk" to GcePersistentDiskSourceSpec::class.java,
+        "azureDisk" to AzureDiskSourceSpec::class.java,
+        "azureFile" to AzureFileSourceSpec::class.java,
+        "cinder" to CinderSourceSpec::class.java,
+        "portworxVolume" to PortworxVolumeSourceSpec::class.java,
+        "vsphereVolume" to VsphereVolumeSourceSpec::class.java,
+        "gitRepo" to GitRepoSourceSpec::class.java,
+        "flexVolume" to FlexVolumeSourceSpec::class.java,
+        "flocker" to FlockerSourceSpec::class.java,
+        "quobyte" to QuobyteSourceSpec::class.java,
+        "scaleIO" to ScaleIoSourceSpec::class.java,
+        "storageos" to StorageOsSourceSpec::class.java,
+        "photonPersistentDisk" to PhotonPersistentDiskSourceSpec::class.java,
+    )
+
+    /**
+     * Resolves the YAML property name a given volume source is written under.
+     *
+     * The `when` is exhaustive over the sealed [VolumeSpec.SourceSpec] hierarchy, so adding a new source
+     * without registering it here is a compile error rather than a silently malformed manifest.
+     *
+     * @param source The volume source to resolve.
+     * @return The Kubernetes property name for this source.
+     */
+    fun nameOf(source: VolumeSpec.SourceSpec): String = when (source) {
+        is ConfigMapSourceSpec -> "configMap"
+        is SecretSourceSpec -> "secret"
+        is DownwardApiSourceSpec -> "downwardAPI"
+        is ProjectedSourceSpec -> "projected"
+        is EmptyDirSourceSpec -> "emptyDir"
+        is HostPathSourceSpec -> "hostPath"
+        is PersistentVolumeClaimSourceSpec -> "persistentVolumeClaim"
+        is EphemeralSourceSpec -> "ephemeral"
+        is ImageSourceSpec -> "image"
+        is CsiSourceSpec -> "csi"
+        is NfsSourceSpec -> "nfs"
+        is IscsiSourceSpec -> "iscsi"
+        is FibreChannelSourceSpec -> "fc"
+        is RbdSourceSpec -> "rbd"
+        is CephFsSourceSpec -> "cephfs"
+        is GlusterFsSourceSpec -> "glusterfs"
+        is AwsElasticBlockStoreSourceSpec -> "awsElasticBlockStore"
+        is GcePersistentDiskSourceSpec -> "gcePersistentDisk"
+        is AzureDiskSourceSpec -> "azureDisk"
+        is AzureFileSourceSpec -> "azureFile"
+        is CinderSourceSpec -> "cinder"
+        is PortworxVolumeSourceSpec -> "portworxVolume"
+        is VsphereVolumeSourceSpec -> "vsphereVolume"
+        is GitRepoSourceSpec -> "gitRepo"
+        is FlexVolumeSourceSpec -> "flexVolume"
+        is FlockerSourceSpec -> "flocker"
+        is QuobyteSourceSpec -> "quobyte"
+        is ScaleIoSourceSpec -> "scaleIO"
+        is StorageOsSourceSpec -> "storageos"
+        is PhotonPersistentDiskSourceSpec -> "photonPersistentDisk"
+    }
+}
+
+/**
+ * Serializes a [VolumeSpec] into the flat shape Kubernetes expects.
  *
- * This implementation ensures a dynamic handling of [VolumeSpec] objects during serialization
- * by delegating the source-specific serialization to their respective POJO properties.
- *
- * Throws exceptions if the internal object writer (JsonGenerator) encounters errors during serialization
- * or if the data structure being serialized is invalid.
+ * A volume carries its source in a dedicated property, but Kubernetes renders the source as a sibling of
+ * `name` whose key names the source type. This serializer performs that flattening, writing `name`
+ * followed by exactly one source property resolved through [VolumeSourceNames].
  */
 class VolumeSpecSerializer : ValueSerializer<VolumeSpec>() {
     override fun serialize(
@@ -47,55 +133,33 @@ class VolumeSpecSerializer : ValueSerializer<VolumeSpec>() {
 
         gen.writeObject {
             gen.writeStringProperty("name", value.name)
-            when (value.source) {
-                is VolumeSpec.SecretSourceSpec -> gen.writePOJOProperty("secret", value.source)
-                is VolumeSpec.ConfigMapSourceSpec -> gen.writePOJOProperty("configMap", value.source)
-                is VolumeSpec.PersistentVolumeClaimSourceSpec -> gen.writePOJOProperty("persistentVolumeClaim", value.source)
-                is VolumeSpec.HostPathSourceSpec -> gen.writePOJOProperty("hostPath", value.source)
-                is VolumeSpec.EmptyDirSourceSpec -> gen.writePOJOProperty("emptyDir", value.source)
-            }
+            gen.writePOJOProperty(VolumeSourceNames.nameOf(value.source), value.source)
         }
     }
 }
 
 /**
- * A custom deserializer for the [VolumeSpec] class that converts JSON representations
- * back into VolumeSpec instances based on their specific source type.
+ * Deserializes the flat Kubernetes representation of a volume back into a [VolumeSpec].
  *
- * This deserializer reads the JSON object and determines the source type based on which
- * source property is present (secret, configMap, persistentVolumeClaim, hostPath, or emptyDir).
- * It then deserializes the source-specific data into the appropriate VolumeSpec.SourceSpec subtype.
- *
- * This implementation ensures proper reconstruction of [VolumeSpec] objects during deserialization
- * by handling each source type dynamically.
- *
- * Throws exceptions if the JSON structure is invalid or if required fields are missing.
+ * The source type is recovered by looking for the first property registered in [VolumeSourceNames] that
+ * is present on the node.
  */
 class VolumeSpecDeserializer : ValueDeserializer<VolumeSpec>() {
     override fun deserialize(
-        p: tools.jackson.core.JsonParser,
-        ctxt: tools.jackson.databind.DeserializationContext
+        p: JsonParser,
+        ctxt: DeserializationContext
     ): VolumeSpec {
         val node: JsonNode = p.readValueAsTree()
-        val name = node.get("name").asString()
+        val name = node.get("name")?.asString()
+            ?: throw IllegalArgumentException("Volume is missing the required 'name' property")
 
-        val source = when {
-            node.has("secret") -> ctxt.readTreeAsValue(node.get("secret"), VolumeSpec.SecretSourceSpec::class.java)
-            node.has("configMap") -> ctxt.readTreeAsValue(
-                node.get("configMap"),
-                VolumeSpec.ConfigMapSourceSpec::class.java
+        val entry = VolumeSourceNames.ENTRIES.firstOrNull { (property, _) -> node.has(property) }
+            ?: throw IllegalArgumentException(
+                "Volume '$name' does not declare any known volume source. Expected one of: " +
+                        VolumeSourceNames.ENTRIES.joinToString { it.first }
             )
 
-            node.has("persistentVolumeClaim") -> ctxt.readTreeAsValue(
-                node.get("persistentVolumeClaim"),
-                VolumeSpec.PersistentVolumeClaimSourceSpec::class.java
-            )
-
-            node.has("hostPath") -> ctxt.readTreeAsValue(node.get("hostPath"), VolumeSpec.HostPathSourceSpec::class.java)
-            node.has("emptyDir") -> ctxt.readTreeAsValue(node.get("emptyDir"), VolumeSpec.EmptyDirSourceSpec::class.java)
-            else -> throw IllegalArgumentException("Unknown volume source type")
-        }
-
+        val source = ctxt.readTreeAsValue(node.get(entry.first), entry.second)
         return VolumeSpec(name, source)
     }
 }

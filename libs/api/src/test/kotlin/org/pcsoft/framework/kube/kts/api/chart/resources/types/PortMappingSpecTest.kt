@@ -12,6 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
+import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
 import org.pcsoft.framework.kube.kts.api.utils.toJson
@@ -43,7 +44,7 @@ class PortMappingSpecTest {
     fun testMaxContent() {
         assertEquals("name", maxSpec.name)
         assertEquals(9999, maxSpec.port)
-        assertEquals(8888, maxSpec.targetPort)
+        assertEquals(ofPortNumber(8888), maxSpec.targetPort)
         assertEquals(7777, maxSpec.nodePort)
         assertEquals("http", maxSpec.appProtocol)
         assertEquals(Protocol.UDP, maxSpec.protocol)

@@ -13,16 +13,16 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 /**
- * Builder class for creating instances of `PortSpec`.
+ * Builder class for creating instances of `IngressPortSpec`.
  *
  * This builder allows for specifying a port either by its name or by its number,
  * but not both simultaneously.
  *
  * There are no more fields inside.
  */
-class PortSpecBuilder private constructor(private val name: String?, private val number: Int?) {
+class IngressPortSpecBuilder private constructor(private val name: String?, private val number: Int?) {
     /**
-     * Secondary constructor for `PortSpecBuilder` that initializes
+     * Secondary constructor for `IngressPortSpecBuilder` that initializes
      * an instance based on the given port name without a port number.
      *
      * @param name The name of the port.
@@ -30,14 +30,14 @@ class PortSpecBuilder private constructor(private val name: String?, private val
     internal constructor(name: String) : this(name, null)
 
     /**
-     * Secondary constructor for `PortSpecBuilder` that initializes an instance
+     * Secondary constructor for `IngressPortSpecBuilder` that initializes an instance
      * based on the given port number without a port name.
      *
      * @param number The number of the port.
      */
     internal constructor(number: Int) : this(null, number)
 
-    internal fun build(): PortSpec {
+    internal fun build(): IngressPortSpec {
         require(name != null || number != null) { "Port must have either name or number" }
         if (name != null) {
             require(name.isNotBlank()) { "Port name must not be blank" }
@@ -47,6 +47,6 @@ class PortSpecBuilder private constructor(private val name: String?, private val
             require(number <= 65535) { "Port number must be less or equals to 65535" }
         }
 
-        return PortSpec(name, number)
+        return IngressPortSpec(name, number)
     }
 }

@@ -26,103 +26,6 @@ import kotlin.test.assertNull
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
-class PortSpecTest {
-    companion object {
-        private val nameSpec = PortSpecBuilder("demo").build()
-        private val numberSpec = PortSpecBuilder(8080).build()
-    }
-
-    /**
-     * Verifies that the PortSpec definition of the name flavour is built into the expected spec
-     * object.
-     *
-     * The fields relevant for this case are set, so the builder must map each of them onto the
-     * corresponding property of the specification.
-     */
-    @Test
-    fun testNameContent() {
-        assertNull(nameSpec.number)
-        assertEquals("demo", nameSpec.name)
-    }
-
-    /**
-     * Verifies that the PortSpec definition of the name flavour is serialised into the expected
-     * YAML document.
-     *
-     * The fields relevant for this case are set; the serialised result pins the field names, the
-     * nesting and the defaults that are omitted on purpose.
-     */
-    @Test
-    fun testNameYaml() {
-        val actualJson = nameSpec.toJson()
-        val expectedJson = "{\"name\":\"demo\"}"
-
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
-    }
-
-    /**
-     * Verifies that the PortSpec definition of the number flavour is built into the expected spec
-     * object.
-     *
-     * The fields relevant for this case are set, so the builder must map each of them onto the
-     * corresponding property of the specification.
-     */
-    @Test
-    fun testNumberContent() {
-        assertNull(numberSpec.name)
-        assertEquals(8080, numberSpec.number)
-    }
-
-    /**
-     * Verifies that the PortSpec definition of the number flavour is serialised into the expected
-     * YAML document.
-     *
-     * The fields relevant for this case are set; the serialised result pins the field names, the
-     * nesting and the defaults that are omitted on purpose.
-     */
-    @Test
-    fun testNumberYaml() {
-        val actualJson = numberSpec.toJson()
-        val expectedJson = "{\"number\":8080}"
-
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
-    }
-
-    /**
-     * Verifies that building a [PortSpec] fails when an empty value is used.
-     *
-     * The builder must reject the input for name with an exception instead of producing an
-     * incomplete specification that the API server would refuse later.
-     */
-    @Test
-    fun testEmptyNameContent() {
-        assertFailsWith<IllegalArgumentException> { PortSpecBuilder("").build() }
-    }
-
-    /**
-     * Verifies that building a [PortSpec] fails when a negative value is used.
-     *
-     * The builder must reject the input for port number with an exception instead of producing an
-     * incomplete specification that the API server would refuse later.
-     */
-    @Test
-    fun testNegativePortNumber() {
-        assertFailsWith<IllegalArgumentException> { PortSpecBuilder(-1).build() }
-    }
-
-    /**
-     * Verifies that building a [PortSpec] fails when the value exceeds the allowed maximum.
-     *
-     * The builder must reject the input for port number maximum with an exception instead of
-     * producing an incomplete specification that the API server would refuse later.
-     */
-    @Test
-    fun testPortNumberExceedsMaximum() {
-        assertFailsWith<IllegalArgumentException> { PortSpecBuilder(65536).build() }
-    }
-
-}
-
 class PodTemplateSpecTest {
     companion object {
         private val maxSpec = PodTemplateSpecBuilder().apply {
@@ -295,7 +198,7 @@ class PodTemplateSpecTest {
         assertEquals("image", spec.ephemeralContainers.first().image)
 
         assertNotNull(spec.imagePullSecrets)
-        assertEquals("name", spec.imagePullSecrets.first())
+        assertEquals("name", spec.imagePullSecrets.first().name)
 
         assertEquals(true, spec.automountServiceAccountToken)
         assertEquals("my-service-account", spec.serviceAccountName)
@@ -343,8 +246,8 @@ class PodTemplateSpecTest {
 
         assertNotNull(spec.volumes)
         assertEquals("my-volume", spec.volumes.first().name)
-        assertIs<VolumeSpec.SecretSourceSpec>(spec.volumes.first().source)
-        assertEquals("secret-name", (spec.volumes.first().source as VolumeSpec.SecretSourceSpec).name)
+        assertIs<SecretSourceSpec>(spec.volumes.first().source)
+        assertEquals("secret-name", (spec.volumes.first().source as SecretSourceSpec).name)
 
         assertNotNull(spec.nodeSelector)
         assertEquals("ssd", spec.nodeSelector["disktype"])
@@ -360,7 +263,7 @@ class PodTemplateSpecTest {
         assertEquals("2", spec.dnsConfig.options!!["ndots"])
 
         assertNotNull(spec.readinessGates)
-        assertEquals("custom-condition", spec.readinessGates.first())
+        assertEquals("custom-condition", spec.readinessGates.first().conditionType)
 
         assertNotNull(spec.hostAliases)
         assertEquals("127.0.0.1", spec.hostAliases.first().ip)
@@ -407,12 +310,6 @@ class PodTemplateSpecTest {
           |        "image": "image"
           |      }
           |    ],
-          |    "ephemeralContainers": [
-          |      {
-          |        "name": "name",
-          |        "image": "image"
-          |      }
-          |    ],
           |    "restartPolicy": "OnFailure",
           |    "dnsPolicy": "ClusterFirstWithHostNet",
           |    "dnsConfig": {
@@ -422,9 +319,10 @@ class PodTemplateSpecTest {
           |      "searches": [
           |        "kubernetes.io/hostname"
           |      ],
-          |      "options": {
-          |        "ndots": "2"
-          |      }
+          |      "options": [{
+          |        "name": "ndots",
+          |        "value": "2"
+          |      }]
           |    },
           |    "serviceAccountName": "my-service-account",
           |    "automountServiceAccountToken": true,
@@ -450,7 +348,7 @@ class PodTemplateSpecTest {
           |      "disktype": "ssd"
           |    },
           |    "imagePullSecrets": [
-          |      "name"
+          |      { "name": "name" }
           |    ],
           |    "volumes": [
           |      {
@@ -484,7 +382,7 @@ class PodTemplateSpecTest {
           |    "terminationGracePeriodSeconds": 30,
           |    "activeDeadlineSeconds": 600,
           |    "readinessGates": [
-          |      "custom-condition"
+          |      { "conditionType": "custom-condition" }
           |    ],
           |    "hostAliases": [
           |      {

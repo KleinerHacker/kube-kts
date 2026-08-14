@@ -50,6 +50,9 @@ import java.time.Duration
  *                                   [manualSelector].
  * @property podFailurePolicy        Rules controlling how the Job reacts to specific Pod failures.
  * @property successPolicy           Rules defining when an indexed Job is declared successful.
+ * @property managedBy               The name of the controller reconciling this Job. Leave unset to let the
+ *                                   built-in Job controller manage it; a custom value hands the Job over to
+ *                                   an external controller such as a multi-cluster queue.
  * @property template                The Pod template describing the Pods created by this Job. The Pod's
  *                                   `restartPolicy` must be `Never` or `OnFailure`.
  */
@@ -73,6 +76,7 @@ data class JobSpec(
     val selector: LabelSelectorSpec?,
     val podFailurePolicy: PodFailurePolicySpec?,
     val successPolicy: SuccessPolicySpec?,
+    val managedBy: String?,
     val template: PodTemplateSpec
 ) : ResourceSpec {
 

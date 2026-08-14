@@ -15,48 +15,53 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 /**
- * Represents the specification for a container.
+ * Represents a single container running inside a Pod.
  *
- * This class defines the configuration required for a container, including attributes such as
- * its name, image details, resource requirements, environment variables, probes, and other
- * runtime characteristics. It serves as a model for defining container specifications in
- * deployment configurations or similar contexts.
+ * A container bundles an image with the runtime configuration needed to execute it: the ports it
+ * exposes, its environment, its resource requirements, the volumes it mounts, its health probes and
+ * its security context.
  *
- * @property name The name of the container.
- * @property image The image to be used for the container.
- * @property imagePullPolicy The policy determining how the container's image should be pulled.
- *                           It can be `Always`, `IfNotPresent`, or `Never`.
- * @property ports The list of ports exposed by the container.
- * @property env The specification for individual environment variables for the container.
- * @property envFrom The specification for injecting environment variables from external sources
- *                   such as ConfigMaps or Secrets.
- * @property resources The resource requirements and limits for the container.
- * @property volumeMounts The list of volumes to be mounted in the container.
- * @property volumeDevices The list of volume devices attached to the container.
- * @property livenessProbe The probe used to check the container's liveness.
- * @property readinessProbe The probe used to check the container's readiness.
- * @property startupProbe The probe used to check the container's startup process.
- * @property lifecycle The lifecycle hooks for the container, defining actions during its lifecycle.
- * @property terminationMessagePath The path where termination messages are written.
- * @property terminationMessagePolicy The policy for processing termination messages.
- *                                    It can be `File` or `FallbackToLogsOnError`.
- * @property stdin Whether the container should allocate a stdin stream.
- * @property stdinOnce Whether the container's stdin should be available only once.
- * @property tty Whether the container should allocate a TTY session.
- * @property securityContext The security context for the container, defining security-related options.
- * @property command The command to be executed when starting the container.
- * @property args The arguments to be passed to the command executed in the container.
- * @property workingDir The working directory for the container.
+ * @property name                     The name of the container. Must be unique within the Pod.
+ * @property image                     The container image to run.
+ * @property imagePullPolicy           Controls when the [image] is pulled from the registry.
+ * @property ports                     The network ports exposed by this container.
+ * @property env                       The environment variables set for this container. Each entry either
+ *                                     carries a literal value or references a field, ConfigMap key or Secret key.
+ * @property envFrom                   Sources whose entries are imported wholesale as environment variables.
+ *                                     Each entry references one ConfigMap or Secret.
+ * @property resources                 The CPU, memory and extended resource requests and limits.
+ * @property resizePolicy              Declares, per resource, whether an in-place resize requires a container restart.
+ * @property restartPolicy             Overrides the Pod's restart policy for this container. Setting
+ *                                     [RestartPolicy.Always] on an init container turns it into a native sidecar.
+ * @property volumeMounts              The volumes mounted into this container's filesystem.
+ * @property volumeDevices             The raw block devices made available to this container.
+ * @property livenessProbe             Determines whether the container is still healthy. A failure restarts it.
+ * @property readinessProbe            Determines whether the container can serve traffic. A failure removes it
+ *                                     from Service endpoints.
+ * @property startupProbe              Determines whether the application has finished starting. Liveness and
+ *                                     readiness probes are suppressed until it succeeds.
+ * @property lifecycle                 Hooks executed after the container starts and before it is stopped.
+ * @property terminationMessagePath    The file the container writes its termination message to.
+ * @property terminationMessagePolicy  Controls how the termination message is derived.
+ * @property stdin                     If true, allocates a buffer for standard input.
+ * @property stdinOnce                 If true, standard input is closed after the first attached session ends.
+ * @property tty                       If true, allocates a pseudo-TTY for the container.
+ * @property securityContext           The security settings applied to this container.
+ * @property command                   Overrides the image's entrypoint.
+ * @property args                      Overrides the arguments passed to the entrypoint.
+ * @property workingDir                The working directory the entrypoint is executed in.
  */
 @NoArgs
 data class ContainerSpec(
     val name: String,
     val image: String,
     val imagePullPolicy: ImagePullPolicy?,
-    val ports: List<PortSpec>?,
-    val env: SingleEnvironmentSpec?,
-    val envFrom: CompleteEnvironmentSpec?,
+    val ports: List<ContainerPortSpec>?,
+    val env: List<SingleEnvironmentSpec>?,
+    val envFrom: List<CompleteEnvironmentSpec>?,
     val resources: HardwareResourceSpec?,
+    val resizePolicy: List<ResourceResizePolicySpec>?,
+    val restartPolicy: RestartPolicy?,
     val volumeMounts: List<VolumeMountSpec>?,
     val volumeDevices: List<VolumeDeviceSpec>?,
     val livenessProbe: ProbeSpec?,
@@ -74,47 +79,55 @@ data class ContainerSpec(
     val workingDir: String?,
 ) {
     /**
-     * Defines the policy for pulling container images in Kubernetes.
-     *
-     * The `ImagePullPolicy` determines under what conditions the container runtime
-     * should pull the image for a container from the container registry.
-     * This setting is crucial for managing image updates, optimizing resource usage,
-     * and ensuring the desired version of the image, particularly in dynamic environments.
+     * Controls when the container image is pulled from the registry.
      */
     @Suppress("unused")
     enum class ImagePullPolicy {
+        /**
+         * The image is pulled on every Pod start.
+         */
         Always,
+
+        /**
+         * The image is pulled only if it is not already present on the node.
+         */
         IfNotPresent,
+
+        /**
+         * The image is never pulled; it must already be present on the node.
+         */
         Never
     }
 
     /**
-     * Specifies the policy for capturing the termination message of a container.
-     *
-     * This enum defines the strategy for retrieving and handling the termination message
-     * of a container upon its lifecycle events such as completion or failure.
+     * Controls how the termination message of a container is derived.
      */
     @Suppress("unused")
     enum class TerminationMessagePolicy {
+        /**
+         * The message is read from the file at `terminationMessagePath`.
+         */
         File,
+
+        /**
+         * The message is read from the file at `terminationMessagePath`; if that file is empty and the
+         * container failed, the tail of its log is used instead.
+         */
         FallbackToLogsOnError
     }
 
     /**
-     * Defines the specification for a port in a container.
+     * Overrides the Pod-level restart policy for an individual container.
      *
-     * Represents a mapping of a container port with an optional name and protocol.
-     * This class is typically used to configure network communication for a container
-     * by specifying the port number and protocol type.
-     *
-     * @property name The name of the port. This is an optional identifier used for referencing the port.
-     * @property containerPort The port number to be exposed by the container. This is a mandatory field.
-     * @property protocol The protocol to be used for the port. Can be TCP, UDP, or SCTP. Defaults to TCP if not specified.
+     * The only value Kubernetes accepts here is [Always], and only on init containers: it turns the init
+     * container into a native sidecar that keeps running alongside the Pod's main containers.
      */
-    @NoArgs
-    data class PortSpec(
-        val name: String?,
-        val containerPort: Int,
-        val protocol: Protocol?
-    )
+    @Suppress("unused")
+    enum class RestartPolicy {
+        /**
+         * The container is kept running for the lifetime of the Pod. On an init container this declares
+         * a native sidecar.
+         */
+        Always
+    }
 }

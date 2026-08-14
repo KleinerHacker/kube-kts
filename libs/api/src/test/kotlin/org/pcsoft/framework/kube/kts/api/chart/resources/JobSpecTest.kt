@@ -66,7 +66,7 @@ class JobSpecTest {
                     }
                 }
                 rule(PodFailurePolicySpec.Action.Ignore) {
-                    onPodCondition("DisruptionTarget", "True")
+                    onPodCondition("DisruptionTarget", PodFailurePolicySpec.ConditionStatus.True)
                 }
             }
 
@@ -254,5 +254,31 @@ class JobSpecTest {
         assertFailsWith<IllegalArgumentException> {
             JobSpecBuilder().build()
         }
+    }
+
+    /**
+     * Verifies that a job can be handed over to an external controller.
+     *
+     * Setting `managedBy` tells the built-in job controller to stay out of the way so that another
+     * controller, for example a multi-cluster queue, becomes responsible for the job's pods and status.
+     */
+    @Test
+    fun testManagedByContent() {
+        val spec = JobSpecBuilder().apply {
+            managedBy = "kueue.x-k8s.io/multikueue"
+            template {
+                spec {
+                    addContainer("worker", "busybox:latest") {}
+                    restartPolicy = PodSpec.RestartPolicy.Never
+                }
+            }
+        }.build()
+
+        assertEquals("kueue.x-k8s.io/multikueue", spec.managedBy)
+        JSONAssert.assertEquals(
+            """{"managedBy":"kueue.x-k8s.io/multikueue"}""",
+            spec.toJson(),
+            JSONCompareMode.LENIENT
+        )
     }
 }

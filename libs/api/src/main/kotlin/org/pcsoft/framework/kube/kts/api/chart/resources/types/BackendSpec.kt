@@ -43,7 +43,7 @@ sealed class BackendSpec(
 @NoArgs
 class ServiceBackendSpec internal constructor(
     name: String,
-    val port: PortSpec
+    val port: IngressPortSpec
 ) : BackendSpec(name)
 
 /**

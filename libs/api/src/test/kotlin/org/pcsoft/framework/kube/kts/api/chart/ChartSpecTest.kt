@@ -39,7 +39,7 @@ class ChartSpecTest {
 
             addKeyword("keyword")
 
-            home = "home"
+            home = URI("https://example.com/home")
 
             addSource(URI("https://source.example.com"))
 
@@ -90,7 +90,7 @@ class ChartSpecTest {
         assertEquals("description", maxChart.description)
         assertEquals(ChartSpec.Type.Library, maxChart.type)
         assertEquals(setOf("keyword"), maxChart.keywords)
-        assertEquals("home", maxChart.home)
+        assertEquals(URI("https://example.com/home"), maxChart.home)
         assertEquals(listOf(URI("https://source.example.com")), maxChart.sources)
 
         assertNotNull(maxChart.dependencies)

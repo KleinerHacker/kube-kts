@@ -12,6 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
+import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
@@ -113,7 +114,7 @@ class ProbeSpecTest {
     @Test
     fun testHttpGetMaxContent() {
         assertIs<ProbeSpec.HttpGetAction>(httpGetMaxSpec.action)
-        assertEquals(9999, httpGetMaxSpec.action.port)
+        assertEquals(ofPortNumber(9999), httpGetMaxSpec.action.port)
         assertEquals("/path", httpGetMaxSpec.action.path)
         assertEquals("example.com", httpGetMaxSpec.action.host)
         assertEquals(ProtocolScheme.HTTPS, httpGetMaxSpec.action.scheme)
@@ -145,9 +146,10 @@ class ProbeSpecTest {
         val expectedJson = """{
             |  "httpGet": {
             |    "host": "example.com",
-            |    "httpHeaders": {
-            |      "header": "value"
-            |    },
+            |    "httpHeaders": [{
+            |      "name": "header",
+            |      "value": "value"
+            |    }],
             |    "path": "/path",
             |    "port": 9999,
             |    "scheme": "HTTPS"
@@ -173,7 +175,7 @@ class ProbeSpecTest {
     @Test
     fun testHttpGetMinContent() {
         assertIs<ProbeSpec.HttpGetAction>(httpGetMinSpec.action)
-        assertEquals(9999, httpGetMinSpec.action.port)
+        assertEquals(ofPortNumber(9999), httpGetMinSpec.action.port)
         assertNull(httpGetMinSpec.action.path)
         assertNull(httpGetMinSpec.action.host)
         assertNull(httpGetMinSpec.action.scheme)
@@ -306,7 +308,7 @@ class ProbeSpecTest {
     @Test
     fun testTcpSocketMaxContent() {
         assertIs<ProbeSpec.TCPSocketAction>(tcpSocketMaxSpec.action)
-        assertEquals(9999, tcpSocketMaxSpec.action.port)
+        assertEquals(ofPortNumber(9999), tcpSocketMaxSpec.action.port)
         assertEquals("example.com", tcpSocketMaxSpec.action.host)
         assertNotNull(tcpSocketMaxSpec.initialDelaySeconds)
         assertEquals(10, tcpSocketMaxSpec.initialDelaySeconds.toSeconds())
@@ -357,7 +359,7 @@ class ProbeSpecTest {
     @Test
     fun testTcpSocketMinContent() {
         assertIs<ProbeSpec.TCPSocketAction>(tcpSocketMinSpec.action)
-        assertEquals(9999, tcpSocketMinSpec.action.port)
+        assertEquals(ofPortNumber(9999), tcpSocketMinSpec.action.port)
         assertNull(tcpSocketMinSpec.action.host)
         assertNull(tcpSocketMinSpec.initialDelaySeconds)
         assertNull(tcpSocketMinSpec.periodSeconds)

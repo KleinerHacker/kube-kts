@@ -15,13 +15,22 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 /**
- * Represents a port specification, either by name or by number.
+ * References another object inside the same namespace by name.
  *
- * @property name The name of the port.
- * @property number The number of the port.
+ * Kubernetes uses this shape wherever a resource points at a Secret or ConfigMap that is required to
+ * live alongside it - for example image pull secrets on a Pod or the credential secret of a volume
+ * driver. It renders as a nested object carrying a single `name` key.
+ *
+ * @property name The name of the referenced object in the same namespace.
  */
 @NoArgs
-data class PortSpec(
-    val name: String?,
-    val number: Int?
-)
+data class LocalObjectReferenceSpec(
+    val name: String
+) {
+    /**
+     * Validates that the referenced name is not blank.
+     */
+    init {
+        require(name.isNotBlank()) { "Referenced object name must not be blank" }
+    }
+}

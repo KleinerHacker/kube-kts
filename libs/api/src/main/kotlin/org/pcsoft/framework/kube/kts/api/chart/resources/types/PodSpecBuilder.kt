@@ -30,7 +30,9 @@ class PodSpecBuilder internal constructor() {
     private var initContainers: MutableList<ContainerSpecBuilder>? = null
     private var ephemeralContainers: MutableList<ContainerSpecBuilder>? = null
     private var dnsConfig: DnsConfigurationSpecBuilder? = null
-    private var overhead: OverheadSpecBuilder? = null
+    private var overhead: HardwareResourceSpec.Data? = null
+    private var resources: HardwareResourceSpecBuilder? = null
+    private var schedulingGates: MutableList<String>? = null
     private var nodeSelector: MutableMap<String, String>? = null
     private var imagePullSecrets: MutableList<String>? = null
     private var volumes: MutableList<VolumeSpecBuilder>? = null
@@ -101,6 +103,14 @@ class PodSpecBuilder internal constructor() {
      * When set to true, the Pod will share the host's IPC namespace, allowing processes in the Pod to communicate with processes on the host using IPC mechanisms.
      */
     var hostIPC: Boolean? = null
+
+    /**
+     * Specifies whether the Pod shares the host's user namespace.
+     *
+     * When set to false, the Pod runs in its own user namespace, so container root maps to an
+     * unprivileged user on the host. Leaving it unset keeps the host's user namespace.
+     */
+    var hostUsers: Boolean? = null
 
     /**
      * Specifies the security context for the Pod's containers.
@@ -321,7 +331,77 @@ class PodSpecBuilder internal constructor() {
      * @param memory The memory value to specify the overhead resource requirement associated with the pod.
      */
     fun overhead(cpu: CpuValue, memory: MemoryValue) {
-        overhead = OverheadSpecBuilder(cpu, memory)
+        overhead = HardwareResourceSpec.Data(cpu, memory, null, null)
+    }
+
+    /**
+     * Configures the overhead consumed by the pod's sandbox, including extended resources.
+     *
+     * @param prepare A lambda with receiver used to configure the overhead resources.
+     *
+     * Example:
+     * ```kotlin
+     * overhead {
+     *     cpu = 250.milliCores
+     *     memory = 120.mebiBytes
+     * }
+     * ```
+     */
+    fun overhead(prepare: HardwareResourceSpecBuilder.ResourceDataBuilder.() -> Unit) {
+        overhead = HardwareResourceSpecBuilder.ResourceDataBuilder().apply(prepare).build()
+    }
+
+    /**
+     * Configures pod-level resource requests and limits shared by all containers.
+     *
+     * Pod-level resources act as an envelope around the containers: individual container requests and
+     * limits still apply, but the pod as a whole is bounded by these values.
+     *
+     * @param prepare A lambda with receiver used to configure the resources.
+     *
+     * Example:
+     * ```kotlin
+     * resources {
+     *     limits {
+     *         cpu = 2.cores
+     *         memory = 4.gibiBytes
+     *     }
+     * }
+     * ```
+     */
+    fun resources(prepare: HardwareResourceSpecBuilder.() -> Unit) {
+        resources = HardwareResourceSpecBuilder().apply(prepare)
+    }
+
+    /**
+     * Adds a scheduling gate that blocks scheduling of the pod until it is removed.
+     *
+     * Scheduling gates keep a pod in the `Pending` phase until an external controller removes them,
+     * which allows deferring placement until a precondition is met.
+     *
+     * @param name The name identifying the scheduling gate.
+     */
+    fun addSchedulingGate(name: String) {
+        if (schedulingGates == null) {
+            schedulingGates = mutableListOf()
+        }
+        schedulingGates!!.add(name)
+    }
+
+    /**
+     * Configures scheduling gates using the provided builder configuration.
+     *
+     * @param prepare A lambda with receiver used to build and configure the scheduling gates.
+     *
+     * Example:
+     * ```kotlin
+     * schedulingGates {
+     *     gate("example.com/await-quota")
+     * }
+     * ```
+     */
+    fun schedulingGates(prepare: SchedulingGateListBuilder.() -> Unit) {
+        SchedulingGateListBuilder().apply(prepare)
     }
 
     /**
@@ -726,15 +806,18 @@ class PodSpecBuilder internal constructor() {
             ephemeralContainers = ephemeralContainers?.map { it.build() },
             resourceClaims = resourceClaims?.map { it.build() },
             dnsConfig = dnsConfig?.build(),
-            overhead = overhead?.build(),
+            overhead = overhead,
+            resources = resources?.build(),
             nodeSelector = nodeSelector?.mapValues { it.value },
-            imagePullSecrets = imagePullSecrets?.map { it },
+            imagePullSecrets = imagePullSecrets?.map { LocalObjectReferenceSpec(it) },
             volumes = volumes?.map { it.build() },
             topologySpreadConstraints = topologySpreadConstraints?.map { it.build() },
             affinity = affinity?.build(),
             tolerations = tolerations?.map { it.build() },
             securityContext = securityContext?.build(),
-            readinessGates = readinessGates?.map { it },
+            readinessGates = readinessGates?.map { ReadinessGateSpec(it) },
+            schedulingGates = schedulingGates?.map { SchedulingGateSpec(it) },
+            hostUsers = hostUsers,
             hostAliases = hostAliases?.map { it.build() },
             dnsPolicy = dnsPolicy,
             restartPolicy = restartPolicy,
@@ -908,26 +991,6 @@ class PodSpecBuilder internal constructor() {
              */
             fun option(name: String, value: String) = addOption(name, value)
         }
-    }
-
-    /**
-     * Builder class for constructing instances of OverheadSpec.
-     *
-     * @constructor Constructs an OverheadSpecBuilder using the specified CPU and memory values.
-     * @param cpu The CPU overhead value to be used in the built OverheadSpec.
-     * @param memory The memory overhead value to be used in the built OverheadSpec.
-     */
-    class OverheadSpecBuilder internal constructor(private val cpu: CpuValue, private val memory: MemoryValue) {
-        /**
-         * Builds and returns an instance of OverheadSpec using the specified CPU and memory values.
-         *
-         * This method finalizes the construction process by encapsulating the provided CPU and memory
-         * overheads into an immutable OverheadSpec object. The resulting object represents the overhead
-         * resource requirements for CPU and memory for a particular workload or container.
-         *
-         * @return An OverheadSpec instance containing the configured CPU and memory overhead values.
-         */
-        internal fun build() = OverheadSpec(cpu, memory)
     }
 
     /**
@@ -1193,6 +1256,20 @@ class PodSpecBuilder internal constructor() {
          * @param name The name of the readiness gate to be added.
          */
         fun gate(name: String) = addReadinessGate(name)
+    }
+
+    /**
+     * Builder class for constructing a list of scheduling gates.
+     *
+     * Scheduling gates keep a pod unscheduled until an external controller removes them.
+     */
+    inner class SchedulingGateListBuilder internal constructor() {
+        /**
+         * Adds a scheduling gate that blocks scheduling of the pod until it is removed.
+         *
+         * @param name The name identifying the scheduling gate.
+         */
+        fun gate(name: String) = addSchedulingGate(name)
     }
 
     /**

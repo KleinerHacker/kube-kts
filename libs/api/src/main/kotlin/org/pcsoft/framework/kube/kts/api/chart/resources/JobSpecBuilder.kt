@@ -87,6 +87,15 @@ class JobSpecBuilder internal constructor() : ResourceSpecBuilder<JobSpec> {
     var podReplacementPolicy: JobSpec.PodReplacementPolicy? = null
 
     /**
+     * The name of the controller reconciling this job.
+     *
+     * Leaving it unset lets the built-in job controller manage the job. Setting a custom value hands the
+     * job over to an external controller, for example a multi-cluster queue, which then becomes
+     * responsible for creating its pods and updating its status.
+     */
+    var managedBy: String? = null
+
+    /**
      * Configures the label selector identifying the Pods managed by this Job.
      *
      * Reuses the shared [LabelSelectorSpecBuilder]. Usually auto-managed; only set together with
@@ -145,6 +154,7 @@ class JobSpecBuilder internal constructor() : ResourceSpecBuilder<JobSpec> {
             selector = selector?.build(),
             podFailurePolicy = podFailurePolicy?.build(),
             successPolicy = successPolicy?.build(),
+            managedBy = managedBy,
             template = template!!.build()
         )
     }

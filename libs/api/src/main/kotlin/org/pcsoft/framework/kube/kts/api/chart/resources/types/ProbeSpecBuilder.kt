@@ -13,6 +13,9 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.ProbeSpec.ProbeAction
+import org.pcsoft.framework.kube.kts.api.types.PortValue
+import org.pcsoft.framework.kube.kts.api.types.ofPortName
+import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
 import java.time.Duration
 
 /**
@@ -112,7 +115,16 @@ class ProbeSpecBuilder internal constructor() {
      *                or `httpHeaders` methods.
      */
     fun httpGet(port: Int, prepare: HttpGetActionBuilder.() -> Unit = {}) =
-        HttpGetActionBuilder(port).apply(prepare).let { action = it }
+        HttpGetActionBuilder(ofPortNumber(port)).apply(prepare).let { action = it }
+
+    /**
+     * Checks the container with an HTTP GET request against a named container port.
+     *
+     * @param port The name of a port declared on the container.
+     * @param prepare A lambda expression used to configure the `HttpGetActionBuilder`.
+     */
+    fun httpGet(port: String, prepare: HttpGetActionBuilder.() -> Unit = {}) =
+        HttpGetActionBuilder(ofPortName(port)).apply(prepare).let { action = it }
 
     /**
      * Configures and applies a `TCPSocketAction` for establishing a TCP socket connection.
@@ -125,7 +137,16 @@ class ProbeSpecBuilder internal constructor() {
      *                additional settings can be defined for the TCP action.
      */
     fun tcpSocket(port: Int, prepare: TCPSocketActionBuilder.() -> Unit = {}) =
-        TCPSocketActionBuilder(port).apply(prepare).let { action = it }
+        TCPSocketActionBuilder(ofPortNumber(port)).apply(prepare).let { action = it }
+
+    /**
+     * Checks the container by opening a TCP connection to a named container port.
+     *
+     * @param port The name of a port declared on the container.
+     * @param prepare A lambda expression used to configure the `TCPSocketActionBuilder`.
+     */
+    fun tcpSocket(port: String, prepare: TCPSocketActionBuilder.() -> Unit = {}) =
+        TCPSocketActionBuilder(ofPortName(port)).apply(prepare).let { action = it }
 
     /**
      * Configures and applies a `GRPCAction` for establishing gRPC communication.
@@ -264,7 +285,7 @@ class ProbeSpecBuilder internal constructor() {
      * @constructor Creates an instance of `HttpGetActionBuilder` with a specified port.
      * @param port The target port for the HTTP GET request, must be in the range 1 to 65535.
      */
-    class HttpGetActionBuilder internal constructor(private val port: Int) : ProbeActionBuilder<ProbeSpec.HttpGetAction> {
+    class HttpGetActionBuilder internal constructor(private val port: PortValue<*>) : ProbeActionBuilder<ProbeSpec.HttpGetAction> {
         private var httpHeaders: MutableMap<String, String>? = null
 
         /**
@@ -337,9 +358,6 @@ class ProbeSpecBuilder internal constructor() {
          * @throws IllegalArgumentException if the port is not within the valid range.
          */
         override fun build() : ProbeSpec.HttpGetAction {
-            require(port > 0) { "Port must be greater than 0" }
-            require(port <= 65535) { "Port must be less or equals to 65535" }
-
             return ProbeSpec.HttpGetAction(
                 path = path,
                 port = port,
@@ -387,7 +405,7 @@ class ProbeSpecBuilder internal constructor() {
      * @see ProbeActionBuilder
      * @see ProbeSpec.TCPSocketAction
      */
-    class TCPSocketActionBuilder internal constructor(private val port: Int) : ProbeActionBuilder<ProbeSpec.TCPSocketAction> {
+    class TCPSocketActionBuilder internal constructor(private val port: PortValue<*>) : ProbeActionBuilder<ProbeSpec.TCPSocketAction> {
         /**
          * Specifies the optional hostname for the TCP socket connection.
          *
@@ -417,9 +435,6 @@ class ProbeSpecBuilder internal constructor() {
          */
         @Suppress("DEPRECATION")
         override fun build() : ProbeSpec.TCPSocketAction {
-            require(port > 0) { "Port must be greater than 0" }
-            require(port <= 65535) { "Port must be less or equals to 65535" }
-
             return ProbeSpec.TCPSocketAction(
                 port = port,
                 host = host

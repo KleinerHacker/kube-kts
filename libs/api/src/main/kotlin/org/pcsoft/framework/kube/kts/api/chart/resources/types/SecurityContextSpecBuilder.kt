@@ -667,6 +667,15 @@ class PodSecurityContextSpecBuilder internal constructor() : SecurityContextSpec
     var supplementalGroupsPolicy: SupplementalGroupsPolicy? = null
 
     /**
+     * Controls how the SELinux label of the pod's volumes is applied.
+     *
+     * Choosing [PodSecurityContextSpec.SELinuxChangePolicy.MountOption] avoids recursively relabelling
+     * every file on a volume and is therefore considerably faster on large volumes, but it requires a
+     * volume plugin that supports the corresponding mount option.
+     */
+    var seLinuxChangePolicy: PodSecurityContextSpec.SELinuxChangePolicy? = null
+
+    /**
      * Adds a supplemental group to the list of supplemental groups.
      *
      * @param value The supplemental group ID to be added.
@@ -770,6 +779,7 @@ class PodSecurityContextSpecBuilder internal constructor() : SecurityContextSpec
         fsGroupChangePolicy,
         supplementalGroups,
         supplementalGroupsPolicy,
+        seLinuxChangePolicy,
         sysctls,
     )
 

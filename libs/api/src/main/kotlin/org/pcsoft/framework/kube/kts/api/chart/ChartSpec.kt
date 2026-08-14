@@ -49,7 +49,7 @@ data class ChartSpec(
     val description: String?,
     val type: Type?,
     val keywords: Set<String>?,
-    val home: String?,
+    val home: URI?,
     val sources: List<URI>?,
     val dependencies: List<DependencySpec>?,
     val maintainers: List<MaintainerSpec>?,

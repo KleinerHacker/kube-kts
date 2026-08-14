@@ -17,18 +17,23 @@ import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsDeseria
 import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsSerializer
 import org.pcsoft.framework.kube.kts.api.intern.jackson.LifecycleSpecActionDeserializer
 import org.pcsoft.framework.kube.kts.api.intern.jackson.LifecycleSpecActionSerializer
+import org.pcsoft.framework.kube.kts.api.intern.jackson.MapToNameValueDeserializer
+import org.pcsoft.framework.kube.kts.api.intern.jackson.MapToNameValueSerializer
+import org.pcsoft.framework.kube.kts.api.types.PortValue
 import tools.jackson.databind.annotation.JsonDeserialize
 import tools.jackson.databind.annotation.JsonSerialize
 import java.time.Duration
 
 /**
- * Defines the lifecycle configuration for handling container events within a Kubernetes pod.
+ * Hooks the kubelet executes at defined points in a container's lifetime.
  *
- * This class specifies custom actions that can be executed at specific points in a container's lifecycle,
- * such as immediately after startup (`postStart`) or just before termination (`preStop`).
+ * Both hooks are executed at least once but may be executed more than once, so their actions should be
+ * idempotent. A failing hook kills the container.
  *
- * @property postStart The action to execute after the container starts. Can be null if no action is defined.
- * @property preStop The action to execute before the container stops. Can be null if no action is defined.
+ * @property postStart Executed immediately after the container is created. It runs concurrently with the
+ *                     container's entrypoint, so it is not guaranteed to complete before it.
+ * @property preStop   Executed immediately before the container is terminated. The Pod's termination
+ *                     grace period is counted from the start of this hook.
  */
 @NoArgs
 data class LifecycleSpec(
@@ -40,68 +45,64 @@ data class LifecycleSpec(
     val preStop: Action?,
 ) {
     /**
-     * Represents an action that can be executed as part of a container's lifecycle.
-     *
-     * This sealed interface is implemented by various action types that define
-     * specific behaviors or operations to be performed, such as executing commands,
-     * sending HTTP requests, or performing timed delays.
-     *
-     * It is commonly used in lifecycle configurations to define actions for
-     * `postStart` and `preStop` events in a container's lifecycle.
+     * The common contract of every way a lifecycle hook can act.
      */
     sealed interface Action
 
     /**
-     * Represents an action to execute a command within a container.
+     * Runs a command inside the container.
      *
-     * This action is commonly used as part of a container's lifecycle
-     * configuration, such as defining custom behavior during the `postStart`
-     * or `preStop` events.
-     *
-     * @property command The list of strings that compose the command to be executed.
-     * Each element represents a portion of the command, where the first element
-     * typically indicates the executable, and subsequent elements are its arguments.
+     * @property command The command and its arguments. Not run through a shell.
      */
     @NoArgs
-    data class ExecAction(val command: List<String>) : Action
+    data class ExecAction(val command: List<String>) : Action {
+        /**
+         * Validates that a command is given.
+         */
+        init {
+            require(command.isNotEmpty()) { "Lifecycle command must not be empty" }
+        }
+    }
 
     /**
-     * Represents an HTTP GET action for a container's lifecycle event.
+     * Performs an HTTP GET request against the container.
      *
-     * This class defines an action that performs an HTTP GET request to a specified endpoint.
-     * It is commonly used within lifecycle configurations to trigger HTTP-based interactions
-     * during the `postStart` or `preStop` events of a container.
-     *
-     * @property path The URI path to send the GET request to. Can be null if not specified.
-     * @property port The port on the target host to send the GET request to.
-     * @property host The hostname for the target, which may be an IP address or domain name. Can be null if default resolution is used.
-     * @property scheme The protocol scheme (HTTP or HTTPS) for the request. Can be null if the default scheme is applied.
-     * @property httpHeaders A map of HTTP headers to include in the GET request. Can be null if no custom headers are required.
+     * @property path        The request path. Defaults to `/` when unset.
+     * @property port        The port to connect to, either a number or the name of a container port.
+     * @property host        The host to connect to. Defaults to the Pod's IP address.
+     * @property scheme      Whether to connect over HTTP or HTTPS. Defaults to HTTP.
+     * @property httpHeaders Additional request headers, rendered as a list of `name`/`value` pairs.
      */
     @NoArgs
     data class HttpGetAction(
         val path: String?,
-        val port: Int,
+        val port: PortValue<*>,
         val host: String?,
         val scheme: ProtocolScheme?,
+        @field:JsonSerialize(using = MapToNameValueSerializer::class)
+        @field:JsonDeserialize(using = MapToNameValueDeserializer::class)
         val httpHeaders: Map<String, String>?
     ) : Action
 
     /**
-     * Represents an action that pauses execution for a specified duration.
+     * Pauses the container for a fixed duration.
      *
-     * This action is used in container lifecycle configurations to introduce delays.
-     * The duration is expressed in seconds and serialized/deserialized using custom
-     * serializers.
+     * Used as a `preStop` hook, this gives load balancers time to stop routing traffic to the Pod before
+     * its process is asked to shut down.
      *
-     * @property seconds The duration of the sleep action represented as a `Duration` object.
-     *                   This value is serialized to and deserialized from the total number
-     *                   of seconds.
+     * @property seconds How long to pause.
      */
     @NoArgs
     data class SleepAction(
         @field:JsonSerialize(using = DurationInSecondsSerializer::class)
         @field:JsonDeserialize(using = DurationInSecondsDeserializer::class)
         val seconds: Duration
-    ) : Action
+    ) : Action {
+        /**
+         * Validates that the duration is not negative.
+         */
+        init {
+            require(!seconds.isNegative) { "Sleep duration must not be negative" }
+        }
+    }
 }

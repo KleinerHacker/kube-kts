@@ -173,15 +173,34 @@ other templates are rendered with an explicit `spec` node.
 
 The specs share reusable sub-DSLs, among them:
 
-- **Pod/Container:** `pod`, `container`, ports, environment (single values and complete sources such
-  as ConfigMaps/Secrets), `probe` (liveness/readiness/startup), `lifecycle`, `securityContext`,
-  hardware resources (requests/limits)
+- **Pod/Container:** `pod`, `container`, ports (incl. `hostPort`/`hostIP`), environment (single values
+  and complete sources such as ConfigMaps/Secrets), `probe` (liveness/readiness/startup), `lifecycle`,
+  `securityContext`, hardware resources (requests/limits/claims), in-place `resizePolicy`, native
+  sidecars via `restartPolicy`
 - **Scheduling:** `affinity` (incl. affinity terms), `toleration`, `topologySpreadConstraint`,
-  `labelSelector`
-- **Storage:** `volume`, `volumeClaimTemplate`, `persistentVolumeClaimRetentionPolicy`
+  `labelSelector`, `schedulingGates`
+- **Storage:** `volume` with every Kubernetes volume source, volume mounts (incl. `subPath` and
+  mount propagation), `volumeClaimTemplate`, `persistentVolumeClaimRetentionPolicy`
 - **Rollout:** deployment strategy, StatefulSet update strategy
-- **Job control:** pod failure policy, success policy
+- **Job control:** pod failure policy, success policy, `managedBy`
 - **Networking:** rules/backends, `tls`, route target and route TLS, port mappings, protocols
+
+Ports that Kubernetes models as `IntOrString` accept both forms: `httpGet(8080)` and `httpGet("http")`,
+`targetPort` and `targetPortName`.
+
+### Volume Sources
+
+`volume(name) { from { … } }` covers the complete set of Kubernetes volume sources:
+
+| Group | Sources |
+|-------|---------|
+| Config | `configMap`, `secret`, `projected`, `downwardApi` |
+| Node-local | `emptyDir`, `hostPath`, `persistentVolumeClaim`, `ephemeral`, `image`, `csi` |
+| Network | `nfs`, `iscsi`, `fibreChannel`, `rbd`, `cephFs`, `glusterFs` |
+| Cloud | `awsElasticBlockStore`, `gcePersistentDisk`, `azureDisk`, `azureFile`, `cinder`, `portworx`, `vsphereVolume` |
+
+Sources that Kubernetes has removed (`gitRepo`, `flexVolume`, `flocker`, `quobyte`, `scaleIo`,
+`storageOs`, `photonPersistentDisk`) remain available for older clusters but are marked deprecated.
 
 ## CLI
 

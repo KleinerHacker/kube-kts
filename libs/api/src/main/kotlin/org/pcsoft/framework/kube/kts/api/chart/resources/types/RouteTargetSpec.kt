@@ -15,17 +15,35 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 /**
- * References a backend of an OpenShift Route, used for both the primary backend (`to`) and the
- * entries of `alternateBackends`.
+ * A backend an OpenShift Route directs traffic to.
  *
- * @property kind   The kind of the referenced object. For Routes this is always `Service`.
- * @property name   The name of the referenced Service.
- * @property weight An optional relative weight (0-256) used for weighted traffic splitting between
- *                  the primary backend and alternate backends.
+ * @property kind   The kind of the referenced object. OpenShift only accepts [Kind.Service] here.
+ * @property name   The name of the referenced Service in the Route's namespace.
+ * @property weight The relative share of traffic this backend receives, between 0 and 256. Only
+ *                  meaningful when a Route splits traffic across several backends.
  */
 @NoArgs
 data class RouteTargetSpec(
-    val kind: String,
+    val kind: Kind,
     val name: String,
     val weight: Int?
-)
+) {
+    /**
+     * Validates the referenced name and the traffic weight.
+     */
+    init {
+        require(name.isNotBlank()) { "Route target name must not be blank" }
+        weight?.let { require(it in 0..256) { "Route target weight must be between 0 and 256, but was $it" } }
+    }
+
+    /**
+     * The kinds of object an OpenShift Route can target.
+     */
+    @Suppress("unused")
+    enum class Kind {
+        /**
+         * A Kubernetes Service in the same namespace as the Route.
+         */
+        Service
+    }
+}

@@ -23,7 +23,7 @@ class RouteTargetSpecBuilder internal constructor(private val name: String) {
     /**
      * The kind of the referenced object. For Routes this is always `Service` (the default).
      */
-    var kind: String = "Service"
+    var kind: RouteTargetSpec.Kind = RouteTargetSpec.Kind.Service
 
     /**
      * An optional relative weight (0-256) for weighted traffic splitting.

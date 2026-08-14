@@ -12,6 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
+import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.Protocol
@@ -102,10 +103,10 @@ class ServiceSpecTest {
     fun testMaxContent() {
         assertEquals(ServiceSpec.Type.LoadBalancer, maxSpec.type)
 
-        assertEquals(1, maxSpec.ports.size)
+        assertEquals(1, maxSpec.ports!!.size)
         assertEquals("port", maxSpec.ports[0].name)
         assertEquals(9999, maxSpec.ports[0].port)
-        assertEquals(8888, maxSpec.ports[0].targetPort)
+        assertEquals(ofPortNumber(8888), maxSpec.ports[0].targetPort)
         assertEquals(7777, maxSpec.ports[0].nodePort)
         assertEquals(Protocol.SCTP, maxSpec.ports[0].protocol)
         assertEquals("https", maxSpec.ports[0].appProtocol)
@@ -165,7 +166,7 @@ class ServiceSpecTest {
         assertNull(minSpec.type)
         assertNull(minSpec.selector)
 
-        assertEquals(1, minSpec.ports.size)
+        assertEquals(1, minSpec.ports!!.size)
         assertEquals("port", minSpec.ports[0].name)
         assertEquals(9999, minSpec.ports[0].port)
         assertNull(minSpec.ports[0].targetPort)

@@ -8,7 +8,7 @@ description: description
 type: library
 keywords:
   - keyword
-home: home
+home: https://example.com/home
 sources:
   - https://source.example.com
 

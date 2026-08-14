@@ -80,7 +80,7 @@ volumes {
 volumes {
     volume("host-logs") {
         fromHostPath("/var/log/demo") {
-            type = VolumeSpec.HostPathSourceSpec.Type.DirectoryOrCreate
+            type = HostPathSourceSpec.Type.DirectoryOrCreate
         }
     }
 }
@@ -94,7 +94,7 @@ HostPath binds filesystem paths from the node into the Pod. This couples Pods ti
 volumes {
     volume("cache") {
         emptyDir {
-            medium = VolumeSpec.EmptyDirSourceSpec.MediumType.Memory
+            medium = EmptyDirSourceSpec.MediumType.Memory
             sizeLimit = 512.miBytes
         }
     }
@@ -121,3 +121,61 @@ container("app", "registry.example.com/demo:1.0.0") {
 ```
 
 `volumeMounts` are used for filesystem mounts. `volumeDevices` are used for block devices.
+
+## All Volume Sources
+
+Beyond the sources shown above, the DSL covers the complete set of Kubernetes volume sources:
+
+| Group | Sources |
+|-------|---------|
+| Config | `configMap`, `secret`, `projected`, `downwardApi` |
+| Node-local | `emptyDir`, `hostPath`, `persistentVolumeClaim`, `ephemeral`, `image`, `csi` |
+| Network | `nfs`, `iscsi`, `fibreChannel`, `rbd`, `cephFs`, `glusterFs` |
+| Cloud | `awsElasticBlockStore`, `gcePersistentDisk`, `azureDisk`, `azureFile`, `cinder`, `portworx`, `vsphereVolume` |
+
+Sources that Kubernetes has removed (`gitRepo`, `flexVolume`, `flocker`, `quobyte`, `scaleIo`, `storageOs`, `photonPersistentDisk`) remain available for older clusters but are marked deprecated.
+
+### Examples
+
+```kotlin
+volumes {
+    volume("bundle") {
+        from {
+            projected {
+                addConfigMap { name = "demo-config" }
+                addSecret { name = "demo-secret" }
+                addServiceAccountToken("token")
+            }
+        }
+    }
+
+    volume("podinfo") {
+        from {
+            downwardApi {
+                addFieldRef("labels", "metadata.labels")
+                addResourceFieldRef("cpu_limit", "limits.cpu", containerName = "app")
+            }
+        }
+    }
+
+    volume("data") {
+        from {
+            csi("ebs.csi.aws.com") {
+                fsType = "ext4"
+                addVolumeAttribute("encrypted", "true")
+            }
+        }
+    }
+
+    volume("scratch") {
+        from {
+            ephemeral {
+                spec {
+                    accessModes(VolumeClaimTemplateSpec.AccessMode.ReadWriteOnce)
+                    requests(1.giBytes)
+                }
+            }
+        }
+    }
+}
+```

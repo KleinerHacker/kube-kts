@@ -10,6 +10,7 @@
  * See the License for the specific language governing permissions and limitations.
  */
 
+
 chart("name", "1.0.0") {
     kubeVersion {
         minInclusive("1.0.0")
@@ -22,7 +23,7 @@ chart("name", "1.0.0") {
         keyword("keyword")
     }
 
-    home = "home"
+    home = URI("https://example.com/home")
 
     sources {
         source(URI("https://source.example.com"))

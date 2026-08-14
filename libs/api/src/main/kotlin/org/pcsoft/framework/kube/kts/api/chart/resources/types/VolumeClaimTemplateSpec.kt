@@ -16,16 +16,13 @@ import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import org.pcsoft.framework.kube.kts.api.types.MemoryValue
 
 /**
- * Represents a PersistentVolumeClaim template used by a Kubernetes StatefulSet.
+ * A template a StatefulSet provisions one PersistentVolumeClaim per replica from.
  *
- * A StatefulSet provisions one PersistentVolumeClaim per Pod for each entry of its
- * `volumeClaimTemplates`. The created claims provide stable, per-Pod storage that survives Pod
- * rescheduling.
+ * Each Pod of the StatefulSet gets its own claim named after the template and the Pod's ordinal, which
+ * is what gives a StatefulSet its stable per-replica storage.
  *
- * @property metadata Metadata of the claim. The [Metadata.name] is mandatory and is referenced by a
- * `volumeMount` of the same name inside the Pod's containers.
- * @property spec The desired storage characteristics of the claim such as access modes, storage
- * class and requested size.
+ * @property metadata The name and optional labels of the generated claims.
+ * @property spec     The storage the generated claims request.
  */
 @NoArgs
 data class VolumeClaimTemplateSpec(
@@ -33,42 +30,64 @@ data class VolumeClaimTemplateSpec(
     val spec: Spec
 ) {
     /**
-     * Metadata of a [VolumeClaimTemplateSpec].
+     * The identity of the claims generated from a template.
      *
-     * @property name The name of the claim. This name must match a `volumeMount` inside the Pod's
-     * containers to be mounted.
-     * @property labels Optional labels used to organize and categorize the claim.
-     * @property annotations Optional annotations storing non-identifying metadata of the claim.
+     * @property name        The name of the template. Together with the Pod ordinal it forms the claim name
+     *                       and is what a container's volume mount refers to.
+     * @property labels      Labels applied to the generated claims.
+     * @property annotations Annotations applied to the generated claims.
      */
     @NoArgs
     data class Metadata(
         val name: String,
         val labels: Map<String, String>?,
         val annotations: Map<String, String>?
-    )
+    ) {
+        /**
+         * Validates that the template name is not blank.
+         */
+        init {
+            require(name.isNotBlank()) { "Volume claim template name must not be blank" }
+        }
+    }
 
     /**
-     * The desired specification of a [VolumeClaimTemplateSpec].
+     * The storage a generated PersistentVolumeClaim requests.
      *
-     * @property accessModes The desired access modes of the volume (e.g. `ReadWriteOnce`).
-     * @property storageClassName The name of the StorageClass used to dynamically provision the volume.
-     * If omitted, the cluster default StorageClass is used.
-     * @property volumeMode Defines whether the volume is consumed as a `Filesystem` or a raw `Block` device.
-     * @property resources The minimum and maximum storage resources of the claim.
+     * @property accessModes               How the volume may be mounted. Most dynamically provisioned
+     *                                     volumes only support [AccessMode.ReadWriteOnce].
+     * @property storageClassName          The StorageClass to provision from. Uses the cluster default when
+     *                                     unset; an empty string disables dynamic provisioning.
+     * @property volumeMode                Whether the volume is consumed as a filesystem or a raw block device.
+     * @property resources                 The requested and maximum storage size.
+     * @property selector                  Restricts binding to PersistentVolumes matching these labels. Only
+     *                                     meaningful for statically provisioned volumes.
+     * @property volumeName                Binds the claim to one specific PersistentVolume by name.
+     * @property dataSource                Populates the new volume from an existing snapshot or claim.
+     *                                     Superseded by [dataSourceRef], which can express the same thing.
+     * @property dataSourceRef             Populates the new volume from an existing object. Unlike
+     *                                     [dataSource] it also accepts custom resources and a namespace.
+     * @property volumeAttributesClassName The VolumeAttributesClass applying mutable QoS parameters such as
+     *                                     IOPS or throughput.
      */
     @NoArgs
     data class Spec(
         val accessModes: List<AccessMode>?,
         val storageClassName: String?,
         val volumeMode: VolumeMode?,
-        val resources: ResourceRequirements?
+        val resources: ResourceRequirements?,
+        val selector: LabelSelectorSpec?,
+        val volumeName: String?,
+        val dataSource: TypedObjectReferenceSpec?,
+        val dataSourceRef: TypedObjectReferenceSpec?,
+        val volumeAttributesClassName: String?
     )
 
     /**
-     * The storage resource requirements of a [VolumeClaimTemplateSpec].
+     * The storage size a claim requests and may grow to.
      *
-     * @property requests The minimum amount of storage requested for the claim.
-     * @property limits The maximum amount of storage the claim is allowed to grow to.
+     * @property requests The storage size the claim requires. Effectively mandatory for dynamic provisioning.
+     * @property limits   The maximum storage the claim may consume.
      */
     @NoArgs
     data class ResourceRequirements(
@@ -77,9 +96,9 @@ data class VolumeClaimTemplateSpec(
     )
 
     /**
-     * A storage quantity bundle for a [ResourceRequirements] block.
+     * A storage quantity of a claim.
      *
-     * @property storage The amount of storage expressed as a [MemoryValue] (e.g. `1.giBytes`).
+     * @property storage The amount of storage.
      */
     @NoArgs
     data class StorageResource(
@@ -87,44 +106,74 @@ data class VolumeClaimTemplateSpec(
     )
 
     /**
-     * The access mode describing how a volume can be mounted by nodes.
+     * How a volume may be mounted by the Pods using it.
      */
     @Suppress("unused")
     enum class AccessMode {
         /**
-         * The volume can be mounted as read-write by a single node.
+         * Mountable read-write by a single node. The most widely supported mode.
          */
         ReadWriteOnce,
 
         /**
-         * The volume can be mounted as read-only by many nodes.
+         * Mountable read-only by many nodes at once.
          */
         ReadOnlyMany,
 
         /**
-         * The volume can be mounted as read-write by many nodes.
+         * Mountable read-write by many nodes at once. Requires a shared filesystem such as NFS or CephFS.
          */
         ReadWriteMany,
 
         /**
-         * The volume can be mounted as read-write by a single Pod.
+         * Mountable read-write by a single Pod, even if other Pods run on the same node.
          */
         ReadWriteOncePod
     }
 
     /**
-     * Defines how a volume is consumed.
+     * How the contents of a volume are presented to a container.
      */
     @Suppress("unused")
     enum class VolumeMode {
         /**
-         * The volume is mounted into Pods as a directory (default).
+         * The volume is formatted and mounted as a filesystem. This is the default.
          */
         Filesystem,
 
         /**
-         * The volume is presented to the Pod as a raw block device.
+         * The volume is exposed as an unformatted raw block device.
          */
         Block
+    }
+}
+
+/**
+ * References an object a new volume is populated from.
+ *
+ * Typically this is a VolumeSnapshot or another PersistentVolumeClaim, but with a custom [apiGroup] it
+ * can also address a resource provided by a storage operator.
+ *
+ * @property kind      The kind of the referenced object, for example `VolumeSnapshot`.
+ * @property name      The name of the referenced object.
+ * @property apiGroup  The API group of the referenced object. Unset or empty means the core API group,
+ *                     which is what a reference to a PersistentVolumeClaim uses.
+ * @property namespace The namespace the referenced object lives in. Only honoured for `dataSourceRef` and
+ *                     requires a ReferenceGrant allowing the cross-namespace access.
+ */
+@NoArgs
+data class TypedObjectReferenceSpec(
+    val kind: String,
+    val name: String,
+    val apiGroup: String?,
+    val namespace: String?
+) {
+    /**
+     * Validates the referenced kind and name.
+     */
+    init {
+        require(kind.isNotBlank()) { "Referenced kind must not be blank" }
+        require(name.isNotBlank()) { "Referenced name must not be blank" }
+        namespace?.let { require(it.isNotBlank()) { "Referenced namespace must not be blank" } }
     }
 }

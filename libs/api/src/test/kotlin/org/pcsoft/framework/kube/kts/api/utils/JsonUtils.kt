@@ -46,6 +46,27 @@ private val yamlMapper = YAMLMapper.builder()
 
 internal fun Any.toJson() = jsonMapper.writeValueAsString(this)
 
+/**
+ * Reads a JSON string back into an instance of [T].
+ *
+ * Together with [toJson] this allows round-trip tests that assert a specification survives being
+ * written out and parsed again unchanged.
+ *
+ * @param T The type to deserialize into.
+ * @param json The JSON document to read.
+ * @return The deserialized instance.
+ */
+internal inline fun <reified T : Any> fromJson(json: String): T = jsonMapper.readValue(json, T::class.java)
+
+/**
+ * Writes a value to JSON and reads it back into the same type.
+ *
+ * @param T The type of the value.
+ * @param value The value to round-trip.
+ * @return The value after a full serialize and deserialize cycle.
+ */
+internal inline fun <reified T : Any> roundTrip(value: T): T = fromJson(value.toJson())
+
 internal fun convertToJson(yaml: String) : String {
     val jsonNode = yamlMapper.readTree(yaml)
 

@@ -66,7 +66,7 @@ class PodFailurePolicySpecBuilder internal constructor() {
          * @param type   The Pod condition type (e.g. `DisruptionTarget`).
          * @param status The required status of the condition (e.g. `True`).
          */
-        fun onPodCondition(type: String, status: String) {
+        fun onPodCondition(type: String, status: PodFailurePolicySpec.ConditionStatus) {
             if (onPodConditions == null) {
                 onPodConditions = mutableListOf()
             }

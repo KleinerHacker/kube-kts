@@ -13,6 +13,7 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteHttpHeadersSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.RoutePortSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteTargetSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteTlsSpec
@@ -30,7 +31,11 @@ import org.pcsoft.framework.kube.kts.api.intern.NoArgs
  * router. Traffic can be split across additional services via [alternateBackends] using weights.
  *
  * @property host             The externally reachable host name the Route is published under.
- *                            If null, the router may generate one automatically.
+ *                            If null, the router may generate one automatically. Mutually exclusive
+ *                            with [subdomain].
+ * @property subdomain        The subdomain the Route is published under, combined with the domain of the
+ *                            matching Ingress Controller. Mutually exclusive with [host].
+ * @property httpHeaders      HTTP header manipulations the router applies to requests and responses.
  * @property path             An optional path the Route matches (path-based routing).
  * @property to               The primary backend the Route directs traffic to (a Service).
  * @property alternateBackends Optional additional backends for weighted traffic splitting.
@@ -41,13 +46,28 @@ import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 @NoArgs
 data class RouteSpec(
     val host: String?,
+    val subdomain: String?,
     val path: String?,
-    val to: RouteTargetSpec?,
+    val to: RouteTargetSpec,
     val alternateBackends: List<RouteTargetSpec>?,
     val port: RoutePortSpec?,
     val tls: RouteTlsSpec?,
-    val wildcardPolicy: WildcardPolicy?
+    val wildcardPolicy: WildcardPolicy?,
+    val httpHeaders: RouteHttpHeadersSpec?
 ) : ResourceSpec {
+
+    /**
+     * Validates the host name, the subdomain and the traffic split across backends.
+     */
+    init {
+        require(host == null || subdomain == null) { "Only one of 'host' and 'subdomain' may be set" }
+        host?.let { require(it.isNotBlank()) { "Host must not be blank" } }
+        subdomain?.let { require(it.isNotBlank()) { "Subdomain must not be blank" } }
+        path?.let { require(it.startsWith('/')) { "Path must be absolute, but was '$it'" } }
+        alternateBackends?.let {
+            require(it.size <= 3) { "At most three alternate backends are supported, but were ${it.size}" }
+        }
+    }
 
     /**
      * Controls whether a Route applies to a single exact host or to all hosts of a subdomain.

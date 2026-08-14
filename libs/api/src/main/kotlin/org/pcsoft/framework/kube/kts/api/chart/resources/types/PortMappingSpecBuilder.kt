@@ -13,6 +13,8 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
+import org.pcsoft.framework.kube.kts.api.types.ofPortName
+import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
 
 /**
  * Builder class for constructing instances of [PortMappingSpec]. This class provides a set of
@@ -30,6 +32,14 @@ class PortMappingSpecBuilder internal constructor(private val name: String, priv
      * The port on the pods that the service should forward traffic to.
      */
     var targetPort: Int? = null
+
+    /**
+     * The name of a container port on the backing pods that traffic is forwarded to.
+     *
+     * Mutually exclusive with [targetPort]. Referencing a port by name keeps the Service independent of
+     * the concrete port numbers the containers listen on.
+     */
+    var targetPortName: String? = null
 
     /**
      * The IP protocol for this port.
@@ -59,10 +69,14 @@ class PortMappingSpecBuilder internal constructor(private val name: String, priv
     internal fun build(type: ServiceSpec.Type?): PortMappingSpec {
         require(name.isNotBlank()) { "Name is required" }
         require(port > 0) { "Port must be positive" }
+        require(targetPort == null || targetPortName == null) {
+            "Only one of 'targetPort' and 'targetPortName' may be set"
+        }
         if (type == ServiceSpec.Type.NodePort) {
             require(nodePort != null) { "NodePort is required for type $type" }
         }
 
-        return PortMappingSpec(name, port, targetPort, protocol, appProtocol, nodePort)
+        val resolvedTargetPort = targetPortName?.let { ofPortName(it) } ?: targetPort?.let { ofPortNumber(it) }
+        return PortMappingSpec(name, port, resolvedTargetPort, protocol, appProtocol, nodePort)
     }
 }

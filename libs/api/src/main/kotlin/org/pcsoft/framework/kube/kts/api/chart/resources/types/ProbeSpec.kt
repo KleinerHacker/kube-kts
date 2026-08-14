@@ -15,32 +15,36 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsDeserializer
 import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsSerializer
+import org.pcsoft.framework.kube.kts.api.intern.jackson.MapToNameValueDeserializer
+import org.pcsoft.framework.kube.kts.api.intern.jackson.MapToNameValueSerializer
+import org.pcsoft.framework.kube.kts.api.intern.jackson.ProbeSpecDeserializer
 import org.pcsoft.framework.kube.kts.api.intern.jackson.ProbeSpecSerializer
+import org.pcsoft.framework.kube.kts.api.types.PortValue
 import tools.jackson.databind.annotation.JsonDeserialize
 import tools.jackson.databind.annotation.JsonSerialize
 import java.time.Duration
 
 /**
- * Represents the configuration of a probe, which is used to check the health or readiness
- * of a container or a service in a Kubernetes environment. Probes can be configured with
- * different actions and thresholds to determine success or failure based on specific criteria.
+ * Describes a health check the kubelet performs against a container.
  *
- * @property action The action to be performed by the probe, such as executing a command,
- *                  performing an HTTP GET request, or checking a TCP socket connection.
- * @property initialDelaySeconds The number of seconds to wait after the container starts
- *                               before performing the first probe.
- * @property periodSeconds The interval, in seconds, between consecutive probes.
- * @property timeoutSeconds The maximum amount of time, in seconds, allowed for a probe to
- *                          complete before it is considered a failure.
- * @property successThreshold The minimum number of consecutive successful probe executions required
- *                            before the service or container is considered healthy.
- * @property failureThreshold The number of consecutive probe failures required before the service
- *                            or container is considered unhealthy.
- * @property terminationGracePeriodSeconds The amount of time, in seconds, to allow for the graceful
- *                                         termination of the container when a termination signal is sent.
+ * A probe pairs one [action] - how the check is carried out - with the timing that governs how often it
+ * runs and how many results are needed before the container's state flips.
+ *
+ * In the rendered YAML the action is not nested under an `action` key; it becomes a sibling of the
+ * timing fields whose key names the action type. This flattening is performed by [ProbeSpecSerializer].
+ *
+ * @property action                        How the check is performed.
+ * @property initialDelaySeconds           How long to wait after the container starts before probing.
+ * @property periodSeconds                 How often the probe runs.
+ * @property timeoutSeconds                How long a single probe attempt may take before it counts as failed.
+ * @property successThreshold              How many consecutive successes are needed to count as healthy.
+ *                                         Must be 1 for liveness and startup probes.
+ * @property failureThreshold              How many consecutive failures are needed to count as unhealthy.
+ * @property terminationGracePeriodSeconds Overrides the Pod's grace period when this probe forces a restart.
  */
 @NoArgs
 @JsonSerialize(using = ProbeSpecSerializer::class)
+@JsonDeserialize(using = ProbeSpecDeserializer::class)
 data class ProbeSpec(
     val action: ProbeAction,
     @field:JsonSerialize(using = DurationInSecondsSerializer::class)
@@ -59,91 +63,80 @@ data class ProbeSpec(
     val terminationGracePeriodSeconds: Duration?
 ) {
     /**
-     * Represents an action or behavior tied to a Kubernetes probe.
-     *
-     * A `ProbeAction` defines the operations that the Kubernetes system
-     * should perform to assess the health or readiness of a specific container.
-     *
-     * Common implementations include custom commands, HTTP checks, or TCP socket checks
-     * that determine the state of the container.
-     *
-     * Implementing classes or objects should specify the concrete mechanism of the probe action.
+     * The common contract of every way a probe can check a container.
      */
     sealed interface ProbeAction
 
     /**
-     * Represents an action that executes a specific command as part of a Kubernetes probe.
+     * Runs a command inside the container and treats exit code 0 as success.
      *
-     * The `ExecAction` defines an operation to be performed using a list of command-line arguments.
-     * This action is typically used in Kubernetes readiness or liveness probes to assess the state of a container.
-     *
-     * For example, the command may validate a specific condition or output certain values
-     * that indicate the health or functionality of the container.
-     *
-     * @property command A list of strings representing the command to be executed.
+     * @property command The command and its arguments. Not run through a shell.
      */
     @NoArgs
     data class ExecAction(
         val command: List<String>
-    ) : ProbeAction
+    ) : ProbeAction {
+        /**
+         * Validates that a command is given.
+         */
+        init {
+            require(command.isNotEmpty()) { "Probe command must not be empty" }
+        }
+    }
 
     /**
-     * Represents an HTTP GET action used to perform health checks or readiness probes on containers.
+     * Performs an HTTP GET request and treats a status code from 200 to 399 as success.
      *
-     * This class defines the parameters for HTTP GET requests, including URL components,
-     * headers, and the underlying scheme (HTTP or HTTPS). It is primarily used in Kubernetes
-     * probe configurations to determine the operational state of a container by querying a specific endpoint.
-     *
-     * @property path The path portion of the URL to invoke the HTTP GET request. Can be null.
-     * @property port The port number to which the HTTP GET request should be sent.
-     * @property host The hostname or IP address of the target endpoint. Can be null.
-     * @property scheme The transport layer scheme to use for the request (HTTP or HTTPS). Can be null.
-     * @property httpHeaders A map of HTTP headers to include in the request, where the key represents
-     * the header name and the value represents the corresponding header value. Can be null.
+     * @property path        The request path. Defaults to `/` when unset.
+     * @property port        The port to connect to, either a number or the name of a container port.
+     * @property host        The host to connect to. Defaults to the Pod's IP address.
+     * @property scheme      Whether to connect over HTTP or HTTPS. Defaults to HTTP.
+     * @property httpHeaders Additional request headers, rendered as a list of `name`/`value` pairs.
      */
     @NoArgs
     data class HttpGetAction(
         val path: String?,
-        val port: Int,
+        val port: PortValue<*>,
         val host: String?,
         val scheme: ProtocolScheme?,
+        @field:JsonSerialize(using = MapToNameValueSerializer::class)
+        @field:JsonDeserialize(using = MapToNameValueDeserializer::class)
         val httpHeaders: Map<String, String>?
     ) : ProbeAction
 
     /**
-     * Represents a TCP socket-based action for a Kubernetes probe.
+     * Opens a TCP connection and treats a successful handshake as success.
      *
-     * This action defines a health or readiness check using a TCP connection
-     * to the specified port and host. It is part of the probe mechanism that
-     * monitors the state of a container in the Kubernetes ecosystem.
-     *
-     * @property port The port number to which the TCP connection will be established.
-     * @property host The hostname or IP address of the target for the TCP connection.
-     *                This field is optional and may be null, in which case it is assumed
-     *                that the connection targets the localhost of the container.
-     * @constructor Marks the class as requiring a no-arguments constructor.
+     * @property port The port to connect to, either a number or the name of a container port.
+     * @property host The host to connect to.
      */
     @NoArgs
     data class TCPSocketAction(
-        val port: Int,
-        @Deprecated(message = "This field has an unfortunate history in Kubernetes. It was never fully implemented and " +
-                "its behavior was inconsistent across different Kubernetes versions. Use of this field is discouraged " +
-                "and it may be removed in future versions.")
+        val port: PortValue<*>,
+        @Deprecated(
+            message = "This field has an unfortunate history in Kubernetes. It was never fully implemented and " +
+                    "its behavior was inconsistent across different Kubernetes versions. Use of this field is " +
+                    "discouraged and it may be removed in future versions."
+        )
         val host: String?
     ) : ProbeAction
 
     /**
-     * Represents a gRPC probe action, used to check the health or readiness of a container.
+     * Calls the standard gRPC health checking service and treats a `SERVING` response as success.
      *
-     * A gRPC probe interacts with a gRPC service running inside a container to determine its state.
-     * The gRPC connection is established using the specified port and service name.
-     *
-     * @property port The port number on which the gRPC service is running inside the container.
-     * @property service The name of the gRPC service to contact. Can be null if no specific service name is required.
+     * @property port    The port the gRPC server listens on. Named ports are not supported here.
+     * @property service The name of the service to query. Defaults to the server's overall health.
      */
     @NoArgs
     data class GRPCAction(
         val port: Int,
         val service: String?
-    ) : ProbeAction
+    ) : ProbeAction {
+        /**
+         * Validates that the port is within the valid range.
+         */
+        init {
+            require(port in 1..65535) { "Port must be between 1 and 65535, but was $port" }
+        }
+    }
 }

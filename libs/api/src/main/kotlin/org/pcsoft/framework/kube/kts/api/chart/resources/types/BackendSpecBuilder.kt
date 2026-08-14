@@ -40,7 +40,7 @@ sealed class BackendSpecBuilder {
  * @property name The name of the Kubernetes Service to be used in the backend specification.
  */
 class ServiceBackendSpecBuilder internal constructor(private val name: String) : BackendSpecBuilder() {
-    private var port: PortSpec? = null
+    private var port: IngressPortSpec? = null
 
     /**
      * Configures the port for the service backend specification by its name.
@@ -48,7 +48,7 @@ class ServiceBackendSpecBuilder internal constructor(private val name: String) :
      * @param name The name of the port to be used in the backend configuration.
      */
     fun port(name: String) {
-        port = PortSpecBuilder(name).build()
+        port = IngressPortSpecBuilder(name).build()
     }
 
     /**
@@ -57,7 +57,7 @@ class ServiceBackendSpecBuilder internal constructor(private val name: String) :
      * @param number The numeric value of the port to be used in the backend configuration.
      */
     fun port(number: Int) {
-        port = PortSpecBuilder(number).build()
+        port = IngressPortSpecBuilder(number).build()
     }
 
     override fun build(): BackendSpec {
