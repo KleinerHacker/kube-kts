@@ -38,10 +38,10 @@ strategy {
 }
 ```
 
-| 属性 | 说明 |
-| :--- | :--- |
-| `maxSurge` | 超出 `replicas` 的额外 Pod 的最大数量。 |
-| `maxUnavailable` | 发布期间不可用 Pod 的最大数量。 |
+| 属性             | 说明                                    |
+|:-----------------|:----------------------------------------|
+| `maxSurge`       | 超出 `replicas` 的额外 Pod 的最大数量。 |
+| `maxUnavailable` | 发布期间不可用 Pod 的最大数量。         |
 
 这两个值都可以指定为绝对值或百分比。
 
@@ -61,12 +61,12 @@ rollingUpdate {
 
 ## Deployment Spec 中的发布选项
 
-| 属性 | 说明 |
-| :--- | :--- |
-| `minReadySeconds` | 新 Pod 在被视为可用前必须保持就绪的最短时间。 |
-| `revisionHistoryLimit` | 为回滚保留的旧 ReplicaSet 数量。 |
-| `paused` | 为 `true` 时，Deployment 控制器不处理新的发布变更。 |
-| `progressDeadlineSeconds` | 发布进度的时间限制。 |
+| 属性                      | 说明                                                |
+|:--------------------------|:----------------------------------------------------|
+| `minReadySeconds`         | 新 Pod 在被视为可用前必须保持就绪的最短时间。       |
+| `revisionHistoryLimit`    | 为回滚保留的旧 ReplicaSet 数量。                    |
+| `paused`                  | 为 `true` 时，Deployment 控制器不处理新的发布变更。 |
+| `progressDeadlineSeconds` | 发布进度的时间限制。                                |
 
 ```kotlin
 spec {

@@ -96,7 +96,11 @@ internal class ProbeSpecDeserializer : ValueDeserializer<ProbeSpec>() {
             action = when {
                 node.has("httpGet") -> ctxt.readTreeAsValue(node.get("httpGet"), ProbeSpec.HttpGetAction::class.java)
                 node.has("exec") -> ctxt.readTreeAsValue(node.get("exec"), ProbeSpec.ExecAction::class.java)
-                node.has("tcpSocket") -> ctxt.readTreeAsValue(node.get("tcpSocket"), ProbeSpec.TCPSocketAction::class.java)
+                node.has("tcpSocket") -> ctxt.readTreeAsValue(
+                    node.get("tcpSocket"),
+                    ProbeSpec.TCPSocketAction::class.java
+                )
+
                 node.has("grpc") -> ctxt.readTreeAsValue(node.get("grpc"), ProbeSpec.GRPCAction::class.java)
                 else -> throw IllegalArgumentException("No valid probe action found")
             },

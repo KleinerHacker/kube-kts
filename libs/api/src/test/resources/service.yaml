@@ -20,8 +20,8 @@ metadata:
       blockOwnerDeletion: true
 spec:
   type: LoadBalancer                  # ClusterIP | NodePort | LoadBalancer | ExternalName
-#  selector:
-#    key: value
+  #  selector:
+  #    key: value
 
   ports:
     - name: port

@@ -4,9 +4,8 @@
 kube-kts push <CHART> <REMOTE> [OPTIONS]
 ```
 
-Runs `helm push` to upload a packaged chart to a remote (OCI) registry. It operates on an existing
-chart package, so it needs **neither a repository nor a render step** — the call is forwarded
-directly to Helm.
+Runs `helm push` to upload a packaged chart to a remote (OCI) registry. It operates on an existing chart package, so it
+needs **neither a repository nor a render step** — the call is forwarded directly to Helm.
 
 ## How it works
 
@@ -16,20 +15,20 @@ directly to Helm.
 
 ## Parameters
 
-| Parameter | Required | Description |
-|---|---|---|
-| `CHART` | yes | Path to the packaged chart (`.tgz`). Forwarded to Helm as the positional `CHART`. |
-| `REMOTE` | yes | Remote registry reference. Forwarded to Helm as the positional `REMOTE`. |
+| Parameter | Required | Description                                                                       |
+|-----------|----------|-----------------------------------------------------------------------------------|
+| `CHART`   | yes      | Path to the packaged chart (`.tgz`). Forwarded to Helm as the positional `CHART`. |
+| `REMOTE`  | yes      | Remote registry reference. Forwarded to Helm as the positional `REMOTE`.          |
 
 ## Push options
 
-| Option | Marker | Description |
-|---|---|---|
-| `--ca-file=FILE` | `---->` | CA bundle to verify the registry's TLS certificate. |
-| `--cert-file=FILE` | `---->` | SSL certificate file to identify the client. |
-| `--key-file=FILE` | `---->` | SSL key file to identify the client. |
-| `--insecure-skip-tls-verify` | `---->` | Skip TLS certificate checks for the upload. |
-| `--plain-http` | `---->` | Use insecure HTTP for the upload. |
+| Option                       | Marker  | Description                                         |
+|------------------------------|---------|-----------------------------------------------------|
+| `--ca-file=FILE`             | `---->` | CA bundle to verify the registry's TLS certificate. |
+| `--cert-file=FILE`           | `---->` | SSL certificate file to identify the client.        |
+| `--key-file=FILE`            | `---->` | SSL key file to identify the client.                |
+| `--insecure-skip-tls-verify` | `---->` | Skip TLS certificate checks for the upload.         |
+| `--plain-http`               | `---->` | Use insecure HTTP for the upload.                   |
 
 ## Helm global options
 

@@ -53,7 +53,8 @@ class CompileCommand : BaseCompileCommand() {
         val repository = KubeKtsRepositoryScanner.DEFAULT.scan(sourcePath)
         logger.atInfo().log { "Repository scanned".successStyle() }
 
-        logger.atInfo().log { "$symbolMainProcess Start compiling Helm repository from Kube Kts repository: ${repository.name}" }
+        logger.atInfo()
+            .log { "$symbolMainProcess Start compiling Helm repository from Kube Kts repository: ${repository.name}" }
         val yamlMerging = when (yamlMergeAlgorithm) {
             YamlMergingAlgorithm.INTERNAL -> YamlMerging.createDefault(yamlArrayMergeStrategy)
             YamlMergingAlgorithm.HELM -> YamlMerging.HELM

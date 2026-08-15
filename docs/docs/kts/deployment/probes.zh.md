@@ -2,11 +2,11 @@
 
 探针定义在容器上。它们帮助 Kubernetes 评估应用程序的状态。
 
-| 探针 | 用途 |
-| :--- | :--- |
-| `startupProbe` | 检查应用程序是否已启动。在它成功之前，其他探针不会运行。 |
+| 探针             | 用途                                                           |
+|:-----------------|:---------------------------------------------------------------|
+| `startupProbe`   | 检查应用程序是否已启动。在它成功之前，其他探针不会运行。       |
 | `readinessProbe` | 检查容器是否可以接收流量。失败会将 Pod 从 Service 端点中移除。 |
-| `livenessProbe` | 检查容器是否仍然正常工作。失败可能触发重启。 |
+| `livenessProbe`  | 检查容器是否仍然正常工作。失败可能触发重启。                   |
 
 ## HTTP GET
 
@@ -68,11 +68,11 @@ container("grpc-api", "registry.example.com/grpc-api:1.0.0") {
 
 ## 时间选项
 
-| 属性 | 说明 |
-| :--- | :--- |
-| `initialDelaySeconds` | 容器启动后到第一次检查之间的等待时间。 |
-| `periodSeconds` | 两次检查之间的间隔。 |
-| `timeoutSeconds` | 单次检查的最长持续时间。 |
-| `successThreshold` | 切换到成功状态所需的连续成功次数。 |
-| `failureThreshold` | 在开始失败处理之前的连续失败次数。 |
-| `terminationGracePeriodSeconds` | 由探针触发的终止的宽限期。 |
+| 属性                            | 说明                                   |
+|:--------------------------------|:---------------------------------------|
+| `initialDelaySeconds`           | 容器启动后到第一次检查之间的等待时间。 |
+| `periodSeconds`                 | 两次检查之间的间隔。                   |
+| `timeoutSeconds`                | 单次检查的最长持续时间。               |
+| `successThreshold`              | 切换到成功状态所需的连续成功次数。     |
+| `failureThreshold`              | 在开始失败处理之前的连续失败次数。     |
+| `terminationGracePeriodSeconds` | 由探针触发的终止的宽限期。             |

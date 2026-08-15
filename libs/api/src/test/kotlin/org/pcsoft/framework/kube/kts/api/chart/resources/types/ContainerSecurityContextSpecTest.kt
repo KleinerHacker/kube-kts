@@ -13,7 +13,7 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.junit.jupiter.api.Test
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.ContainerSecurityContextSpec.*
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.ContainerSecurityContextSpec.ProcMountType
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode

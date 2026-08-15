@@ -1,6 +1,7 @@
 # Deployment Selector
 
-The `selector` defines which Pods are managed by the Deployment. In the DSL, this block is required. At least one `matchLabels` entry must be set.
+The `selector` defines which Pods are managed by the Deployment. In the DSL, this block is required. At least one
+`matchLabels` entry must be set.
 
 ```kotlin
 spec {
@@ -22,7 +23,8 @@ spec {
 
 ## Match Labels
 
-`matchLabels` describes simple key-value conditions. A Pod only matches if all specified labels exist and their values match.
+`matchLabels` describes simple key-value conditions. A Pod only matches if all specified labels exist and their values
+match.
 
 ```kotlin
 selector {
@@ -37,12 +39,12 @@ selector {
 
 `matchExpressions` allows more complex conditions with operators.
 
-| Operator | Meaning |
-| :--- | :--- |
-| `In` | The label value must be included in the specified list of values. |
-| `NotIn` | The label value must not be included in the specified list of values. |
-| `Exists` | The label must exist. |
-| `DoesNotExist` | The label must not exist. |
+| Operator       | Meaning                                                               |
+|:---------------|:----------------------------------------------------------------------|
+| `In`           | The label value must be included in the specified list of values.     |
+| `NotIn`        | The label value must not be included in the specified list of values. |
+| `Exists`       | The label must exist.                                                 |
+| `DoesNotExist` | The label must not exist.                                             |
 
 ```kotlin
 selector {

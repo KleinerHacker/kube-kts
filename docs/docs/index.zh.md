@@ -1,7 +1,7 @@
 # 概览
 
-Kube KTS 是一个用于 Kubernetes 的 Helm 封装器，并且**完全兼容传统 Helm**。
-你无需再使用带有 Go 模板的 YAML 文件，而是使用 **Kotlin Script (KTS)** 来定义 Kubernetes 资源。
+Kube KTS 是一个用于 Kubernetes 的 Helm 封装器，并且 **完全兼容传统 Helm**。 你无需再使用带有 Go 模板的 YAML 文件，而是使用
+**Kotlin Script (KTS)** 来定义 Kubernetes 资源。
 
 这使你能够使用现代语言特性，例如：
 
@@ -21,8 +21,7 @@ Kube KTS 是一个用于 Kubernetes 的 Helm 封装器，并且**完全兼容传
 
 在安装 Kube KTS 并将其加入 `PATH` 之后，你即可立即开始开发 Kubernetes 资源。
 
-Kube KTS 基于**标准的 Helm 仓库结构**运行。
-为获得正确的 IDE 支持，所有 `.kts` 文件都必须位于 `helm` 目录内。
+Kube KTS 基于 **标准的 Helm 仓库结构**运行。 为获得正确的 IDE 支持，所有 `.kts` 文件都必须位于 `helm` 目录内。
 
 ---
 
@@ -54,8 +53,7 @@ Kube KTS 基于**标准的 Helm 仓库结构**运行。
 ```
 
 !!! note "库文件不会被渲染"
-    带有 `.lib.kts` 扩展名的文件不会被渲染为 YAML。它们的内容会在编译时
-    自动提供给所有 spec 文件使用。
+带有 `.lib.kts` 扩展名的文件不会被渲染为 YAML。它们的内容会在编译时 自动提供给所有 spec 文件使用。
 
 ---
 
@@ -63,15 +61,15 @@ Kube KTS 基于**标准的 Helm 仓库结构**运行。
 
 Kube KTS 区分两种类型的 Kotlin Script 文件：
 
-| 扩展名 | 用途 |
-| :--- | :--- |
+| 扩展名       | 用途                                    |
+|:-------------|:----------------------------------------|
 | `*.spec.kts` | 定义一个 Kubernetes 资源（渲染为 YAML） |
-| `*.lib.kts` | 定义可在所有 spec 文件中使用的辅助函数 |
+| `*.lib.kts`  | 定义可在所有 spec 文件中使用的辅助函数  |
 
 ### Spec 文件（`*.spec.kts`）
 
-Spec 文件使用 KTS DSL 定义 Kubernetes 资源。每个 spec 文件生成一个 YAML
-输出文件。`Chart.spec.kts` 是一个特殊的 spec 文件，它生成 `Chart.yaml`。
+Spec 文件使用 KTS DSL 定义 Kubernetes 资源。每个 spec 文件生成一个 YAML 输出文件。`Chart.spec.kts` 是一个特殊的 spec
+文件，它生成 `Chart.yaml`。
 
 ```kotlin
 // templates/deployment.spec.kts
@@ -82,16 +80,15 @@ deployment {
 ```
 
 !!! warning "安全性：导入限制"
-    默认情况下，KTS 脚本**不允许**使用 `import` 语句或完全限定的类名
-    （例如 `java.lang.Runtime`）。只能使用通过预配置默认导入提供的类型
-    —— 完整列表参见 [默认导入](kts/lib.md#default-imports)。
+默认情况下，KTS 脚本 **不允许**使用 `import` 语句或完全限定的类名 （例如 `java.lang.Runtime`
+）。只能使用通过预配置默认导入提供的类型 —— 完整列表参见 [默认导入](kts/lib.md#default-imports)。
 
     使用 `--unsafe` 标志可解除这些限制。
 
 ### 库文件（`*.lib.kts`）
 
-库文件定义可重用的辅助函数，这些函数会自动在同一仓库内的所有 spec 文件中可用。
-库文件**不会**被渲染为 YAML 输出，也**不能**被其他库文件访问。
+库文件定义可重用的辅助函数，这些函数会自动在同一仓库内的所有 spec 文件中可用。 库文件 **不会**被渲染为 YAML 输出，也
+**不能**被其他库文件访问。
 
 ```kotlin
 // templates/helpers.lib.kts
@@ -115,7 +112,7 @@ Kube KTS 完全兼容传统的 Helm 配置。
 
 - 现有的 YAML 文件可以与 `.spec.kts` 文件一起使用
 - 纯 `.kts` 文件（不带 `.spec.` 限定符）也作为传统 spec 文件被支持
-- 传统文件会被**原样复制**到最终输出中
+- 传统文件会被 **原样复制**到最终输出中
 - 完全支持混合环境（YAML + KTS）
 
 ---
@@ -136,5 +133,4 @@ Kube KTS 是一个用于处理 Helm 仓库的命令行工具。
 
 通过以下方式运行：
 `kube-kts`
-要处理一个仓库，请提供你的 Helm 项目路径。
-详细用法说明请参见 **“如何使用 Kube KTS CLI”**。
+要处理一个仓库，请提供你的 Helm 项目路径。 详细用法说明请参见 **“如何使用 Kube KTS CLI”**。

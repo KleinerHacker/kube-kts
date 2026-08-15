@@ -285,7 +285,8 @@ class ProbeSpecBuilder internal constructor() {
      * @constructor Creates an instance of `HttpGetActionBuilder` with a specified port.
      * @param port The target port for the HTTP GET request, must be in the range 1 to 65535.
      */
-    class HttpGetActionBuilder internal constructor(private val port: PortValue<*>) : ProbeActionBuilder<ProbeSpec.HttpGetAction> {
+    class HttpGetActionBuilder internal constructor(private val port: PortValue<*>) :
+        ProbeActionBuilder<ProbeSpec.HttpGetAction> {
         private var httpHeaders: MutableMap<String, String>? = null
 
         /**
@@ -357,7 +358,7 @@ class ProbeSpecBuilder internal constructor() {
          * @return A `ProbeSpec.HttpGetAction` instance containing the defined path, port, host, scheme, and HTTP headers.
          * @throws IllegalArgumentException if the port is not within the valid range.
          */
-        override fun build() : ProbeSpec.HttpGetAction {
+        override fun build(): ProbeSpec.HttpGetAction {
             return ProbeSpec.HttpGetAction(
                 path = path,
                 port = port,
@@ -405,7 +406,8 @@ class ProbeSpecBuilder internal constructor() {
      * @see ProbeActionBuilder
      * @see ProbeSpec.TCPSocketAction
      */
-    class TCPSocketActionBuilder internal constructor(private val port: PortValue<*>) : ProbeActionBuilder<ProbeSpec.TCPSocketAction> {
+    class TCPSocketActionBuilder internal constructor(private val port: PortValue<*>) :
+        ProbeActionBuilder<ProbeSpec.TCPSocketAction> {
         /**
          * Specifies the optional hostname for the TCP socket connection.
          *
@@ -420,10 +422,13 @@ class ProbeSpecBuilder internal constructor() {
          * @deprecated This field is deprecated due to inconsistent behavior and lack of full implementation
          * in Kubernetes. It is subject to removal in future versions.
          */
-        @Deprecated(message = "This field has an unfortunate history in Kubernetes. It was never fully implemented and " +
-                "its behavior was inconsistent across different Kubernetes versions. Use of this field is discouraged " +
-                "and it may be removed in future versions.")
+        @Deprecated(
+            message = "This field has an unfortunate history in Kubernetes. It was never fully implemented and " +
+                    "its behavior was inconsistent across different Kubernetes versions. Use of this field is discouraged " +
+                    "and it may be removed in future versions."
+        )
         var host: String? = null
+
         /**
          * Builds and returns a `TCPSocketAction` instance with the configured port.
          *
@@ -434,7 +439,7 @@ class ProbeSpecBuilder internal constructor() {
          * @return A `TCPSocketAction` instance configured with the specified port.
          */
         @Suppress("DEPRECATION")
-        override fun build() : ProbeSpec.TCPSocketAction {
+        override fun build(): ProbeSpec.TCPSocketAction {
             return ProbeSpec.TCPSocketAction(
                 port = port,
                 host = host
@@ -476,7 +481,7 @@ class ProbeSpecBuilder internal constructor() {
          *         port and optional service.
          * @throws IllegalArgumentException If the port is invalid or if the service name is blank when specified.
          */
-        override fun build() : ProbeSpec.GRPCAction {
+        override fun build(): ProbeSpec.GRPCAction {
             require(port > 0) { "Port must be greater than 0" }
             require(port <= 65535) { "Port must be less or equals to 65535" }
             service?.let { require(it.isNotBlank()) { "Service must not be blank" } }

@@ -18,11 +18,7 @@ import org.pcsoft.framework.kube.kts.api.utils.roundTrip
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertIs
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
+import kotlin.test.*
 
 /**
  * Tests for the node-local volume sources that were added beyond the original set: ephemeral claims,

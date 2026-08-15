@@ -58,7 +58,7 @@ class KubeKtsConsoleAppender(
 
     override fun requiresLayout(): Boolean = false
 
-    private fun Priority.toColoredString(): String = when(this as Level) {
+    private fun Priority.toColoredString(): String = when (this as Level) {
         Level.TRACE -> this.traceStyle
         Level.DEBUG -> this.debugStyle
         Level.INFO -> this.toString()

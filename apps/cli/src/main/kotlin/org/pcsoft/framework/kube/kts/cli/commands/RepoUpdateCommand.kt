@@ -15,10 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to update information of available charts locally from chart repositories.
@@ -26,15 +23,27 @@ import picocli.CommandLine.Parameters
  * Forwarded directly to `helm repo update [REPO...]`. If no repository names are given, all
  * repositories are updated.
  */
-@Command(name = "update", aliases = ["up"], description = ["Update information of available charts locally from chart repositories with helm"])
+@Command(
+    name = "update",
+    aliases = ["up"],
+    description = ["Update information of available charts locally from chart repositories with helm"]
+)
 class RepoUpdateCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0..*", paramLabel = "REPO", arity = "0..*", description = ["Names of the repositories to update (forwarded to helm as positionals). If omitted, all repositories are updated."])
+    @Parameters(
+        index = "0..*",
+        paramLabel = "REPO",
+        arity = "0..*",
+        description = ["Names of the repositories to update (forwarded to helm as positionals). If omitted, all repositories are updated."]
+    )
     private var repos: Array<String>? = null
 
     @Mixin
     private lateinit var globalOptions: HelmGlobalOptions
 
-    @Option(names = ["--fail-on-repo-update-fail"], description = ["$HELM_MARKER update fails if any of the repository updates fail"])
+    @Option(
+        names = ["--fail-on-repo-update-fail"],
+        description = ["$HELM_MARKER update fails if any of the repository updates fail"]
+    )
     private var failOnRepoUpdateFail: Boolean = false
 
     override val helmCommand: List<String>

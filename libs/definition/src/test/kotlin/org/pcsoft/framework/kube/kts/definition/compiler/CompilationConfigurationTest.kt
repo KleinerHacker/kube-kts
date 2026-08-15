@@ -19,14 +19,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import org.pcsoft.framework.kube.kts.api.chart.ChartSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpec
 import org.pcsoft.framework.kube.kts.api.values.ValueAccess
-import kotlin.script.experimental.api.ScriptAcceptedLocation
-import kotlin.script.experimental.api.ScriptCompilationConfiguration
-import kotlin.script.experimental.api.acceptedLocations
-import kotlin.script.experimental.api.compilerOptions
-import kotlin.script.experimental.api.defaultImports
-import kotlin.script.experimental.api.ide
-import kotlin.script.experimental.api.implicitReceivers
-import kotlin.script.experimental.api.refineConfigurationBeforeCompiling
+import kotlin.script.experimental.api.*
 
 /**
  * Developer tests for [KubeKtsSpecCompilationConfiguration] and
@@ -143,8 +136,14 @@ class CompilationConfigurationTest {
     @Test
     fun bothConfigurationsPinTheJvmTarget() {
         val expected = listOf("-jvm-target", "25")
-        Assertions.assertEquals(expected, KubeKtsSpecCompilationConfiguration[ScriptCompilationConfiguration.compilerOptions])
-        Assertions.assertEquals(expected, KubeKtsLibCompilationConfiguration[ScriptCompilationConfiguration.compilerOptions])
+        Assertions.assertEquals(
+            expected,
+            KubeKtsSpecCompilationConfiguration[ScriptCompilationConfiguration.compilerOptions]
+        )
+        Assertions.assertEquals(
+            expected,
+            KubeKtsLibCompilationConfiguration[ScriptCompilationConfiguration.compilerOptions]
+        )
     }
 
     /**

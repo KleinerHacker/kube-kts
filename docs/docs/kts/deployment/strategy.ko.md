@@ -38,10 +38,10 @@ strategy {
 }
 ```
 
-| 속성 | 설명 |
-| :--- | :--- |
-| `maxSurge` | `replicas`를 초과하여 추가할 수 있는 Pod의 최대 수. |
-| `maxUnavailable` | 롤아웃 중 사용 불가능한 Pod의 최대 수. |
+| 속성             | 설명                                                |
+|:-----------------|:----------------------------------------------------|
+| `maxSurge`       | `replicas`를 초과하여 추가할 수 있는 Pod의 최대 수. |
+| `maxUnavailable` | 롤아웃 중 사용 불가능한 Pod의 최대 수.              |
 
 두 값 모두 절대값 또는 백분율로 지정할 수 있습니다.
 
@@ -61,12 +61,12 @@ rollingUpdate {
 
 ## Deployment Spec의 롤아웃 옵션
 
-| 속성 | 설명 |
-| :--- | :--- |
-| `minReadySeconds` | 새 Pod가 사용 가능한 것으로 간주되기 전에 Ready 상태를 유지해야 하는 최소 시간. |
-| `revisionHistoryLimit` | 롤백을 위해 보관하는 이전 ReplicaSet의 수. |
-| `paused` | `true`인 경우 Deployment 컨트롤러는 새로운 롤아웃 변경을 처리하지 않습니다. |
-| `progressDeadlineSeconds` | 롤아웃 진행에 대한 시간 제한. |
+| 속성                      | 설명                                                                            |
+|:--------------------------|:--------------------------------------------------------------------------------|
+| `minReadySeconds`         | 새 Pod가 사용 가능한 것으로 간주되기 전에 Ready 상태를 유지해야 하는 최소 시간. |
+| `revisionHistoryLimit`    | 롤백을 위해 보관하는 이전 ReplicaSet의 수.                                      |
+| `paused`                  | `true`인 경우 Deployment 컨트롤러는 새로운 롤아웃 변경을 처리하지 않습니다.     |
+| `progressDeadlineSeconds` | 롤아웃 진행에 대한 시간 제한.                                                   |
 
 ```kotlin
 spec {

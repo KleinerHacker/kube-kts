@@ -15,10 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to run the tests of a named release.
@@ -27,19 +24,40 @@ import picocli.CommandLine.Parameters
  */
 @Command(name = "test", description = ["Run tests for a release with helm"])
 class TestCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0", paramLabel = "RELEASE", description = ["Name of the release to test (forwarded to helm as positional RELEASE)"])
+    @Parameters(
+        index = "0",
+        paramLabel = "RELEASE",
+        description = ["Name of the release to test (forwarded to helm as positional RELEASE)"]
+    )
     private lateinit var release: String
 
     @Mixin
     private lateinit var globalOptions: HelmGlobalOptions
 
-    @Option(names = ["--filter"], description = ["$HELM_MARKER specify tests by attribute (currently 'name') using attribute=value syntax or '!attribute=value' to exclude a test (repeatable)"], paramLabel = "KEY=VALUE")
+    @Option(
+        names = ["--filter"],
+        description = ["$HELM_MARKER specify tests by attribute (currently 'name') using attribute=value syntax or '!attribute=value' to exclude a test (repeatable)"],
+        paramLabel = "KEY=VALUE"
+    )
     private var filter: Array<String>? = null
-    @Option(names = ["--hide-notes"], description = ["$HELM_MARKER if set, do not show notes in test output. Does not affect presence in chart metadata"])
+
+    @Option(
+        names = ["--hide-notes"],
+        description = ["$HELM_MARKER if set, do not show notes in test output. Does not affect presence in chart metadata"]
+    )
     private var hideNotes: Boolean = false
-    @Option(names = ["--logs"], description = ["$HELM_MARKER dump the logs from test pods (this runs after all tests are complete, but before any cleanup)"])
+
+    @Option(
+        names = ["--logs"],
+        description = ["$HELM_MARKER dump the logs from test pods (this runs after all tests are complete, but before any cleanup)"]
+    )
     private var logs: Boolean = false
-    @Option(names = ["--timeout"], description = ["$HELM_MARKER time to wait for any individual Kubernetes operation"], paramLabel = "DURATION")
+
+    @Option(
+        names = ["--timeout"],
+        description = ["$HELM_MARKER time to wait for any individual Kubernetes operation"],
+        paramLabel = "DURATION"
+    )
     private var timeout: String? = null
 
     override val helmCommand: List<String>

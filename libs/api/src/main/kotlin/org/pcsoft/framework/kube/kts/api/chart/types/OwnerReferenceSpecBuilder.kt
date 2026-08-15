@@ -12,7 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.types
 
-import java.util.UUID
+import java.util.*
 
 /**
  * Builder for creating [OwnerReferenceSpec] instances.
@@ -32,7 +32,12 @@ import java.util.UUID
  *                      if [blockOwnerDeletion] is also set to true.
  * @property blockOwnerDeletion If true, the garbage collector will delete the current object when the owner is deleted.
  */
-class OwnerReferenceSpecBuilder internal constructor(private val apiVersion: String, private val kind: String, private val name: String, private val uid: UUID) {
+class OwnerReferenceSpecBuilder internal constructor(
+    private val apiVersion: String,
+    private val kind: String,
+    private val name: String,
+    private val uid: UUID
+) {
     var controller: Boolean? = null
     var blockOwnerDeletion: Boolean? = null
 

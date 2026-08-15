@@ -25,10 +25,10 @@ template {
 
 Pod 템플릿의 메타데이터는 Deployment 리소스 자체가 아니라 생성되는 Pod에 적용됩니다.
 
-| 블록 | 설명 |
-| :--- | :--- |
-| `labels { label(key, value) }` | 생성되는 Pod의 레이블. selector, Service 및 스케줄링 규칙에 중요합니다. |
-| `annotations { annotation(key, value) }` | 생성되는 Pod의 어노테이션. 예: 모니터링 또는 사이드카 시스템용. |
+| 블록                                     | 설명                                                                    |
+|:-----------------------------------------|:------------------------------------------------------------------------|
+| `labels { label(key, value) }`           | 생성되는 Pod의 레이블. selector, Service 및 스케줄링 규칙에 중요합니다. |
+| `annotations { annotation(key, value) }` | 생성되는 Pod의 어노테이션. 예: 모니터링 또는 사이드카 시스템용.         |
 
 ## Pod Spec
 

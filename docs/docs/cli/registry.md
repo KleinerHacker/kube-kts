@@ -4,30 +4,29 @@
 kube-kts registry <SUBCOMMAND> <HOST> [OPTIONS]
 ```
 
-Groups the `helm registry …` sub-commands that manage authentication against OCI registries. They
-operate on your local registry config, so they need **neither a repository nor a render step** — the
-call is forwarded directly to Helm. Invoking `registry` without a sub-command prints the usage
-listing.
+Groups the `helm registry …` sub-commands that manage authentication against OCI registries. They operate on your local
+registry config, so they need **neither a repository nor a render step** — the call is forwarded directly to Helm.
+Invoking `registry` without a sub-command prints the usage listing.
 
 ## Sub-commands
 
-| Sub-command | Helm | Description |
-|---|---|---|
-| `registry login <HOST>` | `helm registry login` | Log in to an OCI registry. |
+| Sub-command              | Helm                   | Description                   |
+|--------------------------|------------------------|-------------------------------|
+| `registry login <HOST>`  | `helm registry login`  | Log in to an OCI registry.    |
 | `registry logout <HOST>` | `helm registry logout` | Log out from an OCI registry. |
 
 ## Parameters
 
-| Parameter | Required | Description |
-|---|---|---|
-| `HOST` | yes | Registry host. Forwarded to Helm as the positional `HOST`. |
+| Parameter | Required | Description                                                |
+|-----------|----------|------------------------------------------------------------|
+| `HOST`    | yes      | Registry host. Forwarded to Helm as the positional `HOST`. |
 
 ## Options per sub-command
 
-| Sub-command | Options (all `---->`) |
-|---|---|
-| `login` | `-u`/`--username=USER`, `-p`/`--password=PASSWORD`, `--password-stdin`, `--insecure`, `--ca-file=FILE`, `--cert-file=FILE`, `--key-file=FILE`, `--plain-http` |
-| `logout` | – |
+| Sub-command | Options (all `---->`)                                                                                                                                         |
+|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `login`     | `-u`/`--username=USER`, `-p`/`--password=PASSWORD`, `--password-stdin`, `--insecure`, `--ca-file=FILE`, `--cert-file=FILE`, `--key-file=FILE`, `--plain-http` |
+| `logout`    | –                                                                                                                                                             |
 
 ## Helm global options
 

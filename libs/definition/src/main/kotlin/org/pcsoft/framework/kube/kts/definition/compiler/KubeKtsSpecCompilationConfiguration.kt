@@ -18,8 +18,8 @@ import org.pcsoft.framework.kube.kts.api.chart.resources.ResourceSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.PortMappingSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
-import org.pcsoft.framework.kube.kts.api.chart.types.MetadataBaseSpec
 import org.pcsoft.framework.kube.kts.api.chart.types.KubeVersion
+import org.pcsoft.framework.kube.kts.api.chart.types.MetadataBaseSpec
 import org.pcsoft.framework.kube.kts.api.types.MailAddress
 import org.pcsoft.framework.kube.kts.api.values.ValueAccess
 import java.io.File

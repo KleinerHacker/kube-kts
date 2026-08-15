@@ -15,10 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to verify that a chart at a given path has been signed and is valid.
@@ -26,9 +23,16 @@ import picocli.CommandLine.Parameters
  * Operates on a local chart package, not on a KTS repository: the call is forwarded directly to
  * `helm verify <PATH>`.
  */
-@Command(name = "verify", description = ["Verify that a chart at the given path has been signed and is valid with helm"])
+@Command(
+    name = "verify",
+    description = ["Verify that a chart at the given path has been signed and is valid with helm"]
+)
 class VerifyCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0", paramLabel = "PATH", description = ["Path to the packaged chart to verify (forwarded to helm as positional PATH)"])
+    @Parameters(
+        index = "0",
+        paramLabel = "PATH",
+        description = ["Path to the packaged chart to verify (forwarded to helm as positional PATH)"]
+    )
     private lateinit var path: String
 
     @Mixin

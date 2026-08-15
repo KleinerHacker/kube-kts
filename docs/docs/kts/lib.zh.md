@@ -6,20 +6,20 @@
 
 ## 概览
 
-| 属性 | 值 |
-| :--- | :--- |
-| 文件扩展名 | `*.lib.kts` |
-| 位置 | `helm/` 目录树中的任意位置 |
-| 渲染为 YAML | 否 |
+| 属性               | 值                           |
+|:-------------------|:-----------------------------|
+| 文件扩展名         | `*.lib.kts`                  |
+| 位置               | `helm/` 目录树中的任意位置   |
+| 渲染为 YAML        | 否                           |
 | 在 spec 文件中可用 | 是 —— 所有 spec 文件自动可用 |
-| 在其他库文件中可用 | 否 |
+| 在其他库文件中可用 | 否                           |
 
 ---
 
 ## 创建库文件
 
-在 `helm/` 目录中的任意位置创建一个带有 `.lib.kts` 扩展名的文件。
-一种常见的约定是将共享的辅助函数放在 `templates/helpers.lib.kts` 中。
+在 `helm/` 目录中的任意位置创建一个带有 `.lib.kts` 扩展名的文件。 一种常见的约定是将共享的辅助函数放在
+`templates/helpers.lib.kts` 中。
 
 ```
 ─ helm
@@ -75,40 +75,38 @@ deployment {
 
 ## 默认导入
 
-库文件可以访问与 spec 文件相同的默认导入，因此你无需显式的 import 语句即可使用所有
-Kube KTS DSL 类型、Java 标准库类型和 Kotlin 时间扩展。
+库文件可以访问与 spec 文件相同的默认导入，因此你无需显式的 import 语句即可使用所有 Kube KTS DSL 类型、Java 标准库类型和
+Kotlin 时间扩展。
 
-| 导入 | 包含 |
-| :--- | :--- |
-| Kube KTS API | 所有 `*Spec` 和 `*SpecBuilder` 类型、`ValueAccess` |
-| `java.net` | `URL`、`URI` |
-| `java.time` | `Duration`、`Instant`、`LocalDate`、… |
-| `kotlin.time` | `Duration`、`Duration.Companion.*` |
+| 导入          | 包含                                               |
+|:--------------|:---------------------------------------------------|
+| Kube KTS API  | 所有 `*Spec` 和 `*SpecBuilder` 类型、`ValueAccess` |
+| `java.net`    | `URL`、`URI`                                       |
+| `java.time`   | `Duration`、`Instant`、`LocalDate`、…              |
+| `kotlin.time` | `Duration`、`Duration.Companion.*`                 |
 
 ---
 
 ## 约束
 
 !!! warning "安全性：导入限制"
-    默认情况下，KTS 脚本**不允许**使用 `import` 语句或完全限定的类名
-    （例如 `java.lang.Runtime`）。只能使用上面列出的预配置默认导入中的类型。
+默认情况下，KTS 脚本 **不允许**使用 `import` 语句或完全限定的类名 （例如 `java.lang.Runtime`）。只能使用上面列出的预配置默认导入中的类型。
 
     使用 `--unsafe` 标志可解除这些限制。
 
 !!! warning "库文件不能访问其他库文件"
-    在一个 `*.lib.kts` 文件中定义的函数**不能**在其他 `*.lib.kts` 文件中使用。
-    只有 `*.spec.kts` 文件才能调用库函数。请相应地组织你的库，并避免跨库依赖。
+在一个 `*.lib.kts` 文件中定义的函数 **不能**在其他 `*.lib.kts` 文件中使用。 只有 `*.spec.kts`
+文件才能调用库函数。请相应地组织你的库，并避免跨库依赖。
 
 !!! note "库文件不会被渲染"
-    `*.lib.kts` 文件永远不会被渲染为 YAML 输出文件，即使它们包含顶层语句。
-    只有 `*.spec.kts` 文件才会产生输出。
+`*.lib.kts` 文件永远不会被渲染为 YAML 输出文件，即使它们包含顶层语句。 只有 `*.spec.kts` 文件才会产生输出。
 
 ---
 
 ## 多个库文件
 
-你可以拥有任意数量的 `*.lib.kts` 文件。Kube KTS 会在 `helm/` 目录树中
-递归地发现所有这些文件，并将它们全部提供给每个 spec 文件。
+你可以拥有任意数量的 `*.lib.kts` 文件。Kube KTS 会在 `helm/` 目录树中 递归地发现所有这些文件，并将它们全部提供给每个 spec
+文件。
 
 ```
 ─ helm

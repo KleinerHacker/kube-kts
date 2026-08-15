@@ -15,10 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to log in to an OCI registry.
@@ -27,7 +24,11 @@ import picocli.CommandLine.Parameters
  */
 @Command(name = "login", description = ["Login to a registry with helm"])
 class RegistryLoginCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0", paramLabel = "HOST", description = ["Registry host to log in to (forwarded to helm as positional HOST)"])
+    @Parameters(
+        index = "0",
+        paramLabel = "HOST",
+        description = ["Registry host to log in to (forwarded to helm as positional HOST)"]
+    )
     private lateinit var host: String
 
     @Mixin
@@ -35,19 +36,45 @@ class RegistryLoginCommand : BaseDirectHelmCommand(), HelmArgsProvider {
 
     @Option(names = ["-u", "--username"], description = ["$HELM_MARKER registry username"], paramLabel = "USER")
     private var username: String? = null
-    @Option(names = ["-p", "--password"], description = ["$HELM_MARKER registry password or identity token"], paramLabel = "PASSWORD")
+
+    @Option(
+        names = ["-p", "--password"],
+        description = ["$HELM_MARKER registry password or identity token"],
+        paramLabel = "PASSWORD"
+    )
     private var password: String? = null
+
     @Option(names = ["--password-stdin"], description = ["$HELM_MARKER read password or identity token from stdin"])
     private var passwordStdin: Boolean = false
+
     @Option(names = ["--insecure"], description = ["$HELM_MARKER allow connections to TLS registry without certs"])
     private var insecure: Boolean = false
-    @Option(names = ["--ca-file"], description = ["$HELM_MARKER verify certificates of HTTPS-enabled servers using this CA bundle"], paramLabel = "FILE")
+
+    @Option(
+        names = ["--ca-file"],
+        description = ["$HELM_MARKER verify certificates of HTTPS-enabled servers using this CA bundle"],
+        paramLabel = "FILE"
+    )
     private var caFile: String? = null
-    @Option(names = ["--cert-file"], description = ["$HELM_MARKER identify registry client using this SSL certificate file"], paramLabel = "FILE")
+
+    @Option(
+        names = ["--cert-file"],
+        description = ["$HELM_MARKER identify registry client using this SSL certificate file"],
+        paramLabel = "FILE"
+    )
     private var certFile: String? = null
-    @Option(names = ["--key-file"], description = ["$HELM_MARKER identify registry client using this SSL key file"], paramLabel = "FILE")
+
+    @Option(
+        names = ["--key-file"],
+        description = ["$HELM_MARKER identify registry client using this SSL key file"],
+        paramLabel = "FILE"
+    )
     private var keyFile: String? = null
-    @Option(names = ["--plain-http"], description = ["$HELM_MARKER use insecure HTTP connections for the registry login"])
+
+    @Option(
+        names = ["--plain-http"],
+        description = ["$HELM_MARKER use insecure HTTP connections for the registry login"]
+    )
     private var plainHttp: Boolean = false
 
     override val helmCommand: List<String>

@@ -1,11 +1,11 @@
 # Chart DSL
 
-The `chart` DSL is used to define the metadata and dependencies of your Helm chart, similar to the `Chart.yaml` file in traditional Helm charts.
+The `chart` DSL is used to define the metadata and dependencies of your Helm chart, similar to the `Chart.yaml` file in
+traditional Helm charts.
 
 !!! warning "Security: Import Restrictions"
-    By default, KTS scripts **do not allow** `import` statements or fully qualified class names
-    (e.g. `java.lang.Runtime`). Only types provided via the pre-configured default imports may
-    be used.
+By default, KTS scripts **do not allow** `import` statements or fully qualified class names (e.g. `java.lang.Runtime`).
+Only types provided via the pre-configured default imports may be used.
 
     Use the `--unsafe` flag to lift these restrictions.
 
@@ -88,26 +88,25 @@ chart("full-featured-chart", "1.2.3") {
 
 ### Top-Level Properties
 
-| Property | Type | Description |
-| :--- | :--- | :--- |
-| `description` | `String?` | A one-line description of the chart. |
-| `type` | `ChartSpec.Type?` | The chart type: `Application` or `Library`. |
-| `home` | `String?` | The URL of the project's homepage. |
-| `icon` | `URI?` | A URL to an SVG or PNG image to use as an icon. |
-| `appVersion` | `String?` | The version of the application this chart contains (not the chart version). |
-| `deprecated` | `Boolean?` | Whether this chart is deprecated. |
+| Property      | Type              | Description                                                                 |
+|:--------------|:------------------|:----------------------------------------------------------------------------|
+| `description` | `String?`         | A one-line description of the chart.                                        |
+| `type`        | `ChartSpec.Type?` | The chart type: `Application` or `Library`.                                 |
+| `home`        | `String?`         | The URL of the project's homepage.                                          |
+| `icon`        | `URI?`            | A URL to an SVG or PNG image to use as an icon.                             |
+| `appVersion`  | `String?`         | The version of the application this chart contains (not the chart version). |
+| `deprecated`  | `Boolean?`        | Whether this chart is deprecated.                                           |
 
 ### Methods
 
-| Method | Description |
-|:-----------------------------------------------------------------| :--- |
-| `keywords { ... }` | Adds keywords used to find this chart. (Alternative: `addKeyword`, `addKeywords`) |
-| `sources { ... }` | Adds URLs to the source code for this project. (Alternative: `addSource`, `addSources`) |
-| `kubeVersion { ... }` | Sets the range of compatible Kubernetes versions. |
+| Method                 | Description                                                                                      |
+|:-----------------------|:-------------------------------------------------------------------------------------------------|
+| `keywords { ... }`     | Adds keywords used to find this chart. (Alternative: `addKeyword`, `addKeywords`)                |
+| `sources { ... }`      | Adds URLs to the source code for this project. (Alternative: `addSource`, `addSources`)          |
+| `kubeVersion { ... }`  | Sets the range of compatible Kubernetes versions.                                                |
 | `dependencies { ... }` | Adds a chart dependency. See [Dependencies](#dependencies) below. (Alternative: `addDependency`) |
-| `maintainers { ... }` | Adds information about a maintainer. (Alternative: `addMaintainer`) |
-| `annotations { ... }` | Adds a custom annotation. (Alternative: `addAnnotation`) |
-
+| `maintainers { ... }`  | Adds information about a maintainer. (Alternative: `addMaintainer`)                              |
+| `annotations { ... }`  | Adds a custom annotation. (Alternative: `addAnnotation`)                                         |
 
 ### Dependencies
 
@@ -118,7 +117,8 @@ The `dependency` block enables fine-grained control:
 - `condition`: A boolean expression to decide whether to install the chart.
 - `tags { tag(String) }`: Adds a tag to group dependencies. (Alternative: `addTag`)
 - `pathImportValues { pathImportValue(path) }`: Imports values from the sub-chart. (Alternative: `addPathImportValue`)
-- `mappingImportValues { mappingImportValue(childKey, parentKey) }`: Maps a specific value from the sub-chart to the parent chart. (Alternative: `addMappingImportValue`)
+- `mappingImportValues { mappingImportValue(childKey, parentKey) }`: Maps a specific value from the sub-chart to the
+  parent chart. (Alternative: `addMappingImportValue`)
 
 ## Special Types
 

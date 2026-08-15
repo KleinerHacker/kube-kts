@@ -25,10 +25,10 @@ template {
 
 Metadata in the Pod template applies to the generated Pods, not to the Deployment resource itself.
 
-| Block | Description |
-| :--- | :--- |
-| `labels { label(key, value) }` | Labels for the generated Pods. Important for selectors, Services, and scheduling rules. |
-| `annotations { annotation(key, value) }` | Annotations for the generated Pods, for example for monitoring or sidecar systems. |
+| Block                                    | Description                                                                             |
+|:-----------------------------------------|:----------------------------------------------------------------------------------------|
+| `labels { label(key, value) }`           | Labels for the generated Pods. Important for selectors, Services, and scheduling rules. |
+| `annotations { annotation(key, value) }` | Annotations for the generated Pods, for example for monitoring or sidecar systems.      |
 
 ## Pod Spec
 

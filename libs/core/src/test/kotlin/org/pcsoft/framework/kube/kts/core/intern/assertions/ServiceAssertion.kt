@@ -12,12 +12,12 @@
 
 package org.pcsoft.framework.kube.kts.core.intern.assertions
 
-import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
 import org.junit.jupiter.api.Assertions
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec.*
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.Protocol
 import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
+import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 

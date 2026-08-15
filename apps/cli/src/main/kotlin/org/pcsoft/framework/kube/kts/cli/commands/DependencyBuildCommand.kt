@@ -15,9 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
+import picocli.CommandLine.*
 
 /**
  * Command to rebuild the "charts/" directory from the "Chart.lock" file.
@@ -33,8 +31,10 @@ class DependencyBuildCommand : BaseRenderedHelmCommand(), HelmArgsProvider {
 
     @Option(names = ["--keyring"], description = ["$HELM_MARKER keyring containing public keys"], paramLabel = "FILE")
     private var keyring: String? = null
+
     @Option(names = ["--skip-refresh"], description = ["$HELM_MARKER do not refresh the local repository cache"])
     private var skipRefresh: Boolean = false
+
     @Option(names = ["--verify"], description = ["$HELM_MARKER verify the packages against signatures"])
     private var verify: Boolean = false
 

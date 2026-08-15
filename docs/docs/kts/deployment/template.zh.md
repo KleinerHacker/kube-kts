@@ -25,10 +25,10 @@ template {
 
 Pod 模板中的元数据应用于生成的 Pod，而不是 Deployment 资源本身。
 
-| 块 | 说明 |
-| :--- | :--- |
-| `labels { label(key, value) }` | 生成的 Pod 的标签。对 selector、Service 和调度规则非常重要。 |
-| `annotations { annotation(key, value) }` | 生成的 Pod 的注解，例如用于监控或 sidecar 系统。 |
+| 块                                       | 说明                                                         |
+|:-----------------------------------------|:-------------------------------------------------------------|
+| `labels { label(key, value) }`           | 生成的 Pod 的标签。对 selector、Service 和调度规则非常重要。 |
+| `annotations { annotation(key, value) }` | 生成的 Pod 的注解，例如用于监控或 sidecar 系统。             |
 
 ## Pod Spec
 

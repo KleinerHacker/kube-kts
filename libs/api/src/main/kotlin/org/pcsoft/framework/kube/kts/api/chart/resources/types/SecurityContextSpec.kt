@@ -200,7 +200,15 @@ class ContainerSecurityContextSpec(
     val allowPrivilegeEscalation: Boolean?,
     val procMount: ProcMountType?,
     val capabilities: CapabilitiesSpec?,
-) : SecurityContextSpec(runAsUser, runAsGroup, runAsNonRoot, seLinuxOptions, seccompProfile, appArmorProfile, windowsOptions) {
+) : SecurityContextSpec(
+    runAsUser,
+    runAsGroup,
+    runAsNonRoot,
+    seLinuxOptions,
+    seccompProfile,
+    appArmorProfile,
+    windowsOptions
+) {
     /**
      * Represents the type of mount configuration for the /proc filesystem within a container.
      *
@@ -300,7 +308,15 @@ class PodSecurityContextSpec(
     @field:JsonSerialize(using = MapToNameValueSerializer::class)
     @field:JsonDeserialize(using = MapToNameValueDeserializer::class)
     val sysctls: Map<String, String>?,
-) : SecurityContextSpec(runAsUser, runAsGroup, runAsNonRoot, seLinuxOptions, seccompProfile, appArmorProfile, windowsOptions) {
+) : SecurityContextSpec(
+    runAsUser,
+    runAsGroup,
+    runAsNonRoot,
+    seLinuxOptions,
+    seccompProfile,
+    appArmorProfile,
+    windowsOptions
+) {
 
     /**
      * Represents the policy that governs the behavior of changing the file system group

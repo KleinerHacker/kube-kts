@@ -15,10 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to push a chart package to a remote (OCI) registry.
@@ -28,22 +25,50 @@ import picocli.CommandLine.Parameters
  */
 @Command(name = "push", description = ["Push a chart package to a remote registry with helm"])
 class PushCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0", paramLabel = "CHART", description = ["Path to the packaged chart (forwarded to helm as positional CHART)"])
+    @Parameters(
+        index = "0",
+        paramLabel = "CHART",
+        description = ["Path to the packaged chart (forwarded to helm as positional CHART)"]
+    )
     private lateinit var chart: String
-    @Parameters(index = "1", paramLabel = "REMOTE", description = ["Remote registry reference (forwarded to helm as positional REMOTE)"])
+
+    @Parameters(
+        index = "1",
+        paramLabel = "REMOTE",
+        description = ["Remote registry reference (forwarded to helm as positional REMOTE)"]
+    )
     private lateinit var remote: String
 
     @Mixin
     private lateinit var globalOptions: HelmGlobalOptions
 
-    @Option(names = ["--ca-file"], description = ["$HELM_MARKER verify certificates of HTTPS-enabled servers using this CA bundle"], paramLabel = "FILE")
+    @Option(
+        names = ["--ca-file"],
+        description = ["$HELM_MARKER verify certificates of HTTPS-enabled servers using this CA bundle"],
+        paramLabel = "FILE"
+    )
     private var caFile: String? = null
-    @Option(names = ["--cert-file"], description = ["$HELM_MARKER identify registry client using this SSL certificate file"], paramLabel = "FILE")
+
+    @Option(
+        names = ["--cert-file"],
+        description = ["$HELM_MARKER identify registry client using this SSL certificate file"],
+        paramLabel = "FILE"
+    )
     private var certFile: String? = null
-    @Option(names = ["--key-file"], description = ["$HELM_MARKER identify registry client using this SSL key file"], paramLabel = "FILE")
+
+    @Option(
+        names = ["--key-file"],
+        description = ["$HELM_MARKER identify registry client using this SSL key file"],
+        paramLabel = "FILE"
+    )
     private var keyFile: String? = null
-    @Option(names = ["--insecure-skip-tls-verify"], description = ["$HELM_MARKER skip tls certificate checks for the chart upload"])
+
+    @Option(
+        names = ["--insecure-skip-tls-verify"],
+        description = ["$HELM_MARKER skip tls certificate checks for the chart upload"]
+    )
     private var insecureSkipTlsVerify: Boolean = false
+
     @Option(names = ["--plain-http"], description = ["$HELM_MARKER use insecure HTTP connections for the chart upload"])
     private var plainHttp: Boolean = false
 

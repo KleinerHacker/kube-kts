@@ -15,9 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
+import picocli.CommandLine.*
 
 /**
  * Command to list chart repositories.
@@ -29,7 +27,11 @@ class RepoListCommand : BaseDirectHelmCommand(), HelmArgsProvider {
     @Mixin
     private lateinit var globalOptions: HelmGlobalOptions
 
-    @Option(names = ["-o", "--output"], description = ["$HELM_MARKER prints the output in the specified format. Allowed values: table, json, yaml"], paramLabel = "FORMAT")
+    @Option(
+        names = ["-o", "--output"],
+        description = ["$HELM_MARKER prints the output in the specified format. Allowed values: table, json, yaml"],
+        paramLabel = "FORMAT"
+    )
     private var output: String? = null
 
     override val helmCommand: List<String>

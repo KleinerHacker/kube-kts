@@ -18,12 +18,7 @@ import tools.jackson.databind.JsonNode
 import tools.jackson.databind.exc.JsonNodeException
 import tools.jackson.dataformat.yaml.YAMLMapper
 import java.nio.file.Path
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertFalse
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
-import kotlin.test.fail
+import kotlin.test.*
 
 @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class ValueAccessTest {

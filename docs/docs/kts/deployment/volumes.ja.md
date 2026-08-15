@@ -126,14 +126,15 @@ container("app", "registry.example.com/demo:1.0.0") {
 
 上記のソースに加えて、この DSL は Kubernetes のすべてのボリュームソースに対応しています。
 
-| Group | Sources |
-|-------|---------|
-| Config | `configMap`, `secret`, `projected`, `downwardApi` |
-| Node-local | `emptyDir`, `hostPath`, `persistentVolumeClaim`, `ephemeral`, `image`, `csi` |
-| Network | `nfs`, `iscsi`, `fibreChannel`, `rbd`, `cephFs`, `glusterFs` |
-| Cloud | `awsElasticBlockStore`, `gcePersistentDisk`, `azureDisk`, `azureFile`, `cinder`, `portworx`, `vsphereVolume` |
+| Group      | Sources                                                                                                      |
+|------------|--------------------------------------------------------------------------------------------------------------|
+| Config     | `configMap`, `secret`, `projected`, `downwardApi`                                                            |
+| Node-local | `emptyDir`, `hostPath`, `persistentVolumeClaim`, `ephemeral`, `image`, `csi`                                 |
+| Network    | `nfs`, `iscsi`, `fibreChannel`, `rbd`, `cephFs`, `glusterFs`                                                 |
+| Cloud      | `awsElasticBlockStore`, `gcePersistentDisk`, `azureDisk`, `azureFile`, `cinder`, `portworx`, `vsphereVolume` |
 
-Kubernetes から削除されたソース（`gitRepo`、`flexVolume`、`flocker`、`quobyte`、`scaleIo`、`storageOs`、`photonPersistentDisk`）は、古いクラスター向けに引き続き利用できますが、非推奨としてマークされています。
+Kubernetes から削除されたソース（`gitRepo`、`flexVolume`、`flocker`、`quobyte`、`scaleIo`、`storageOs`、`photonPersistentDisk`
+）は、古いクラスター向けに引き続き利用できますが、非推奨としてマークされています。
 
 ### 例
 

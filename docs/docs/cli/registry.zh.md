@@ -4,27 +4,28 @@
 kube-kts registry <SUBCOMMAND> <HOST> [选项]
 ```
 
-聚合 `helm registry …` 子命令，用于管理对 OCI 注册表的认证。它们作用于本地注册表配置，因此**既不需要仓库，也不需要渲染步骤**——调用会直接转发给 Helm。不带子命令调用 `registry` 会打印用法列表。
+聚合 `helm registry …` 子命令，用于管理对 OCI 注册表的认证。它们作用于本地注册表配置，因此
+**既不需要仓库，也不需要渲染步骤**——调用会直接转发给 Helm。不带子命令调用 `registry` 会打印用法列表。
 
 ## 子命令
 
-| 子命令 | Helm | 说明 |
-|---|---|---|
-| `registry login <HOST>` | `helm registry login` | 登录 OCI 注册表。 |
+| 子命令                   | Helm                   | 说明                |
+|--------------------------|------------------------|---------------------|
+| `registry login <HOST>`  | `helm registry login`  | 登录 OCI 注册表。   |
 | `registry logout <HOST>` | `helm registry logout` | 从 OCI 注册表登出。 |
 
 ## 参数
 
-| 参数 | 必需 | 说明 |
-|---|---|---|
-| `HOST` | 是 | 注册表主机。作为位置参数 `HOST` 转发给 Helm。 |
+| 参数   | 必需 | 说明                                          |
+|--------|------|-----------------------------------------------|
+| `HOST` | 是   | 注册表主机。作为位置参数 `HOST` 转发给 Helm。 |
 
 ## 各子命令选项
 
-| 子命令 | 选项（均为 `---->`） |
-|---|---|
-| `login` | `-u`/`--username=USER`、`-p`/`--password=PASSWORD`、`--password-stdin`、`--insecure`、`--ca-file=FILE`、`--cert-file=FILE`、`--key-file=FILE`、`--plain-http` |
-| `logout` | – |
+| 子命令   | 选项（均为 `---->`）                                                                                                                                          |
+|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `login`  | `-u`/`--username=USER`、`-p`/`--password=PASSWORD`、`--password-stdin`、`--insecure`、`--ca-file=FILE`、`--cert-file=FILE`、`--key-file=FILE`、`--plain-http` |
+| `logout` | –                                                                                                                                                             |
 
 ## Helm 全局选项
 

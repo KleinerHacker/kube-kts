@@ -14,9 +14,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to log out from an OCI registry.
@@ -25,7 +23,11 @@ import picocli.CommandLine.Parameters
  */
 @Command(name = "logout", description = ["Logout from a registry with helm"])
 class RegistryLogoutCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0", paramLabel = "HOST", description = ["Registry host to log out from (forwarded to helm as positional HOST)"])
+    @Parameters(
+        index = "0",
+        paramLabel = "HOST",
+        description = ["Registry host to log out from (forwarded to helm as positional HOST)"]
+    )
     private lateinit var host: String
 
     @Mixin

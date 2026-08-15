@@ -4,14 +4,14 @@
 kube-kts env [NAME] [OPTIONS]
 ```
 
-Runs `helm env` to print Helm's environment information. It is purely informational and needs
-**neither a repository nor a render step** — the call is forwarded directly to Helm.
+Runs `helm env` to print Helm's environment information. It is purely informational and needs **neither a repository nor
+a render step** — the call is forwarded directly to Helm.
 
 ## Parameters
 
-| Parameter | Required | Description |
-|---|---|---|
-| `NAME` | no | Name of a single environment variable to print. If omitted, all variables are printed. Forwarded to Helm as the positional `NAME`. |
+| Parameter | Required | Description                                                                                                                        |
+|-----------|----------|------------------------------------------------------------------------------------------------------------------------------------|
+| `NAME`    | no       | Name of a single environment variable to print. If omitted, all variables are printed. Forwarded to Helm as the positional `NAME`. |
 
 ## Helm global options
 

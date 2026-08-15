@@ -15,11 +15,7 @@ package org.pcsoft.framework.kube.kts.api.intern.jackson
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.RoutePortSpec
 import tools.jackson.core.JsonGenerator
 import tools.jackson.core.JsonParser
-import tools.jackson.databind.DeserializationContext
-import tools.jackson.databind.JsonNode
-import tools.jackson.databind.SerializationContext
-import tools.jackson.databind.ValueDeserializer
-import tools.jackson.databind.ValueSerializer
+import tools.jackson.databind.*
 
 /**
  * Serializer for [RoutePortSpec].

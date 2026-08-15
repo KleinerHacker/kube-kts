@@ -61,11 +61,11 @@ class TlsSpecBuilder internal constructor() {
      *
      * Example usage:
      * ```kotlin
- *     hosts {
- *         host("example.com")
- *         host("www.example.com")
- *         host("api.example.com")
- *     }
+     *     hosts {
+     *         host("example.com")
+     *         host("www.example.com")
+     *         host("api.example.com")
+     *     }
      * ```
      *
      * @param prepare A lambda that operates on an instance of [HostListBuilder], allowing the host list

@@ -1,11 +1,10 @@
 # Deployment DSL
 
-`deployment` DSL은 Kubernetes Deployment 리소스를 구성하는 데 사용됩니다. Deployment는 애플리케이션의 원하는 상태를 기술하고, ReplicaSet을 통해 관련 Pod를 관리하며, 롤아웃, 롤백 및 스케일링을 제어합니다.
+`deployment` DSL은 Kubernetes Deployment 리소스를 구성하는 데 사용됩니다. Deployment는 애플리케이션의 원하는 상태를 기술하고, ReplicaSet을 통해 관련 Pod를
+관리하며, 롤아웃, 롤백 및 스케일링을 제어합니다.
 
 !!! warning "보안: 임포트 제한"
-    기본적으로 KTS 스크립트는 `import` 문이나 완전 정규화된 클래스 이름
-    (예: `java.lang.Runtime`)을 **허용하지 않습니다**. 사전 구성된 기본 임포트로
-    제공되는 타입만 사용할 수 있습니다.
+기본적으로 KTS 스크립트는 `import` 문이나 완전 정규화된 클래스 이름 (예: `java.lang.Runtime`)을 **허용하지 않습니다**. 사전 구성된 기본 임포트로 제공되는 타입만 사용할 수 있습니다.
 
     `--unsafe` 플래그를 사용하면 이러한 제한을 해제할 수 있습니다.
 
@@ -51,7 +50,7 @@ deployment {
 ```
 
 !!! warning "Selector와 Template 레이블"
-    `selector`는 Pod 템플릿의 레이블과 일치해야 합니다. Kubernetes는 이 관계를 사용하여 Deployment가 관리하는 Pod를 찾습니다.
+`selector`는 Pod 템플릿의 레이블과 일치해야 합니다. Kubernetes는 이 관계를 사용하여 Deployment가 관리하는 Pod를 찾습니다.
 
 ## 상세 예제
 
@@ -175,30 +174,30 @@ deployment {
 
 ## 구성 참조
 
-### 메타데이터(`metadata`)
+### 메타데이터 (`metadata`)
 
-| 속성 | 타입 | 설명 |
-| :--- | :--- | :--- |
-| `name` | `String` | Deployment의 이름(첫 번째 인수로 전달됨). |
-| `namespace` | `String?` | 리소스의 네임스페이스. |
-| `generateName` | `String?` | 고유한 이름 생성을 위한 선택적 접두사. |
-| `labels { label(key, value) }` | `Map<String, String>` | Deployment 리소스의 레이블. |
-| `annotations { annotation(key, value) }` | `Map<String, String>` | Deployment 리소스의 어노테이션. |
+| 속성                                     | 타입                  | 설명                                      |
+|:-----------------------------------------|:----------------------|:------------------------------------------|
+| `name`                                   | `String`              | Deployment의 이름(첫 번째 인수로 전달됨). |
+| `namespace`                              | `String?`             | 리소스의 네임스페이스.                    |
+| `generateName`                           | `String?`             | 고유한 이름 생성을 위한 선택적 접두사.    |
+| `labels { label(key, value) }`           | `Map<String, String>` | Deployment 리소스의 레이블.               |
+| `annotations { annotation(key, value) }` | `Map<String, String>` | Deployment 리소스의 어노테이션.           |
 
-### Deployment 명세(`spec`)
+### Deployment 명세 (`spec`)
 
-| 속성 / 메서드 | 설명 |
-| :--- | :--- |
-| `replicas` | 원하는 Pod 레플리카 수. |
-| `selector { ... }` | 관리 대상 Pod를 선택하기 위한 필수 블록. |
-| `template { ... }` | Pod 템플릿을 위한 필수 블록. |
-| `strategy { ... }` | 롤아웃 전략(`Recreate` 또는 `RollingUpdate`). |
-| `minReadySeconds` | 새 Pod가 사용 가능한 것으로 간주되기 전에 Ready 상태를 유지해야 하는 최소 시간. |
-| `revisionHistoryLimit` | 롤백을 위해 보관하는 이전 ReplicaSet의 수. |
-| `paused` | Deployment 컨트롤러의 롤아웃 처리를 일시 중지합니다. |
-| `progressDeadlineSeconds` | 롤아웃이 실패로 간주되기 전 허용되는 최대 시간. |
+| 속성 / 메서드             | 설명                                                                            |
+|:--------------------------|:--------------------------------------------------------------------------------|
+| `replicas`                | 원하는 Pod 레플리카 수.                                                         |
+| `selector { ... }`        | 관리 대상 Pod를 선택하기 위한 필수 블록.                                        |
+| `template { ... }`        | Pod 템플릿을 위한 필수 블록.                                                    |
+| `strategy { ... }`        | 롤아웃 전략(`Recreate` 또는 `RollingUpdate`).                                   |
+| `minReadySeconds`         | 새 Pod가 사용 가능한 것으로 간주되기 전에 Ready 상태를 유지해야 하는 최소 시간. |
+| `revisionHistoryLimit`    | 롤백을 위해 보관하는 이전 ReplicaSet의 수.                                      |
+| `paused`                  | Deployment 컨트롤러의 롤아웃 처리를 일시 중지합니다.                            |
+| `progressDeadlineSeconds` | 롤아웃이 실패로 간주되기 전 허용되는 최대 시간.                                 |
 
-## 조각(Fragments)
+## 조각 (Fragments)
 
 - [Selector](deployment/selector.md)
 - [Pod 템플릿](deployment/template.md)

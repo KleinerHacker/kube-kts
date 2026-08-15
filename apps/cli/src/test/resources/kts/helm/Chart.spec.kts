@@ -19,7 +19,7 @@ chart("name", "1.0.0") {
     description = "description"
     type = ChartSpec.Type.Library
 
-    keywords { 
+    keywords {
         keyword("keyword")
     }
 

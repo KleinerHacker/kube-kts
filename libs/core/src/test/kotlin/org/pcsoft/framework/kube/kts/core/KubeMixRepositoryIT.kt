@@ -41,7 +41,8 @@ class KubeMixRepositoryIT : RepositoryTestBase() {
      */
     @Test
     fun testSuccessfully() {
-        val ktsRepo = KubeKtsRepositoryScanner.DEFAULT.scan(Paths.get(this::class.java.getResource("/mix/helm").toURI()))
+        val ktsRepo =
+            KubeKtsRepositoryScanner.DEFAULT.scan(Paths.get(this::class.java.getResource("/mix/helm").toURI()))
         Assertions.assertNotNull(ktsRepo)
         Assertions.assertEquals(3, ktsRepo.specFiles.size)
         Assertions.assertEquals(1, ktsRepo.specFiles.filter { it.isChart }.size)

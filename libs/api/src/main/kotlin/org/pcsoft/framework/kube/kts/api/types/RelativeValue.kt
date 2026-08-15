@@ -27,7 +27,7 @@ import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 interface RelativeValue<T, R> {
     companion object {
         @JsonCreator
-        fun of(value: Any): RelativeValue<*,*> {
+        fun of(value: Any): RelativeValue<*, *> {
             return when (value) {
                 is Number -> ofAbsolute(value.toInt())
                 is String -> {
@@ -35,6 +35,7 @@ interface RelativeValue<T, R> {
                     // toYamlValue renders 1.0 as "100%", so parsing has to divide again to stay its inverse.
                     ofPercentage(value.dropLast(1).toFloat() / 100f)
                 }
+
                 else -> throw IllegalArgumentException("Unsupported type for RelativeValue creation: ${value::class.simpleName}")
             }
         }
@@ -162,7 +163,7 @@ data class AbsoluteValue(override val value: Int) : RelativeValue<Int, Int>, Com
      * @return An integer representing the current absolute value in YAML format.
      */
     override fun toYamlValue(): Int = value
-    
+
     /**
      * Adds two absolute values together.
      *
@@ -215,6 +216,7 @@ data class AbsoluteValue(override val value: Int) : RelativeValue<Int, Int>, Com
  * @return A PercentageValue instance containing the specified percentage value.
  */
 fun ofPercentage(value: Float): PercentageValue = PercentageValue(value)
+
 /**
  * Converts the number into a PercentageValue representation.
  *

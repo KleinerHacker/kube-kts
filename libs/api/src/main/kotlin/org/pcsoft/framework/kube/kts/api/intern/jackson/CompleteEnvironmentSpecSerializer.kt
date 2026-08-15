@@ -16,11 +16,7 @@ import org.pcsoft.framework.kube.kts.api.chart.resources.types.CompleteEnvironme
 import org.pcsoft.framework.kube.kts.api.intern.utils.writeObject
 import tools.jackson.core.JsonGenerator
 import tools.jackson.core.JsonParser
-import tools.jackson.databind.DeserializationContext
-import tools.jackson.databind.JsonNode
-import tools.jackson.databind.SerializationContext
-import tools.jackson.databind.ValueDeserializer
-import tools.jackson.databind.ValueSerializer
+import tools.jackson.databind.*
 
 /**
  * Custom serializer for the `CompleteEnvironmentSpec` class, enabling its conversion to JSON format.
@@ -109,6 +105,7 @@ internal class CompleteEnvironmentSpecDeserializer : ValueDeserializer<CompleteE
                     node.get("configMapRef").get("optional")?.asBoolean()
                 )
             )
+
             node.has("secretRef") -> CompleteEnvironmentSpec(
                 prefix,
                 CompleteEnvironmentSpec.Source(
@@ -117,6 +114,7 @@ internal class CompleteEnvironmentSpecDeserializer : ValueDeserializer<CompleteE
                     node.get("secretRef").get("optional")?.asBoolean()
                 )
             )
+
             else -> throw IllegalStateException("Unknown source type")
         }
     }

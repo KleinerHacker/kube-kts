@@ -15,10 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to search the Artifact Hub or your own hub instance for charts.
@@ -27,7 +24,12 @@ import picocli.CommandLine.Parameters
  */
 @Command(name = "hub", description = ["Search for charts in the Artifact Hub or your own hub instance with helm"])
 class SearchHubCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0", paramLabel = "KEYWORD", arity = "0..1", description = ["Keyword to search for (forwarded to helm as positional KEYWORD)"])
+    @Parameters(
+        index = "0",
+        paramLabel = "KEYWORD",
+        arity = "0..1",
+        description = ["Keyword to search for (forwarded to helm as positional KEYWORD)"]
+    )
     private var keyword: String? = null
 
     @Mixin
@@ -35,13 +37,25 @@ class SearchHubCommand : BaseDirectHelmCommand(), HelmArgsProvider {
 
     @Option(names = ["--endpoint"], description = ["$HELM_MARKER Hub instance to query for charts"], paramLabel = "URL")
     private var endpoint: String? = null
+
     @Option(names = ["--fail-on-no-result"], description = ["$HELM_MARKER search fails if no results are found"])
     private var failOnNoResult: Boolean = false
+
     @Option(names = ["--list-repo-url"], description = ["$HELM_MARKER print charts repository URL"])
     private var listRepoUrl: Boolean = false
-    @Option(names = ["--max-col-width"], description = ["$HELM_MARKER maximum column width for output table"], paramLabel = "UINT")
+
+    @Option(
+        names = ["--max-col-width"],
+        description = ["$HELM_MARKER maximum column width for output table"],
+        paramLabel = "UINT"
+    )
     private var maxColWidth: Int? = null
-    @Option(names = ["-o", "--output"], description = ["$HELM_MARKER prints the output in the specified format. Allowed values: table, json, yaml"], paramLabel = "FORMAT")
+
+    @Option(
+        names = ["-o", "--output"],
+        description = ["$HELM_MARKER prints the output in the specified format. Allowed values: table, json, yaml"],
+        paramLabel = "FORMAT"
+    )
     private var output: String? = null
 
     override val helmCommand: List<String>

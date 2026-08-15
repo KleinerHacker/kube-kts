@@ -8,4 +8,5 @@ description: Structure to follow when a new template is to be implemented
 USE THESE EXAMPLES ONLY AS A BASE
 
 * The basics are here: `libs/api/src/main/kotlin/org/pcsoft/framework/kube/kts/api`
-* A simple template example is here: `libs/api/src/main/kotlin/org/pcsoft/framework/kube/kts/api/chart/resources/ServiceSpec.kt`
+* A simple template example is here:
+  `libs/api/src/main/kotlin/org/pcsoft/framework/kube/kts/api/chart/resources/ServiceSpec.kt`

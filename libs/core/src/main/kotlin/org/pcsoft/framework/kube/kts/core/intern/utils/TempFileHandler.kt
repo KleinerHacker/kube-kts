@@ -3,7 +3,7 @@ package org.pcsoft.framework.kube.kts.core.intern.utils
 import java.nio.file.Path
 
 internal class TempFileHandler(private val tempFileList: MutableList<Path> = mutableListOf()) {
-    fun Path.toTempFile() : Path {
+    fun Path.toTempFile(): Path {
         tempFileList.add(this)
         return this
     }

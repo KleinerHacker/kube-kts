@@ -88,14 +88,20 @@ class AffinitySpecTest {
         assertNotNull(maxSpec.podAffinity.preferredDuringSchedulingIgnoredDuringExecution)
         assertEquals(1, maxSpec.podAffinity.preferredDuringSchedulingIgnoredDuringExecution.size)
         assertEquals(99, maxSpec.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].weight)
-        assertEquals("key", maxSpec.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey)
+        assertEquals(
+            "key",
+            maxSpec.podAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey
+        )
         assertNotNull(maxSpec.podAffinity.requiredDuringSchedulingIgnoredDuringExecution)
         assertEquals(1, maxSpec.podAffinity.requiredDuringSchedulingIgnoredDuringExecution.size)
         assertEquals("key", maxSpec.podAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey)
         assertNotNull(maxSpec.podAntiAffinity)
         assertNotNull(maxSpec.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution)
         assertEquals(1, maxSpec.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution.size)
-        assertEquals("key", maxSpec.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey)
+        assertEquals(
+            "key",
+            maxSpec.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution[0].podAffinityTerm.topologyKey
+        )
         assertNotNull(maxSpec.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution)
         assertEquals(1, maxSpec.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution.size)
         assertEquals("key", maxSpec.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution[0].topologyKey)

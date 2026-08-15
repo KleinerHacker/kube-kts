@@ -15,9 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
+import picocli.CommandLine.*
 
 /**
  * Command to package a KTS based chart repository into a versioned chart archive.
@@ -31,21 +29,50 @@ class PackageCommand : BaseRenderedHelmCommand(), HelmArgsProvider {
     @Mixin
     private lateinit var globalOptions: HelmGlobalOptions
 
-    @Option(names = ["--app-version"], description = ["$HELM_MARKER set the appVersion on the chart to this version"], paramLabel = "VERSION")
+    @Option(
+        names = ["--app-version"],
+        description = ["$HELM_MARKER set the appVersion on the chart to this version"],
+        paramLabel = "VERSION"
+    )
     private var appVersion: String? = null
-    @Option(names = ["--version"], description = ["$HELM_MARKER set the version on the chart to this semver version"], paramLabel = "VERSION")
+
+    @Option(
+        names = ["--version"],
+        description = ["$HELM_MARKER set the version on the chart to this semver version"],
+        paramLabel = "VERSION"
+    )
     private var version: String? = null
-    @Option(names = ["-d", "--destination"], description = ["$HELM_MARKER location to write the chart"], paramLabel = "DIR")
+
+    @Option(
+        names = ["-d", "--destination"],
+        description = ["$HELM_MARKER location to write the chart"],
+        paramLabel = "DIR"
+    )
     private var destination: String? = null
-    @Option(names = ["-u", "--dependency-update"], description = ["$HELM_MARKER update dependencies from \"Chart.yaml\" to dir \"charts/\" before packaging"])
+
+    @Option(
+        names = ["-u", "--dependency-update"],
+        description = ["$HELM_MARKER update dependencies from \"Chart.yaml\" to dir \"charts/\" before packaging"]
+    )
     private var dependencyUpdate: Boolean = false
+
     @Option(names = ["--sign"], description = ["$HELM_MARKER use a PGP private key to sign this package"])
     private var sign: Boolean = false
-    @Option(names = ["--key"], description = ["$HELM_MARKER name of the key to use when signing. Used if --sign is true"], paramLabel = "NAME")
+
+    @Option(
+        names = ["--key"],
+        description = ["$HELM_MARKER name of the key to use when signing. Used if --sign is true"],
+        paramLabel = "NAME"
+    )
     private var key: String? = null
+
     @Option(names = ["--keyring"], description = ["$HELM_MARKER location of a public keyring"], paramLabel = "FILE")
     private var keyring: String? = null
-    @Option(names = ["--pass-stdin"], description = ["$HELM_MARKER read PGP passphrase from stdin. Used if --sign is true"])
+
+    @Option(
+        names = ["--pass-stdin"],
+        description = ["$HELM_MARKER read PGP passphrase from stdin. Used if --sign is true"]
+    )
     private var passStdin: Boolean = false
 
     override val helmCommand: List<String>

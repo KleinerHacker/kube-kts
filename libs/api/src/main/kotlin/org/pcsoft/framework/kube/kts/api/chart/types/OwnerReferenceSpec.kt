@@ -13,7 +13,7 @@
 package org.pcsoft.framework.kube.kts.api.chart.types
 
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
-import java.util.UUID
+import java.util.*
 
 /**
  * Represents an owner reference to another Kubernetes object.

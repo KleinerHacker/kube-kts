@@ -34,21 +34,22 @@ class ConfigMapSpecTest {
         }
 
         private val maxSpec = maxSpecBuilder.build()
-        private val maxTemplate = FlatTemplateSpecBuilder(ConfigMapSpec.API_VERSION, ConfigMapSpec.KIND, maxSpecBuilder).apply {
-            metadata("name") {
-                namespace = "namespace"
-                generateName = "generateName"
-                labels {
-                    label("key", "value")
+        private val maxTemplate =
+            FlatTemplateSpecBuilder(ConfigMapSpec.API_VERSION, ConfigMapSpec.KIND, maxSpecBuilder).apply {
+                metadata("name") {
+                    namespace = "namespace"
+                    generateName = "generateName"
+                    labels {
+                        label("key", "value")
+                    }
+                    annotations {
+                        annotation("key", "value")
+                    }
+                    finalizers {
+                        finalizer("finalizer")
+                    }
                 }
-                annotations {
-                    annotation("key", "value")
-                }
-                finalizers {
-                    finalizer("finalizer")
-                }
-            }
-        }.build()
+            }.build()
 
         private val minSpec = ConfigMapSpecBuilder().build()
     }

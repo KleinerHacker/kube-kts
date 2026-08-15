@@ -1,11 +1,11 @@
 # Deployment DSL
 
-`deployment` DSL は、Kubernetes Deployment リソースを構成するために使用します。Deployment はアプリケーションの望ましい状態を記述し、ReplicaSet を通じて関連する Pod を管理し、ロールアウト、ロールバック、スケーリングを制御します。
+`deployment` DSL は、Kubernetes Deployment リソースを構成するために使用します。Deployment はアプリケーションの望ましい状態を記述し、ReplicaSet
+を通じて関連する Pod を管理し、ロールアウト、ロールバック、スケーリングを制御します。
 
 !!! warning "セキュリティ: インポート制限"
-    デフォルトでは、KTS スクリプトは `import` 文や完全修飾クラス名
-    （例: `java.lang.Runtime`）を**許可しません**。事前構成されたデフォルトインポートで
-    提供される型のみ使用できます。
+デフォルトでは、KTS スクリプトは `import` 文や完全修飾クラス名 （例: `java.lang.Runtime`）を **許可しません**
+。事前構成されたデフォルトインポートで 提供される型のみ使用できます。
 
     `--unsafe` フラグを使うとこれらの制限を解除できます。
 
@@ -51,7 +51,8 @@ deployment {
 ```
 
 !!! warning "Selector と Template のラベル"
-    `selector` は Pod テンプレートのラベルと一致する必要があります。Kubernetes はこの関係を使って Deployment が管理する Pod を見つけます。
+`selector` は Pod テンプレートのラベルと一致する必要があります。Kubernetes はこの関係を使って Deployment が管理する Pod
+を見つけます。
 
 ## 詳細な例
 
@@ -177,26 +178,26 @@ deployment {
 
 ### メタデータ（`metadata`）
 
-| プロパティ | 型 | 説明 |
-| :--- | :--- | :--- |
-| `name` | `String` | Deployment の名前（最初の引数として渡される）。 |
-| `namespace` | `String?` | リソースの名前空間。 |
-| `generateName` | `String?` | 一意の名前を生成するための任意のプレフィックス。 |
-| `labels { label(key, value) }` | `Map<String, String>` | Deployment リソースのラベル。 |
-| `annotations { annotation(key, value) }` | `Map<String, String>` | Deployment リソースのアノテーション。 |
+| プロパティ                               | 型                    | 説明                                             |
+|:-----------------------------------------|:----------------------|:-------------------------------------------------|
+| `name`                                   | `String`              | Deployment の名前（最初の引数として渡される）。  |
+| `namespace`                              | `String?`             | リソースの名前空間。                             |
+| `generateName`                           | `String?`             | 一意の名前を生成するための任意のプレフィックス。 |
+| `labels { label(key, value) }`           | `Map<String, String>` | Deployment リソースのラベル。                    |
+| `annotations { annotation(key, value) }` | `Map<String, String>` | Deployment リソースのアノテーション。            |
 
 ### Deployment の仕様（`spec`）
 
-| プロパティ / メソッド | 説明 |
-| :--- | :--- |
-| `replicas` | 望ましい Pod レプリカ数。 |
-| `selector { ... }` | 管理対象の Pod を選択するための必須ブロック。 |
-| `template { ... }` | Pod テンプレートの必須ブロック。 |
-| `strategy { ... }` | ロールアウト戦略（`Recreate` または `RollingUpdate`）。 |
-| `minReadySeconds` | 新しい Pod が利用可能とみなされる前に Ready 状態を維持しなければならない最小時間。 |
-| `revisionHistoryLimit` | ロールバックのために保持する古い ReplicaSet の数。 |
-| `paused` | Deployment コントローラーによるロールアウト処理を一時停止します。 |
-| `progressDeadlineSeconds` | ロールアウトが失敗とみなされるまでに許容される最大時間。 |
+| プロパティ / メソッド     | 説明                                                                               |
+|:--------------------------|:-----------------------------------------------------------------------------------|
+| `replicas`                | 望ましい Pod レプリカ数。                                                          |
+| `selector { ... }`        | 管理対象の Pod を選択するための必須ブロック。                                      |
+| `template { ... }`        | Pod テンプレートの必須ブロック。                                                   |
+| `strategy { ... }`        | ロールアウト戦略（`Recreate` または `RollingUpdate`）。                            |
+| `minReadySeconds`         | 新しい Pod が利用可能とみなされる前に Ready 状態を維持しなければならない最小時間。 |
+| `revisionHistoryLimit`    | ロールバックのために保持する古い ReplicaSet の数。                                 |
+| `paused`                  | Deployment コントローラーによるロールアウト処理を一時停止します。                  |
+| `progressDeadlineSeconds` | ロールアウトが失敗とみなされるまでに許容される最大時間。                           |
 
 ## フラグメント
 

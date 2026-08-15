@@ -233,7 +233,8 @@ tasks {
 
     register<Exec>("buildDocs") {
         group = "MKDocs"
-        description = "Build the mkdocs site into build/docs (per mkdocs.yml site_dir; no serve, no deploy) — usable as a generation test"
+        description =
+            "Build the mkdocs site into build/docs (per mkdocs.yml site_dir; no serve, no deploy) — usable as a generation test"
         workingDir = file("docs")
         // --strict fails the build on warnings (broken links, missing pages …) so it acts as a test;
         // --clean wipes the previous output first.

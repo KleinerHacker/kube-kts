@@ -1,26 +1,26 @@
 # Library Files (`*.lib.kts`)
 
-Library files allow you to define reusable helper functions and constants that are automatically
-available across all spec files in your Helm repository.
+Library files allow you to define reusable helper functions and constants that are automatically available across all
+spec files in your Helm repository.
 
 ---
 
 ## Overview
 
-| Property | Value |
-| :--- | :--- |
-| File extension | `*.lib.kts` |
-| Location | Anywhere inside the `helm/` directory tree |
-| Rendered to YAML | No |
-| Available in spec files | Yes — all spec files automatically |
-| Available in other lib files | No |
+| Property                     | Value                                      |
+|:-----------------------------|:-------------------------------------------|
+| File extension               | `*.lib.kts`                                |
+| Location                     | Anywhere inside the `helm/` directory tree |
+| Rendered to YAML             | No                                         |
+| Available in spec files      | Yes — all spec files automatically         |
+| Available in other lib files | No                                         |
 
 ---
 
 ## Creating a Library File
 
-Create a file with the `.lib.kts` extension anywhere inside your `helm/` directory.
-A common convention is to place shared helpers in `templates/helpers.lib.kts`.
+Create a file with the `.lib.kts` extension anywhere inside your `helm/` directory. A common convention is to place
+shared helpers in `templates/helpers.lib.kts`.
 
 ```
 ─ helm
@@ -77,43 +77,40 @@ deployment {
 
 ## Default Imports
 
-Library files have access to the same default imports as spec files, so you can use all
-Kube KTS DSL types, Java standard library types, and Kotlin time extensions without explicit
-import statements.
+Library files have access to the same default imports as spec files, so you can use all Kube KTS DSL types, Java
+standard library types, and Kotlin time extensions without explicit import statements.
 
-| Import | Includes |
-| :--- | :--- |
-| Kube KTS API | All `*Spec` and `*SpecBuilder` types, `ValueAccess` |
-| `java.net` | `URL`, `URI` |
-| `java.time` | `Duration`, `Instant`, `LocalDate`, … |
-| `kotlin.time` | `Duration`, `Duration.Companion.*` |
+| Import        | Includes                                            |
+|:--------------|:----------------------------------------------------|
+| Kube KTS API  | All `*Spec` and `*SpecBuilder` types, `ValueAccess` |
+| `java.net`    | `URL`, `URI`                                        |
+| `java.time`   | `Duration`, `Instant`, `LocalDate`, …               |
+| `kotlin.time` | `Duration`, `Duration.Companion.*`                  |
 
 ---
 
 ## Constraints
 
 !!! warning "Security: Import Restrictions"
-    By default, KTS scripts **do not allow** `import` statements or fully qualified class names
-    (e.g. `java.lang.Runtime`). Only types from the pre-configured default imports listed above
-    may be used.
+By default, KTS scripts **do not allow** `import` statements or fully qualified class names (e.g. `java.lang.Runtime`).
+Only types from the pre-configured default imports listed above may be used.
 
     Use the `--unsafe` flag to lift these restrictions.
 
 !!! warning "Lib files cannot access other lib files"
-    Functions defined in one `*.lib.kts` file are **not** available in other `*.lib.kts` files.
-    Only `*.spec.kts` files can call lib functions. Structure your libraries accordingly and
-    avoid cross-lib dependencies.
+Functions defined in one `*.lib.kts` file are **not** available in other `*.lib.kts` files. Only `*.spec.kts` files can
+call lib functions. Structure your libraries accordingly and avoid cross-lib dependencies.
 
 !!! note "Library files are not rendered"
-    `*.lib.kts` files are never rendered to a YAML output file, even if they contain top-level
-    statements. Only `*.spec.kts` files produce output.
+`*.lib.kts` files are never rendered to a YAML output file, even if they contain top-level statements. Only `*.spec.kts`
+files produce output.
 
 ---
 
 ## Multiple Library Files
 
-You can have as many `*.lib.kts` files as you like. Kube KTS discovers all of them
-recursively within the `helm/` directory tree and makes them all available to every spec file.
+You can have as many `*.lib.kts` files as you like. Kube KTS discovers all of them recursively within the `helm/`
+directory tree and makes them all available to every spec file.
 
 ```
 ─ helm

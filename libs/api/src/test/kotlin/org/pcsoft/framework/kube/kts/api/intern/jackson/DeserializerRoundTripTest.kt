@@ -15,11 +15,7 @@ package org.pcsoft.framework.kube.kts.api.intern.jackson
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.*
 import org.pcsoft.framework.kube.kts.api.chart.types.DependencySpec
-import org.pcsoft.framework.kube.kts.api.types.giBytes
-import org.pcsoft.framework.kube.kts.api.types.mCpu
-import org.pcsoft.framework.kube.kts.api.types.miBytes
-import org.pcsoft.framework.kube.kts.api.types.ofPortName
-import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
+import org.pcsoft.framework.kube.kts.api.types.*
 import org.pcsoft.framework.kube.kts.api.utils.fromJson
 import org.pcsoft.framework.kube.kts.api.utils.roundTrip
 import org.pcsoft.framework.kube.kts.api.utils.toJson

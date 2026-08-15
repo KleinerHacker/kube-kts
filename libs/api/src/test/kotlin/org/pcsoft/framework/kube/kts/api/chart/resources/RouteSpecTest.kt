@@ -12,9 +12,9 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteTargetSpec
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Test
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteTargetSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteTlsSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpecBuilder
 import org.pcsoft.framework.kube.kts.api.utils.KotlinAssertions
@@ -22,9 +22,9 @@ import org.pcsoft.framework.kube.kts.api.utils.convertToJson
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
-import java.util.UUID
-import kotlin.test.assertFailsWith
+import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
@@ -55,27 +55,33 @@ class RouteSpecTest {
         }
 
         private val maxSpec = maxSpecBuilder.build()
-        private val maxTemplate = ExplicitTemplateSpecBuilder(RouteSpec.API_VERSION, RouteSpec.KIND, maxSpecBuilder).apply {
-            metadata("name") {
-                namespace = "namespace"
-                generateName = "generateName"
-                labels {
-                    label("key", "value")
-                }
-                annotations {
-                    annotation("key", "value")
-                }
-                finalizers {
-                    finalizer("finalizer")
-                }
-                ownerReferences {
-                    ownerReference("apiVersion", "kind", "name", UUID.fromString("2fade68b-1f49-403a-b5e8-4e640d3c6594")) {
-                        blockOwnerDeletion = true
-                        controller = true
+        private val maxTemplate =
+            ExplicitTemplateSpecBuilder(RouteSpec.API_VERSION, RouteSpec.KIND, maxSpecBuilder).apply {
+                metadata("name") {
+                    namespace = "namespace"
+                    generateName = "generateName"
+                    labels {
+                        label("key", "value")
+                    }
+                    annotations {
+                        annotation("key", "value")
+                    }
+                    finalizers {
+                        finalizer("finalizer")
+                    }
+                    ownerReferences {
+                        ownerReference(
+                            "apiVersion",
+                            "kind",
+                            "name",
+                            UUID.fromString("2fade68b-1f49-403a-b5e8-4e640d3c6594")
+                        ) {
+                            blockOwnerDeletion = true
+                            controller = true
+                        }
                     }
                 }
-            }
-        }.build()
+            }.build()
 
         private val minSpec = RouteSpecBuilder().apply {
             to("service")

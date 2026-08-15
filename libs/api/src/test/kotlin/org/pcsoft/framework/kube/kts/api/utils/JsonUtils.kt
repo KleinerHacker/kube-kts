@@ -67,7 +67,7 @@ internal inline fun <reified T : Any> fromJson(json: String): T = jsonMapper.rea
  */
 internal inline fun <reified T : Any> roundTrip(value: T): T = fromJson(value.toJson())
 
-internal fun convertToJson(yaml: String) : String {
+internal fun convertToJson(yaml: String): String {
     val jsonNode = yamlMapper.readTree(yaml)
 
     return ByteArrayOutputStream().use {

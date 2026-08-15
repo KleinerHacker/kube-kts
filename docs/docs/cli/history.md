@@ -4,8 +4,8 @@
 kube-kts history <RELEASE> [OPTIONS]
 ```
 
-Runs `helm history` to show the revision history of a release. It operates on an existing release, so
-it needs **neither a repository nor a render step** — the call is forwarded directly to Helm.
+Runs `helm history` to show the revision history of a release. It operates on an existing release, so it needs **neither
+a repository nor a render step** — the call is forwarded directly to Helm.
 
 ## How it works
 
@@ -15,16 +15,16 @@ it needs **neither a repository nor a render step** — the call is forwarded di
 
 ## Parameters
 
-| Parameter | Required | Description |
-|---|---|---|
-| `RELEASE` | yes | Name of the release to query. Forwarded to Helm as the positional `RELEASE`. |
+| Parameter | Required | Description                                                                  |
+|-----------|----------|------------------------------------------------------------------------------|
+| `RELEASE` | yes      | Name of the release to query. Forwarded to Helm as the positional `RELEASE`. |
 
 ## History options
 
-| Option | Marker | Description |
-|---|---|---|
-| `--max=INT` | `---->` | Maximum number of revisions to include in the history. |
-| `-o`, `--output=FORMAT` | `---->` | Output format: `table` (default), `json` or `yaml`. |
+| Option                  | Marker  | Description                                            |
+|-------------------------|---------|--------------------------------------------------------|
+| `--max=INT`             | `---->` | Maximum number of revisions to include in the history. |
+| `-o`, `--output=FORMAT` | `---->` | Output format: `table` (default), `json` or `yaml`.    |
 
 ## Helm global options
 

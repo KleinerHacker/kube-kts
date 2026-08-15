@@ -15,9 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmChartDownloadOptions
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to show the README of a chart.
@@ -26,11 +24,16 @@ import picocli.CommandLine.Parameters
  */
 @Command(name = "readme", description = ["Show the chart's README with helm"])
 class ShowReadmeCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0", paramLabel = "CHART", description = ["Chart reference to inspect (forwarded to helm as positional CHART)"])
+    @Parameters(
+        index = "0",
+        paramLabel = "CHART",
+        description = ["Chart reference to inspect (forwarded to helm as positional CHART)"]
+    )
     private lateinit var chart: String
 
     @Mixin
     private lateinit var globalOptions: HelmGlobalOptions
+
     @Mixin
     private lateinit var downloadOptions: HelmChartDownloadOptions
 

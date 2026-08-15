@@ -4,27 +4,27 @@
 kube-kts repo <SUBCOMMAND> [ARGS] [OPTIONS]
 ```
 
-Groups the `helm repo …` sub-commands that manage chart repositories. These operate on your local
-Helm configuration, so they need **neither a repository nor a render step** — the call is forwarded
-directly to Helm. Invoking `repo` without a sub-command prints the usage listing.
+Groups the `helm repo …` sub-commands that manage chart repositories. These operate on your local Helm configuration, so
+they need **neither a repository nor a render step** — the call is forwarded directly to Helm. Invoking `repo` without a
+sub-command prints the usage listing.
 
 ## Sub-commands
 
-| Sub-command | Helm | Description |
-|---|---|---|
-| `repo add <NAME> <URL>` | `helm repo add` | Add a chart repository. |
+| Sub-command             | Helm               | Description                                            |
+|-------------------------|--------------------|--------------------------------------------------------|
+| `repo add <NAME> <URL>` | `helm repo add`    | Add a chart repository.                                |
 | `repo update [REPO...]` | `helm repo update` | Update local cache of the given (or all) repositories. |
-| `repo list` | `helm repo list` | List configured chart repositories. |
-| `repo remove <REPO...>` | `helm repo remove` | Remove one or more chart repositories. |
+| `repo list`             | `helm repo list`   | List configured chart repositories.                    |
+| `repo remove <REPO...>` | `helm repo remove` | Remove one or more chart repositories.                 |
 
 ## Options per sub-command
 
-| Sub-command | Options (all `---->`) |
-|---|---|
-| `add` | `--username=USER`, `--password=PASSWORD`, `--pass-credentials`, `--ca-file=FILE`, `--cert-file=FILE`, `--key-file=FILE`, `--insecure-skip-tls-verify`, `--no-update`, `--force-update`, `--allow-deprecated-repos` |
-| `update` | `--fail-on-repo-update-fail` |
-| `list` | `-o`/`--output=FORMAT` |
-| `remove` | – |
+| Sub-command | Options (all `---->`)                                                                                                                                                                                              |
+|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `add`       | `--username=USER`, `--password=PASSWORD`, `--pass-credentials`, `--ca-file=FILE`, `--cert-file=FILE`, `--key-file=FILE`, `--insecure-skip-tls-verify`, `--no-update`, `--force-update`, `--allow-deprecated-repos` |
+| `update`    | `--fail-on-repo-update-fail`                                                                                                                                                                                       |
+| `list`      | `-o`/`--output=FORMAT`                                                                                                                                                                                             |
+| `remove`    | –                                                                                                                                                                                                                  |
 
 ## Helm global options
 

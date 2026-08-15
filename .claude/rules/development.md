@@ -13,7 +13,8 @@ name: development
 * The PLAN MUST NOT contain a summary or an explanation of the changes
     * FORBIDDEN sections: "Context", "Background", "Summary", "Overview", "Rationale", "Trade-offs"
     * FORBIDDEN: prose paragraphs of any kind - the plan consists of bullet points ONLY
-* The implementation tasks MUST be explained in short bullet points with no more than 20 words per bullet and a maximum of 10 bullets per task
+* The implementation tasks MUST be explained in short bullet points with no more than 20 words per bullet and a maximum
+  of 10 bullets per task
     * A bullet describes WHAT is done, NOT WHY
 * Before leaving plan mode, the plan MUST be checked against ALL rules above
 * The plan MUST be written into the local `.claude/plans` directory, together with a status file
@@ -32,14 +33,13 @@ name: development
 
 * All changes to a single file MUST be applied in ONE single tool call
     * Before editing, ALL required changes to that file MUST be collected and planned completely
-    * The file is then written EXACTLY ONCE - with the `Write` tool (full content) or with a
-      SINGLE `Edit` call
+    * The file is then written EXACTLY ONCE - with the `Write` tool (full content) or with a SINGLE `Edit` call
     * FORBIDDEN: several consecutive `Edit` calls on the same file for the same change
     * FORBIDDEN: incremental "edit -> read -> edit again" cycles on the same file
-    * If a change to file A reveals a follow-up change in file A, the file MUST NOT be patched
-      again - the complete new content MUST be written in one operation instead
-    * This rule applies per file, NOT per task: several DIFFERENT files MAY be edited in
-      parallel, each with exactly one call
+    * If a change to file A reveals a follow-up change in file A, the file MUST NOT be patched again - the complete new
+      content MUST be written in one operation instead
+    * This rule applies per file, NOT per task: several DIFFERENT files MAY be edited in parallel, each with exactly one
+      call
 
 ## Building
 

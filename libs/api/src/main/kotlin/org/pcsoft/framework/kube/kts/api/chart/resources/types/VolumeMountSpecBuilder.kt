@@ -77,19 +77,3 @@ class VolumeMountSpecBuilder internal constructor(private val name: String, priv
         recursiveReadOnly = recursiveReadOnly
     )
 }
-
-/**
- * Builder for a [VolumeDeviceSpec], exposing a volume to a container as a raw block device.
- *
- * @constructor Creates a builder for the given volume name and device path.
- * @param name       The name of the volume to expose, matching a volume declared on the Pod.
- * @param devicePath The absolute path inside the container the block device is made available at.
- */
-class VolumeDeviceSpecBuilder internal constructor(private val name: String, private val devicePath: String) {
-    /**
-     * Builds the configured volume device.
-     *
-     * @return A [VolumeDeviceSpec] carrying the configured values.
-     */
-    internal fun build() = VolumeDeviceSpec(name, devicePath)
-}

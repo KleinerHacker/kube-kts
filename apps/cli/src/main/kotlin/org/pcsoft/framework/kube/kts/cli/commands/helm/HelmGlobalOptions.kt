@@ -24,35 +24,94 @@ import picocli.CommandLine.Option
  */
 @NoArgs
 class HelmGlobalOptions(
-    @field:Option(names = ["-n", "--namespace"], description = ["$HELM_MARKER namespace scope for this request"], paramLabel = "NAMESPACE")
+    @field:Option(
+        names = ["-n", "--namespace"],
+        description = ["$HELM_MARKER namespace scope for this request"],
+        paramLabel = "NAMESPACE"
+    )
     var namespace: String? = null,
-    @field:Option(names = ["--kube-context"], description = ["$HELM_MARKER name of the kubeconfig context to use"], paramLabel = "CONTEXT")
+    @field:Option(
+        names = ["--kube-context"],
+        description = ["$HELM_MARKER name of the kubeconfig context to use"],
+        paramLabel = "CONTEXT"
+    )
     var kubeContext: String? = null,
-    @field:Option(names = ["--kubeconfig"], description = ["$HELM_MARKER path to the kubeconfig file"], paramLabel = "FILE")
+    @field:Option(
+        names = ["--kubeconfig"],
+        description = ["$HELM_MARKER path to the kubeconfig file"],
+        paramLabel = "FILE"
+    )
     var kubeConfig: String? = null,
-    @field:Option(names = ["--kube-apiserver"], description = ["$HELM_MARKER the address and the port for the Kubernetes API server"], paramLabel = "ADDRESS")
+    @field:Option(
+        names = ["--kube-apiserver"],
+        description = ["$HELM_MARKER the address and the port for the Kubernetes API server"],
+        paramLabel = "ADDRESS"
+    )
     var kubeApiServer: String? = null,
-    @field:Option(names = ["--kube-as-user"], description = ["$HELM_MARKER username to impersonate for the operation"], paramLabel = "USER")
+    @field:Option(
+        names = ["--kube-as-user"],
+        description = ["$HELM_MARKER username to impersonate for the operation"],
+        paramLabel = "USER"
+    )
     var kubeAsUser: String? = null,
-    @field:Option(names = ["--kube-as-group"], description = ["$HELM_MARKER group to impersonate for the operation (repeatable)"], paramLabel = "GROUP")
+    @field:Option(
+        names = ["--kube-as-group"],
+        description = ["$HELM_MARKER group to impersonate for the operation (repeatable)"],
+        paramLabel = "GROUP"
+    )
     var kubeAsGroup: Array<String>? = null,
-    @field:Option(names = ["--kube-ca-file"], description = ["$HELM_MARKER the certificate authority file for the Kubernetes API server connection"], paramLabel = "FILE")
+    @field:Option(
+        names = ["--kube-ca-file"],
+        description = ["$HELM_MARKER the certificate authority file for the Kubernetes API server connection"],
+        paramLabel = "FILE"
+    )
     var kubeCaFile: String? = null,
-    @field:Option(names = ["--kube-token"], description = ["$HELM_MARKER bearer token used for authentication"], paramLabel = "TOKEN")
+    @field:Option(
+        names = ["--kube-token"],
+        description = ["$HELM_MARKER bearer token used for authentication"],
+        paramLabel = "TOKEN"
+    )
     var kubeToken: String? = null,
-    @field:Option(names = ["--kube-tls-server-name"], description = ["$HELM_MARKER server name to use for Kubernetes API server certificate validation"], paramLabel = "NAME")
+    @field:Option(
+        names = ["--kube-tls-server-name"],
+        description = ["$HELM_MARKER server name to use for Kubernetes API server certificate validation"],
+        paramLabel = "NAME"
+    )
     var kubeTlsServerName: String? = null,
-    @field:Option(names = ["--kube-insecure-skip-tls-verify"], description = ["$HELM_MARKER if true, the Kubernetes API server's certificate will not be checked for validity"])
+    @field:Option(
+        names = ["--kube-insecure-skip-tls-verify"],
+        description = ["$HELM_MARKER if true, the Kubernetes API server's certificate will not be checked for validity"]
+    )
     var kubeInsecureSkipTlsVerify: Boolean = false,
-    @field:Option(names = ["--burst-limit"], description = ["$HELM_MARKER client-side default throttling limit"], paramLabel = "INT")
+    @field:Option(
+        names = ["--burst-limit"],
+        description = ["$HELM_MARKER client-side default throttling limit"],
+        paramLabel = "INT"
+    )
     var burstLimit: Int? = null,
-    @field:Option(names = ["--qps"], description = ["$HELM_MARKER queries per second used when communicating with the Kubernetes API"], paramLabel = "QPS")
+    @field:Option(
+        names = ["--qps"],
+        description = ["$HELM_MARKER queries per second used when communicating with the Kubernetes API"],
+        paramLabel = "QPS"
+    )
     var qps: String? = null,
-    @field:Option(names = ["--registry-config"], description = ["$HELM_MARKER path to the registry config file"], paramLabel = "FILE")
+    @field:Option(
+        names = ["--registry-config"],
+        description = ["$HELM_MARKER path to the registry config file"],
+        paramLabel = "FILE"
+    )
     var registryConfig: String? = null,
-    @field:Option(names = ["--repository-cache"], description = ["$HELM_MARKER path to the directory containing cached repository indexes"], paramLabel = "DIR")
+    @field:Option(
+        names = ["--repository-cache"],
+        description = ["$HELM_MARKER path to the directory containing cached repository indexes"],
+        paramLabel = "DIR"
+    )
     var repositoryCache: String? = null,
-    @field:Option(names = ["--repository-config"], description = ["$HELM_MARKER path to the file containing repository names and URLs"], paramLabel = "FILE")
+    @field:Option(
+        names = ["--repository-config"],
+        description = ["$HELM_MARKER path to the file containing repository names and URLs"],
+        paramLabel = "FILE"
+    )
     var repositoryConfig: String? = null,
 ) : HelmArgsProvider {
     override fun toHelmArgs(): List<String> = helmArgs {

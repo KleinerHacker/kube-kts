@@ -38,9 +38,9 @@ strategy {
 }
 ```
 
-| プロパティ | 説明 |
-| :--- | :--- |
-| `maxSurge` | `replicas` を超えて追加できる Pod の最大数。 |
+| プロパティ       | 説明                                          |
+|:-----------------|:----------------------------------------------|
+| `maxSurge`       | `replicas` を超えて追加できる Pod の最大数。  |
 | `maxUnavailable` | ロールアウト中に利用不可となる Pod の最大数。 |
 
 どちらの値も絶対値またはパーセンテージで指定できます。
@@ -61,12 +61,12 @@ rollingUpdate {
 
 ## Deployment Spec のロールアウトオプション
 
-| プロパティ | 説明 |
-| :--- | :--- |
-| `minReadySeconds` | 新しい Pod が利用可能とみなされる前に Ready 状態を維持しなければならない最小時間。 |
-| `revisionHistoryLimit` | ロールバックのために保持する古い ReplicaSet の数。 |
-| `paused` | `true` の場合、Deployment コントローラーは新しいロールアウト変更を処理しません。 |
-| `progressDeadlineSeconds` | ロールアウトの進行に対する時間制限。 |
+| プロパティ                | 説明                                                                               |
+|:--------------------------|:-----------------------------------------------------------------------------------|
+| `minReadySeconds`         | 新しい Pod が利用可能とみなされる前に Ready 状態を維持しなければならない最小時間。 |
+| `revisionHistoryLimit`    | ロールバックのために保持する古い ReplicaSet の数。                                 |
+| `paused`                  | `true` の場合、Deployment コントローラーは新しいロールアウト変更を処理しません。   |
+| `progressDeadlineSeconds` | ロールアウトの進行に対する時間制限。                                               |
 
 ```kotlin
 spec {

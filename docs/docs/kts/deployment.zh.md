@@ -1,10 +1,10 @@
 # Deployment DSL
 
-`deployment` DSL 用于配置 Kubernetes Deployment 资源。Deployment 描述应用程序的期望状态，通过 ReplicaSet 管理相关的 Pod，并控制发布、回滚和扩缩容。
+`deployment` DSL 用于配置 Kubernetes Deployment 资源。Deployment 描述应用程序的期望状态，通过 ReplicaSet 管理相关的
+Pod，并控制发布、回滚和扩缩容。
 
 !!! warning "安全性：导入限制"
-    默认情况下，KTS 脚本**不允许**使用 `import` 语句或完全限定的类名
-    （例如 `java.lang.Runtime`）。只能使用通过预配置默认导入提供的类型。
+默认情况下，KTS 脚本 **不允许**使用 `import` 语句或完全限定的类名 （例如 `java.lang.Runtime`）。只能使用通过预配置默认导入提供的类型。
 
     使用 `--unsafe` 标志可解除这些限制。
 
@@ -50,7 +50,7 @@ deployment {
 ```
 
 !!! warning "Selector 与 Template 标签"
-    `selector` 必须与 Pod 模板中的标签匹配。Kubernetes 通过这种关系来查找由 Deployment 管理的 Pod。
+`selector` 必须与 Pod 模板中的标签匹配。Kubernetes 通过这种关系来查找由 Deployment 管理的 Pod。
 
 ## 详细示例
 
@@ -176,26 +176,26 @@ deployment {
 
 ### 元数据（`metadata`）
 
-| 属性 | 类型 | 说明 |
-| :--- | :--- | :--- |
-| `name` | `String` | Deployment 的名称，作为第一个参数传递。 |
-| `namespace` | `String?` | 资源的命名空间。 |
-| `generateName` | `String?` | 用于生成唯一名称的可选前缀。 |
-| `labels { label(key, value) }` | `Map<String, String>` | Deployment 资源上的标签。 |
-| `annotations { annotation(key, value) }` | `Map<String, String>` | Deployment 资源上的注解。 |
+| 属性                                     | 类型                  | 说明                                    |
+|:-----------------------------------------|:----------------------|:----------------------------------------|
+| `name`                                   | `String`              | Deployment 的名称，作为第一个参数传递。 |
+| `namespace`                              | `String?`             | 资源的命名空间。                        |
+| `generateName`                           | `String?`             | 用于生成唯一名称的可选前缀。            |
+| `labels { label(key, value) }`           | `Map<String, String>` | Deployment 资源上的标签。               |
+| `annotations { annotation(key, value) }` | `Map<String, String>` | Deployment 资源上的注解。               |
 
 ### Deployment 规约（`spec`）
 
-| 属性 / 方法 | 说明 |
-| :--- | :--- |
-| `replicas` | 期望的 Pod 副本数量。 |
-| `selector { ... }` | 用于选择被管理 Pod 的必填块。 |
-| `template { ... }` | Pod 模板的必填块。 |
-| `strategy { ... }` | 发布策略（`Recreate` 或 `RollingUpdate`）。 |
-| `minReadySeconds` | 新 Pod 在被视为可用前必须保持就绪的最短时间。 |
-| `revisionHistoryLimit` | 为回滚保留的旧 ReplicaSet 数量。 |
-| `paused` | 暂停 Deployment 控制器对发布的处理。 |
-| `progressDeadlineSeconds` | 发布被视为失败前所允许的最长时间。 |
+| 属性 / 方法               | 说明                                          |
+|:--------------------------|:----------------------------------------------|
+| `replicas`                | 期望的 Pod 副本数量。                         |
+| `selector { ... }`        | 用于选择被管理 Pod 的必填块。                 |
+| `template { ... }`        | Pod 模板的必填块。                            |
+| `strategy { ... }`        | 发布策略（`Recreate` 或 `RollingUpdate`）。   |
+| `minReadySeconds`         | 新 Pod 在被视为可用前必须保持就绪的最短时间。 |
+| `revisionHistoryLimit`    | 为回滚保留的旧 ReplicaSet 数量。              |
+| `paused`                  | 暂停 Deployment 控制器对发布的处理。          |
+| `progressDeadlineSeconds` | 发布被视为失败前所允许的最长时间。            |
 
 ## 片段
 

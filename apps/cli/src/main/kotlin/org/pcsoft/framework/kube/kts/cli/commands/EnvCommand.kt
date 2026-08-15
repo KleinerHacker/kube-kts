@@ -14,9 +14,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to print all the Helm environment information.
@@ -26,7 +24,12 @@ import picocli.CommandLine.Parameters
  */
 @Command(name = "env", description = ["Print all the helm environment information"])
 class EnvCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0", paramLabel = "NAME", arity = "0..1", description = ["Name of a single environment variable to print (forwarded to helm as positional NAME)"])
+    @Parameters(
+        index = "0",
+        paramLabel = "NAME",
+        arity = "0..1",
+        description = ["Name of a single environment variable to print (forwarded to helm as positional NAME)"]
+    )
     private var name: String? = null
 
     @Mixin

@@ -23,21 +23,46 @@ import picocli.CommandLine.Option
  */
 @NoArgs
 class HelmRenderSharedOptions(
-    @field:Option(names = ["--no-hooks"], description = ["$HELM_MARKER prevent hooks from running during the operation"])
+    @field:Option(
+        names = ["--no-hooks"],
+        description = ["$HELM_MARKER prevent hooks from running during the operation"]
+    )
     var noHooks: Boolean = false,
-    @field:Option(names = ["--disable-openapi-validation"], description = ["$HELM_MARKER the rendered manifests will not be validated against the Kubernetes OpenAPI Schema"])
+    @field:Option(
+        names = ["--disable-openapi-validation"],
+        description = ["$HELM_MARKER the rendered manifests will not be validated against the Kubernetes OpenAPI Schema"]
+    )
     var disableOpenapiValidation: Boolean = false,
-    @field:Option(names = ["--name-template"], description = ["$HELM_MARKER specify template used to name the release"], paramLabel = "TEMPLATE")
+    @field:Option(
+        names = ["--name-template"],
+        description = ["$HELM_MARKER specify template used to name the release"],
+        paramLabel = "TEMPLATE"
+    )
     var nameTemplate: String? = null,
-    @field:Option(names = ["--render-subchart-notes"], description = ["$HELM_MARKER render subchart notes along with the parent"])
+    @field:Option(
+        names = ["--render-subchart-notes"],
+        description = ["$HELM_MARKER render subchart notes along with the parent"]
+    )
     var renderSubchartNotes: Boolean = false,
     @field:Option(names = ["--skip-crds"], description = ["$HELM_MARKER if set, no CRDs will be installed"])
     var skipCrds: Boolean = false,
-    @field:Option(names = ["--post-renderer"], description = ["$HELM_MARKER the path to an executable to be used for post rendering"], paramLabel = "PATH")
+    @field:Option(
+        names = ["--post-renderer"],
+        description = ["$HELM_MARKER the path to an executable to be used for post rendering"],
+        paramLabel = "PATH"
+    )
     var postRenderer: String? = null,
-    @field:Option(names = ["--post-renderer-args"], description = ["$HELM_MARKER an argument to the post-renderer (repeatable)"], paramLabel = "ARG")
+    @field:Option(
+        names = ["--post-renderer-args"],
+        description = ["$HELM_MARKER an argument to the post-renderer (repeatable)"],
+        paramLabel = "ARG"
+    )
     var postRendererArgs: Array<String>? = null,
-    @field:Option(names = ["--timeout"], description = ["$HELM_MARKER time to wait for any individual Kubernetes operation (like Jobs for hooks)"], paramLabel = "DURATION")
+    @field:Option(
+        names = ["--timeout"],
+        description = ["$HELM_MARKER time to wait for any individual Kubernetes operation (like Jobs for hooks)"],
+        paramLabel = "DURATION"
+    )
     var timeout: String? = null,
 ) : HelmArgsProvider {
     override fun toHelmArgs(): List<String> = helmArgs {

@@ -15,10 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to download the manifest for a named release.
@@ -27,13 +24,21 @@ import picocli.CommandLine.Parameters
  */
 @Command(name = "manifest", description = ["Download the manifest for a named release with helm"])
 class GetManifestCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0", paramLabel = "RELEASE", description = ["Name of the release to query (forwarded to helm as positional RELEASE)"])
+    @Parameters(
+        index = "0",
+        paramLabel = "RELEASE",
+        description = ["Name of the release to query (forwarded to helm as positional RELEASE)"]
+    )
     private lateinit var release: String
 
     @Mixin
     private lateinit var globalOptions: HelmGlobalOptions
 
-    @Option(names = ["--revision"], description = ["$HELM_MARKER get the named release with revision"], paramLabel = "INT")
+    @Option(
+        names = ["--revision"],
+        description = ["$HELM_MARKER get the named release with revision"],
+        paramLabel = "INT"
+    )
     private var revision: Int? = null
 
     override val helmCommand: List<String>

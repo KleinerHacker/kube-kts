@@ -26,23 +26,23 @@ template {
 
 ## 핵심 속성
 
-| 속성 / 메서드 | 설명 |
-| :--- | :--- |
-| `containers { container(name, image) { ... } }` | 필수 메인 컨테이너 목록. |
-| `containers { init(name, image) { ... } }` | 메인 컨테이너보다 먼저 실행되는 Init 컨테이너. |
-| `containers { ephemeral(name, image) { ... } }` | 디버깅 시나리오용 임시(ephemeral) 컨테이너. |
-| `restartPolicy` | 컨테이너 재시작 동작: `Always`, `OnFailure`, `Never`. |
-| `serviceAccountName` | Pod 실행에 사용되는 ServiceAccount. |
-| `automountServiceAccountToken` | ServiceAccount 토큰의 자동 마운트 여부를 제어합니다. |
-| `imagePullSecrets { secret(name) }` | 프라이빗 컨테이너 레지스트리용 Secret. |
-| `volumes { volume(name) { ... } }` | 컨테이너가 마운트할 수 있는 볼륨. |
-| `nodeSelector { select(key, value) }` | 레이블을 통한 간단한 노드 선택. |
-| `affinity { ... }` | 스케줄링을 위한 어피니티 및 안티어피니티 규칙. |
-| `tolerations { toleration { ... } }` | 일치하는 taint가 있는 노드로의 스케줄링을 허용합니다. |
-| `topologySpreadConstraints { constraint(...) { ... } }` | 토폴로지 도메인 간 Pod 분산. |
-| `securityContext { ... }` | Pod 수준의 보안 컨텍스트. |
-| `terminationGracePeriodSeconds` | Pod 종료를 위한 유예 기간. |
-| `activeDeadlineSeconds` | Pod의 최대 수명. |
+| 속성 / 메서드                                           | 설명                                                  |
+|:--------------------------------------------------------|:------------------------------------------------------|
+| `containers { container(name, image) { ... } }`         | 필수 메인 컨테이너 목록.                              |
+| `containers { init(name, image) { ... } }`              | 메인 컨테이너보다 먼저 실행되는 Init 컨테이너.        |
+| `containers { ephemeral(name, image) { ... } }`         | 디버깅 시나리오용 임시(ephemeral) 컨테이너.           |
+| `restartPolicy`                                         | 컨테이너 재시작 동작: `Always`, `OnFailure`, `Never`. |
+| `serviceAccountName`                                    | Pod 실행에 사용되는 ServiceAccount.                   |
+| `automountServiceAccountToken`                          | ServiceAccount 토큰의 자동 마운트 여부를 제어합니다.  |
+| `imagePullSecrets { secret(name) }`                     | 프라이빗 컨테이너 레지스트리용 Secret.                |
+| `volumes { volume(name) { ... } }`                      | 컨테이너가 마운트할 수 있는 볼륨.                     |
+| `nodeSelector { select(key, value) }`                   | 레이블을 통한 간단한 노드 선택.                       |
+| `affinity { ... }`                                      | 스케줄링을 위한 어피니티 및 안티어피니티 규칙.        |
+| `tolerations { toleration { ... } }`                    | 일치하는 taint가 있는 노드로의 스케줄링을 허용합니다. |
+| `topologySpreadConstraints { constraint(...) { ... } }` | 토폴로지 도메인 간 Pod 분산.                          |
+| `securityContext { ... }`                               | Pod 수준의 보안 컨텍스트.                             |
+| `terminationGracePeriodSeconds`                         | Pod 종료를 위한 유예 기간.                            |
+| `activeDeadlineSeconds`                                 | Pod의 최대 수명.                                      |
 
 ## 네트워크와 DNS
 

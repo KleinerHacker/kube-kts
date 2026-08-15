@@ -49,7 +49,8 @@ private class HelmColumnHelp(commandSpec: CommandSpec, colorScheme: ColorScheme)
         val width = commandSpec().usageMessage().width()
 
         // Start from the default 5 columns and splice in the Helm column right before the description.
-        val base = TextTable.forDefaultColumns(colorScheme(), DEFAULT_LONG_OPTIONS_COLUMN_WIDTH, width).columns().toMutableList()
+        val base = TextTable.forDefaultColumns(colorScheme(), DEFAULT_LONG_OPTIONS_COLUMN_WIDTH, width).columns()
+            .toMutableList()
         val description = base.removeAt(base.size - 1)
         base.add(Column(HELM_COLUMN_WIDTH, 1, Column.Overflow.SPAN))
         base.add(Column(maxOf(description.width - HELM_COLUMN_WIDTH, 10), description.indent, description.overflow))
@@ -69,18 +70,28 @@ private val HINT_MARKERS = listOf(HELM_MARKER, EXPERIMENTAL_MARKER, DANGER_MARKE
 
 /** Decorates the default option renderer, moving a leading hint marker into a dedicated column. */
 private class HelmColumnOptionRenderer(private val delegate: IOptionRenderer) : IOptionRenderer {
-    override fun render(option: OptionSpec, paramLabelRenderer: IParamLabelRenderer, scheme: ColorScheme): Array<Array<Ansi.Text>> {
+    override fun render(
+        option: OptionSpec,
+        paramLabelRenderer: IParamLabelRenderer,
+        scheme: ColorScheme
+    ): Array<Array<Ansi.Text>> {
         val marker = option.description().leadingMarker()
-        val source = if (marker != null) option.toBuilder().description(*option.description().withoutMarker(marker)).build() else option
+        val source = if (marker != null) option.toBuilder().description(*option.description().withoutMarker(marker))
+            .build() else option
         return insertHintColumn(delegate.render(source, paramLabelRenderer, scheme), marker, scheme)
     }
 }
 
 /** Decorates the default parameter renderer so positional parameters keep the table column count. */
 private class HelmColumnParameterRenderer(private val delegate: IParameterRenderer) : IParameterRenderer {
-    override fun render(param: PositionalParamSpec, paramLabelRenderer: IParamLabelRenderer, scheme: ColorScheme): Array<Array<Ansi.Text>> {
+    override fun render(
+        param: PositionalParamSpec,
+        paramLabelRenderer: IParamLabelRenderer,
+        scheme: ColorScheme
+    ): Array<Array<Ansi.Text>> {
         val marker = param.description().leadingMarker()
-        val source = if (marker != null) param.toBuilder().description(*param.description().withoutMarker(marker)).build() else param
+        val source = if (marker != null) param.toBuilder().description(*param.description().withoutMarker(marker))
+            .build() else param
         return insertHintColumn(delegate.render(source, paramLabelRenderer, scheme), marker, scheme)
     }
 }
@@ -99,7 +110,11 @@ private fun Array<String>.withoutMarker(marker: String): Array<String> = mapInde
  * description column, so the resulting rows match the six-column table built in
  * [HelmColumnHelp.createDefaultLayout].
  */
-private fun insertHintColumn(rows: Array<Array<Ansi.Text>>, marker: String?, scheme: ColorScheme): Array<Array<Ansi.Text>> {
+private fun insertHintColumn(
+    rows: Array<Array<Ansi.Text>>,
+    marker: String?,
+    scheme: ColorScheme
+): Array<Array<Ansi.Text>> {
     val empty = scheme.ansi().text("")
     val hint = marker?.let { scheme.ansi().text(it) } ?: empty
     return Array(rows.size) { rowIndex ->

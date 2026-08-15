@@ -563,7 +563,10 @@ class HelmArgsTest {
             "--cert-file", "cert", "--key-file", "key", "--insecure-skip-tls-verify",
             "--no-update", "--force-update", "--allow-deprecated-repos",
         )
-        Assertions.assertEquals(listOf("repo", "add", "bitnami", "https://charts.bitnami.com/bitnami"), args.subList(0, 4))
+        Assertions.assertEquals(
+            listOf("repo", "add", "bitnami", "https://charts.bitnami.com/bitnami"),
+            args.subList(0, 4)
+        )
         assertHasOption(args, "--username", "u")
         assertHasOption(args, "--password", "p")
         assertHasFlag(args, "--pass-credentials")
@@ -592,7 +595,10 @@ class HelmArgsTest {
         Assertions.assertEquals(listOf("repo", "list"), list.subList(0, 2))
         assertHasOption(list, "--output", "json")
 
-        Assertions.assertEquals(listOf("repo", "remove", "r1", "r2"), buildHelmCommandLine("repo", "remove", "r1", "r2"))
+        Assertions.assertEquals(
+            listOf("repo", "remove", "r1", "r2"),
+            buildHelmCommandLine("repo", "remove", "r1", "r2")
+        )
     }
 
     // ---------------------------------------------------------------------------------------------
@@ -733,7 +739,15 @@ class HelmArgsTest {
      */
     @Test
     fun dependency_buildUpdateList() {
-        val build = buildHelmCommandLine("dependency", "build", TEST_REPOSITORY, "--keyring", "kr", "--skip-refresh", "--verify")
+        val build = buildHelmCommandLine(
+            "dependency",
+            "build",
+            TEST_REPOSITORY,
+            "--keyring",
+            "kr",
+            "--skip-refresh",
+            "--verify"
+        )
         Assertions.assertEquals(listOf("dependency", "build", "."), build.subList(0, 3))
         assertHasOption(build, "--keyring", "kr")
         assertHasFlag(build, "--skip-refresh")

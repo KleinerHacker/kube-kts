@@ -3,15 +3,14 @@
 `chart` DSL は、従来の Helm チャートの `Chart.yaml` ファイルと同様に、Helm チャートのメタデータと依存関係を定義するために使用します。
 
 !!! warning "セキュリティ: インポート制限"
-    デフォルトでは、KTS スクリプトは `import` 文や完全修飾クラス名
-    （例: `java.lang.Runtime`）を**許可しません**。事前構成されたデフォルトインポートで
-    提供される型のみ使用できます。
+デフォルトでは、KTS スクリプトは `import` 文や完全修飾クラス名 （例: `java.lang.Runtime`）を **許可しません**
+。事前構成されたデフォルトインポートで 提供される型のみ使用できます。
 
     `--unsafe` フラグを使うとこれらの制限を解除できます。
 
 ## 基本的な使い方
 
-チャートを定義するには、チャートの**名前**と**バージョン**を主な引数として受け取る `chart` 関数を使用します。
+チャートを定義するには、チャートの **名前**と **バージョン**を主な引数として受け取る `chart` 関数を使用します。
 
 ```kotlin
 chart("my-chart", "1.0.0") {
@@ -88,26 +87,25 @@ chart("full-featured-chart", "1.2.3") {
 
 ### トップレベルのプロパティ
 
-| プロパティ | 型 | 説明 |
-| :--- | :--- | :--- |
-| `description` | `String?` | チャートの 1 行の説明。 |
-| `type` | `ChartSpec.Type?` | チャートの種類: `Application` または `Library`。 |
-| `home` | `String?` | プロジェクトのホームページの URL。 |
-| `icon` | `URI?` | アイコンとして使用する SVG または PNG 画像の URL。 |
-| `appVersion` | `String?` | このチャートに含まれるアプリケーションのバージョン（チャートのバージョンではない）。 |
-| `deprecated` | `Boolean?` | このチャートが非推奨かどうか。 |
+| プロパティ    | 型                | 説明                                                                                 |
+|:--------------|:------------------|:-------------------------------------------------------------------------------------|
+| `description` | `String?`         | チャートの 1 行の説明。                                                              |
+| `type`        | `ChartSpec.Type?` | チャートの種類: `Application` または `Library`。                                     |
+| `home`        | `String?`         | プロジェクトのホームページの URL。                                                   |
+| `icon`        | `URI?`            | アイコンとして使用する SVG または PNG 画像の URL。                                   |
+| `appVersion`  | `String?`         | このチャートに含まれるアプリケーションのバージョン（チャートのバージョンではない）。 |
+| `deprecated`  | `Boolean?`        | このチャートが非推奨かどうか。                                                       |
 
 ### メソッド
 
-| メソッド | 説明 |
-|:-----------------------------------------------------------------| :--- |
-| `keywords { ... }` | このチャートを検索するためのキーワードを追加します。（代替: `addKeyword`、`addKeywords`） |
-| `sources { ... }` | このプロジェクトのソースコードへの URL を追加します。（代替: `addSource`、`addSources`） |
-| `kubeVersion { ... }` | 互換性のある Kubernetes バージョンの範囲を設定します。 |
+| メソッド               | 説明                                                                                                           |
+|:-----------------------|:---------------------------------------------------------------------------------------------------------------|
+| `keywords { ... }`     | このチャートを検索するためのキーワードを追加します。（代替: `addKeyword`、`addKeywords`）                      |
+| `sources { ... }`      | このプロジェクトのソースコードへの URL を追加します。（代替: `addSource`、`addSources`）                       |
+| `kubeVersion { ... }`  | 互換性のある Kubernetes バージョンの範囲を設定します。                                                         |
 | `dependencies { ... }` | チャートの依存関係を追加します。下記の [依存関係](#dependencies) を参照してください。（代替: `addDependency`） |
-| `maintainers { ... }` | メンテナーの情報を追加します。（代替: `addMaintainer`） |
-| `annotations { ... }` | カスタムアノテーションを追加します。（代替: `addAnnotation`） |
-
+| `maintainers { ... }`  | メンテナーの情報を追加します。（代替: `addMaintainer`）                                                        |
+| `annotations { ... }`  | カスタムアノテーションを追加します。（代替: `addAnnotation`）                                                  |
 
 ### 依存関係
 
@@ -118,7 +116,8 @@ chart("full-featured-chart", "1.2.3") {
 - `condition`: チャートをインストールするかどうかを判断するブール式。
 - `tags { tag(String) }`: 依存関係をグループ化するためのタグを追加します。（代替: `addTag`）
 - `pathImportValues { pathImportValue(path) }`: サブチャートから値をインポートします。（代替: `addPathImportValue`）
-- `mappingImportValues { mappingImportValue(childKey, parentKey) }`: サブチャートの特定の値を親チャートにマッピングします。（代替: `addMappingImportValue`）
+- `mappingImportValues { mappingImportValue(childKey, parentKey) }`:
+  サブチャートの特定の値を親チャートにマッピングします。（代替: `addMappingImportValue`）
 
 ## 特殊な型
 

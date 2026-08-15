@@ -4,14 +4,14 @@
 kube-kts version [OPTIONS]
 ```
 
-Runs `helm version` to print the Helm version information. It is purely informational and needs
-**neither a repository nor a render step** — the call is forwarded directly to Helm.
+Runs `helm version` to print the Helm version information. It is purely informational and needs **neither a repository
+nor a render step** — the call is forwarded directly to Helm.
 
 ## Version options
 
-| Option | Marker | Description |
-|---|---|---|
-| `--short` | `---->` | Print only the version number. |
+| Option                | Marker  | Description                                |
+|-----------------------|---------|--------------------------------------------|
+| `--short`             | `---->` | Print only the version number.             |
 | `--template=TEMPLATE` | `---->` | Go template for the version string format. |
 
 ## Helm global options

@@ -15,9 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
+import picocli.CommandLine.*
 
 /**
  * Command to list the dependencies of a chart.
@@ -31,7 +29,11 @@ class DependencyListCommand : BaseRenderedHelmCommand(), HelmArgsProvider {
     @Mixin
     private lateinit var globalOptions: HelmGlobalOptions
 
-    @Option(names = ["--max-col-width"], description = ["$HELM_MARKER maximum column width for output table"], paramLabel = "UINT")
+    @Option(
+        names = ["--max-col-width"],
+        description = ["$HELM_MARKER maximum column width for output table"],
+        paramLabel = "UINT"
+    )
     private var maxColWidth: Int? = null
 
     override val helmCommand: List<String>

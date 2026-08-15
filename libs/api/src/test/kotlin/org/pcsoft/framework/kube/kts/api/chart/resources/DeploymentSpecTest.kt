@@ -14,7 +14,6 @@ package org.pcsoft.framework.kube.kts.api.chart.resources
 
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Test
-import kotlin.test.assertFailsWith
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.DeploymentStrategySpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.LabelSelectorRequirementSpec
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.PodSpec
@@ -25,8 +24,9 @@ import org.pcsoft.framework.kube.kts.api.utils.convertToJson
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
-import java.util.UUID
+import java.util.*
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.time.Duration.Companion.seconds
@@ -86,27 +86,33 @@ class DeploymentSpecTest {
         }
 
         private val maxSpec = maxSpecBuilder.build()
-        private val maxTemplate = ExplicitTemplateSpecBuilder(DeploymentSpec.API_VERSION, DeploymentSpec.KIND, maxSpecBuilder).apply {
-            metadata("name") {
-                namespace = "namespace"
-                generateName = "generateName"
-                labels {
-                    label("key", "value")
-                }
-                annotations {
-                    annotation("key", "value")
-                }
-                finalizers {
-                    finalizer("finalizer")
-                }
-                ownerReferences {
-                    ownerReference("apiVersion", "kind", "name", UUID.fromString("2fade68b-1f49-403a-b5e8-4e640d3c6594")) {
-                        blockOwnerDeletion = true
-                        controller = true
+        private val maxTemplate =
+            ExplicitTemplateSpecBuilder(DeploymentSpec.API_VERSION, DeploymentSpec.KIND, maxSpecBuilder).apply {
+                metadata("name") {
+                    namespace = "namespace"
+                    generateName = "generateName"
+                    labels {
+                        label("key", "value")
+                    }
+                    annotations {
+                        annotation("key", "value")
+                    }
+                    finalizers {
+                        finalizer("finalizer")
+                    }
+                    ownerReferences {
+                        ownerReference(
+                            "apiVersion",
+                            "kind",
+                            "name",
+                            UUID.fromString("2fade68b-1f49-403a-b5e8-4e640d3c6594")
+                        ) {
+                            blockOwnerDeletion = true
+                            controller = true
+                        }
                     }
                 }
-            }
-        }.build()
+            }.build()
 
         private val minSpec = DeploymentSpecBuilder().apply {
             selector {
@@ -142,7 +148,10 @@ class DeploymentSpecTest {
         assertEquals("demo", deploymentSpec.selector.matchLabels!!["app"])
         assertNotNull(deploymentSpec.selector.matchExpressions)
         assertEquals("tier", deploymentSpec.selector.matchExpressions.first().key)
-        assertEquals(LabelSelectorRequirementSpec.Operator.In, deploymentSpec.selector.matchExpressions.first().operator)
+        assertEquals(
+            LabelSelectorRequirementSpec.Operator.In,
+            deploymentSpec.selector.matchExpressions.first().operator
+        )
         assertEquals("backend", deploymentSpec.selector.matchExpressions.first().values!!.first())
 
         assertNotNull(deploymentSpec.template.metadata)

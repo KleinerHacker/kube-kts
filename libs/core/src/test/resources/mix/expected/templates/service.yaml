@@ -8,21 +8,21 @@ metadata:
 spec:
   type: "LoadBalancer"
   ports:
-  - name: "port"
-    port: 9999
-    targetPort: 8888
-    protocol: "SCTP"
-    appProtocol: "https"
-    nodePort: 7777
+    - name: "port"
+      port: 9999
+      targetPort: 8888
+      protocol: "SCTP"
+      appProtocol: "https"
+      nodePort: 7777
   clusterIP: "clusterIP"
   clusterIPs:
-  - "clusterIP"
+    - "clusterIP"
   ipFamilies:
-  - "IPv4"
-  - "IPv6"
+    - "IPv4"
+    - "IPv6"
   ipFamilyPolicy: "RequireDualStack"
   externalIPs:
-  - "externalIP"
+    - "externalIP"
   externalName: "externalName"
   externalTrafficPolicy: "Local"
   internalTrafficPolicy: "Local"
@@ -30,7 +30,7 @@ spec:
   loadBalancerIP: "loadBalancerIP"
   loadBalancerClass: "loadBalancerClass"
   loadBalancerSourceRanges:
-  - "loadBalancerSourceRange"
+    - "loadBalancerSourceRange"
   sessionAffinity: "None"
   sessionAffinityConfig:
     clientIP:

@@ -12,7 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.NodeSelectorTermSpec.NodeSelectorRequirementSpec.*
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.NodeSelectorTermSpec.NodeSelectorRequirementSpec.Operator
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
@@ -127,7 +127,7 @@ class NodeSelectorTermSpecTest {
         val actualJson = minSpec.toJson()
         val expectedJson = "{}"
 
-        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)       
+        JSONAssert.assertEquals(expectedJson, actualJson, JSONCompareMode.LENIENT)
     }
 
 }
@@ -310,7 +310,10 @@ class PodAffinityTermSpecTest {
         assertNotNull(maxSpec.labelSelector.matchExpressions)
         assertEquals(1, maxSpec.labelSelector.matchExpressions.size)
         assertEquals("key", maxSpec.labelSelector.matchExpressions[0].key)
-        assertEquals(LabelSelectorRequirementSpec.Operator.DoesNotExist, maxSpec.labelSelector.matchExpressions[0].operator)
+        assertEquals(
+            LabelSelectorRequirementSpec.Operator.DoesNotExist,
+            maxSpec.labelSelector.matchExpressions[0].operator
+        )
         assertEquals(listOf("value"), maxSpec.labelSelector.matchExpressions[0].values)
         assertNotNull(maxSpec.namespaceSelector)
         assertNotNull(maxSpec.namespaceSelector.matchLabels)
@@ -318,7 +321,10 @@ class PodAffinityTermSpecTest {
         assertNotNull(maxSpec.namespaceSelector.matchExpressions)
         assertEquals(1, maxSpec.namespaceSelector.matchExpressions.size)
         assertEquals("key", maxSpec.namespaceSelector.matchExpressions[0].key)
-        assertEquals(LabelSelectorRequirementSpec.Operator.DoesNotExist, maxSpec.namespaceSelector.matchExpressions[0].operator)
+        assertEquals(
+            LabelSelectorRequirementSpec.Operator.DoesNotExist,
+            maxSpec.namespaceSelector.matchExpressions[0].operator
+        )
         assertEquals(listOf("value"), maxSpec.namespaceSelector.matchExpressions[0].values)
         assertNotNull(maxSpec.matchLabelKeys)
         assertEquals(1, maxSpec.matchLabelKeys.keys.size)
@@ -464,7 +470,10 @@ class WeightedPodAffinityTermSpecTest {
         assertNotNull(maxSpec.podAffinityTerm.labelSelector.matchExpressions)
         assertEquals(1, maxSpec.podAffinityTerm.labelSelector.matchExpressions.size)
         assertEquals("key", maxSpec.podAffinityTerm.labelSelector.matchExpressions[0].key)
-        assertEquals(LabelSelectorRequirementSpec.Operator.DoesNotExist, maxSpec.podAffinityTerm.labelSelector.matchExpressions[0].operator)
+        assertEquals(
+            LabelSelectorRequirementSpec.Operator.DoesNotExist,
+            maxSpec.podAffinityTerm.labelSelector.matchExpressions[0].operator
+        )
         assertEquals(listOf("value"), maxSpec.podAffinityTerm.labelSelector.matchExpressions[0].values)
         assertNotNull(maxSpec.podAffinityTerm.namespaceSelector)
         assertNotNull(maxSpec.podAffinityTerm.namespaceSelector.matchLabels)
@@ -472,7 +481,10 @@ class WeightedPodAffinityTermSpecTest {
         assertNotNull(maxSpec.podAffinityTerm.namespaceSelector.matchExpressions)
         assertEquals(1, maxSpec.podAffinityTerm.namespaceSelector.matchExpressions.size)
         assertEquals("key", maxSpec.podAffinityTerm.namespaceSelector.matchExpressions[0].key)
-        assertEquals(LabelSelectorRequirementSpec.Operator.DoesNotExist, maxSpec.podAffinityTerm.namespaceSelector.matchExpressions[0].operator)
+        assertEquals(
+            LabelSelectorRequirementSpec.Operator.DoesNotExist,
+            maxSpec.podAffinityTerm.namespaceSelector.matchExpressions[0].operator
+        )
         assertEquals(listOf("value"), maxSpec.podAffinityTerm.namespaceSelector.matchExpressions[0].values)
         assertNotNull(maxSpec.podAffinityTerm.matchLabelKeys)
         assertEquals(1, maxSpec.podAffinityTerm.matchLabelKeys.keys.size)

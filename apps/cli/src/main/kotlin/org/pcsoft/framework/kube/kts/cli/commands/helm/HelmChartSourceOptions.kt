@@ -23,31 +23,72 @@ import picocli.CommandLine.Option
  */
 @NoArgs
 class HelmChartSourceOptions(
-    @field:Option(names = ["--repo"], description = ["$HELM_MARKER chart repository url where to locate the requested chart"], paramLabel = "URL")
+    @field:Option(
+        names = ["--repo"],
+        description = ["$HELM_MARKER chart repository url where to locate the requested chart"],
+        paramLabel = "URL"
+    )
     var repo: String? = null,
-    @field:Option(names = ["--username"], description = ["$HELM_MARKER chart repository username where to locate the requested chart"], paramLabel = "USER")
+    @field:Option(
+        names = ["--username"],
+        description = ["$HELM_MARKER chart repository username where to locate the requested chart"],
+        paramLabel = "USER"
+    )
     var username: String? = null,
-    @field:Option(names = ["--password"], description = ["$HELM_MARKER chart repository password where to locate the requested chart"], paramLabel = "PASSWORD")
+    @field:Option(
+        names = ["--password"],
+        description = ["$HELM_MARKER chart repository password where to locate the requested chart"],
+        paramLabel = "PASSWORD"
+    )
     var password: String? = null,
     @field:Option(names = ["--pass-credentials"], description = ["$HELM_MARKER pass credentials to all domains"])
     var passCredentials: Boolean = false,
-    @field:Option(names = ["--ca-file"], description = ["$HELM_MARKER verify certificates of HTTPS-enabled servers using this CA bundle"], paramLabel = "FILE")
+    @field:Option(
+        names = ["--ca-file"],
+        description = ["$HELM_MARKER verify certificates of HTTPS-enabled servers using this CA bundle"],
+        paramLabel = "FILE"
+    )
     var caFile: String? = null,
-    @field:Option(names = ["--cert-file"], description = ["$HELM_MARKER identify HTTPS client using this SSL certificate file"], paramLabel = "FILE")
+    @field:Option(
+        names = ["--cert-file"],
+        description = ["$HELM_MARKER identify HTTPS client using this SSL certificate file"],
+        paramLabel = "FILE"
+    )
     var certFile: String? = null,
-    @field:Option(names = ["--key-file"], description = ["$HELM_MARKER identify HTTPS client using this SSL key file"], paramLabel = "FILE")
+    @field:Option(
+        names = ["--key-file"],
+        description = ["$HELM_MARKER identify HTTPS client using this SSL key file"],
+        paramLabel = "FILE"
+    )
     var keyFile: String? = null,
-    @field:Option(names = ["--insecure-skip-tls-verify"], description = ["$HELM_MARKER skip tls certificate checks for the chart download"])
+    @field:Option(
+        names = ["--insecure-skip-tls-verify"],
+        description = ["$HELM_MARKER skip tls certificate checks for the chart download"]
+    )
     var insecureSkipTlsVerify: Boolean = false,
-    @field:Option(names = ["--keyring"], description = ["$HELM_MARKER location of public keys used for verification"], paramLabel = "FILE")
+    @field:Option(
+        names = ["--keyring"],
+        description = ["$HELM_MARKER location of public keys used for verification"],
+        paramLabel = "FILE"
+    )
     var keyring: String? = null,
     @field:Option(names = ["--verify"], description = ["$HELM_MARKER verify the package before using it"])
     var verify: Boolean = false,
-    @field:Option(names = ["--version"], description = ["$HELM_MARKER specify a version constraint for the chart version to use"], paramLabel = "VERSION")
+    @field:Option(
+        names = ["--version"],
+        description = ["$HELM_MARKER specify a version constraint for the chart version to use"],
+        paramLabel = "VERSION"
+    )
     var version: String? = null,
-    @field:Option(names = ["--devel"], description = ["$HELM_MARKER use development versions, too (equivalent to version '>0.0.0-0')"])
+    @field:Option(
+        names = ["--devel"],
+        description = ["$HELM_MARKER use development versions, too (equivalent to version '>0.0.0-0')"]
+    )
     var devel: Boolean = false,
-    @field:Option(names = ["--dependency-update"], description = ["$HELM_MARKER update dependencies if they are missing before installing the chart"])
+    @field:Option(
+        names = ["--dependency-update"],
+        description = ["$HELM_MARKER update dependencies if they are missing before installing the chart"]
+    )
     var dependencyUpdate: Boolean = false,
 ) : HelmArgsProvider {
     override fun toHelmArgs(): List<String> = helmArgs {

@@ -12,11 +12,11 @@
 
 package org.pcsoft.framework.kube.kts.cli.commands
 
-import org.pcsoft.framework.kube.kts.cli.commands.helm.*
+import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
+import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
+import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmValueOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
+import picocli.CommandLine.*
 
 /**
  * Command for linting a KTS-based Helm chart repository.
@@ -28,13 +28,16 @@ import picocli.CommandLine.Option
 class LintCommand : BaseRenderedHelmCommand(), HelmArgsProvider {
     @Mixin
     private lateinit var globalOptions: HelmGlobalOptions
+
     @Mixin
     private lateinit var valueOptions: HelmValueOptions
 
     @Option(names = ["--quiet"], description = ["$HELM_MARKER print only warnings and errors"])
     private var quiet: Boolean = false
+
     @Option(names = ["--strict"], description = ["$HELM_MARKER fail on lint warnings"])
     private var strict: Boolean = false
+
     @Option(names = ["--with-subcharts"], description = ["$HELM_MARKER lint dependent charts"])
     private var withSubcharts: Boolean = false
 

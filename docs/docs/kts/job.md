@@ -1,13 +1,12 @@
 # Job DSL
 
-The `job` DSL is used to configure Kubernetes **Job** resources. A Job creates one or more Pods and
-runs them to completion — suitable for batch and run-to-completion workloads, as opposed to the
-long-running services managed by a [Deployment](deployment.md).
+The `job` DSL is used to configure Kubernetes **Job** resources. A Job creates one or more Pods and runs them to
+completion — suitable for batch and run-to-completion workloads, as opposed to the long-running services managed by
+a [Deployment](deployment.md).
 
 !!! warning "Security: Import Restrictions"
-    By default, KTS scripts **do not allow** `import` statements or fully qualified class names
-    (e.g. `java.lang.Runtime`). Only types provided via the pre-configured default imports may
-    be used.
+By default, KTS scripts **do not allow** `import` statements or fully qualified class names (e.g. `java.lang.Runtime`).
+Only types provided via the pre-configured default imports may be used.
 
     Use the `--unsafe` flag to lift these restrictions.
 
@@ -37,8 +36,8 @@ job {
 
 ## Detailed Example
 
-The following is a comprehensive example showing parallelism, completions, retry handling,
-automatic cleanup, an explicit selector, a Pod failure policy and a success policy.
+The following is a comprehensive example showing parallelism, completions, retry handling, automatic cleanup, an
+explicit selector, a Pod failure policy and a success policy.
 
 ```kotlin
 job {
@@ -109,48 +108,48 @@ job {
 
 ### Metadata (`metadata`)
 
-| Property | Type | Description |
-| :--- | :--- | :--- |
-| `name` | `String` | The name of the Job resource (passed as the first argument). |
-| `namespace` | `String?` | The namespace for the resource. |
-| `generateName` | `String?` | An optional prefix for generating a unique name. |
+| Property       | Type      | Description                                                  |
+|:---------------|:----------|:-------------------------------------------------------------|
+| `name`         | `String`  | The name of the Job resource (passed as the first argument). |
+| `namespace`    | `String?` | The namespace for the resource.                              |
+| `generateName` | `String?` | An optional prefix for generating a unique name.             |
 
 ### Job Specification (`spec`)
 
-| Property / Method | Description |
-| :--- | :--- |
-| `parallelism` | The maximum number of Pods that should run in parallel. |
-| `completions` | The desired number of successfully finished Pods. |
-| `completionMode` | `NonIndexed` or `Indexed`. |
-| `backoffLimit` | The number of retries before the Job is marked as failed. |
-| `backoffLimitPerIndex` | The number of retries per index (indexed Jobs only). |
-| `maxFailedIndexes` | The maximal number of failed indexes before the Job fails (indexed Jobs only). |
-| `activeDeadlineSeconds` | The maximum duration the Job may be active before being terminated. |
-| `ttlSecondsAfterFinished` | TTL after the Job finished, after which it is eligible for cleanup. |
-| `suspend` | If true, the Job controller does not create any Pods. |
-| `manualSelector` | If true, the `selector` is managed by the user instead of the system. |
-| `podReplacementPolicy` | `TerminatingOrFailed` or `Failed`. |
-| `selector { ... }` | The label selector (reuses the shared selector DSL, see [Selector](deployment/selector.md)). |
-| `podFailurePolicy { rule(action) { ... } }` | Rules controlling how the Job reacts to Pod failures. |
-| `successPolicy { rule { ... } }` | Rules defining when an indexed Job is declared successful. |
-| `template { ... }` | The Pod template (see [Pod Template](deployment/template.md)). |
+| Property / Method                           | Description                                                                                  |
+|:--------------------------------------------|:---------------------------------------------------------------------------------------------|
+| `parallelism`                               | The maximum number of Pods that should run in parallel.                                      |
+| `completions`                               | The desired number of successfully finished Pods.                                            |
+| `completionMode`                            | `NonIndexed` or `Indexed`.                                                                   |
+| `backoffLimit`                              | The number of retries before the Job is marked as failed.                                    |
+| `backoffLimitPerIndex`                      | The number of retries per index (indexed Jobs only).                                         |
+| `maxFailedIndexes`                          | The maximal number of failed indexes before the Job fails (indexed Jobs only).               |
+| `activeDeadlineSeconds`                     | The maximum duration the Job may be active before being terminated.                          |
+| `ttlSecondsAfterFinished`                   | TTL after the Job finished, after which it is eligible for cleanup.                          |
+| `suspend`                                   | If true, the Job controller does not create any Pods.                                        |
+| `manualSelector`                            | If true, the `selector` is managed by the user instead of the system.                        |
+| `podReplacementPolicy`                      | `TerminatingOrFailed` or `Failed`.                                                           |
+| `selector { ... }`                          | The label selector (reuses the shared selector DSL, see [Selector](deployment/selector.md)). |
+| `podFailurePolicy { rule(action) { ... } }` | Rules controlling how the Job reacts to Pod failures.                                        |
+| `successPolicy { rule { ... } }`            | Rules defining when an indexed Job is declared successful.                                   |
+| `template { ... }`                          | The Pod template (see [Pod Template](deployment/template.md)).                               |
 
 ### Pod Failure Policy (`podFailurePolicy`)
 
-| Property / Method | Description |
-| :--- | :--- |
-| `rule(action) { ... }` | Adds a rule. `action` is `FailJob`, `Ignore`, `Count` or `FailIndex`. |
-| `onExitCodes(operator) { containerName; values(...) }` | Matches container exit codes (`operator`: `In`/`NotIn`). |
-| `onPodCondition(type, status)` | Matches a Pod condition (e.g. `"DisruptionTarget", "True"`). |
+| Property / Method                                      | Description                                                           |
+|:-------------------------------------------------------|:----------------------------------------------------------------------|
+| `rule(action) { ... }`                                 | Adds a rule. `action` is `FailJob`, `Ignore`, `Count` or `FailIndex`. |
+| `onExitCodes(operator) { containerName; values(...) }` | Matches container exit codes (`operator`: `In`/`NotIn`).              |
+| `onPodCondition(type, status)`                         | Matches a Pod condition (e.g. `"DisruptionTarget", "True"`).          |
 
 ### Success Policy (`successPolicy`)
 
-| Property / Method | Description |
-| :--- | :--- |
-| `rule { ... }` | Adds a rule. |
+| Property / Method  | Description                                        |
+|:-------------------|:---------------------------------------------------|
+| `rule { ... }`     | Adds a rule.                                       |
 | `succeededIndexes` | A set of indexes (e.g. `"0-2"`) that must succeed. |
-| `succeededCount` | The minimum number of succeeded indexes. |
+| `succeededCount`   | The minimum number of succeeded indexes.           |
 
 !!! note "restartPolicy"
-    Unlike a Deployment, a Job's Pod template **must** set `restartPolicy` to `Never` or `OnFailure`.
-    `Always` is not allowed for Jobs.
+Unlike a Deployment, a Job's Pod template **must** set `restartPolicy` to `Never` or `OnFailure`.
+`Always` is not allowed for Jobs.

@@ -63,7 +63,10 @@ class RepoAddTest {
         Assertions.assertEquals(0, exitCode)
         Assertions.assertEquals(1, executor.invocations)
         val args = executor.capturedArgs!!
-        Assertions.assertEquals(listOf("repo", "add", "bitnami", "https://charts.bitnami.com/bitnami"), args.subList(0, 4))
+        Assertions.assertEquals(
+            listOf("repo", "add", "bitnami", "https://charts.bitnami.com/bitnami"),
+            args.subList(0, 4)
+        )
         Assertions.assertTrue(args.contains("--force-update"), "force-update forwarded: $args")
     }
 

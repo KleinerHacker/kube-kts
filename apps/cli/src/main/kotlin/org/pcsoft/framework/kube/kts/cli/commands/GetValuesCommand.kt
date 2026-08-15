@@ -15,10 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to download the values file for a named release.
@@ -27,7 +24,11 @@ import picocli.CommandLine.Parameters
  */
 @Command(name = "values", description = ["Download the values file for a named release with helm"])
 class GetValuesCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0", paramLabel = "RELEASE", description = ["Name of the release to query (forwarded to helm as positional RELEASE)"])
+    @Parameters(
+        index = "0",
+        paramLabel = "RELEASE",
+        description = ["Name of the release to query (forwarded to helm as positional RELEASE)"]
+    )
     private lateinit var release: String
 
     @Mixin
@@ -35,9 +36,19 @@ class GetValuesCommand : BaseDirectHelmCommand(), HelmArgsProvider {
 
     @Option(names = ["-a", "--all"], description = ["$HELM_MARKER dump all (computed) values"])
     private var all: Boolean = false
-    @Option(names = ["--revision"], description = ["$HELM_MARKER get the named release with revision"], paramLabel = "INT")
+
+    @Option(
+        names = ["--revision"],
+        description = ["$HELM_MARKER get the named release with revision"],
+        paramLabel = "INT"
+    )
     private var revision: Int? = null
-    @Option(names = ["-o", "--output"], description = ["$HELM_MARKER prints the output in the specified format. Allowed values: table, json, yaml"], paramLabel = "FORMAT")
+
+    @Option(
+        names = ["-o", "--output"],
+        description = ["$HELM_MARKER prints the output in the specified format. Allowed values: table, json, yaml"],
+        paramLabel = "FORMAT"
+    )
     private var output: String? = null
 
     override val helmCommand: List<String>

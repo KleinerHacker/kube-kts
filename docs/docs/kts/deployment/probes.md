@@ -2,11 +2,11 @@
 
 Probes are defined on the container. They help Kubernetes evaluate the state of an application.
 
-| Probe | Purpose |
-| :--- | :--- |
-| `startupProbe` | Checks whether the application has started. The other probes do not run until it succeeds. |
+| Probe            | Purpose                                                                                           |
+|:-----------------|:--------------------------------------------------------------------------------------------------|
+| `startupProbe`   | Checks whether the application has started. The other probes do not run until it succeeds.        |
 | `readinessProbe` | Checks whether the container can receive traffic. Failures remove the Pod from Service endpoints. |
-| `livenessProbe` | Checks whether the container is still functional. Failures can trigger a restart. |
+| `livenessProbe`  | Checks whether the container is still functional. Failures can trigger a restart.                 |
 
 ## HTTP GET
 
@@ -68,11 +68,11 @@ container("grpc-api", "registry.example.com/grpc-api:1.0.0") {
 
 ## Timing Options
 
-| Property | Description |
-| :--- | :--- |
-| `initialDelaySeconds` | Wait time after container start before the first check. |
-| `periodSeconds` | Interval between two checks. |
-| `timeoutSeconds` | Maximum duration of a single check. |
-| `successThreshold` | Number of consecutive successes required to switch to a successful status. |
-| `failureThreshold` | Number of consecutive failures before failure handling starts. |
-| `terminationGracePeriodSeconds` | Grace period for a termination triggered by the probe. |
+| Property                        | Description                                                                |
+|:--------------------------------|:---------------------------------------------------------------------------|
+| `initialDelaySeconds`           | Wait time after container start before the first check.                    |
+| `periodSeconds`                 | Interval between two checks.                                               |
+| `timeoutSeconds`                | Maximum duration of a single check.                                        |
+| `successThreshold`              | Number of consecutive successes required to switch to a successful status. |
+| `failureThreshold`              | Number of consecutive failures before failure handling starts.             |
+| `terminationGracePeriodSeconds` | Grace period for a termination triggered by the probe.                     |

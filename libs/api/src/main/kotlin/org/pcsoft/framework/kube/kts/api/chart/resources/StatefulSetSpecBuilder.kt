@@ -12,11 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.LabelSelectorSpecBuilder
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.PersistentVolumeClaimRetentionPolicySpecBuilder
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.PodTemplateSpecBuilder
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.StatefulSetUpdateStrategySpecBuilder
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeClaimTemplateListSpecBuilder
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.*
 import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpecBuilder
 import java.time.Duration
@@ -112,8 +108,15 @@ class StatefulSetSpecBuilder internal constructor() : ResourceSpecBuilder<Statef
      *
      * @param start The number representing the first replica index.
      */
-    fun ordinals(start: Int) {
-        ordinals = StatefulSetSpec.OrdinalsSpec(start)
+    fun ordinals(start: Int) = ordinals { this.start = start }
+
+    /**
+     * Configures the ordinal numbering of the StatefulSet's replica indices.
+     *
+     * @param prepare A lambda with a receiver of [OrdinalsSpecBuilder].
+     */
+    fun ordinals(prepare: OrdinalsSpecBuilder.() -> Unit) {
+        ordinals = OrdinalsSpecBuilder().apply(prepare).build()
     }
 
     override fun build(): StatefulSetSpec {

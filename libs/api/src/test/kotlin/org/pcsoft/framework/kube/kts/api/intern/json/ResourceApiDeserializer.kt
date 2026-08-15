@@ -38,7 +38,7 @@ class ResourceApiDeserializer : ValueDeserializer<ExplicitTemplateSpec<*>>() {
             else -> throw NotImplementedError()
         }
         val spec = ctxt.readValue(TreeTraversingParser(tree["spec"]), targetType)
-        
+
         return ExplicitTemplateSpec<ResourceSpec>(apiVersion, kind, metadata, spec)
     }
 

@@ -12,13 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteHttpHeaderActionsSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteHttpHeaderSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteHttpHeadersSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.RoutePortSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteTargetSpecBuilder
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteTlsSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.RouteTlsSpecBuilder
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.*
 import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpecBuilder
 
@@ -39,8 +33,9 @@ import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpecBuil
 class RouteSpecBuilder internal constructor() : ResourceSpecBuilder<RouteSpec> {
     private var to: RouteTargetSpecBuilder? = null
     private var alternateBackends: MutableList<RouteTargetSpecBuilder>? = null
-    private var port: RoutePortSpec? = null
+    private var port: RoutePortSpecBuilder? = null
     private var tls: RouteTlsSpecBuilder? = null
+    private var httpHeaders: RouteHttpHeadersSpecBuilder? = null
 
     /**
      * The externally reachable host name the Route is published under. If null, the OpenShift router
@@ -61,7 +56,10 @@ class RouteSpecBuilder internal constructor() : ResourceSpecBuilder<RouteSpec> {
      */
     var subdomain: String? = null
 
-    private var httpHeaders: RouteHttpHeadersSpec? = null
+    /**
+     * Controls whether the Route applies to a single exact host or to all hosts of a subdomain.
+     */
+    var wildcardPolicy: RouteSpec.WildcardPolicy? = null
 
     /**
      * Configures HTTP header manipulations the router applies to requests and responses.
@@ -74,80 +72,11 @@ class RouteSpecBuilder internal constructor() : ResourceSpecBuilder<RouteSpec> {
      * }
      * ```
      *
-     * @param prepare A lambda with a receiver of [RouteHttpHeadersBuilder] to configure the header actions.
+     * @param prepare A lambda with a receiver of [RouteHttpHeadersSpecBuilder] to configure the header actions.
      */
-    fun httpHeaders(prepare: RouteHttpHeadersBuilder.() -> Unit) {
-        httpHeaders = RouteHttpHeadersBuilder().apply(prepare).build()
+    fun httpHeaders(prepare: RouteHttpHeadersSpecBuilder.() -> Unit) {
+        httpHeaders = RouteHttpHeadersSpecBuilder().apply(prepare)
     }
-
-    /**
-     * A builder for the HTTP header actions of a route.
-     */
-    class RouteHttpHeadersBuilder internal constructor() {
-        private val request = mutableListOf<RouteHttpHeaderSpec>()
-        private val response = mutableListOf<RouteHttpHeaderSpec>()
-
-        /**
-         * Sets a header on requests forwarded to the backend, replacing any existing value.
-         *
-         * @param name  The name of the header.
-         * @param value The value to set.
-         */
-        fun setRequestHeader(name: String, value: String) {
-            request += RouteHttpHeaderSpec(
-                name,
-                RouteHttpHeaderSpec.Action(RouteHttpHeaderSpec.Type.Set, RouteHttpHeaderSpec.SetAction(value))
-            )
-        }
-
-        /**
-         * Removes a header from requests forwarded to the backend.
-         *
-         * @param name The name of the header.
-         */
-        fun deleteRequestHeader(name: String) {
-            request += RouteHttpHeaderSpec(name, RouteHttpHeaderSpec.Action(RouteHttpHeaderSpec.Type.Delete, null))
-        }
-
-        /**
-         * Sets a header on responses returned to the client, replacing any existing value.
-         *
-         * @param name  The name of the header.
-         * @param value The value to set.
-         */
-        fun setResponseHeader(name: String, value: String) {
-            response += RouteHttpHeaderSpec(
-                name,
-                RouteHttpHeaderSpec.Action(RouteHttpHeaderSpec.Type.Set, RouteHttpHeaderSpec.SetAction(value))
-            )
-        }
-
-        /**
-         * Removes a header from responses returned to the client.
-         *
-         * @param name The name of the header.
-         */
-        fun deleteResponseHeader(name: String) {
-            response += RouteHttpHeaderSpec(name, RouteHttpHeaderSpec.Action(RouteHttpHeaderSpec.Type.Delete, null))
-        }
-
-        /**
-         * Builds the configured header actions.
-         *
-         * @return A [RouteHttpHeadersSpec] carrying the configured request and response actions.
-         */
-        internal fun build(): RouteHttpHeadersSpec = RouteHttpHeadersSpec(
-            RouteHttpHeaderActionsSpec(
-                request = request.takeIf { it.isNotEmpty() },
-                response = response.takeIf { it.isNotEmpty() }
-            )
-        )
-    }
-
-    /**
-     * Controls whether the Route applies to a single exact host or to all hosts of a subdomain.
-     */
-    var wildcardPolicy: RouteSpec.WildcardPolicy? = null
 
     /**
      * Configures the primary backend the Route directs traffic to.
@@ -206,7 +135,7 @@ class RouteSpecBuilder internal constructor() : ResourceSpecBuilder<RouteSpec> {
      * @param name The name of the target port on the backing service.
      */
     fun port(name: String) {
-        port = RoutePortSpec(name, null)
+        port = RoutePortSpecBuilder(name)
     }
 
     /**
@@ -215,7 +144,7 @@ class RouteSpecBuilder internal constructor() : ResourceSpecBuilder<RouteSpec> {
      * @param number The numeric target port on the backing service.
      */
     fun port(number: Int) {
-        port = RoutePortSpec(null, number)
+        port = RoutePortSpecBuilder(number)
     }
 
     /**
@@ -244,10 +173,10 @@ class RouteSpecBuilder internal constructor() : ResourceSpecBuilder<RouteSpec> {
             path = path,
             to = to!!.build(),
             alternateBackends = alternateBackends?.map { it.build() },
-            port = port,
+            port = port?.build(),
             tls = tls?.build(),
             wildcardPolicy = wildcardPolicy,
-            httpHeaders = httpHeaders
+            httpHeaders = httpHeaders?.build()
         )
     }
 

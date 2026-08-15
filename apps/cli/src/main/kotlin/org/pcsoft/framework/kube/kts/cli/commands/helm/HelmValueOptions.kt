@@ -23,15 +23,35 @@ import picocli.CommandLine.Option
  */
 @NoArgs
 class HelmValueOptions(
-    @field:Option(names = ["--set"], description = ["$HELM_MARKER set values on the command line (repeatable)"], paramLabel = "KEY=VALUE")
+    @field:Option(
+        names = ["--set"],
+        description = ["$HELM_MARKER set values on the command line (repeatable)"],
+        paramLabel = "KEY=VALUE"
+    )
     var set: Array<String>? = null,
-    @field:Option(names = ["--set-string"], description = ["$HELM_MARKER set STRING values on the command line (repeatable)"], paramLabel = "KEY=VALUE")
+    @field:Option(
+        names = ["--set-string"],
+        description = ["$HELM_MARKER set STRING values on the command line (repeatable)"],
+        paramLabel = "KEY=VALUE"
+    )
     var setString: Array<String>? = null,
-    @field:Option(names = ["--set-file"], description = ["$HELM_MARKER set values from respective files (repeatable)"], paramLabel = "KEY=PATH")
+    @field:Option(
+        names = ["--set-file"],
+        description = ["$HELM_MARKER set values from respective files (repeatable)"],
+        paramLabel = "KEY=PATH"
+    )
     var setFile: Array<String>? = null,
-    @field:Option(names = ["--set-json"], description = ["$HELM_MARKER set JSON values on the command line (repeatable)"], paramLabel = "KEY=JSON")
+    @field:Option(
+        names = ["--set-json"],
+        description = ["$HELM_MARKER set JSON values on the command line (repeatable)"],
+        paramLabel = "KEY=JSON"
+    )
     var setJson: Array<String>? = null,
-    @field:Option(names = ["--set-literal"], description = ["$HELM_MARKER set a literal STRING value on the command line (repeatable)"], paramLabel = "KEY=VALUE")
+    @field:Option(
+        names = ["--set-literal"],
+        description = ["$HELM_MARKER set a literal STRING value on the command line (repeatable)"],
+        paramLabel = "KEY=VALUE"
+    )
     var setLiteral: Array<String>? = null,
 ) : HelmArgsProvider {
     override fun toHelmArgs(): List<String> = helmArgs {

@@ -264,7 +264,11 @@ class ContainerSpecTest {
      */
     @Test
     fun testMinYaml() {
-        JSONAssert.assertEquals("""{"name":"container","image":"nginx:latest"}""", minSpec.toJson(), JSONCompareMode.LENIENT)
+        JSONAssert.assertEquals(
+            """{"name":"container","image":"nginx:latest"}""",
+            minSpec.toJson(),
+            JSONCompareMode.LENIENT
+        )
     }
 
     /**

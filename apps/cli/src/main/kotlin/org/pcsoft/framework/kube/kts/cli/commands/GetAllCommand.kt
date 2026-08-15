@@ -15,10 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to download all information for a named release.
@@ -27,17 +24,35 @@ import picocli.CommandLine.Parameters
  */
 @Command(name = "all", description = ["Download all information for a named release with helm"])
 class GetAllCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0", paramLabel = "RELEASE", description = ["Name of the release to query (forwarded to helm as positional RELEASE)"])
+    @Parameters(
+        index = "0",
+        paramLabel = "RELEASE",
+        description = ["Name of the release to query (forwarded to helm as positional RELEASE)"]
+    )
     private lateinit var release: String
 
     @Mixin
     private lateinit var globalOptions: HelmGlobalOptions
 
-    @Option(names = ["--revision"], description = ["$HELM_MARKER get the named release with revision"], paramLabel = "INT")
+    @Option(
+        names = ["--revision"],
+        description = ["$HELM_MARKER get the named release with revision"],
+        paramLabel = "INT"
+    )
     private var revision: Int? = null
-    @Option(names = ["--template"], description = ["$HELM_MARKER go template for formatting the output, eg: {{.Release.Name}}"], paramLabel = "TEMPLATE")
+
+    @Option(
+        names = ["--template"],
+        description = ["$HELM_MARKER go template for formatting the output, eg: {{.Release.Name}}"],
+        paramLabel = "TEMPLATE"
+    )
     private var template: String? = null
-    @Option(names = ["-o", "--output"], description = ["$HELM_MARKER prints the output in the specified format. Allowed values: table, json, yaml"], paramLabel = "FORMAT")
+
+    @Option(
+        names = ["-o", "--output"],
+        description = ["$HELM_MARKER prints the output in the specified format. Allowed values: table, json, yaml"],
+        paramLabel = "FORMAT"
+    )
     private var output: String? = null
 
     override val helmCommand: List<String>

@@ -12,11 +12,11 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
-import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
 import org.apache.commons.io.IOUtils
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.Protocol
 import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpecBuilder
+import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
 import org.pcsoft.framework.kube.kts.api.utils.convertToJson
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
@@ -66,27 +66,33 @@ class ServiceSpecTest {
         }
 
         private val maxSpec = maxSpecBuilder.build()
-        private val maxTemplate = ExplicitTemplateSpecBuilder(ServiceSpec.API_VERSION, ServiceSpec.KIND, maxSpecBuilder).apply {
-            metadata("name") {
-                namespace = "namespace"
-                generateName = "generateName"
-                labels {
-                    label("key", "value")
-                }
-                annotations {
-                    annotation("key", "value")
-                }
-                finalizers {
-                    finalizer("finalizer")
-                }
-                ownerReferences {
-                    ownerReference("apiVersion", "kind", "name", UUID.fromString("2fade68b-1f49-403a-b5e8-4e640d3c6594")) {
-                        blockOwnerDeletion = true
-                        controller = true
+        private val maxTemplate =
+            ExplicitTemplateSpecBuilder(ServiceSpec.API_VERSION, ServiceSpec.KIND, maxSpecBuilder).apply {
+                metadata("name") {
+                    namespace = "namespace"
+                    generateName = "generateName"
+                    labels {
+                        label("key", "value")
+                    }
+                    annotations {
+                        annotation("key", "value")
+                    }
+                    finalizers {
+                        finalizer("finalizer")
+                    }
+                    ownerReferences {
+                        ownerReference(
+                            "apiVersion",
+                            "kind",
+                            "name",
+                            UUID.fromString("2fade68b-1f49-403a-b5e8-4e640d3c6594")
+                        ) {
+                            blockOwnerDeletion = true
+                            controller = true
+                        }
                     }
                 }
-            }
-        }.build()
+            }.build()
 
         private val minSpec = ServiceSpecBuilder().apply {
             addPort("port", 9999) {}

@@ -62,7 +62,10 @@ class HelpRenderTest {
     private fun assertForwarded(usage: String, option: String) {
         val row = rowOf(usage, option)
         Assertions.assertTrue(row.contains(helmHint), "Expected '$helmHint' column for '$option' in row: $row")
-        Assertions.assertTrue(row.indexOf(option) < row.indexOf(helmHint), "Column order wrong for '$option' in row: $row")
+        Assertions.assertTrue(
+            row.indexOf(option) < row.indexOf(helmHint),
+            "Column order wrong for '$option' in row: $row"
+        )
     }
 
     /** Asserts the option is shown without the Helm column (internal only). */
@@ -228,9 +231,18 @@ class HelpRenderTest {
         val usage = usageOf("install")
         for (option in listOf("--yaml-merge", "--yaml-array-merge")) {
             val row = rowOf(usage, option)
-            Assertions.assertTrue(row.contains(experimentalHint), "Expected '$experimentalHint' column for '$option' in row: $row")
-            Assertions.assertTrue(row.indexOf(option) < row.indexOf(experimentalHint), "Column order wrong for '$option' in row: $row")
-            Assertions.assertFalse(row.contains(helmHint), "Experimental option '$option' must not be marked as forwarded: $row")
+            Assertions.assertTrue(
+                row.contains(experimentalHint),
+                "Expected '$experimentalHint' column for '$option' in row: $row"
+            )
+            Assertions.assertTrue(
+                row.indexOf(option) < row.indexOf(experimentalHint),
+                "Column order wrong for '$option' in row: $row"
+            )
+            Assertions.assertFalse(
+                row.contains(helmHint),
+                "Experimental option '$option' must not be marked as forwarded: $row"
+            )
         }
     }
 
@@ -244,7 +256,10 @@ class HelpRenderTest {
         val usage = usageOf("install")
         val row = rowOf(usage, "--unsafe")
         Assertions.assertTrue(row.contains(dangerHint), "Expected '$dangerHint' column for '--unsafe' in row: $row")
-        Assertions.assertTrue(row.indexOf("--unsafe") < row.indexOf(dangerHint), "Column order wrong for '--unsafe' in row: $row")
+        Assertions.assertTrue(
+            row.indexOf("--unsafe") < row.indexOf(dangerHint),
+            "Column order wrong for '--unsafe' in row: $row"
+        )
     }
 
     /**

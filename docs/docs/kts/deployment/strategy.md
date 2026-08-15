@@ -22,7 +22,8 @@ strategy {
 }
 ```
 
-This strategy is simple, but it can cause downtime. It is suitable for applications where old and new versions must not run in parallel.
+This strategy is simple, but it can cause downtime. It is suitable for applications where old and new versions must not
+run in parallel.
 
 ## RollingUpdate
 
@@ -38,9 +39,9 @@ strategy {
 }
 ```
 
-| Property | Description |
-| :--- | :--- |
-| `maxSurge` | Maximum number of additional Pods above `replicas`. |
+| Property         | Description                                            |
+|:-----------------|:-------------------------------------------------------|
+| `maxSurge`       | Maximum number of additional Pods above `replicas`.    |
 | `maxUnavailable` | Maximum number of unavailable Pods during the rollout. |
 
 Both values can be specified as absolute values or percentages.
@@ -61,12 +62,12 @@ rollingUpdate {
 
 ## Rollout Options in the Deployment Spec
 
-| Property | Description |
-| :--- | :--- |
-| `minReadySeconds` | Minimum amount of time a new Pod must be ready before it is considered available. |
-| `revisionHistoryLimit` | Number of old ReplicaSets kept for rollbacks. |
-| `paused` | When `true`, the Deployment controller does not process new rollout changes. |
-| `progressDeadlineSeconds` | Time limit for rollout progress. |
+| Property                  | Description                                                                       |
+|:--------------------------|:----------------------------------------------------------------------------------|
+| `minReadySeconds`         | Minimum amount of time a new Pod must be ready before it is considered available. |
+| `revisionHistoryLimit`    | Number of old ReplicaSets kept for rollbacks.                                     |
+| `paused`                  | When `true`, the Deployment controller does not process new rollout changes.      |
+| `progressDeadlineSeconds` | Time limit for rollout progress.                                                  |
 
 ```kotlin
 spec {

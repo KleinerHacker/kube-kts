@@ -25,14 +25,14 @@ import kotlin.test.assertNull
  */
 class ContainerPortSpecTest {
     companion object {
-        private val maxSpec = ContainerSpecBuilder.ContainerPortSpecBuilder(8080).apply {
+        private val maxSpec = ContainerPortSpecBuilder(8080).apply {
             name = "http"
             protocol = Protocol.TCP
             hostPort = 18080
             hostIP = "127.0.0.1"
         }.build()
 
-        private val minSpec = ContainerSpecBuilder.ContainerPortSpecBuilder(8080).build()
+        private val minSpec = ContainerPortSpecBuilder(8080).build()
     }
 
     /**

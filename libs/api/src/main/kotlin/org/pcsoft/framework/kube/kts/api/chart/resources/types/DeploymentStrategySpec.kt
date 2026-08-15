@@ -82,7 +82,7 @@ data class DeploymentStrategySpec(
      */
     @NoArgs
     data class RollingUpdateDeploymentSpec(
-        val maxUnavailable: RelativeValue<*,*>?,
-        val maxSurge: RelativeValue<*,*>?
+        val maxUnavailable: RelativeValue<*, *>?,
+        val maxSurge: RelativeValue<*, *>?
     )
 }

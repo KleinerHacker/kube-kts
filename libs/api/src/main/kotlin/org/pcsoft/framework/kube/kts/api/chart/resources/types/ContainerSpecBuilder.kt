@@ -12,9 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.ContainerSpec.ImagePullPolicy
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.ContainerSpec.RestartPolicy
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.ContainerSpec.TerminationMessagePolicy
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.ContainerSpec.*
 import org.pcsoft.framework.kube.kts.api.chart.resources.types.ResourceResizePolicySpec.ResourceName
 
 /**
@@ -33,7 +31,7 @@ class ContainerSpecBuilder internal constructor(private var name: String, privat
     private var env: MutableList<SingleEnvironmentSpecBuilder>? = null
     private var envFrom: MutableList<CompleteEnvironmentSpecBuilder>? = null
     private var resources: HardwareResourceSpecBuilder? = null
-    private var resizePolicy: MutableList<ResourceResizePolicySpec>? = null
+    private var resizePolicy: MutableList<ResourceResizePolicySpecBuilder>? = null
     private var volumeMounts: MutableList<VolumeMountSpecBuilder>? = null
     private var volumeDevices: MutableList<VolumeDeviceSpecBuilder>? = null
     private var livenessProbe: ProbeSpecBuilder? = null
@@ -234,18 +232,52 @@ class ContainerSpecBuilder internal constructor(private var name: String, privat
      *
      * Example:
      * ```kotlin
+     * addResizePolicy(ResourceName.Memory) {
+     *     restartPolicy = ResourceResizePolicySpec.RestartPolicy.RestartContainer
+     * }
+     * ```
+     *
+     * @param resourceName The resource this policy applies to.
+     * @param prepare      Configures the [ResourceResizePolicySpecBuilder].
+     */
+    fun addResizePolicy(resourceName: ResourceName, prepare: ResourceResizePolicySpecBuilder.() -> Unit = {}) {
+        if (resizePolicy == null) {
+            resizePolicy = mutableListOf()
+        }
+        resizePolicy!!.add(ResourceResizePolicySpecBuilder(resourceName).apply(prepare))
+    }
+
+    /**
+     * Declares whether an in-place resize of the given resource requires a container restart.
+     *
+     * Example:
+     * ```kotlin
      * addResizePolicy(ResourceName.Memory, ResourceResizePolicySpec.RestartPolicy.RestartContainer)
      * ```
      *
      * @param resourceName  The resource this policy applies to.
      * @param restartPolicy What has to happen for a change of the resource to take effect.
      */
-    fun addResizePolicy(resourceName: ResourceName, restartPolicy: ResourceResizePolicySpec.RestartPolicy) {
-        if (resizePolicy == null) {
-            resizePolicy = mutableListOf()
-        }
-        resizePolicy!!.add(ResourceResizePolicySpec(resourceName, restartPolicy))
-    }
+    fun addResizePolicy(resourceName: ResourceName, restartPolicy: ResourceResizePolicySpec.RestartPolicy) =
+        addResizePolicy(resourceName) { this.restartPolicy = restartPolicy }
+
+    /**
+     * Declares the in-place resize behaviour of several resources in one block.
+     *
+     * Example:
+     * ```kotlin
+     * resizePolicies {
+     *     resizePolicy(ResourceName.Cpu)
+     *     resizePolicy(ResourceName.Memory) {
+     *         restartPolicy = ResourceResizePolicySpec.RestartPolicy.RestartContainer
+     *     }
+     * }
+     * ```
+     *
+     * @param prepare Configures the [ResizePolicyListBuilder].
+     */
+    fun resizePolicies(prepare: ResizePolicyListBuilder.() -> Unit) =
+        ResizePolicyListBuilder().apply(prepare)
 
     /**
      * Mounts a Pod volume into this container's filesystem.
@@ -387,7 +419,7 @@ class ContainerSpecBuilder internal constructor(private var name: String, privat
         env = env?.map { it.build() },
         envFrom = envFrom?.map { it.build() },
         resources = resources?.build(),
-        resizePolicy = resizePolicy?.toList(),
+        resizePolicy = resizePolicy?.map { it.build() },
         restartPolicy = restartPolicy,
         volumeMounts = volumeMounts?.map { it.build() },
         volumeDevices = volumeDevices?.map { it.build() },
@@ -407,47 +439,6 @@ class ContainerSpecBuilder internal constructor(private var name: String, privat
     )
 
     /**
-     * Builder for a single [ContainerPortSpec].
-     *
-     * @constructor Creates a builder for the given container port.
-     * @param containerPort The port number the container listens on.
-     */
-    class ContainerPortSpecBuilder internal constructor(private val containerPort: Int) {
-        /**
-         * An optional name for this port, allowing other resources to reference it by name.
-         *
-         * Must be a valid IANA service name of at most 15 characters.
-         */
-        var name: String? = null
-
-        /**
-         * The transport protocol for this port. Defaults to [Protocol.TCP] when unset.
-         */
-        var protocol: Protocol? = null
-
-        /**
-         * An optional port on the host node this container port is mapped to.
-         *
-         * Setting it constrains scheduling to nodes where the port is free and should be avoided for
-         * ordinary workloads.
-         */
-        var hostPort: Int? = null
-
-        /**
-         * An optional host IP address to bind [hostPort] to. Only meaningful together with [hostPort].
-         */
-        var hostIP: String? = null
-
-        /**
-         * Builds the configured container port.
-         *
-         * @return A [ContainerPortSpec] carrying the configured values.
-         */
-        internal fun build(): ContainerPortSpec =
-            ContainerPortSpec(name, containerPort, hostPort, hostIP, protocol)
-    }
-
-    /**
      * Collects several container ports.
      */
     inner class PortSpecListBuilder internal constructor() {
@@ -459,6 +450,20 @@ class ContainerSpecBuilder internal constructor(private var name: String, privat
          */
         fun port(containerPort: Int, prepare: ContainerPortSpecBuilder.() -> Unit = {}) =
             addPort(containerPort, prepare)
+    }
+
+    /**
+     * Collects several in-place resize policies.
+     */
+    inner class ResizePolicyListBuilder internal constructor() {
+        /**
+         * Declares whether an in-place resize of the given resource requires a container restart.
+         *
+         * @param resourceName The resource this policy applies to.
+         * @param prepare      Configures the [ResourceResizePolicySpecBuilder].
+         */
+        fun resizePolicy(resourceName: ResourceName, prepare: ResourceResizePolicySpecBuilder.() -> Unit = {}) =
+            addResizePolicy(resourceName, prepare)
     }
 
     /**

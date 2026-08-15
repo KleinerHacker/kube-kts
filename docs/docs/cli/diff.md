@@ -4,46 +4,45 @@
 kube-kts diff upgrade <REPOSITORY> [TARGET] --name <RELEASE> [OPTIONS]
 ```
 
-Groups the diff sub-commands built on the external **`helm-diff` plugin**. They preview the changes
-an operation would apply by rendering the KTS repository and diffing the result against the cluster.
-Each sub-command **needs a repository** and runs the full *scan → compile → render* pipeline first.
-Invoking `diff` without a sub-command prints the usage listing.
+Groups the diff sub-commands built on the external **`helm-diff` plugin**. They preview the changes an operation would
+apply by rendering the KTS repository and diffing the result against the cluster. Each sub-command **needs a
+repository** and runs the full *scan → compile → render* pipeline first. Invoking `diff` without a sub-command prints
+the usage listing.
 
 !!! note "Requires the helm-diff plugin"
-    These commands invoke `helm diff …`, which is provided by the external plugin. Install it with
-    `helm plugin install https://github.com/databus23/helm-diff`.
+These commands invoke `helm diff …`, which is provided by the external plugin. Install it with
+`helm plugin install https://github.com/databus23/helm-diff`.
 
 ## Sub-commands
 
-| Sub-command | Helm | Description |
-|---|---|---|
+| Sub-command                          | Helm                            | Description                                   |
+|--------------------------------------|---------------------------------|-----------------------------------------------|
 | `diff upgrade <REPOSITORY> [TARGET]` | `helm diff upgrade <RELEASE> .` | Preview the changes an `upgrade` would apply. |
 
 ## Parameters
 
-| Parameter | Required | Description |
-|---|---|---|
-| `REPOSITORY` | yes | Path to the Kube KTS repository to render. |
-| `TARGET` | no | Directory the chart is rendered into. A temporary directory is used if omitted. |
+| Parameter    | Required | Description                                                                     |
+|--------------|----------|---------------------------------------------------------------------------------|
+| `REPOSITORY` | yes      | Path to the Kube KTS repository to render.                                      |
+| `TARGET`     | no       | Directory the chart is rendered into. A temporary directory is used if omitted. |
 
 !!! note "Release name is passed via `--name`"
-    Because `REPOSITORY`/`TARGET` already occupy the positionals, the release name is passed via
-    `--name` and forwarded to the plugin as the positional `RELEASE`. The `-n` shorthand stays
-    reserved for `--namespace`.
+Because `REPOSITORY`/`TARGET` already occupy the positionals, the release name is passed via
+`--name` and forwarded to the plugin as the positional `RELEASE`. The `-n` shorthand stays reserved for `--namespace`.
 
 ## Diff options
 
-| Option | Marker | Description |
-|---|---|---|
-| `--name=NAME` | | Name of the release (forwarded to the plugin as the positional `RELEASE`). |
-| `--detailed-exitcode` | `---->` | Return exit code `2` when there are changes. |
-| `--context=NUM` | `---->` | Output `NUM` lines of context around changes (`-1` for full context). |
-| `--show-secrets` | `---->` | Do not redact secret values in the output. |
-| `--no-hooks` | `---->` | Disable diffing of hooks. |
-| `--include-tests` | `---->` | Enable diffing of Helm test hooks. |
-| `--reset-values` | `---->` | Reset values to the ones built into the chart and merge in new values. |
-| `--reuse-values` | `---->` | Reuse the last release's values and merge in new values. |
-| `--normalize-manifests` | `---->` | Normalize manifests before diffing to exclude style differences. |
+| Option                  | Marker  | Description                                                                |
+|-------------------------|---------|----------------------------------------------------------------------------|
+| `--name=NAME`           |         | Name of the release (forwarded to the plugin as the positional `RELEASE`). |
+| `--detailed-exitcode`   | `---->` | Return exit code `2` when there are changes.                               |
+| `--context=NUM`         | `---->` | Output `NUM` lines of context around changes (`-1` for full context).      |
+| `--show-secrets`        | `---->` | Do not redact secret values in the output.                                 |
+| `--no-hooks`            | `---->` | Disable diffing of hooks.                                                  |
+| `--include-tests`       | `---->` | Enable diffing of Helm test hooks.                                         |
+| `--reset-values`        | `---->` | Reset values to the ones built into the chart and merge in new values.     |
+| `--reuse-values`        | `---->` | Reuse the last release's values and merge in new values.                   |
+| `--normalize-manifests` | `---->` | Normalize manifests before diffing to exclude style differences.           |
 
 ## Values
 

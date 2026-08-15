@@ -30,7 +30,7 @@ import org.pcsoft.framework.kube.kts.api.types.RelativeValue
  *
  * @constructor Creates an instance of `DeploymentStrategySpecBuilder`.
  */
-class DeploymentStrategySpecBuilder internal constructor(){
+class DeploymentStrategySpecBuilder internal constructor() {
     private var rollingUpdate: RollingUpdateDeploymentSpecBuilder? = null
 
     /**
@@ -86,8 +86,8 @@ class DeploymentStrategySpecBuilder internal constructor(){
      * @return An instance of `DeploymentStrategySpec.RollingUpdateDeploymentSpec` with the configured parameters.
      */
     class RollingUpdateDeploymentSpecBuilder internal constructor() {
-        var maxUnavailable: RelativeValue<*,*>? = null
-        var maxSurge: RelativeValue<*,*>? = null
+        var maxUnavailable: RelativeValue<*, *>? = null
+        var maxSurge: RelativeValue<*, *>? = null
 
         /**
          * Builds and returns an instance of `DeploymentStrategySpec.RollingUpdateDeploymentSpec`

@@ -15,9 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
+import picocli.CommandLine.*
 
 /**
  * Command to print the Helm version information.
@@ -31,7 +29,12 @@ class VersionCommand : BaseDirectHelmCommand(), HelmArgsProvider {
 
     @Option(names = ["--short"], description = ["$HELM_MARKER print the version number"])
     private var short: Boolean = false
-    @Option(names = ["--template"], description = ["$HELM_MARKER template for version string format"], paramLabel = "TEMPLATE")
+
+    @Option(
+        names = ["--template"],
+        description = ["$HELM_MARKER template for version string format"],
+        paramLabel = "TEMPLATE"
+    )
     private var template: String? = null
 
     override val helmCommand: List<String>

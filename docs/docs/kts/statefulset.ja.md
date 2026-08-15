@@ -6,15 +6,15 @@
 ステートフルなアプリケーションに適しています。
 
 !!! warning "セキュリティ：インポート制限"
-    既定では、KTS スクリプトは `import` 文や完全修飾クラス名（例: `java.lang.Runtime`）を**許可しません**。
-    事前構成された既定インポートで提供される型のみ使用できます。
+既定では、KTS スクリプトは `import` 文や完全修飾クラス名（例: `java.lang.Runtime`）を **許可しません**。
+事前構成された既定インポートで提供される型のみ使用できます。
 
     これらの制限を解除するには `--unsafe` フラグを使用してください。
 
 ## 基本的な使い方
 
-最小構成の StatefulSet には、`metadata`、`serviceName`（ネットワークドメインを制御するヘッドレス
-Service）、`selector`、そして `spec` 内の Pod `template` が必要です。
+最小構成の StatefulSet には、`metadata`、`serviceName`（ネットワークドメインを制御するヘッドレス Service）、`selector`、そして
+`spec` 内の Pod `template` が必要です。
 
 ```kotlin
 statefulSet {
@@ -50,8 +50,8 @@ statefulSet {
 
 ## 詳細な例
 
-以下は、レプリカ数、制御 Service、Pod 管理ポリシー、更新戦略、`volumeClaimTemplates` による Pod ごとの
-永続ストレージ、PVC 保持ポリシーを示す包括的な例です。
+以下は、レプリカ数、制御 Service、Pod 管理ポリシー、更新戦略、`volumeClaimTemplates` による Pod ごとの 永続ストレージ、PVC
+保持ポリシーを示す包括的な例です。
 
 ```kotlin
 statefulSet {
@@ -122,58 +122,57 @@ statefulSet {
 
 ### メタデータ（`metadata`）
 
-| プロパティ | 型 | 説明 |
-| :--- | :--- | :--- |
-| `name` | `String` | StatefulSet リソースの名前（第 1 引数として渡します）。 |
-| `namespace` | `String?` | リソースの名前空間。 |
-| `generateName` | `String?` | 一意な名前を生成するための任意のプレフィックス。 |
+| プロパティ     | 型        | 説明                                                    |
+|:---------------|:----------|:--------------------------------------------------------|
+| `name`         | `String`  | StatefulSet リソースの名前（第 1 引数として渡します）。 |
+| `namespace`    | `String?` | リソースの名前空間。                                    |
+| `generateName` | `String?` | 一意な名前を生成するための任意のプレフィックス。        |
 
 ### StatefulSet 仕様（`spec`）
 
-| プロパティ / メソッド | 説明 |
-| :--- | :--- |
-| `replicas` | 望ましいレプリカ（Pod インスタンス）数。既定は 1。 |
-| `serviceName` | ネットワークドメインを制御する（通常ヘッドレスの）Service 名。**必須。** |
-| `podManagementPolicy` | `OrderedReady`（既定）または `Parallel`。 |
-| `revisionHistoryLimit` | ロールバック用に保持するリビジョンの最大数。 |
-| `minReadySeconds` | 新しい Pod が利用可能とみなされるために Ready を維持する最小秒数。 |
-| `ordinals(start)` | 最初のレプリカインデックスを表す番号（既定は 0）。 |
-| `selector { ... }` | ラベルセレクター（共有のセレクター DSL を再利用、[セレクター](deployment/selector.md) を参照）。**必須。** |
-| `updateStrategy { ... }` | テンプレートの更新の展開方法を制御します。 |
-| `volumeClaimTemplates { claim(name) { ... } }` | 安定した Pod ごとのストレージを提供する PVC テンプレート。 |
-| `persistentVolumeClaimRetentionPolicy { ... }` | プロビジョニングされた PVC のライフサイクルを制御します。 |
-| `template { ... }` | Pod テンプレート（[Pod テンプレート](deployment/template.md) を参照）。**必須。** |
+| プロパティ / メソッド                          | 説明                                                                                                       |
+|:-----------------------------------------------|:-----------------------------------------------------------------------------------------------------------|
+| `replicas`                                     | 望ましいレプリカ（Pod インスタンス）数。既定は 1。                                                         |
+| `serviceName`                                  | ネットワークドメインを制御する（通常ヘッドレスの）Service 名。**必須。**                                   |
+| `podManagementPolicy`                          | `OrderedReady`（既定）または `Parallel`。                                                                  |
+| `revisionHistoryLimit`                         | ロールバック用に保持するリビジョンの最大数。                                                               |
+| `minReadySeconds`                              | 新しい Pod が利用可能とみなされるために Ready を維持する最小秒数。                                         |
+| `ordinals(start)`                              | 最初のレプリカインデックスを表す番号（既定は 0）。                                                         |
+| `selector { ... }`                             | ラベルセレクター（共有のセレクター DSL を再利用、[セレクター](deployment/selector.md) を参照）。**必須。** |
+| `updateStrategy { ... }`                       | テンプレートの更新の展開方法を制御します。                                                                 |
+| `volumeClaimTemplates { claim(name) { ... } }` | 安定した Pod ごとのストレージを提供する PVC テンプレート。                                                 |
+| `persistentVolumeClaimRetentionPolicy { ... }` | プロビジョニングされた PVC のライフサイクルを制御します。                                                  |
+| `template { ... }`                             | Pod テンプレート（[Pod テンプレート](deployment/template.md) を参照）。**必須。**                          |
 
 ### 更新戦略（`updateStrategy`）
 
-| プロパティ / メソッド | 説明 |
-| :--- | :--- |
-| `type` | `RollingUpdate`（既定）または `OnDelete`。 |
-| `rollingUpdate { partition; maxUnavailable }` | ローリングアップデートのパラメーター。 |
-| `partition` | この序数以上の Pod を更新します（段階的 / カナリアロールアウト）。 |
-| `maxUnavailable` | 更新中に利用不可となる Pod の最大数（絶対値または割合、例: `1.absolute` / `25.percent`）。 |
+| プロパティ / メソッド                         | 説明                                                                                       |
+|:----------------------------------------------|:-------------------------------------------------------------------------------------------|
+| `type`                                        | `RollingUpdate`（既定）または `OnDelete`。                                                 |
+| `rollingUpdate { partition; maxUnavailable }` | ローリングアップデートのパラメーター。                                                     |
+| `partition`                                   | この序数以上の Pod を更新します（段階的 / カナリアロールアウト）。                         |
+| `maxUnavailable`                              | 更新中に利用不可となる Pod の最大数（絶対値または割合、例: `1.absolute` / `25.percent`）。 |
 
 ### ボリュームクレームテンプレート（`volumeClaimTemplates`）
 
-| プロパティ / メソッド | 説明 |
-| :--- | :--- |
-| `claim(name) { ... }` | PVC テンプレートを追加します。`name` は Pod コンテナの `volumeMount` と一致する必要があります。 |
-| `accessModes(...)` | アクセスモード（例: `ReadWriteOnce`、`ReadOnlyMany`、`ReadWriteMany`、`ReadWriteOncePod`）。 |
-| `storageClassName` | ボリュームのプロビジョニングに使用する StorageClass。 |
-| `volumeMode` | `Filesystem`（既定）または `Block`。 |
-| `requests { storage = ... }` | 要求する最小ストレージ（例: `1.giBytes`）。 |
-| `limits { storage = ... }` | 許容される最大ストレージ。 |
-| `label(key, value)` / `labels { ... }` | クレームメタデータのラベル。 |
-| `annotation(key, value)` / `annotations { ... }` | クレームメタデータのアノテーション。 |
+| プロパティ / メソッド                            | 説明                                                                                            |
+|:-------------------------------------------------|:------------------------------------------------------------------------------------------------|
+| `claim(name) { ... }`                            | PVC テンプレートを追加します。`name` は Pod コンテナの `volumeMount` と一致する必要があります。 |
+| `accessModes(...)`                               | アクセスモード（例: `ReadWriteOnce`、`ReadOnlyMany`、`ReadWriteMany`、`ReadWriteOncePod`）。    |
+| `storageClassName`                               | ボリュームのプロビジョニングに使用する StorageClass。                                           |
+| `volumeMode`                                     | `Filesystem`（既定）または `Block`。                                                            |
+| `requests { storage = ... }`                     | 要求する最小ストレージ（例: `1.giBytes`）。                                                     |
+| `limits { storage = ... }`                       | 許容される最大ストレージ。                                                                      |
+| `label(key, value)` / `labels { ... }`           | クレームメタデータのラベル。                                                                    |
+| `annotation(key, value)` / `annotations { ... }` | クレームメタデータのアノテーション。                                                            |
 
 ### PVC 保持ポリシー（`persistentVolumeClaimRetentionPolicy`）
 
-| プロパティ | 説明 |
-| :--- | :--- |
-| `whenDeleted` | `Retain`（既定）または `Delete` —— StatefulSet が削除されたときに適用。 |
-| `whenScaled` | `Retain`（既定）または `Delete` —— StatefulSet がスケールダウンされたときに適用。 |
+| プロパティ    | 説明                                                                              |
+|:--------------|:----------------------------------------------------------------------------------|
+| `whenDeleted` | `Retain`（既定）または `Delete` —— StatefulSet が削除されたときに適用。           |
+| `whenScaled`  | `Retain`（既定）または `Delete` —— StatefulSet がスケールダウンされたときに適用。 |
 
 !!! note "安定したストレージ"
-    `volumeClaimTemplates` の各エントリは、**Pod ごとに** 1 つの PersistentVolumeClaim をプロビジョニング
-    します。クレームは再スケジューリングをまたいで同一性を保持し、各レプリカに専用の永続ストレージを
-    提供します。
+`volumeClaimTemplates` の各エントリは、 **Pod ごとに** 1 つの PersistentVolumeClaim をプロビジョニング
+します。クレームは再スケジューリングをまたいで同一性を保持し、各レプリカに専用の永続ストレージを 提供します。

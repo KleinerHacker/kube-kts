@@ -136,10 +136,10 @@ class SingleEnvironmentSpecBuilder internal constructor(private val name: String
     fun from(prepare: FromBuilder.() -> Unit) {
         FromBuilder().apply(prepare)
     }
-    
+
     internal fun build(): SingleEnvironmentSpec {
         require(source != null) { "Source must be set" }
-        
+
         return SingleEnvironmentSpec(name, source!!)
     }
 

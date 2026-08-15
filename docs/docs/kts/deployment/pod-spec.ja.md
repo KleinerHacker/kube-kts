@@ -1,6 +1,7 @@
 # Pod Spec
 
-Pod Spec は、Pod 内のすべてのコンテナのランタイム、ネットワーク、スケジューリング、セキュリティのオプションを記述します。Deployment では、これは `template` の一部です。
+Pod Spec は、Pod 内のすべてのコンテナのランタイム、ネットワーク、スケジューリング、セキュリティのオプションを記述します。Deployment
+では、これは `template` の一部です。
 
 ```kotlin
 template {
@@ -26,23 +27,23 @@ template {
 
 ## コアプロパティ
 
-| プロパティ / メソッド | 説明 |
-| :--- | :--- |
-| `containers { container(name, image) { ... } }` | 必須のメインコンテナのリスト。 |
-| `containers { init(name, image) { ... } }` | メインコンテナの前に実行される Init コンテナ。 |
-| `containers { ephemeral(name, image) { ... } }` | デバッグ用途のエフェメラルコンテナ。 |
-| `restartPolicy` | コンテナの再起動動作: `Always`、`OnFailure`、`Never`。 |
-| `serviceAccountName` | Pod の実行に使用する ServiceAccount。 |
-| `automountServiceAccountToken` | ServiceAccount トークンを自動的にマウントするかどうかを制御します。 |
-| `imagePullSecrets { secret(name) }` | プライベートコンテナレジストリ用の Secret。 |
-| `volumes { volume(name) { ... } }` | コンテナがマウントできるボリューム。 |
-| `nodeSelector { select(key, value) }` | ラベルによる単純なノード選択。 |
-| `affinity { ... }` | スケジューリングのためのアフィニティおよびアンチアフィニティルール。 |
-| `tolerations { toleration { ... } }` | 一致する taint を持つノードへのスケジューリングを許可します。 |
-| `topologySpreadConstraints { constraint(...) { ... } }` | トポロジードメイン間での Pod の分散。 |
-| `securityContext { ... }` | Pod レベルのセキュリティコンテキスト。 |
-| `terminationGracePeriodSeconds` | Pod を終了する際の猶予期間。 |
-| `activeDeadlineSeconds` | Pod の最大ライフタイム。 |
+| プロパティ / メソッド                                   | 説明                                                                 |
+|:--------------------------------------------------------|:---------------------------------------------------------------------|
+| `containers { container(name, image) { ... } }`         | 必須のメインコンテナのリスト。                                       |
+| `containers { init(name, image) { ... } }`              | メインコンテナの前に実行される Init コンテナ。                       |
+| `containers { ephemeral(name, image) { ... } }`         | デバッグ用途のエフェメラルコンテナ。                                 |
+| `restartPolicy`                                         | コンテナの再起動動作: `Always`、`OnFailure`、`Never`。               |
+| `serviceAccountName`                                    | Pod の実行に使用する ServiceAccount。                                |
+| `automountServiceAccountToken`                          | ServiceAccount トークンを自動的にマウントするかどうかを制御します。  |
+| `imagePullSecrets { secret(name) }`                     | プライベートコンテナレジストリ用の Secret。                          |
+| `volumes { volume(name) { ... } }`                      | コンテナがマウントできるボリューム。                                 |
+| `nodeSelector { select(key, value) }`                   | ラベルによる単純なノード選択。                                       |
+| `affinity { ... }`                                      | スケジューリングのためのアフィニティおよびアンチアフィニティルール。 |
+| `tolerations { toleration { ... } }`                    | 一致する taint を持つノードへのスケジューリングを許可します。        |
+| `topologySpreadConstraints { constraint(...) { ... } }` | トポロジードメイン間での Pod の分散。                                |
+| `securityContext { ... }`                               | Pod レベルのセキュリティコンテキスト。                               |
+| `terminationGracePeriodSeconds`                         | Pod を終了する際の猶予期間。                                         |
+| `activeDeadlineSeconds`                                 | Pod の最大ライフタイム。                                             |
 
 ## ネットワークと DNS
 

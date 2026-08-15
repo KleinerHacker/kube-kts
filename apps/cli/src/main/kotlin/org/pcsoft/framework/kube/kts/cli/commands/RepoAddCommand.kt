@@ -15,10 +15,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to add a chart repository.
@@ -27,9 +24,18 @@ import picocli.CommandLine.Parameters
  */
 @Command(name = "add", description = ["Add a chart repository with helm"])
 class RepoAddCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0", paramLabel = "NAME", description = ["Name of the repository (forwarded to helm as positional NAME)"])
+    @Parameters(
+        index = "0",
+        paramLabel = "NAME",
+        description = ["Name of the repository (forwarded to helm as positional NAME)"]
+    )
     private lateinit var name: String
-    @Parameters(index = "1", paramLabel = "URL", description = ["URL of the repository (forwarded to helm as positional URL)"])
+
+    @Parameters(
+        index = "1",
+        paramLabel = "URL",
+        description = ["URL of the repository (forwarded to helm as positional URL)"]
+    )
     private lateinit var url: String
 
     @Mixin
@@ -37,23 +43,56 @@ class RepoAddCommand : BaseDirectHelmCommand(), HelmArgsProvider {
 
     @Option(names = ["--username"], description = ["$HELM_MARKER chart repository username"], paramLabel = "USER")
     private var username: String? = null
+
     @Option(names = ["--password"], description = ["$HELM_MARKER chart repository password"], paramLabel = "PASSWORD")
     private var password: String? = null
+
     @Option(names = ["--pass-credentials"], description = ["$HELM_MARKER pass credentials to all domains"])
     private var passCredentials: Boolean = false
-    @Option(names = ["--ca-file"], description = ["$HELM_MARKER verify certificates of HTTPS-enabled servers using this CA bundle"], paramLabel = "FILE")
+
+    @Option(
+        names = ["--ca-file"],
+        description = ["$HELM_MARKER verify certificates of HTTPS-enabled servers using this CA bundle"],
+        paramLabel = "FILE"
+    )
     private var caFile: String? = null
-    @Option(names = ["--cert-file"], description = ["$HELM_MARKER identify HTTPS client using this SSL certificate file"], paramLabel = "FILE")
+
+    @Option(
+        names = ["--cert-file"],
+        description = ["$HELM_MARKER identify HTTPS client using this SSL certificate file"],
+        paramLabel = "FILE"
+    )
     private var certFile: String? = null
-    @Option(names = ["--key-file"], description = ["$HELM_MARKER identify HTTPS client using this SSL key file"], paramLabel = "FILE")
+
+    @Option(
+        names = ["--key-file"],
+        description = ["$HELM_MARKER identify HTTPS client using this SSL key file"],
+        paramLabel = "FILE"
+    )
     private var keyFile: String? = null
-    @Option(names = ["--insecure-skip-tls-verify"], description = ["$HELM_MARKER skip tls certificate checks for the repository"])
+
+    @Option(
+        names = ["--insecure-skip-tls-verify"],
+        description = ["$HELM_MARKER skip tls certificate checks for the repository"]
+    )
     private var insecureSkipTlsVerify: Boolean = false
-    @Option(names = ["--no-update"], description = ["$HELM_MARKER ignore repository update if it exists (the default is to update the existing repository)"])
+
+    @Option(
+        names = ["--no-update"],
+        description = ["$HELM_MARKER ignore repository update if it exists (the default is to update the existing repository)"]
+    )
     private var noUpdate: Boolean = false
-    @Option(names = ["--force-update"], description = ["$HELM_MARKER replace (overwrite) the repo if it already exists"])
+
+    @Option(
+        names = ["--force-update"],
+        description = ["$HELM_MARKER replace (overwrite) the repo if it already exists"]
+    )
     private var forceUpdate: Boolean = false
-    @Option(names = ["--allow-deprecated-repos"], description = ["$HELM_MARKER by default, this command will not allow adding official repos that have been permanently deleted. This disables that behavior"])
+
+    @Option(
+        names = ["--allow-deprecated-repos"],
+        description = ["$HELM_MARKER by default, this command will not allow adding official repos that have been permanently deleted. This disables that behavior"]
+    )
     private var allowDeprecatedRepos: Boolean = false
 
     override val helmCommand: List<String>

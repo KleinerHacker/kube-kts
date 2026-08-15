@@ -13,12 +13,7 @@
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
-import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsDeserializer
-import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsSerializer
-import org.pcsoft.framework.kube.kts.api.intern.jackson.LifecycleSpecActionDeserializer
-import org.pcsoft.framework.kube.kts.api.intern.jackson.LifecycleSpecActionSerializer
-import org.pcsoft.framework.kube.kts.api.intern.jackson.MapToNameValueDeserializer
-import org.pcsoft.framework.kube.kts.api.intern.jackson.MapToNameValueSerializer
+import org.pcsoft.framework.kube.kts.api.intern.jackson.*
 import org.pcsoft.framework.kube.kts.api.types.PortValue
 import tools.jackson.databind.annotation.JsonDeserialize
 import tools.jackson.databind.annotation.JsonSerialize

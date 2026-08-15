@@ -4,8 +4,7 @@
 运行至完成的工作负载，而非由 [Deployment](deployment.md) 管理的长期运行服务。
 
 !!! warning "安全：导入限制"
-    默认情况下，KTS 脚本**不允许** `import` 语句或完全限定的类名（例如 `java.lang.Runtime`）。
-    只能使用通过预配置的默认导入提供的类型。
+默认情况下，KTS 脚本 **不允许** `import` 语句或完全限定的类名（例如 `java.lang.Runtime`）。 只能使用通过预配置的默认导入提供的类型。
 
     使用 `--unsafe` 标志可解除这些限制。
 
@@ -106,48 +105,47 @@ job {
 
 ### 元数据（`metadata`）
 
-| 属性 | 类型 | 说明 |
-| :--- | :--- | :--- |
-| `name` | `String` | Job 资源的名称（作为第一个参数传入）。 |
-| `namespace` | `String?` | 资源的命名空间。 |
-| `generateName` | `String?` | 用于生成唯一名称的可选前缀。 |
+| 属性           | 类型      | 说明                                   |
+|:---------------|:----------|:---------------------------------------|
+| `name`         | `String`  | Job 资源的名称（作为第一个参数传入）。 |
+| `namespace`    | `String?` | 资源的命名空间。                       |
+| `generateName` | `String?` | 用于生成唯一名称的可选前缀。           |
 
 ### Job 规约（`spec`）
 
-| 属性 / 方法 | 说明 |
-| :--- | :--- |
-| `parallelism` | 应并行运行的最大 Pod 数量。 |
-| `completions` | 期望成功完成的 Pod 数量。 |
-| `completionMode` | `NonIndexed` 或 `Indexed`。 |
-| `backoffLimit` | Job 标记为失败前的重试次数。 |
-| `backoffLimitPerIndex` | 每个索引的重试次数（仅索引 Job）。 |
-| `maxFailedIndexes` | Job 失败前允许的最大失败索引数（仅索引 Job）。 |
-| `activeDeadlineSeconds` | Job 在被终止前可处于活动状态的最长持续时间。 |
-| `ttlSecondsAfterFinished` | Job 完成后的 TTL，超过后可被清理。 |
-| `suspend` | 若为 true，Job 控制器不会创建任何 Pod。 |
-| `manualSelector` | 若为 true，`selector` 由用户而非系统管理。 |
-| `podReplacementPolicy` | `TerminatingOrFailed` 或 `Failed`。 |
-| `selector { ... }` | 标签选择器（复用共享的选择器 DSL，参见 [选择器](deployment/selector.md)）。 |
-| `podFailurePolicy { rule(action) { ... } }` | 控制 Job 如何响应 Pod 失败的规则。 |
-| `successPolicy { rule { ... } }` | 定义索引 Job 何时被声明为成功的规则。 |
-| `template { ... }` | Pod 模板（参见 [Pod 模板](deployment/template.md)）。 |
+| 属性 / 方法                                 | 说明                                                                        |
+|:--------------------------------------------|:----------------------------------------------------------------------------|
+| `parallelism`                               | 应并行运行的最大 Pod 数量。                                                 |
+| `completions`                               | 期望成功完成的 Pod 数量。                                                   |
+| `completionMode`                            | `NonIndexed` 或 `Indexed`。                                                 |
+| `backoffLimit`                              | Job 标记为失败前的重试次数。                                                |
+| `backoffLimitPerIndex`                      | 每个索引的重试次数（仅索引 Job）。                                          |
+| `maxFailedIndexes`                          | Job 失败前允许的最大失败索引数（仅索引 Job）。                              |
+| `activeDeadlineSeconds`                     | Job 在被终止前可处于活动状态的最长持续时间。                                |
+| `ttlSecondsAfterFinished`                   | Job 完成后的 TTL，超过后可被清理。                                          |
+| `suspend`                                   | 若为 true，Job 控制器不会创建任何 Pod。                                     |
+| `manualSelector`                            | 若为 true，`selector` 由用户而非系统管理。                                  |
+| `podReplacementPolicy`                      | `TerminatingOrFailed` 或 `Failed`。                                         |
+| `selector { ... }`                          | 标签选择器（复用共享的选择器 DSL，参见 [选择器](deployment/selector.md)）。 |
+| `podFailurePolicy { rule(action) { ... } }` | 控制 Job 如何响应 Pod 失败的规则。                                          |
+| `successPolicy { rule { ... } }`            | 定义索引 Job 何时被声明为成功的规则。                                       |
+| `template { ... }`                          | Pod 模板（参见 [Pod 模板](deployment/template.md)）。                       |
 
 ### Pod 失败策略（`podFailurePolicy`）
 
-| 属性 / 方法 | 说明 |
-| :--- | :--- |
-| `rule(action) { ... }` | 添加规则。`action` 为 `FailJob`、`Ignore`、`Count` 或 `FailIndex`。 |
-| `onExitCodes(operator) { containerName; values(...) }` | 匹配容器退出码（`operator`：`In`/`NotIn`）。 |
-| `onPodCondition(type, status)` | 匹配 Pod 条件（例如 `"DisruptionTarget", "True"`）。 |
+| 属性 / 方法                                            | 说明                                                                |
+|:-------------------------------------------------------|:--------------------------------------------------------------------|
+| `rule(action) { ... }`                                 | 添加规则。`action` 为 `FailJob`、`Ignore`、`Count` 或 `FailIndex`。 |
+| `onExitCodes(operator) { containerName; values(...) }` | 匹配容器退出码（`operator`：`In`/`NotIn`）。                        |
+| `onPodCondition(type, status)`                         | 匹配 Pod 条件（例如 `"DisruptionTarget", "True"`）。                |
 
 ### 成功策略（`successPolicy`）
 
-| 属性 / 方法 | 说明 |
-| :--- | :--- |
-| `rule { ... }` | 添加规则。 |
+| 属性 / 方法        | 说明                                 |
+|:-------------------|:-------------------------------------|
+| `rule { ... }`     | 添加规则。                           |
 | `succeededIndexes` | 必须成功的索引集合（例如 `"0-2"`）。 |
-| `succeededCount` | 成功索引的最小数量。 |
+| `succeededCount`   | 成功索引的最小数量。                 |
 
 !!! note "restartPolicy"
-    与 Deployment 不同，Job 的 Pod 模板**必须**将 `restartPolicy` 设置为 `Never` 或 `OnFailure`。
-    Job 不允许使用 `Always`。
+与 Deployment 不同，Job 的 Pod 模板 **必须**将 `restartPolicy` 设置为 `Never` 或 `OnFailure`。 Job 不允许使用 `Always`。

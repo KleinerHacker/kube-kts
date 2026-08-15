@@ -12,8 +12,8 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
-import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 
 /**
  * Represents the specification for a Kubernetes Secret.

@@ -15,41 +15,6 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
 import org.pcsoft.framework.kube.kts.api.types.MemoryValue
 
 /**
- * A builder class for constructing a list of [VolumeClaimTemplateSpec] objects, which define the
- * PersistentVolumeClaim templates of a Kubernetes StatefulSet.
- */
-class VolumeClaimTemplateListSpecBuilder internal constructor() {
-    private val claims = mutableListOf<VolumeClaimTemplateSpecBuilder>()
-
-    /**
-     * Adds a PersistentVolumeClaim template to the StatefulSet.
-     *
-     * Example:
-     * ```kotlin
-     * claim("data") {
-     *     accessModes(VolumeClaimTemplateSpec.AccessMode.ReadWriteOnce)
-     *     storageClassName = "standard"
-     *     requests {
-     *         storage = 1.giBytes
-     *     }
-     * }
-     * ```
-     *
-     * @param name The name of the claim. Must match a `volumeMount` of the Pod's containers.
-     * @param prepare A lambda with a receiver of [VolumeClaimTemplateSpecBuilder] to configure the claim.
-     */
-    fun claim(name: String, prepare: VolumeClaimTemplateSpecBuilder.() -> Unit = {}) {
-        claims.add(VolumeClaimTemplateSpecBuilder(name).apply(prepare))
-    }
-
-    internal fun build(): List<VolumeClaimTemplateSpec> {
-        require(claims.isNotEmpty()) { "Volume claim templates require at least one claim" }
-
-        return claims.map { it.build() }
-    }
-}
-
-/**
  * A builder class for constructing a single [VolumeClaimTemplateSpec].
  *
  * @constructor Creates an instance of `VolumeClaimTemplateSpecBuilder` for the claim with the given [name].
@@ -120,7 +85,7 @@ class VolumeClaimTemplateSpecBuilder internal constructor(private val name: Stri
      * @param apiGroup The API group of the referenced object. Omit for the core API group.
      */
     fun dataSource(kind: String, name: String, apiGroup: String? = null) {
-        dataSource = TypedObjectReferenceSpec(kind, name, apiGroup, null)
+        dataSource = TypedObjectReferenceSpecBuilder(kind, name).apply { this.apiGroup = apiGroup }.build()
     }
 
     /**
@@ -132,7 +97,9 @@ class VolumeClaimTemplateSpecBuilder internal constructor(private val name: Stri
      * @param namespace The namespace the referenced object lives in. Requires a matching ReferenceGrant.
      */
     fun dataSourceRef(kind: String, name: String, apiGroup: String? = null, namespace: String? = null) {
-        dataSourceRef = TypedObjectReferenceSpec(kind, name, apiGroup, namespace)
+        dataSourceRef =
+            TypedObjectReferenceSpecBuilder(kind, name).apply { this.apiGroup = apiGroup; this.namespace = namespace }
+                .build()
     }
 
     /**

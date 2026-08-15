@@ -31,7 +31,7 @@ sealed class MetadataBaseSpec(
     val labels: Map<String, String>?,
     val annotations: Map<String, String>?,
 
-)
+    )
 
 /**
  * Defines the specification for metadata templates associated with Kubernetes resources.
@@ -73,7 +73,7 @@ class MetadataTemplateSpec(
     )
     @get:JsonIgnore
     val clusterName: String?,
-): MetadataBaseSpec(labels, annotations)
+) : MetadataBaseSpec(labels, annotations)
 
 /**
  * Represents the metadata configuration for a pod template specification.
@@ -96,4 +96,4 @@ class MetadataTemplateSpec(
 class MetadataPodSpec(
     labels: Map<String, String>?,
     annotations: Map<String, String>?,
-): MetadataBaseSpec(labels, annotations)
+) : MetadataBaseSpec(labels, annotations)

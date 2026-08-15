@@ -213,7 +213,7 @@ class LifecycleSpecBuilder internal constructor() {
         override fun build(): LifecycleSpec.ExecAction {
             require(command != null) { "Command must be set" }
             require(command!!.isNotEmpty()) { "Command must not be empty" }
-            
+
             return LifecycleSpec.ExecAction(command = command ?: emptyList())
         }
     }
@@ -227,7 +227,8 @@ class LifecycleSpecBuilder internal constructor() {
      * @constructor Creates an instance of the builder with the specified target port.
      * @param port The port on the target host to which the GET request will be sent.
      */
-    class HttpGetActionBuilder internal constructor(private val port: PortValue<*>) : ActionBuilder<LifecycleSpec.HttpGetAction> {
+    class HttpGetActionBuilder internal constructor(private val port: PortValue<*>) :
+        ActionBuilder<LifecycleSpec.HttpGetAction> {
         private var httpHeaders: MutableMap<String, String>? = null
 
         /**
@@ -383,9 +384,9 @@ class LifecycleSpecBuilder internal constructor() {
          */
         override fun build(): LifecycleSpec.SleepAction {
             require(seconds.isPositive) { "Seconds must be positive" }
-            
+
             return LifecycleSpec.SleepAction(seconds)
         }
     }
-    
+
 }

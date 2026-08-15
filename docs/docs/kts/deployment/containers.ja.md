@@ -16,22 +16,22 @@ containers {
 
 ## コアプロパティ
 
-| プロパティ / メソッド | 説明 |
-| :--- | :--- |
-| `imagePullPolicy` | イメージのプル動作: `Always`、`IfNotPresent`、`Never`。 |
-| `ports { port(containerPort) { ... } }` | 任意の名前とプロトコルを持つコンテナポート。 |
-| `env(name) { ... }` | 単一の環境変数。 |
-| `envFrom { ... }` | ConfigMap または Secret からの環境変数。 |
-| `resources { requests { ... } limits { ... } }` | CPU、メモリ、ストレージのリクエストとリミット。 |
-| `volumeMounts { volumeMount(name, mountPath) { ... } }` | Pod ボリュームのマウント。 |
-| `livenessProbe { ... }` | コンテナを再起動すべきかどうかを確認します。 |
-| `readinessProbe { ... }` | コンテナがトラフィックを受け取れるかどうかを確認します。 |
-| `startupProbe { ... }` | 長い起動フェーズのためのチェック。 |
-| `lifecycle { ... }` | `postStart` や `preStop` などのライフサイクルフック。 |
-| `securityContext { ... }` | コンテナレベルのセキュリティオプション。 |
-| `command(...)` | イメージの entrypoint を上書きします。 |
-| `args(...)` | イメージの引数を上書きまたは追加します。 |
-| `workingDir` | コンテナ内の作業ディレクトリ。 |
+| プロパティ / メソッド                                   | 説明                                                     |
+|:--------------------------------------------------------|:---------------------------------------------------------|
+| `imagePullPolicy`                                       | イメージのプル動作: `Always`、`IfNotPresent`、`Never`。  |
+| `ports { port(containerPort) { ... } }`                 | 任意の名前とプロトコルを持つコンテナポート。             |
+| `env(name) { ... }`                                     | 単一の環境変数。                                         |
+| `envFrom { ... }`                                       | ConfigMap または Secret からの環境変数。                 |
+| `resources { requests { ... } limits { ... } }`         | CPU、メモリ、ストレージのリクエストとリミット。          |
+| `volumeMounts { volumeMount(name, mountPath) { ... } }` | Pod ボリュームのマウント。                               |
+| `livenessProbe { ... }`                                 | コンテナを再起動すべきかどうかを確認します。             |
+| `readinessProbe { ... }`                                | コンテナがトラフィックを受け取れるかどうかを確認します。 |
+| `startupProbe { ... }`                                  | 長い起動フェーズのためのチェック。                       |
+| `lifecycle { ... }`                                     | `postStart` や `preStop` などのライフサイクルフック。    |
+| `securityContext { ... }`                               | コンテナレベルのセキュリティオプション。                 |
+| `command(...)`                                          | イメージの entrypoint を上書きします。                   |
+| `args(...)`                                             | イメージの引数を上書きまたは追加します。                 |
+| `workingDir`                                            | コンテナ内の作業ディレクトリ。                           |
 
 ## ポート
 
@@ -82,7 +82,8 @@ container("app", "registry.example.com/demo:1.0.0") {
 }
 ```
 
-`env` は複数回呼び出して複数の変数を定義でき、`envs { }` はそれらを 1 つのブロックにまとめます。`envFrom` は呼び出すたびにソースを 1 つ追加し、`envsFrom { }` でまとめられます。どちらも YAML のリストとして出力されます。
+`env` は複数回呼び出して複数の変数を定義でき、`envs { }` はそれらを 1 つのブロックにまとめます。`envFrom` は呼び出すたびにソースを
+1 つ追加し、`envsFrom { }` でまとめられます。どちらも YAML のリストとして出力されます。
 
 ## リソース
 
@@ -118,7 +119,8 @@ container("app", "registry.example.com/demo:1.0.0") {
 }
 ```
 
-`volumeMount` の名前は Pod Spec のボリュームと一致する必要があります。`subPath` はボリュームのルートではなく単一のファイルまたはディレクトリをマウントします。`subPathExpr` も同様ですが、環境変数を参照できます。
+`volumeMount` の名前は Pod Spec のボリュームと一致する必要があります。`subPath` はボリュームのルートではなく単一のファイルまたはディレクトリをマウントします。
+`subPathExpr` も同様ですが、環境変数を参照できます。
 
 ## サイドカーとリサイズ
 
@@ -140,4 +142,5 @@ containers {
 }
 ```
 
-`restartPolicy = Always` を設定した init コンテナは、メインコンテナと並行して動作し続けるネイティブサイドカーになります。`addResizePolicy` はリソースのインプレース変更に再起動が必要かどうかを宣言し、`addClaim` は Pod で宣言されたリソースクレームを参照します。
+`restartPolicy = Always` を設定した init コンテナは、メインコンテナと並行して動作し続けるネイティブサイドカーになります。
+`addResizePolicy` はリソースのインプレース変更に再起動が必要かどうかを宣言し、`addClaim` は Pod で宣言されたリソースクレームを参照します。

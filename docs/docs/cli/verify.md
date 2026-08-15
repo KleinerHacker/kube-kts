@@ -4,9 +4,8 @@
 kube-kts verify <PATH> [OPTIONS]
 ```
 
-Runs `helm verify` to check that a packaged chart has been signed and is valid. It operates on a
-local chart package, so it needs **neither a repository nor a render step** — the call is forwarded
-directly to Helm.
+Runs `helm verify` to check that a packaged chart has been signed and is valid. It operates on a local chart package, so
+it needs **neither a repository nor a render step** — the call is forwarded directly to Helm.
 
 ## How it works
 
@@ -16,14 +15,14 @@ directly to Helm.
 
 ## Parameters
 
-| Parameter | Required | Description |
-|---|---|---|
-| `PATH` | yes | Path to the packaged chart to verify. Forwarded to Helm as the positional `PATH`. |
+| Parameter | Required | Description                                                                       |
+|-----------|----------|-----------------------------------------------------------------------------------|
+| `PATH`    | yes      | Path to the packaged chart to verify. Forwarded to Helm as the positional `PATH`. |
 
 ## Verify options
 
-| Option | Marker | Description |
-|---|---|---|
+| Option           | Marker  | Description                                               |
+|------------------|---------|-----------------------------------------------------------|
 | `--keyring=FILE` | `---->` | Keyring containing the public keys used for verification. |
 
 ## Helm global options

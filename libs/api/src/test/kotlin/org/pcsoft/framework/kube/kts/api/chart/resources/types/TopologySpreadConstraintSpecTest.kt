@@ -12,7 +12,8 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.TopologySpreadConstraintSpec.*
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.TopologySpreadConstraintSpec.NodePolicy
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.TopologySpreadConstraintSpec.WhenUnsatisfiable
 import org.pcsoft.framework.kube.kts.api.chart.types.MatchLabelKeySpec
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert

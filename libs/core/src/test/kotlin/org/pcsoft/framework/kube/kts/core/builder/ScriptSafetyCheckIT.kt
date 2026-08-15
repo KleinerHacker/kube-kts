@@ -55,8 +55,10 @@ class ScriptSafetyCheckIT {
      */
     @Test
     fun testImportBlockedInSafeMode() {
-        val script = tempScriptFile("""import java.io.File
-chart("test", "1.0.0") {}""")
+        val script = tempScriptFile(
+            """import java.io.File
+chart("test", "1.0.0") {}"""
+        )
         Assertions.assertThrows(IllegalArgumentException::class.java) {
             compiler.compile("test", script, emptyList(), false)
         }
@@ -70,8 +72,10 @@ chart("test", "1.0.0") {}""")
      */
     @Test
     fun testFqnBlockedInSafeMode() {
-        val script = tempScriptFile("""val r = java.lang.Runtime.getRuntime()
-chart("test", "1.0.0") {}""")
+        val script = tempScriptFile(
+            """val r = java.lang.Runtime.getRuntime()
+chart("test", "1.0.0") {}"""
+        )
         Assertions.assertThrows(IllegalArgumentException::class.java) {
             compiler.compile("test", script, emptyList(), false)
         }
@@ -101,7 +105,8 @@ chart("test", "1.0.0") {}""")
      */
     @Test
     fun testFqnInLineCommentNotBlocked() {
-        val path = Path.of(this::class.java.getResource("/kts_safety/helm/chart_with_fqn_line_comment.spec.kts").toURI())
+        val path =
+            Path.of(this::class.java.getResource("/kts_safety/helm/chart_with_fqn_line_comment.spec.kts").toURI())
         val result = compiler.compile("safety-line-comment", path, emptyList(), false)
         Assertions.assertInstanceOf(Either.Success::class.java, result)
     }
@@ -114,7 +119,8 @@ chart("test", "1.0.0") {}""")
      */
     @Test
     fun testFqnInBlockCommentNotBlocked() {
-        val path = Path.of(this::class.java.getResource("/kts_safety/helm/chart_with_fqn_block_comment.spec.kts").toURI())
+        val path =
+            Path.of(this::class.java.getResource("/kts_safety/helm/chart_with_fqn_block_comment.spec.kts").toURI())
         val result = compiler.compile("safety-block-comment", path, emptyList(), false)
         Assertions.assertInstanceOf(Either.Success::class.java, result)
     }
@@ -129,8 +135,10 @@ chart("test", "1.0.0") {}""")
      */
     @Test
     fun testImportAllowedInUnsafeMode() {
-        val script = tempScriptFile("""import java.io.File
-chart("test", "1.0.0") {}""")
+        val script = tempScriptFile(
+            """import java.io.File
+chart("test", "1.0.0") {}"""
+        )
         Assertions.assertDoesNotThrow {
             compiler.compile("test", script, emptyList(), true)
         }
@@ -143,8 +151,10 @@ chart("test", "1.0.0") {}""")
      */
     @Test
     fun testFqnAllowedInUnsafeMode() {
-        val script = tempScriptFile("""val r = java.lang.Runtime.getRuntime()
-chart("test", "1.0.0") {}""")
+        val script = tempScriptFile(
+            """val r = java.lang.Runtime.getRuntime()
+chart("test", "1.0.0") {}"""
+        )
         Assertions.assertDoesNotThrow {
             compiler.compile("test", script, emptyList(), true)
         }

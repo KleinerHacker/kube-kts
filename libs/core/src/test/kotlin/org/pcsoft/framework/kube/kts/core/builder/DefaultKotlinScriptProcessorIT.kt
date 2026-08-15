@@ -17,19 +17,11 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.pcsoft.framework.kube.kts.api.chart.ChartSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.ConfigMapSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.IngressSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.SealedSecretSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.SecretSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.ServiceSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.*
 import org.pcsoft.framework.kube.kts.api.chart.template.ExplicitTemplateSpec
 import org.pcsoft.framework.kube.kts.api.chart.template.FlatTemplateSpec
 import org.pcsoft.framework.kube.kts.api.values.ValueAccess
-import org.pcsoft.framework.kube.kts.core.intern.assertions.ChartAssertion
-import org.pcsoft.framework.kube.kts.core.intern.assertions.ConfigMapAssertion
-import org.pcsoft.framework.kube.kts.core.intern.assertions.SealedSecretAssertion
-import org.pcsoft.framework.kube.kts.core.intern.assertions.SecretAssertion
-import org.pcsoft.framework.kube.kts.core.intern.assertions.ServiceAssertion
+import org.pcsoft.framework.kube.kts.core.intern.assertions.*
 import org.pcsoft.framework.kube.kts.core.intern.setupTestLogger
 import tools.jackson.databind.JsonNode
 import tools.jackson.dataformat.yaml.YAMLMapper
@@ -65,7 +57,12 @@ class DefaultKotlinScriptProcessorIT {
     @Test
     fun testChart() {
         val compiledScriptEither =
-            compiler.compile("chart", Path.of(this::class.java.getResource("/kts/helm/Chart.spec.kts").toURI()), emptyList(), false)
+            compiler.compile(
+                "chart",
+                Path.of(this::class.java.getResource("/kts/helm/Chart.spec.kts").toURI()),
+                emptyList(),
+                false
+            )
         Assertions.assertNotNull(compiledScriptEither)
         Assertions.assertInstanceOf(Either.Success::class.java, compiledScriptEither)
 

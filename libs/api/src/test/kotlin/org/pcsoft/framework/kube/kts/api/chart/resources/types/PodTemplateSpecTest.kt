@@ -18,11 +18,7 @@ import org.pcsoft.framework.kube.kts.api.types.miBytes
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
-import kotlin.test.assertIs
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
+import kotlin.test.*
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 

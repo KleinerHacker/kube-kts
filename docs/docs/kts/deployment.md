@@ -1,11 +1,11 @@
 # Deployment DSL
 
-The `deployment` DSL is used to configure Kubernetes Deployment resources. A Deployment describes the desired state of an application, manages the related Pods through ReplicaSets, and controls rollouts, rollbacks, and scaling.
+The `deployment` DSL is used to configure Kubernetes Deployment resources. A Deployment describes the desired state of
+an application, manages the related Pods through ReplicaSets, and controls rollouts, rollbacks, and scaling.
 
 !!! warning "Security: Import Restrictions"
-    By default, KTS scripts **do not allow** `import` statements or fully qualified class names
-    (e.g. `java.lang.Runtime`). Only types provided via the pre-configured default imports may
-    be used.
+By default, KTS scripts **do not allow** `import` statements or fully qualified class names (e.g. `java.lang.Runtime`).
+Only types provided via the pre-configured default imports may be used.
 
     Use the `--unsafe` flag to lift these restrictions.
 
@@ -51,11 +51,13 @@ deployment {
 ```
 
 !!! warning "Selector and Template Labels"
-    The `selector` must match the labels in the Pod template. Kubernetes uses this relationship to find the Pods managed by the Deployment.
+The `selector` must match the labels in the Pod template. Kubernetes uses this relationship to find the Pods managed by
+the Deployment.
 
 ## Detailed Example
 
-The following example shows the most important parts of a realistic Deployment configuration. The individual fragments are described in more detail on the subpages.
+The following example shows the most important parts of a realistic Deployment configuration. The individual fragments
+are described in more detail on the subpages.
 
 ```kotlin
 deployment {
@@ -177,26 +179,26 @@ deployment {
 
 ### Metadata (`metadata`)
 
-| Property | Type | Description |
-| :--- | :--- | :--- |
-| `name` | `String` | The name of the Deployment, passed as the first argument. |
-| `namespace` | `String?` | The namespace for the resource. |
-| `generateName` | `String?` | An optional prefix for generating a unique name. |
-| `labels { label(key, value) }` | `Map<String, String>` | Labels on the Deployment resource. |
-| `annotations { annotation(key, value) }` | `Map<String, String>` | Annotations on the Deployment resource. |
+| Property                                 | Type                  | Description                                               |
+|:-----------------------------------------|:----------------------|:----------------------------------------------------------|
+| `name`                                   | `String`              | The name of the Deployment, passed as the first argument. |
+| `namespace`                              | `String?`             | The namespace for the resource.                           |
+| `generateName`                           | `String?`             | An optional prefix for generating a unique name.          |
+| `labels { label(key, value) }`           | `Map<String, String>` | Labels on the Deployment resource.                        |
+| `annotations { annotation(key, value) }` | `Map<String, String>` | Annotations on the Deployment resource.                   |
 
 ### Deployment Specification (`spec`)
 
-| Property / Method | Description |
-| :--- | :--- |
-| `replicas` | Desired number of Pod replicas. |
-| `selector { ... }` | Required block for selecting the managed Pods. |
-| `template { ... }` | Required block for the Pod template. |
-| `strategy { ... }` | Rollout strategy (`Recreate` or `RollingUpdate`). |
-| `minReadySeconds` | Minimum amount of time a new Pod must be ready before it is considered available. |
-| `revisionHistoryLimit` | Number of old ReplicaSets to keep for rollbacks. |
-| `paused` | Pauses rollout processing by the Deployment controller. |
-| `progressDeadlineSeconds` | Maximum amount of time a rollout may take before it is considered failed. |
+| Property / Method         | Description                                                                       |
+|:--------------------------|:----------------------------------------------------------------------------------|
+| `replicas`                | Desired number of Pod replicas.                                                   |
+| `selector { ... }`        | Required block for selecting the managed Pods.                                    |
+| `template { ... }`        | Required block for the Pod template.                                              |
+| `strategy { ... }`        | Rollout strategy (`Recreate` or `RollingUpdate`).                                 |
+| `minReadySeconds`         | Minimum amount of time a new Pod must be ready before it is considered available. |
+| `revisionHistoryLimit`    | Number of old ReplicaSets to keep for rollbacks.                                  |
+| `paused`                  | Pauses rollout processing by the Deployment controller.                           |
+| `progressDeadlineSeconds` | Maximum amount of time a rollout may take before it is considered failed.         |
 
 ## Fragments
 

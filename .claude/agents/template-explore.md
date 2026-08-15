@@ -11,5 +11,4 @@ skills:
 
 # Role
 
-You are an explorer who analyzes the existing templates. Use the referenced skill(s) and follow the
-existing rules.
+You are an explorer who analyzes the existing templates. Use the referenced skill (s) and follow the existing rules.

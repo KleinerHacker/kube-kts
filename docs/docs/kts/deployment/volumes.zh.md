@@ -126,14 +126,15 @@ container("app", "registry.example.com/demo:1.0.0") {
 
 除上述来源外，该 DSL 覆盖了 Kubernetes 的全部卷来源：
 
-| Group | Sources |
-|-------|---------|
-| Config | `configMap`, `secret`, `projected`, `downwardApi` |
-| Node-local | `emptyDir`, `hostPath`, `persistentVolumeClaim`, `ephemeral`, `image`, `csi` |
-| Network | `nfs`, `iscsi`, `fibreChannel`, `rbd`, `cephFs`, `glusterFs` |
-| Cloud | `awsElasticBlockStore`, `gcePersistentDisk`, `azureDisk`, `azureFile`, `cinder`, `portworx`, `vsphereVolume` |
+| Group      | Sources                                                                                                      |
+|------------|--------------------------------------------------------------------------------------------------------------|
+| Config     | `configMap`, `secret`, `projected`, `downwardApi`                                                            |
+| Node-local | `emptyDir`, `hostPath`, `persistentVolumeClaim`, `ephemeral`, `image`, `csi`                                 |
+| Network    | `nfs`, `iscsi`, `fibreChannel`, `rbd`, `cephFs`, `glusterFs`                                                 |
+| Cloud      | `awsElasticBlockStore`, `gcePersistentDisk`, `azureDisk`, `azureFile`, `cinder`, `portworx`, `vsphereVolume` |
 
-Kubernetes 已移除的来源（`gitRepo`、`flexVolume`、`flocker`、`quobyte`、`scaleIo`、`storageOs`、`photonPersistentDisk`）仍可用于较旧的集群，但已标记为弃用。
+Kubernetes 已移除的来源（`gitRepo`、`flexVolume`、`flocker`、`quobyte`、`scaleIo`、`storageOs`、`photonPersistentDisk`
+）仍可用于较旧的集群，但已标记为弃用。
 
 ### 示例
 

@@ -12,8 +12,8 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources.types
 
-import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
 import org.junit.jupiter.api.Test
+import org.pcsoft.framework.kube.kts.api.types.ofPortNumber
 import org.pcsoft.framework.kube.kts.api.utils.toJson
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode

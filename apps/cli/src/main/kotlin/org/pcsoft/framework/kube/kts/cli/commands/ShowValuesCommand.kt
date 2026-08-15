@@ -16,10 +16,7 @@ import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmChartDownloadOptions
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
 import org.pcsoft.framework.kube.kts.cli.intern.utils.HELM_MARKER
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Option
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to show the values file (values.yaml) of a chart.
@@ -28,15 +25,24 @@ import picocli.CommandLine.Parameters
  */
 @Command(name = "values", description = ["Show the chart's values with helm"])
 class ShowValuesCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0", paramLabel = "CHART", description = ["Chart reference to inspect (forwarded to helm as positional CHART)"])
+    @Parameters(
+        index = "0",
+        paramLabel = "CHART",
+        description = ["Chart reference to inspect (forwarded to helm as positional CHART)"]
+    )
     private lateinit var chart: String
 
     @Mixin
     private lateinit var globalOptions: HelmGlobalOptions
+
     @Mixin
     private lateinit var downloadOptions: HelmChartDownloadOptions
 
-    @Option(names = ["--jsonpath"], description = ["$HELM_MARKER supply a JSONPath expression to filter the output"], paramLabel = "EXPRESSION")
+    @Option(
+        names = ["--jsonpath"],
+        description = ["$HELM_MARKER supply a JSONPath expression to filter the output"],
+        paramLabel = "EXPRESSION"
+    )
     private var jsonpath: String? = null
 
     override val helmCommand: List<String>

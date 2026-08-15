@@ -42,7 +42,8 @@ internal class HelmYamlMerging : YamlMergingBase() {
         logger.atDebug().log { "$symbolArrowRight Use Helm merge algorithm" }
         logger.atDebug().log { "$symbolSubProcess Merge ${overlayYaml.size + 1} YAML files..." }
         logger.atTrace().log { "\t$symbolArrowRight Base: ${baseYaml.fileName.name}" }
-        logger.atTrace().log { "\t$symbolArrowRight Overlay(s): ${overlayYaml.joinToString(", ") { it.fileName.name }}" }
+        logger.atTrace()
+            .log { "\t$symbolArrowRight Overlay(s): ${overlayYaml.joinToString(", ") { it.fileName.name }}" }
 
         logger.atDebug().log { "$symbolBullet Create temporary chart" }
         val rootDir = Files.createTempDirectory("helm")
@@ -61,8 +62,10 @@ internal class HelmYamlMerging : YamlMergingBase() {
         logger.atTrace().log { "$symbolBullet Value files to merge: ${valueFiles.joinToString { it.fileName.name }}" }
 
         logger.atDebug().log { "$symbolBullet Run Helm merge..." }
-        val process = ProcessBuilder("helm", "template", "tmp", chartDir.toString(),
-            *valueFiles.flatMap { listOf("-f", it.toString()) }.toTypedArray(), "--show-only", "templates/values.tpl")
+        val process = ProcessBuilder(
+            "helm", "template", "tmp", chartDir.toString(),
+            *valueFiles.flatMap { listOf("-f", it.toString()) }.toTypedArray(), "--show-only", "templates/values.tpl"
+        )
             .directory(rootDir.toFile())
             .start()
         val exitCode = process.waitFor()

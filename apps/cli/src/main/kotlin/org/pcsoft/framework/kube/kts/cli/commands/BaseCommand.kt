@@ -34,6 +34,7 @@ import picocli.CommandLine.Spec
 sealed class BaseCommand {
     @Spec
     private lateinit var spec: CommandSpec
+
     @Mixin
     private lateinit var globalFlags: GlobalFlags
 

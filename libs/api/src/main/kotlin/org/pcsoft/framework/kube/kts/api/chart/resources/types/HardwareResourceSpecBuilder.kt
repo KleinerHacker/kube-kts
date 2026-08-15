@@ -17,13 +17,13 @@ import org.pcsoft.framework.kube.kts.api.types.MemoryValue
 
 /**
  * Builder class for constructing hardware resource specifications including limits and requests.
- * 
+ *
  * This class is used to define the compute resource limits and requests for containerized applications.
  */
 class HardwareResourceSpecBuilder internal constructor() {
     private var limits: ResourceDataBuilder? = null
     private var requests: ResourceDataBuilder? = null
-    private var claims: MutableList<ResourceClaimReferenceSpec>? = null
+    private var claims: MutableList<ResourceClaimReferenceSpecBuilder>? = null
 
     /**
      * Configures the resource limits for a containerized application.
@@ -40,7 +40,7 @@ class HardwareResourceSpecBuilder internal constructor() {
      *     }
      * ```
      *
-     * @param prepare A lambda expression used to define the resource limits 
+     * @param prepare A lambda expression used to define the resource limits
      *                by configuring properties of the `ResourceDataBuilder`.
      */
     fun limits(prepare: ResourceDataBuilder.() -> Unit) {
@@ -50,9 +50,9 @@ class HardwareResourceSpecBuilder internal constructor() {
     /**
      * Configures the resource requests for a containerized application.
      *
-     * The specified `prepare` lambda allows users to define CPU, memory, 
-     * ephemeral storage, and extended resources for the container. These 
-     * resource requests indicate the minimum amount of resources a container 
+     * The specified `prepare` lambda allows users to define CPU, memory,
+     * ephemeral storage, and extended resources for the container. These
+     * resource requests indicate the minimum amount of resources a container
      * is expected to consume.
      *
      * Example:
@@ -72,7 +72,7 @@ class HardwareResourceSpecBuilder internal constructor() {
 
     /**
      * Builds and returns a `ResourceSpec` object based on the current configuration of resource limits and requests.
-     * 
+     *
      * This method consolidates the configured `limits` and `requests` resource data into a `ResourceSpec` instance.
      * It is used to define the minimum and maximum resource requirements for a container.
      *
@@ -94,7 +94,7 @@ class HardwareResourceSpecBuilder internal constructor() {
             }
         }
 
-        return HardwareResourceSpec(requests, limits, claims?.toList())
+        return HardwareResourceSpec(requests, limits, claims?.map { it.build() })
     }
 
     /**
@@ -106,19 +106,30 @@ class HardwareResourceSpecBuilder internal constructor() {
      * Example:
      * ```kotlin
      * resources {
-     *     addClaim("gpu")
+     *     addClaim("gpu") {
+     *         request = "shared"
+     *     }
      * }
      * ```
      *
-     * @param name The name of the pod's resource claim to use.
-     * @param request An optional single request inside the claim. If omitted, all of its requests may be used.
+     * @param name    The name of the pod's resource claim to use.
+     * @param prepare A lambda with a receiver of [ResourceClaimReferenceSpecBuilder] to narrow the
+     *                reference down to a single request of the claim.
      */
-    fun addClaim(name: String, request: String? = null) {
+    fun addClaim(name: String, prepare: ResourceClaimReferenceSpecBuilder.() -> Unit = {}) {
         if (claims == null) {
             claims = mutableListOf()
         }
-        claims!!.add(ResourceClaimReferenceSpec(name, request))
+        claims!!.add(ResourceClaimReferenceSpecBuilder(name).apply(prepare))
     }
+
+    /**
+     * Opts this container into using a resource claim declared on the pod.
+     *
+     * @param name    The name of the pod's resource claim to use.
+     * @param request An optional single request inside the claim. If omitted, all of its requests may be used.
+     */
+    fun addClaim(name: String, request: String?) = addClaim(name) { this.request = request }
 
     /**
      * Opts this container into using several resource claims declared on the pod.
@@ -135,10 +146,20 @@ class HardwareResourceSpecBuilder internal constructor() {
         /**
          * Opts this container into using a resource claim declared on the pod.
          *
-         * @param name The name of the pod's resource claim to use.
+         * @param name    The name of the pod's resource claim to use.
+         * @param prepare A lambda with a receiver of [ResourceClaimReferenceSpecBuilder] to narrow the
+         *                reference down to a single request of the claim.
+         */
+        fun claim(name: String, prepare: ResourceClaimReferenceSpecBuilder.() -> Unit = {}) =
+            addClaim(name, prepare)
+
+        /**
+         * Opts this container into using a resource claim declared on the pod.
+         *
+         * @param name    The name of the pod's resource claim to use.
          * @param request An optional single request inside the claim.
          */
-        fun claim(name: String, request: String? = null) = addClaim(name, request)
+        fun claim(name: String, request: String?) = addClaim(name, request)
     }
 
     /**
@@ -170,12 +191,12 @@ class HardwareResourceSpecBuilder internal constructor() {
 
         /**
          * The `memory` variable represents the memory capacity or allocation for the current resource.
-         * 
-         * It is an instance of the `MemoryValue` class, which encapsulates a value in bytes 
-         * with support for binary storage units (KiB, MiB, GiB). The value can include operations 
-         * like conversion between units, arithmetic manipulations, and serialization to YAML-friendly 
-         * formats. 
-         * 
+         *
+         * It is an instance of the `MemoryValue` class, which encapsulates a value in bytes
+         * with support for binary storage units (KiB, MiB, GiB). The value can include operations
+         * like conversion between units, arithmetic manipulations, and serialization to YAML-friendly
+         * formats.
+         *
          * This variable may be nullable, indicating that the memory resource might not be explicitly set.
          */
         var memory: MemoryValue? = null
@@ -185,7 +206,7 @@ class HardwareResourceSpecBuilder internal constructor() {
          *
          * Ephemeral storage refers to temporary local storage available to the resource.
          * It typically includes space for caches, logs, or any other non-persistent data that does not
-         * need to be preserved beyond the resource's lifecycle. 
+         * need to be preserved beyond the resource's lifecycle.
          *
          * Setting this variable allows configuration of the desired ephemeral storage size,
          * represented using the `MemoryValue` class, which supports binary units like KiB, MiB, or GiB.
@@ -225,7 +246,7 @@ class HardwareResourceSpecBuilder internal constructor() {
          *     }
          * ```
          *
-         * @param prepare A lambda block used to define extended resources. The block operates on an instance 
+         * @param prepare A lambda block used to define extended resources. The block operates on an instance
          *                of `ExtendedResourcesBuilder`, providing methods to define specific extended resource needs.
          */
         fun extendedResources(prepare: ExtendedResourcesBuilder.() -> Unit) {
@@ -235,8 +256,8 @@ class HardwareResourceSpecBuilder internal constructor() {
         /**
          * Builds and returns a `ResourceSpec.Data` object based on the current resource configuration.
          *
-         * This method consolidates the configured values for CPU, memory, ephemeral storage, 
-         * and extended resources into a `ResourceSpec.Data` instance, which is used to define 
+         * This method consolidates the configured values for CPU, memory, ephemeral storage,
+         * and extended resources into a `ResourceSpec.Data` instance, which is used to define
          * the resource requirements or limits for a container or workload.
          *
          * @return A `ResourceSpec.Data` object containing the configured resource requirements or limits.
@@ -250,7 +271,7 @@ class HardwareResourceSpecBuilder internal constructor() {
 
         /**
          * Provides a builder for configuring extended resource requirements.
-         * 
+         *
          * This class is designed to define additional resource requirements beyond the standard
          * CPU and memory configurations, such as GPUs or other custom hardware. It acts as a
          * sub-DSL for adding extended resource definitions to the parent resource configuration.
@@ -263,7 +284,7 @@ class HardwareResourceSpecBuilder internal constructor() {
              * Defines an extended resource requirement for the current resource configuration.
              *
              * This method is used to specify custom resource requirements, such as GPUs
-             * or other specialized hardware. Extended resources are beyond the standard CPU 
+             * or other specialized hardware. Extended resources are beyond the standard CPU
              * and memory configurations.
              *
              * @param key The name of the extended resource. Must follow the Kubernetes extended resource naming convention.
@@ -271,7 +292,7 @@ class HardwareResourceSpecBuilder internal constructor() {
              */
             fun extendedResource(key: String, value: String) {
                 addExtendedResource(key, value)
-            }       
+            }
         }
     }
 }

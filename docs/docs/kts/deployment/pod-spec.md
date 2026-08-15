@@ -1,6 +1,7 @@
 # Pod Spec
 
-The Pod Spec describes runtime, network, scheduling, and security options for all containers in the Pod. In Deployments, it is part of the `template`.
+The Pod Spec describes runtime, network, scheduling, and security options for all containers in the Pod. In Deployments,
+it is part of the `template`.
 
 ```kotlin
 template {
@@ -26,23 +27,23 @@ template {
 
 ## Core Properties
 
-| Property / Method | Description |
-| :--- | :--- |
-| `containers { container(name, image) { ... } }` | Required list of main containers. |
-| `containers { init(name, image) { ... } }` | Init containers that run before the main containers. |
-| `containers { ephemeral(name, image) { ... } }` | Ephemeral containers for debugging scenarios. |
-| `restartPolicy` | Container restart behavior: `Always`, `OnFailure`, `Never`. |
-| `serviceAccountName` | ServiceAccount used to run the Pod. |
-| `automountServiceAccountToken` | Controls whether the ServiceAccount token is mounted automatically. |
-| `imagePullSecrets { secret(name) }` | Secrets for private container registries. |
-| `volumes { volume(name) { ... } }` | Volumes that containers can mount. |
-| `nodeSelector { select(key, value) }` | Simple node selection through labels. |
-| `affinity { ... }` | Affinity and anti-affinity rules for scheduling. |
-| `tolerations { toleration { ... } }` | Allows scheduling on nodes with matching taints. |
-| `topologySpreadConstraints { constraint(...) { ... } }` | Distribution of Pods across topology domains. |
-| `securityContext { ... }` | Security context at Pod level. |
-| `terminationGracePeriodSeconds` | Grace period for terminating the Pod. |
-| `activeDeadlineSeconds` | Maximum lifetime of the Pod. |
+| Property / Method                                       | Description                                                         |
+|:--------------------------------------------------------|:--------------------------------------------------------------------|
+| `containers { container(name, image) { ... } }`         | Required list of main containers.                                   |
+| `containers { init(name, image) { ... } }`              | Init containers that run before the main containers.                |
+| `containers { ephemeral(name, image) { ... } }`         | Ephemeral containers for debugging scenarios.                       |
+| `restartPolicy`                                         | Container restart behavior: `Always`, `OnFailure`, `Never`.         |
+| `serviceAccountName`                                    | ServiceAccount used to run the Pod.                                 |
+| `automountServiceAccountToken`                          | Controls whether the ServiceAccount token is mounted automatically. |
+| `imagePullSecrets { secret(name) }`                     | Secrets for private container registries.                           |
+| `volumes { volume(name) { ... } }`                      | Volumes that containers can mount.                                  |
+| `nodeSelector { select(key, value) }`                   | Simple node selection through labels.                               |
+| `affinity { ... }`                                      | Affinity and anti-affinity rules for scheduling.                    |
+| `tolerations { toleration { ... } }`                    | Allows scheduling on nodes with matching taints.                    |
+| `topologySpreadConstraints { constraint(...) { ... } }` | Distribution of Pods across topology domains.                       |
+| `securityContext { ... }`                               | Security context at Pod level.                                      |
+| `terminationGracePeriodSeconds`                         | Grace period for terminating the Pod.                               |
+| `activeDeadlineSeconds`                                 | Maximum lifetime of the Pod.                                        |
 
 ## Network and DNS
 
@@ -68,7 +69,8 @@ spec {
 }
 ```
 
-Additional network options include `hostNetwork`, `hostPID`, `hostIPC`, `hostname`, `subdomain`, and `setHostnameAsFQDN`.
+Additional network options include `hostNetwork`, `hostPID`, `hostIPC`, `hostname`, `subdomain`, and
+`setHostnameAsFQDN`.
 
 ## Scheduling
 
@@ -97,7 +99,8 @@ spec {
 
 ## Security Context
 
-`securityContext { ... }` at Pod level applies to the Pod as a whole. Containers can additionally define their own security contexts.
+`securityContext { ... }` at Pod level applies to the Pod as a whole. Containers can additionally define their own
+security contexts.
 
 ```kotlin
 spec {

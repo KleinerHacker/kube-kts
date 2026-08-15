@@ -126,14 +126,15 @@ container("app", "registry.example.com/demo:1.0.0") {
 
 위에 소개한 소스 외에도 이 DSL은 Kubernetes의 모든 볼륨 소스를 지원합니다.
 
-| Group | Sources |
-|-------|---------|
-| Config | `configMap`, `secret`, `projected`, `downwardApi` |
-| Node-local | `emptyDir`, `hostPath`, `persistentVolumeClaim`, `ephemeral`, `image`, `csi` |
-| Network | `nfs`, `iscsi`, `fibreChannel`, `rbd`, `cephFs`, `glusterFs` |
-| Cloud | `awsElasticBlockStore`, `gcePersistentDisk`, `azureDisk`, `azureFile`, `cinder`, `portworx`, `vsphereVolume` |
+| Group      | Sources                                                                                                      |
+|------------|--------------------------------------------------------------------------------------------------------------|
+| Config     | `configMap`, `secret`, `projected`, `downwardApi`                                                            |
+| Node-local | `emptyDir`, `hostPath`, `persistentVolumeClaim`, `ephemeral`, `image`, `csi`                                 |
+| Network    | `nfs`, `iscsi`, `fibreChannel`, `rbd`, `cephFs`, `glusterFs`                                                 |
+| Cloud      | `awsElasticBlockStore`, `gcePersistentDisk`, `azureDisk`, `azureFile`, `cinder`, `portworx`, `vsphereVolume` |
 
-Kubernetes에서 제거된 소스(`gitRepo`, `flexVolume`, `flocker`, `quobyte`, `scaleIo`, `storageOs`, `photonPersistentDisk`)는 이전 클러스터를 위해 계속 사용할 수 있지만 더 이상 사용되지 않는 것으로 표시됩니다.
+Kubernetes에서 제거된 소스 (`gitRepo`, `flexVolume`, `flocker`, `quobyte`, `scaleIo`, `storageOs`, `photonPersistentDisk`)는 이전
+클러스터를 위해 계속 사용할 수 있지만 더 이상 사용되지 않는 것으로 표시됩니다.
 
 ### 예시
 

@@ -474,7 +474,7 @@ class ServiceSpecBuilder internal constructor() : ResourceSpecBuilder<ServiceSpe
      * @param prepare A lambda function used to define the load balancer source ranges 
      * within the context of the LoadBalancerSourceRangeListBuilder.
      */
-    fun loadBalancerSourceRanges(prepare: LoadBalancerSourceRangeListBuilder.() -> Unit) = 
+    fun loadBalancerSourceRanges(prepare: LoadBalancerSourceRangeListBuilder.() -> Unit) =
         LoadBalancerSourceRangeListBuilder().apply(prepare)
 
     @Suppress("DEPRECATION")
@@ -529,9 +529,9 @@ class ServiceSpecBuilder internal constructor() : ResourceSpecBuilder<ServiceSpe
          *
          * Example:
          * ```kotlin
-     *     port("http", 80) {
-     *         targetPort = 8080
-     *     }
+         *     port("http", 80) {
+         *         targetPort = 8080
+         *     }
          * ```
          *
          * @param name The name of the port mapping. This serves as a unique identifier and must not be blank.
@@ -633,7 +633,7 @@ class ServiceSpecBuilder internal constructor() : ResourceSpecBuilder<ServiceSpe
          *
          * @param loadBalancerSourceRange The CIDR block representing the source range to be added.
          */
-        fun loadBalancerSourceRange(loadBalancerSourceRange: String) = 
+        fun loadBalancerSourceRange(loadBalancerSourceRange: String) =
             addLoadBalancerSourceRange(loadBalancerSourceRange)
     }
 }

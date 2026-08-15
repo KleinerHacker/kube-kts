@@ -4,8 +4,8 @@
 kube-kts list [OPTIONS]
 ```
 
-Runs `helm list` to list releases. Like `status`, `list` operates on the cluster, so it needs
-**neither a repository nor a render step** — the call is forwarded directly to Helm.
+Runs `helm list` to list releases. Like `status`, `list` operates on the cluster, so it needs **neither a repository nor
+a render step** — the call is forwarded directly to Helm.
 
 ## How it works
 
@@ -15,26 +15,26 @@ Runs `helm list` to list releases. Like `status`, `list` operates on the cluster
 
 ## List options
 
-| Option | Marker | Description |
-|---|---|---|
-| `-a`, `--all` | `---->` | Show all releases without any filter applied. |
-| `-A`, `--all-namespaces` | `---->` | List releases across all namespaces. |
-| `-d`, `--date` | `---->` | Sort by release date. |
-| `--deployed` | `---->` | Show deployed releases. Enabled automatically if no other state filter is given. |
-| `--failed` | `---->` | Show failed releases. |
-| `--filter=REGEXP` | `---->` | Perl-compatible regular expression; only matching releases are listed. |
-| `-m`, `--max=INT` | `---->` | Maximum number of releases to fetch. |
-| `--no-headers` | `---->` | Don't print headers in the default output format. |
-| `--offset=INT` | `---->` | Next release index in the list, used to offset from the start. |
-| `-o`, `--output=FORMAT` | `---->` | Output format: `table` (default), `json` or `yaml`. |
-| `--pending` | `---->` | Show pending releases. |
-| `-r`, `--reverse` | `---->` | Reverse the sort order. |
-| `-l`, `--selector=SELECTOR` | `---->` | Label query to filter on (supports `=`, `==`, `!=`). |
-| `-q`, `--short` | `---->` | Output short (quiet) listing format. |
-| `--superseded` | `---->` | Show superseded releases. |
-| `--time-format=FORMAT` | `---->` | Format time using a Go time formatter. |
-| `--uninstalled` | `---->` | Show uninstalled releases (if `--keep-history` was used on uninstall). |
-| `--uninstalling` | `---->` | Show releases that are currently being uninstalled. |
+| Option                      | Marker  | Description                                                                      |
+|-----------------------------|---------|----------------------------------------------------------------------------------|
+| `-a`, `--all`               | `---->` | Show all releases without any filter applied.                                    |
+| `-A`, `--all-namespaces`    | `---->` | List releases across all namespaces.                                             |
+| `-d`, `--date`              | `---->` | Sort by release date.                                                            |
+| `--deployed`                | `---->` | Show deployed releases. Enabled automatically if no other state filter is given. |
+| `--failed`                  | `---->` | Show failed releases.                                                            |
+| `--filter=REGEXP`           | `---->` | Perl-compatible regular expression; only matching releases are listed.           |
+| `-m`, `--max=INT`           | `---->` | Maximum number of releases to fetch.                                             |
+| `--no-headers`              | `---->` | Don't print headers in the default output format.                                |
+| `--offset=INT`              | `---->` | Next release index in the list, used to offset from the start.                   |
+| `-o`, `--output=FORMAT`     | `---->` | Output format: `table` (default), `json` or `yaml`.                              |
+| `--pending`                 | `---->` | Show pending releases.                                                           |
+| `-r`, `--reverse`           | `---->` | Reverse the sort order.                                                          |
+| `-l`, `--selector=SELECTOR` | `---->` | Label query to filter on (supports `=`, `==`, `!=`).                             |
+| `-q`, `--short`             | `---->` | Output short (quiet) listing format.                                             |
+| `--superseded`              | `---->` | Show superseded releases.                                                        |
+| `--time-format=FORMAT`      | `---->` | Format time using a Go time formatter.                                           |
+| `--uninstalled`             | `---->` | Show uninstalled releases (if `--keep-history` was used on uninstall).           |
+| `--uninstalling`            | `---->` | Show releases that are currently being uninstalled.                              |
 
 ## Helm global options
 

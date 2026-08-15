@@ -16,22 +16,22 @@ containers {
 
 ## Core Properties
 
-| Property / Method | Description |
-| :--- | :--- |
-| `imagePullPolicy` | Pull behavior for the image: `Always`, `IfNotPresent`, `Never`. |
-| `ports { port(containerPort) { ... } }` | Container ports with optional name and protocol. |
-| `env(name) { ... }` | Single environment variable. |
-| `envFrom { ... }` | Environment variables from ConfigMaps or Secrets. |
-| `resources { requests { ... } limits { ... } }` | CPU, memory, and storage requests and limits. |
-| `volumeMounts { volumeMount(name, mountPath) { ... } }` | Mounts for Pod volumes. |
-| `livenessProbe { ... }` | Checks whether the container must be restarted. |
-| `readinessProbe { ... }` | Checks whether the container may receive traffic. |
-| `startupProbe { ... }` | Check for long startup phases. |
-| `lifecycle { ... }` | Lifecycle hooks such as `postStart` and `preStop`. |
-| `securityContext { ... }` | Security options at container level. |
-| `command(...)` | Overrides the image entrypoint. |
-| `args(...)` | Overrides or adds image arguments. |
-| `workingDir` | Working directory inside the container. |
+| Property / Method                                       | Description                                                     |
+|:--------------------------------------------------------|:----------------------------------------------------------------|
+| `imagePullPolicy`                                       | Pull behavior for the image: `Always`, `IfNotPresent`, `Never`. |
+| `ports { port(containerPort) { ... } }`                 | Container ports with optional name and protocol.                |
+| `env(name) { ... }`                                     | Single environment variable.                                    |
+| `envFrom { ... }`                                       | Environment variables from ConfigMaps or Secrets.               |
+| `resources { requests { ... } limits { ... } }`         | CPU, memory, and storage requests and limits.                   |
+| `volumeMounts { volumeMount(name, mountPath) { ... } }` | Mounts for Pod volumes.                                         |
+| `livenessProbe { ... }`                                 | Checks whether the container must be restarted.                 |
+| `readinessProbe { ... }`                                | Checks whether the container may receive traffic.               |
+| `startupProbe { ... }`                                  | Check for long startup phases.                                  |
+| `lifecycle { ... }`                                     | Lifecycle hooks such as `postStart` and `preStop`.              |
+| `securityContext { ... }`                               | Security options at container level.                            |
+| `command(...)`                                          | Overrides the image entrypoint.                                 |
+| `args(...)`                                             | Overrides or adds image arguments.                              |
+| `workingDir`                                            | Working directory inside the container.                         |
 
 ## Ports
 
@@ -82,7 +82,8 @@ container("app", "registry.example.com/demo:1.0.0") {
 }
 ```
 
-`env` can be called several times to define multiple variables, and `envs { }` groups them in one block. Each `envFrom` call adds one further source; `envsFrom { }` groups them. Both are rendered as YAML lists.
+`env` can be called several times to define multiple variables, and `envs { }` groups them in one block. Each `envFrom`
+call adds one further source; `envsFrom { }` groups them. Both are rendered as YAML lists.
 
 ## Resources
 
@@ -102,7 +103,8 @@ container("app", "registry.example.com/demo:1.0.0") {
 }
 ```
 
-`requests` describes the planned minimum amount of resources. `limits` describes the upper bound. The DSL validates that limits are not lower than requests.
+`requests` describes the planned minimum amount of resources. `limits` describes the upper bound. The DSL validates that
+limits are not lower than requests.
 
 ## Volume Mounts
 
@@ -118,7 +120,8 @@ container("app", "registry.example.com/demo:1.0.0") {
 }
 ```
 
-The name in `volumeMount` must match a volume in the Pod Spec. `subPath` mounts a single file or directory of the volume instead of its root; `subPathExpr` does the same but may reference environment variables.
+The name in `volumeMount` must match a volume in the Pod Spec. `subPath` mounts a single file or directory of the volume
+instead of its root; `subPathExpr` does the same but may reference environment variables.
 
 ## Sidecars and Resizing
 
@@ -140,4 +143,6 @@ containers {
 }
 ```
 
-An init container with `restartPolicy = Always` becomes a native sidecar that keeps running alongside the main containers. `addResizePolicy` declares whether an in-place resource change requires a restart, and `addClaim` references a resource claim declared on the Pod.
+An init container with `restartPolicy = Always` becomes a native sidecar that keeps running alongside the main
+containers. `addResizePolicy` declares whether an in-place resource change requires a restart, and `addClaim` references
+a resource claim declared on the Pod.

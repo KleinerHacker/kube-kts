@@ -66,7 +66,9 @@ data class MemoryValue(val value: Long) : Comparable<MemoryValue> {
         fun parse(value: String): MemoryValue {
             for (storageUnit in StorageUnit.entries.reversed()) {
                 if (storageUnit.suffix.isNotEmpty() && value.endsWith(storageUnit.suffix, true)) {
-                    return MemoryValue(value.substring(0, value.length - storageUnit.suffix.length).toInt() * storageUnit.factor)
+                    return MemoryValue(
+                        value.substring(0, value.length - storageUnit.suffix.length).toInt() * storageUnit.factor
+                    )
                 }
             }
 

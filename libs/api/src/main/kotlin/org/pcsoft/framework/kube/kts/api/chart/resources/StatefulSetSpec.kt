@@ -12,11 +12,7 @@
 
 package org.pcsoft.framework.kube.kts.api.chart.resources
 
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.LabelSelectorSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.PersistentVolumeClaimRetentionPolicySpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.PodTemplateSpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.StatefulSetUpdateStrategySpec
-import org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeClaimTemplateSpec
+import org.pcsoft.framework.kube.kts.api.chart.resources.types.*
 import org.pcsoft.framework.kube.kts.api.intern.NoArgs
 import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsDeserializer
 import org.pcsoft.framework.kube.kts.api.intern.jackson.DurationInSecondsSerializer

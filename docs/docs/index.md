@@ -54,8 +54,8 @@ During processing, Kube KTS generates a Helm-compatible output:
 ```
 
 !!! note "Library files are not rendered"
-    Files with the `.lib.kts` extension are not rendered to YAML. Their content is
-    automatically made available in all spec files at compile time.
+Files with the `.lib.kts` extension are not rendered to YAML. Their content is automatically made available in all spec
+files at compile time.
 
 ---
 
@@ -63,15 +63,15 @@ During processing, Kube KTS generates a Helm-compatible output:
 
 Kube KTS distinguishes between two types of Kotlin Script files:
 
-| Extension | Purpose |
-| :--- | :--- |
-| `*.spec.kts` | Defines a Kubernetes resource (rendered to YAML) |
-| `*.lib.kts` | Defines helper functions available in all spec files |
+| Extension    | Purpose                                              |
+|:-------------|:-----------------------------------------------------|
+| `*.spec.kts` | Defines a Kubernetes resource (rendered to YAML)     |
+| `*.lib.kts`  | Defines helper functions available in all spec files |
 
 ### Spec Files (`*.spec.kts`)
 
-Spec files define Kubernetes resources using the KTS DSL. Each spec file produces one YAML
-output file. `Chart.spec.kts` is a special spec file that produces `Chart.yaml`.
+Spec files define Kubernetes resources using the KTS DSL. Each spec file produces one YAML output file. `Chart.spec.kts`
+is a special spec file that produces `Chart.yaml`.
 
 ```kotlin
 // templates/deployment.spec.kts
@@ -82,16 +82,16 @@ deployment {
 ```
 
 !!! warning "Security: Import Restrictions"
-    By default, KTS scripts **do not allow** `import` statements or fully qualified class names
-    (e.g. `java.lang.Runtime`). Only types provided via the pre-configured default imports may
-    be used — see [Default Imports](kts/lib.md#default-imports) for the full list.
+By default, KTS scripts **do not allow** `import` statements or fully qualified class names (e.g. `java.lang.Runtime`).
+Only types provided via the pre-configured default imports may be used —
+see [Default Imports](kts/lib.md#default-imports) for the full list.
 
     Use the `--unsafe` flag to lift these restrictions.
 
 ### Library Files (`*.lib.kts`)
 
-Library files define reusable helper functions that are automatically available in all spec files
-within the same repository. Library files are **not** rendered to YAML output and are **not**
+Library files define reusable helper functions that are automatically available in all spec files within the same
+repository. Library files are **not** rendered to YAML output and are **not**
 accessible from other library files.
 
 ```kotlin

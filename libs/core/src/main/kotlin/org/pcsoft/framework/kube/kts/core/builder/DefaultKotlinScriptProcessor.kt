@@ -79,43 +79,44 @@ internal object DefaultKotlinScriptProcessor : KotlinScriptProcessor {
         .replace(Regex("""//[^\n]*"""), "")
         .replace(Regex("""/\*.*?\*/""", RegexOption.DOT_MATCHES_ALL), "")
 
-    override fun compile(name: String, script: Path, libScripts: List<Path>, unsafe: Boolean): Either<CompiledScript> = runBlocking {
-        logger.atDebug().log { "$symbolSubProcess Compile script: $name" }
+    override fun compile(name: String, script: Path, libScripts: List<Path>, unsafe: Boolean): Either<CompiledScript> =
+        runBlocking {
+            logger.atDebug().log { "$symbolSubProcess Compile script: $name" }
 
-        if (!unsafe) {
-            val strippedSource = stripLiteralsAndComments(Files.readString(script))
-            require(importRegex.find(strippedSource) == null) {
-                "Import statements are not allowed in Kube KTS scripts"
+            if (!unsafe) {
+                val strippedSource = stripLiteralsAndComments(Files.readString(script))
+                require(importRegex.find(strippedSource) == null) {
+                    "Import statements are not allowed in Kube KTS scripts"
+                }
+                require(fqnRegex.find(strippedSource) == null) {
+                    "Fully qualified class names are not allowed in Kube KTS scripts (use pre-imported types only)"
+                }
             }
-            require(fqnRegex.find(strippedSource) == null) {
-                "Fully qualified class names are not allowed in Kube KTS scripts (use pre-imported types only)"
-            }
-        }
 
-        val libSources = libScripts.map { it.toFile().toScriptSource() }
-        val compilerConfiguration = ScriptCompilationConfiguration(KubeKtsSpecCompilationConfiguration) {
-            if (libSources.isNotEmpty()) {
-                refineConfiguration {
-                    beforeCompiling { context ->
-                        if (context.script.name?.endsWith(".lib.kts") == true) {
-                            return@beforeCompiling context.compilationConfiguration.asSuccess()
+            val libSources = libScripts.map { it.toFile().toScriptSource() }
+            val compilerConfiguration = ScriptCompilationConfiguration(KubeKtsSpecCompilationConfiguration) {
+                if (libSources.isNotEmpty()) {
+                    refineConfiguration {
+                        beforeCompiling { context ->
+                            if (context.script.name?.endsWith(".lib.kts") == true) {
+                                return@beforeCompiling context.compilationConfiguration.asSuccess()
+                            }
+                            ScriptCompilationConfiguration(context.compilationConfiguration) {
+                                importScripts.put(libSources)
+                            }.asSuccess()
                         }
-                        ScriptCompilationConfiguration(context.compilationConfiguration) {
-                            importScripts.put(libSources)
-                        }.asSuccess()
                     }
                 }
             }
+            val result = scriptingHost.compiler.invoke(script.toFile().toScriptSource(), compilerConfiguration)
+            if (result.isError()) {
+                logger.atTrace().log { "Detect compile errors for script: $name".failedStyle() }
+                Either.Error(result.reports.toEffectiveString())
+            } else {
+                logger.atTrace().log { "No compile errors for script: $name".successStyle() }
+                Either.Success(result.valueOrThrow())
+            }
         }
-        val result = scriptingHost.compiler.invoke(script.toFile().toScriptSource(), compilerConfiguration)
-        if (result.isError()) {
-            logger.atTrace().log { "Detect compile errors for script: $name".failedStyle() }
-            Either.Error(result.reports.toEffectiveString())
-        } else {
-            logger.atTrace().log { "No compile errors for script: $name".successStyle() }
-            Either.Success(result.valueOrThrow())
-        }
-    }
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> execute(name: String, script: CompiledScript, valueAccess: ValueAccess): Either<T> = runBlocking {

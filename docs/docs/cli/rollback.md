@@ -4,9 +4,8 @@
 kube-kts rollback <RELEASE> [REVISION] [OPTIONS]
 ```
 
-Runs `helm rollback` to roll a release back to a previous revision. It operates on an existing
-release, so it needs **neither a repository nor a render step** — the call is forwarded directly to
-Helm.
+Runs `helm rollback` to roll a release back to a previous revision. It operates on an existing release, so it needs
+**neither a repository nor a render step** — the call is forwarded directly to Helm.
 
 ## How it works
 
@@ -16,24 +15,24 @@ Helm.
 
 ## Parameters
 
-| Parameter | Required | Description |
-|---|---|---|
-| `RELEASE` | yes | Name of the release to roll back. Forwarded to Helm as the positional `RELEASE`. |
-| `REVISION` | no | Revision to roll back to. If omitted, Helm rolls back to the previous revision. |
+| Parameter  | Required | Description                                                                      |
+|------------|----------|----------------------------------------------------------------------------------|
+| `RELEASE`  | yes      | Name of the release to roll back. Forwarded to Helm as the positional `RELEASE`. |
+| `REVISION` | no       | Revision to roll back to. If omitted, Helm rolls back to the previous revision.  |
 
 ## Rollback options
 
-| Option | Marker | Description |
-|---|---|---|
-| `--cleanup-on-fail` | `---->` | Allow deletion of new resources created during the rollback if it fails. |
-| `--dry-run` | `---->` | Simulate a rollback without changing anything. |
-| `--force` | `---->` | Force resource updates through delete/recreate if needed. |
-| `--history-max=INT` | `---->` | Limit the maximum number of revisions saved per release (`0` for no limit). |
-| `--no-hooks` | `---->` | Prevent hooks from running during the rollback. |
-| `--recreate-pods` | `---->` | Restart pods of the resource if applicable. |
-| `--timeout=DURATION` | `---->` | Time to wait for any individual Kubernetes operation. |
-| `--wait` | `---->` | Wait until all resources are ready before marking the release successful. |
-| `--wait-for-jobs` | `---->` | With `--wait`, also wait until all Jobs have completed. |
+| Option               | Marker  | Description                                                                 |
+|----------------------|---------|-----------------------------------------------------------------------------|
+| `--cleanup-on-fail`  | `---->` | Allow deletion of new resources created during the rollback if it fails.    |
+| `--dry-run`          | `---->` | Simulate a rollback without changing anything.                              |
+| `--force`            | `---->` | Force resource updates through delete/recreate if needed.                   |
+| `--history-max=INT`  | `---->` | Limit the maximum number of revisions saved per release (`0` for no limit). |
+| `--no-hooks`         | `---->` | Prevent hooks from running during the rollback.                             |
+| `--recreate-pods`    | `---->` | Restart pods of the resource if applicable.                                 |
+| `--timeout=DURATION` | `---->` | Time to wait for any individual Kubernetes operation.                       |
+| `--wait`             | `---->` | Wait until all resources are ready before marking the release successful.   |
+| `--wait-for-jobs`    | `---->` | With `--wait`, also wait until all Jobs have completed.                     |
 
 ## Helm global options
 

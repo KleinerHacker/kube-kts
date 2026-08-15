@@ -4,8 +4,8 @@
 kube-kts test <RELEASE> [OPTIONS]
 ```
 
-Runs `helm test` to execute the tests defined in a release. It operates on an existing release, so it
-needs **neither a repository nor a render step** — the call is forwarded directly to Helm.
+Runs `helm test` to execute the tests defined in a release. It operates on an existing release, so it needs **neither a
+repository nor a render step** — the call is forwarded directly to Helm.
 
 ## How it works
 
@@ -15,18 +15,18 @@ needs **neither a repository nor a render step** — the call is forwarded direc
 
 ## Parameters
 
-| Parameter | Required | Description |
-|---|---|---|
-| `RELEASE` | yes | Name of the release to test. Forwarded to Helm as the positional `RELEASE`. |
+| Parameter | Required | Description                                                                 |
+|-----------|----------|-----------------------------------------------------------------------------|
+| `RELEASE` | yes      | Name of the release to test. Forwarded to Helm as the positional `RELEASE`. |
 
 ## Test options
 
-| Option | Marker | Description |
-|---|---|---|
+| Option               | Marker  | Description                                                                                  |
+|----------------------|---------|----------------------------------------------------------------------------------------------|
 | `--filter=KEY=VALUE` | `---->` | Select tests by attribute (e.g. `name=...`), or exclude with `!attribute=value`. Repeatable. |
-| `--hide-notes` | `---->` | Do not show notes in the test output. |
-| `--logs` | `---->` | Dump the logs from the test pods after all tests complete. |
-| `--timeout=DURATION` | `---->` | Time to wait for any individual Kubernetes operation. |
+| `--hide-notes`       | `---->` | Do not show notes in the test output.                                                        |
+| `--logs`             | `---->` | Dump the logs from the test pods after all tests complete.                                   |
+| `--timeout=DURATION` | `---->` | Time to wait for any individual Kubernetes operation.                                        |
 
 ## Helm global options
 

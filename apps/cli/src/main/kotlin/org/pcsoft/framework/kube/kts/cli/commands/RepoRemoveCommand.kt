@@ -14,9 +14,7 @@ package org.pcsoft.framework.kube.kts.cli.commands
 
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmArgsProvider
 import org.pcsoft.framework.kube.kts.cli.commands.helm.HelmGlobalOptions
-import picocli.CommandLine.Command
-import picocli.CommandLine.Mixin
-import picocli.CommandLine.Parameters
+import picocli.CommandLine.*
 
 /**
  * Command to remove one or more chart repositories.
@@ -25,7 +23,12 @@ import picocli.CommandLine.Parameters
  */
 @Command(name = "remove", aliases = ["rm"], description = ["Remove one or more chart repositories with helm"])
 class RepoRemoveCommand : BaseDirectHelmCommand(), HelmArgsProvider {
-    @Parameters(index = "0..*", paramLabel = "REPO", arity = "1..*", description = ["Names of the repositories to remove (forwarded to helm as positionals)"])
+    @Parameters(
+        index = "0..*",
+        paramLabel = "REPO",
+        arity = "1..*",
+        description = ["Names of the repositories to remove (forwarded to helm as positionals)"]
+    )
     private lateinit var repos: Array<String>
 
     @Mixin
