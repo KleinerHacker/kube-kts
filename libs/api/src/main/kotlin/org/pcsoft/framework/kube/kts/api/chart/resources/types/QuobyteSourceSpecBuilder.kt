@@ -19,6 +19,7 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
  * @param registry The Quobyte registry.
  * @param volume   The name of the Quobyte volume.
  */
+@Suppress("DEPRECATION")
 class QuobyteSourceSpecBuilder internal constructor(
     private val registry: String,
     private val volume: String

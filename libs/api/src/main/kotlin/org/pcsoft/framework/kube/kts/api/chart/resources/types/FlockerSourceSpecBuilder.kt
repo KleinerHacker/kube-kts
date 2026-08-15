@@ -15,6 +15,7 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
 /**
  * Builder for a [FlockerSourceSpec].
  */
+@Suppress("DEPRECATION")
 class FlockerSourceSpecBuilder internal constructor() : SourceSpecBuilder<FlockerSourceSpec> {
     /**
      * The name of the dataset stored as metadata on the Flocker dataset.

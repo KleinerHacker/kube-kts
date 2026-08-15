@@ -18,6 +18,7 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
  * @constructor Creates a builder for the given FlexVolume driver.
  * @param driver The name of the FlexVolume driver.
  */
+@Suppress("DEPRECATION")
 class FlexVolumeSourceSpecBuilder internal constructor(private val driver: String) :
     SourceSpecBuilder<FlexVolumeSourceSpec> {
     private var options: MutableMap<String, String>? = null

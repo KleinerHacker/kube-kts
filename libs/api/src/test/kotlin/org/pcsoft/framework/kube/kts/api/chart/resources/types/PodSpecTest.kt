@@ -23,6 +23,7 @@ import kotlin.test.*
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
+@Suppress("DEPRECATION")
 class PodSpecTest {
     companion object {
         private val maxSpec = PodSpecBuilder().apply {

@@ -18,6 +18,7 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
  * @constructor Creates a builder for the given Photon Controller disk.
  * @param pdID The identifier of the persistent disk.
  */
+@Suppress("DEPRECATION")
 class PhotonPersistentDiskSourceSpecBuilder internal constructor(private val pdID: String) :
     SourceSpecBuilder<PhotonPersistentDiskSourceSpec> {
     /**

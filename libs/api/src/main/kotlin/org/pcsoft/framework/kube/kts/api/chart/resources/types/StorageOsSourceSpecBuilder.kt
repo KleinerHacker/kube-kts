@@ -18,6 +18,7 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
  * @constructor Creates a builder for the given StorageOS volume.
  * @param volumeName The name of the StorageOS volume.
  */
+@Suppress("DEPRECATION")
 class StorageOsSourceSpecBuilder internal constructor(private val volumeName: String) :
     SourceSpecBuilder<StorageOsSourceSpec> {
     /**

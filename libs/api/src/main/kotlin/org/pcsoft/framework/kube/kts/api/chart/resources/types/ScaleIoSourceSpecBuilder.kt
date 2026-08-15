@@ -20,6 +20,7 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
  * @param system    The name of the storage system.
  * @param secretRef The name of the Secret holding the ScaleIO credentials.
  */
+@Suppress("DEPRECATION")
 class ScaleIoSourceSpecBuilder internal constructor(
     private val gateway: String,
     private val system: String,

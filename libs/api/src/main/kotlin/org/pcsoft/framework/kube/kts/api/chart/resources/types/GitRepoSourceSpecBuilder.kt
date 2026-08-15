@@ -18,6 +18,7 @@ package org.pcsoft.framework.kube.kts.api.chart.resources.types
  * @constructor Creates a builder for the given repository.
  * @param repository The URL of the repository.
  */
+@Suppress("DEPRECATION")
 class GitRepoSourceSpecBuilder internal constructor(private val repository: String) :
     SourceSpecBuilder<GitRepoSourceSpec> {
     /**
