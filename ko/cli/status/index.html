@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2214,9 +2216,8 @@
 <h1 id="status">status</h1>
 <pre><code class="language-bash">kube-kts status &lt;RELEASE&gt; [옵션]
 </code></pre>
-<p><code>helm status</code> 를 실행하여 이미 설치된 릴리스의 상태를 표시합니다. 렌더링 계열 명령과 달리 <code>status</code> 는
-클러스터에 이미 존재하는 릴리스를 대상으로 하므로 <strong>저장소도 렌더링 단계도 필요하지 않으며</strong>, 호출이
-그대로 Helm 에 전달됩니다.</p>
+<p><code>helm status</code> 를 실행하여 이미 설치된 릴리스의 상태를 표시합니다. 렌더링 계열 명령과 달리 <code>status</code> 는 클러스터에 이미 존재하는 릴리스를 대상으로 하므로 <strong>저장소도 렌더링 단계도 필요하지
+않으며</strong>, 호출이 그대로 Helm 에 전달됩니다.</p>
 <h2 id="_1">동작 방식</h2>
 <ol>
 <li>저장소를 스캔·컴파일·렌더링하지 않습니다. KTS 스크립트는 여기서 무관합니다.</li>
@@ -2225,14 +2226,13 @@
 </ol>
 <div class="admonition note">
 <p class="admonition-title">릴리스 이름은 위치 인수, 네임스페이스는 <code>-n</code></p>
-<p>릴리스 이름은 첫 번째 위치 인수(<code>RELEASE</code>)로 전달하며 그대로 Helm 에 전달됩니다. <code>-n</code> 은
-<code>--namespace</code> 용으로 예약되어 있습니다.</p>
 </div>
+<p>릴리스 이름은 첫 번째 위치 인수 (<code>RELEASE</code>)로 전달하며 그대로 Helm 에 전달됩니다. <code>-n</code> 은
+<code>--namespace</code> 용으로 예약되어 있습니다.</p>
 <div class="admonition note">
 <p class="admonition-title">저장소가 필요 없음</p>
-<p><code>status</code> 는 아무것도 렌더링하지 않으므로 Kube KTS 저장소를 지정할 필요가 없습니다. 이는 렌더링이
-없는 기반 클래스 <code>BaseDirectHelmCommand</code> 로 만든 첫 번째 명령입니다.</p>
 </div>
+<p><code>status</code> 는 아무것도 렌더링하지 않으므로 Kube KTS 저장소를 지정할 필요가 없습니다. 이는 렌더링이 없는 기반 클래스 <code>BaseDirectHelmCommand</code> 로 만든 첫 번째 명령입니다.</p>
 <h2 id="_2">매개변수</h2>
 <table>
 <thead>
@@ -2410,7 +2410,7 @@ kube-kts status my-app --show-desc --show-resources
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2214,27 +2216,26 @@
 <h1 id="uninstall">uninstall</h1>
 <pre><code class="language-bash">kube-kts uninstall &lt;REPOSITORY&gt; [TARGET] --name &lt;RELEASE&gt; [--name &lt;RELEASE&gt;...] [OPTIONS]
 </code></pre>
-<p>Renders the repository and then runs <code>helm uninstall</code> to remove one or more releases from a cluster.
-Uninstalling deletes the resources that belong to a release and, by default, its history as well.
-Like the other Helm-backed commands it talks to the cluster through your kube-context and forwards
-every supported Helm uninstall flag.</p>
+<p>Renders the repository and then runs <code>helm uninstall</code> to remove one or more releases from a cluster. Uninstalling
+deletes the resources that belong to a release and, by default, its history as well. Like the other Helm-backed commands
+it talks to the cluster through your kube-context and forwards every supported Helm uninstall flag.</p>
 <h2 id="how-it-works">How it works</h2>
 <ol>
-<li>The repository is scanned, compiled and rendered (the render step keeps the workflow uniform with
-   the other commands; the rendered chart is used as the working directory).</li>
+<li>The repository is scanned, compiled and rendered (the render step keeps the workflow uniform with the other commands;
+   the rendered chart is used as the working directory).</li>
 <li><code>helm uninstall &lt;RELEASE&gt;...</code> is executed with all forwarded options appended.</li>
 <li>Helm removes each release; the command's exit code mirrors Helm's result.</li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Release names are options, namespace is <code>-n</code></p>
+</div>
 <p>Release names are passed with <code>--name</code> (repeatable) and forwarded to Helm as positional <code>RELEASE</code>
 arguments. The <code>-n</code> shorthand is reserved for <code>--namespace</code>. At least one <code>--name</code> is required.</p>
-</div>
 <div class="admonition warning">
 <p class="admonition-title">This deletes cluster resources</p>
-<p>Uninstall is destructive. Use <code>--dry-run</code> first to preview, and <code>--keep-history</code> if you want to
-retain the release history for later inspection or rollback.</p>
 </div>
+<p>Uninstall is destructive. Use <code>--dry-run</code> first to preview, and <code>--keep-history</code> if you want to retain the release
+history for later inspection or rollback.</p>
 <h2 id="parameters">Parameters</h2>
 <table>
 <thead>
@@ -2442,7 +2443,7 @@ kube-kts uninstall ./helm --name my-app --dry-run --ignore-not-found
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

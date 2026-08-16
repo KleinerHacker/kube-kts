@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2280,29 +2282,28 @@
 <h1 id="install">install</h1>
 <pre><code class="language-bash">kube-kts install &lt;REPOSITORY&gt; [TARGET] --name &lt;NAME&gt; [OPTIONS]
 </code></pre>
-<p>Renders the repository to a Helm chart and then runs <code>helm install</code> to deploy it into a Kubernetes
-cluster as a new release. This is the command that actually changes cluster state, so it talks to the
-API server using your kube-context (or the overrides below) and forwards every supported Helm install
-flag.</p>
+<p>Renders the repository to a Helm chart and then runs <code>helm install</code> to deploy it into a Kubernetes cluster as a new
+release. This is the command that actually changes cluster state, so it talks to the API server using your kube-context
+(or the overrides below) and forwards every supported Helm install flag.</p>
 <h2 id="how-it-works">How it works</h2>
 <ol>
-<li>The repository is scanned, compiled and rendered into a (temporary or explicit) chart directory,
-   with your <code>-f</code>/<code>--set*</code> values applied.</li>
+<li>The repository is scanned, compiled and rendered into a (temporary or explicit) chart directory, with your <code>-f</code>/
+   <code>--set*</code> values applied.</li>
 <li><code>helm install &lt;NAME&gt; .</code> is executed in that directory with all forwarded options appended.</li>
-<li>Helm creates the release; the command's exit code mirrors Helm's result. On failure nothing is
-   rolled back unless you pass <code>--atomic</code>.</li>
+<li>Helm creates the release; the command's exit code mirrors Helm's result. On failure nothing is rolled back unless you
+   pass <code>--atomic</code>.</li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Release name is an option, namespace is <code>-n</code></p>
-<p>The release name is passed with <code>--name</code> and forwarded to Helm as the positional <code>NAME</code>. The <code>-n</code>
-shorthand is intentionally <strong>not</strong> the name — it is reserved for <code>--namespace</code>, to stay in sync
-with Helm. Omit <code>--name</code> only together with <code>--generate-name</code>.</p>
 </div>
+<p>The release name is passed with <code>--name</code> and forwarded to Helm as the positional <code>NAME</code>. The <code>-n</code>
+shorthand is intentionally <strong>not</strong> the name — it is reserved for <code>--namespace</code>, to stay in sync with Helm. Omit <code>--name</code>
+only together with <code>--generate-name</code>.</p>
 <div class="admonition tip">
 <p class="admonition-title">Safer rollouts</p>
+</div>
 <p>Combine <code>--atomic</code> (roll back on failure) with <code>--wait</code> / <code>--wait-for-jobs</code> and a sensible
 <code>--timeout</code> so a failed install does not leave half-created resources behind.</p>
-</div>
 <h2 id="parameters">Parameters</h2>
 <table>
 <thead>
@@ -2701,7 +2702,7 @@ kube-kts install ./helm --name my-app --dry-run
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

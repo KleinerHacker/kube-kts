@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2236,10 +2238,11 @@
 <h1 id="package">package</h1>
 <pre><code class="language-bash">kube-kts package &lt;REPOSITORY&gt; [TARGET] [옵션]
 </code></pre>
-<p>KTS 저장소를 일반 Helm 차트로 렌더링한 다음 이에 대해 <code>helm package .</code>를 실행하여 버전이 지정된 차트 아카이브(<code>.tgz</code>)를 생성합니다. 릴리스 명령과 달리 <code>package</code>는 <strong>저장소가 필요</strong>하며 먼저 전체 <em>스캔 → 컴파일 → 렌더링</em> 파이프라인을 실행합니다.</p>
+<p>KTS 저장소를 일반 Helm 차트로 렌더링한 다음 이에 대해 <code>helm package .</code>를 실행하여 버전이 지정된 차트 아카이브 (<code>.tgz</code>)를 생성합니다. 릴리스 명령과 달리 <code>package</code>는 <strong>저장소가
+필요</strong>하며 먼저 전체 <em>스캔 → 컴파일 → 렌더링</em> 파이프라인을 실행합니다.</p>
 <h2 id="_1">동작 방식</h2>
 <ol>
-<li>저장소를 스캔하고 Kotlin 스크립트를 컴파일·평가한 뒤 결과를 <code>TARGET</code> 디렉터리(생략 시 임시 디렉터리)로 렌더링합니다.</li>
+<li>저장소를 스캔하고 Kotlin 스크립트를 컴파일·평가한 뒤 결과를 <code>TARGET</code> 디렉터리 (생략 시 임시 디렉터리)로 렌더링합니다.</li>
 <li>해당 디렉터리에서 전달되는 모든 옵션을 덧붙여 <code>helm package .</code>를 실행합니다.</li>
 <li>Helm이 차트 아카이브를 작성합니다. 명령의 종료 코드는 Helm 결과를 반영합니다.</li>
 </ol>
@@ -2356,7 +2359,7 @@ kube-kts package ./my-repo --version 1.2.3 --app-version 2.0.0 -d ./dist
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

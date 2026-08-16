@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2148,16 +2150,15 @@
 <h1 id="validate">validate</h1>
 <pre><code class="language-bash">kube-kts validate &lt;REPOSITORY&gt;
 </code></pre>
-<p>校验 KTS 仓库。该命令扫描仓库，发现每个 <code>*.spec.kts</code>、<code>*.lib.kts</code> 以及传统的 YAML/模板文件，检查
-仓库结构是否正确、是否包含所有必需文件（例如 Chart 定义）。它<strong>不会</strong>编译或执行脚本，也不产生任何
-输出工件——这是纯粹的快速结构检查。</p>
-<p>可将其作为 CI 流水线中第一道、最廉价的关卡：它能在更昂贵的编译/渲染步骤之前就发现缺失或放错位置的
-文件，且从不触及集群或 Helm。</p>
+<p>校验 KTS 仓库。该命令扫描仓库，发现每个 <code>*.spec.kts</code>、<code>*.lib.kts</code> 以及传统的 YAML/模板文件，检查 仓库结构是否正确、是否包含所有必需文件（例如
+Chart 定义）。它 <strong>不会</strong>编译或执行脚本，也不产生任何 输出工件——这是纯粹的快速结构检查。</p>
+<p>可将其作为 CI 流水线中第一道、最廉价的关卡：它能在更昂贵的编译/渲染步骤之前就发现缺失或放错位置的 文件，且从不触及集群或
+Helm。</p>
 <div class="admonition tip">
 <p class="admonition-title">validate 的定位</p>
-<p><code>validate</code> 仅检查<em>结构</em>。若还要验证 Kotlin 脚本能否编译和执行，请使用 <a href="../compile/"><code>compile</code></a>；
-若还要生成 Helm YAML，请使用 <a href="../render/"><code>render</code></a>。</p>
 </div>
+<p><code>validate</code> 仅检查 <em>结构</em>。若还要验证 Kotlin 脚本能否编译和执行，请使用 <a href="../compile/"><code>compile</code></a>； 若还要生成 Helm
+YAML，请使用 <a href="../render/"><code>render</code></a>。</p>
 <h2 id="_1">参数</h2>
 <table>
 <thead>
@@ -2217,7 +2218,7 @@ kube-kts validate ./helm --exception
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

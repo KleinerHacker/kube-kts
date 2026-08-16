@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2148,19 +2150,18 @@
 <h1 id="render">render</h1>
 <pre><code class="language-bash">kube-kts render &lt;REPOSITORY&gt; [TARGET] [-f FILE...]
 </code></pre>
-<p>Renders the repository into a plain Helm chart on disk. It runs the full pipeline — scan, compile,
-evaluate — and writes the result as a regular Helm chart (with <code>Chart.yaml</code>, <code>values.yaml</code> and a
-<code>templates/</code> directory of plain YAML) into the target directory. The output contains no Kotlin and no
-Go templating logic, so it can be consumed by <code>helm</code> directly, committed, diffed, or inspected by
-hand.</p>
-<p><code>render</code> is the bridge between the Kube KTS world and standard tooling: everything the Helm-backed
-commands do internally starts with exactly this step. Running it explicitly is the best way to <em>see</em>
+<p>Renders the repository into a plain Helm chart on disk. It runs the full pipeline — scan, compile, evaluate — and writes
+the result as a regular Helm chart (with <code>Chart.yaml</code>, <code>values.yaml</code> and a
+<code>templates/</code> directory of plain YAML) into the target directory. The output contains no Kotlin and no Go templating
+logic, so it can be consumed by <code>helm</code> directly, committed, diffed, or inspected by hand.</p>
+<p><code>render</code> is the bridge between the Kube KTS world and standard tooling: everything the Helm-backed commands do
+internally starts with exactly this step. Running it explicitly is the best way to <em>see</em>
 what Kube KTS produces.</p>
 <div class="admonition tip">
 <p class="admonition-title">Inspect the output</p>
-<p>Pass an explicit <code>TARGET</code> so the chart is kept after the command finishes. Without it, the chart
-is written to a temporary directory that the operating system may clean up.</p>
 </div>
+<p>Pass an explicit <code>TARGET</code> so the chart is kept after the command finishes. Without it, the chart is written to a
+temporary directory that the operating system may clean up.</p>
 <h2 id="parameters">Parameters</h2>
 <table>
 <thead>
@@ -2240,7 +2241,7 @@ kube-kts render ./helm
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

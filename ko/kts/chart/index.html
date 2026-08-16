@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2247,11 +2249,10 @@
 <p><code>chart</code> DSL은 기존 Helm 차트의 <code>Chart.yaml</code> 파일과 마찬가지로 Helm 차트의 메타데이터와 의존성을 정의하는 데 사용됩니다.</p>
 <div class="admonition warning">
 <p class="admonition-title">보안: 임포트 제한</p>
-<p>기본적으로 KTS 스크립트는 <code>import</code> 문이나 완전 정규화된 클래스 이름
-(예: <code>java.lang.Runtime</code>)을 <strong>허용하지 않습니다</strong>. 사전 구성된 기본 임포트로
-제공되는 타입만 사용할 수 있습니다.</p>
-<p><code>--unsafe</code> 플래그를 사용하면 이러한 제한을 해제할 수 있습니다.</p>
 </div>
+<p>기본적으로 KTS 스크립트는 <code>import</code> 문이나 완전 정규화된 클래스 이름 (예: <code>java.lang.Runtime</code>)을 <strong>허용하지 않습니다</strong>. 사전 구성된 기본 임포트로 제공되는 타입만 사용할 수 있습니다.</p>
+<pre><code>`--unsafe` 플래그를 사용하면 이러한 제한을 해제할 수 있습니다.
+</code></pre>
 <h2 id="_1">기본 사용법</h2>
 <p>차트를 정의하려면 차트의 <strong>이름</strong>과 <strong>버전</strong>을 주요 인수로 받는 <code>chart</code> 함수를 사용하세요.</p>
 <pre><code class="language-kotlin">chart(&quot;my-chart&quot;, &quot;1.0.0&quot;) {
@@ -2401,11 +2402,12 @@
 <p><code>dependency</code> 블록은 세밀한 제어를 가능하게 합니다.</p>
 <ul>
 <li><code>repository</code>: 차트 저장소의 URL.</li>
-<li><code>alias</code>: 차트의 별칭(같은 차트를 여러 번 사용할 때 유용함).</li>
+<li><code>alias</code>: 차트의 별칭 (같은 차트를 여러 번 사용할 때 유용함).</li>
 <li><code>condition</code>: 차트 설치 여부를 결정하는 불리언 표현식.</li>
-<li><code>tags { tag(String) }</code>: 의존성을 그룹화하기 위한 태그를 추가합니다.(대안: <code>addTag</code>)</li>
-<li><code>pathImportValues { pathImportValue(path) }</code>: 하위 차트에서 값을 가져옵니다.(대안: <code>addPathImportValue</code>)</li>
-<li><code>mappingImportValues { mappingImportValue(childKey, parentKey) }</code>: 하위 차트의 특정 값을 상위 차트로 매핑합니다.(대안: <code>addMappingImportValue</code>)</li>
+<li><code>tags { tag(String) }</code>: 의존성을 그룹화하기 위한 태그를 추가합니다. (대안: <code>addTag</code>)</li>
+<li><code>pathImportValues { pathImportValue(path) }</code>: 하위 차트에서 값을 가져옵니다. (대안: <code>addPathImportValue</code>)</li>
+<li><code>mappingImportValues { mappingImportValue(childKey, parentKey) }</code>: 하위 차트의 특정 값을 상위 차트로 매핑합니다. (대안:
+  <code>addMappingImportValue</code>)</li>
 </ul>
 <h2 id="_7">특수 타입</h2>
 <ul>
@@ -2442,7 +2444,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

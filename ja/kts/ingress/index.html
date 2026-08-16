@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2293,11 +2295,11 @@
 <p><code>ingress</code> DSL は、通常 HTTP 経由でクラスター内のサービスへの外部アクセスを管理する Kubernetes Ingress リソースを構成するために使用します。</p>
 <div class="admonition warning">
 <p class="admonition-title">セキュリティ: インポート制限</p>
-<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名
-（例: <code>java.lang.Runtime</code>）を<strong>許可しません</strong>。事前構成されたデフォルトインポートで
-提供される型のみ使用できます。</p>
-<p><code>--unsafe</code> フラグを使うとこれらの制限を解除できます。</p>
 </div>
+<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名 （例: <code>java.lang.Runtime</code>）を <strong>許可しません</strong>
+。事前構成されたデフォルトインポートで 提供される型のみ使用できます。</p>
+<pre><code>`--unsafe` フラグを使うとこれらの制限を解除できます。
+</code></pre>
 <h2 id="_1">基本的な使い方</h2>
 <p>最小限の Ingress 構成には、<code>metadata</code> と <code>spec</code> 内の少なくとも 1 つのルールが必要です。</p>
 <pre><code class="language-kotlin">ingress {
@@ -2511,9 +2513,11 @@
 </tbody>
 </table>
 <h3 id="_4">バックエンド構成</h3>
-<p><code>serviceBackend</code> を使用する場合、ポートを指定する必要があります。
-- <code>port(Int)</code>: 数値ポートを使用します。
-- <code>port(String)</code>: 名前付きポートを使用します。</p>
+<p><code>serviceBackend</code> を使用する場合、ポートを指定する必要があります。</p>
+<ul>
+<li><code>port(Int)</code>: 数値ポートを使用します。</li>
+<li><code>port(String)</code>: 名前付きポートを使用します。</li>
+</ul>
 
 
 
@@ -2543,7 +2547,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

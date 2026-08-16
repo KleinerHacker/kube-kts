@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -1811,6 +1813,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        边车容器与资源调整
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2174,6 +2187,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        边车容器与资源调整
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2290,18 +2314,30 @@
     env(&quot;SPRING_PROFILES_ACTIVE&quot;) {
         fromValue(&quot;production&quot;)
     }
+    env(&quot;DB_PASSWORD&quot;) {
+        fromSecretKeyReference(&quot;demo-secret&quot;, &quot;password&quot;)
+    }
+
+    envs {
+        variable(&quot;LOG_LEVEL&quot;) {
+            fromValue(&quot;debug&quot;)
+        }
+    }
 
     envFrom {
         configMapRef(&quot;demo-config&quot;) {
             optional = false
         }
+    }
+    envFrom {
         secretRef(&quot;demo-secret&quot;) {
             optional = true
         }
     }
 }
 </code></pre>
-<p><code>env</code> 用于显式设置单个变量。<code>envFrom</code> 用于从外部来源导入多个变量。</p>
+<p><code>env</code> 可多次调用以定义多个变量，<code>envs { }</code> 可将它们归入一个代码块。每次调用 <code>envFrom</code> 会添加一个来源，<code>envsFrom { }</code>
+可将它们归组。两者都渲染为 YAML 列表。</p>
 <h2 id="_5">资源</h2>
 <pre><code class="language-kotlin">container(&quot;app&quot;, &quot;registry.example.com/demo:1.0.0&quot;) {
     resources {
@@ -2321,14 +2357,35 @@
 <h2 id="_6">卷挂载</h2>
 <pre><code class="language-kotlin">container(&quot;app&quot;, &quot;registry.example.com/demo:1.0.0&quot;) {
     volumeMounts {
-        volumeMount(&quot;config&quot;, &quot;/etc/demo&quot;) {
+        volumeMount(&quot;config&quot;, &quot;/etc/demo/application.yaml&quot;) {
             readOnly = true
+            subPath = &quot;application.yaml&quot;
         }
         volumeMount(&quot;data&quot;, &quot;/var/lib/demo&quot;)
     }
 }
 </code></pre>
-<p><code>volumeMount</code> 中的名称必须与 Pod Spec 中的某个卷匹配。</p>
+<p><code>volumeMount</code> 中的名称必须与 Pod Spec 中的卷一致。<code>subPath</code> 挂载卷中的单个文件或目录而非其根目录；<code>subPathExpr</code>
+作用相同，但可以引用环境变量。</p>
+<h2 id="_7">边车容器与资源调整</h2>
+<pre><code class="language-kotlin">containers {
+    init(&quot;proxy&quot;, &quot;registry.example.com/envoy:1.0.0&quot;) {
+        restartPolicy = ContainerSpec.RestartPolicy.Always
+    }
+
+    container(&quot;app&quot;, &quot;registry.example.com/demo:1.0.0&quot;) {
+        addResizePolicy(
+            ResourceResizePolicySpec.ResourceName.Cpu,
+            ResourceResizePolicySpec.RestartPolicy.NotRequired
+        )
+        resources {
+            addClaim(&quot;gpu&quot;)
+        }
+    }
+}
+</code></pre>
+<p>设置了 <code>restartPolicy = Always</code> 的 init 容器会成为原生边车容器，与主容器一同持续运行。<code>addResizePolicy</code> 声明原地调整资源时是否需要重启，
+<code>addClaim</code> 引用 Pod 上声明的资源申领。</p>
 
 
 
@@ -2358,7 +2415,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

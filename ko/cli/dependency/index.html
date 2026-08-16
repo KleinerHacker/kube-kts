@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2236,7 +2238,8 @@
 <h1 id="dependency">dependency</h1>
 <pre><code class="language-bash">kube-kts dependency &lt;SUBCOMMAND&gt; &lt;REPOSITORY&gt; [TARGET] [옵션]
 </code></pre>
-<p>차트의 의존성을 관리하는 <code>helm dependency …</code> 하위 명령(별칭 <code>dep</code>)을 묶습니다. 각 하위 명령은 <strong>저장소가 필요</strong>하며 먼저 전체 <em>스캔 → 컴파일 → 렌더링</em> 파이프라인을 실행한 다음 렌더링된 차트에 대해 동작합니다(<code>helm dependency &lt;sub&gt; .</code>). 하위 명령 없이 <code>dependency</code>를 호출하면 사용법 목록이 출력됩니다.</p>
+<p>차트의 의존성을 관리하는 <code>helm dependency …</code> 하위 명령 (별칭 <code>dep</code>)을 묶습니다. 각 하위 명령은 <strong>저장소가 필요</strong>하며 먼저 전체 <em>스캔 → 컴파일 → 렌더링</em> 파이프라인을 실행한 다음
+렌더링된 차트에 대해 동작합니다 (<code>helm dependency &lt;sub&gt; .</code>). 하위 명령 없이 <code>dependency</code>를 호출하면 사용법 목록이 출력됩니다.</p>
 <h2 id="_1">하위 명령</h2>
 <table>
 <thead>
@@ -2351,7 +2354,7 @@ kube-kts dependency list ./my-repo
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

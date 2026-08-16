@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2236,12 +2238,15 @@
 <h1 id="diff">diff</h1>
 <pre><code class="language-bash">kube-kts diff upgrade &lt;REPOSITORY&gt; [TARGET] --name &lt;RELEASE&gt; [オプション]
 </code></pre>
-<p>外部の <strong><code>helm-diff</code> プラグイン</strong> 上に構築された diff サブコマンドをまとめます。KTS リポジトリをレンダリングし、その結果をクラスターと比較して、操作が適用する変更をプレビューします。各サブコマンドは <strong>リポジトリが必要</strong>で、まず <em>スキャン → コンパイル → レンダリング</em> のパイプライン全体を実行します。サブコマンドなしで <code>diff</code> を呼び出すと使用方法の一覧が表示されます。</p>
+<p>外部の <strong><code>helm-diff</code> プラグイン</strong> 上に構築された diff サブコマンドをまとめます。KTS
+リポジトリをレンダリングし、その結果をクラスターと比較して、操作が適用する変更をプレビューします。各サブコマンドは
+<strong>リポジトリが必要</strong>で、まず <em>スキャン → コンパイル → レンダリング</em> のパイプライン全体を実行します。サブコマンドなしで
+<code>diff</code> を呼び出すと使用方法の一覧が表示されます。</p>
 <div class="admonition note">
 <p class="admonition-title">helm-diff プラグインが必要</p>
+</div>
 <p>これらのコマンドは外部プラグインが提供する <code>helm diff …</code> を呼び出します。
 <code>helm plugin install https://github.com/databus23/helm-diff</code> でインストールしてください。</p>
-</div>
 <h2 id="_1">サブコマンド</h2>
 <table>
 <thead>
@@ -2283,8 +2288,9 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title">リリース名は <code>--name</code> で渡す</p>
-<p><code>REPOSITORY</code>/<code>TARGET</code> がすでに位置引数を占有しているため、リリース名は <code>--name</code> で渡し、位置引数 <code>RELEASE</code> としてプラグインに転送されます。<code>-n</code> は <code>--namespace</code> のために予約されています。</p>
 </div>
+<p><code>REPOSITORY</code>/<code>TARGET</code> がすでに位置引数を占有しているため、リリース名は <code>--name</code> で渡し、位置引数 <code>RELEASE</code>
+としてプラグインに転送されます。<code>-n</code> は <code>--namespace</code> のために予約されています。</p>
 <h2 id="diff_1">diff オプション</h2>
 <table>
 <thead>
@@ -2343,7 +2349,8 @@
 </tbody>
 </table>
 <h2 id="_3">値</h2>
-<p><code>diff upgrade</code> は <a href="../install/"><code>--set</code> ファミリー</a> と <a href="../#values"><code>-f</code>/<code>--values</code></a> による値ファイルを受け付け、これらは Kotlin スクリプトとプラグインの両方に供給されます。</p>
+<p><code>diff upgrade</code> は <a href="../install/"><code>--set</code> ファミリー</a> と <a href="../#values"><code>-f</code>/<code>--values</code></a> による値ファイルを受け付け、これらは
+Kotlin スクリプトとプラグインの両方に供給されます。</p>
 <h2 id="helm">Helm グローバルオプション</h2>
 <p>すべての <a href="../status/#helm-global-options">Helm グローバルオプション</a>が Helm に転送されます。</p>
 <h2 id="_4">グローバルオプション</h2>
@@ -2384,7 +2391,7 @@ kube-kts diff upgrade ./my-repo --name my-app --detailed-exitcode
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

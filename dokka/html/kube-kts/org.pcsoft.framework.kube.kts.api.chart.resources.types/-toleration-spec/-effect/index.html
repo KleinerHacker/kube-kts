@@ -109,7 +109,7 @@
     <h1 class="cover"><span><span>Effect</span></span></h1>
     <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
       <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">enum </span><a href="index.html">Effect</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="index.html">TolerationSpec.Effect</a><span class="token operator">&gt; </span></div><p class="paragraph">Specifies the effects of taints that toleration can tolerate. The effect determines the impact on workload scheduling or execution when the taint is present on a node.</p></div>    </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">enum </span><a href="index.html">Effect</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="index.html">TolerationSpec.Effect</a><span class="token operator">&gt; </span></div><p class="paragraph">The taint effect a toleration applies to.</p></div>    </div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="ENTRY">Entries</button></div>
@@ -128,7 +128,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-no-schedule/index.html">NoSchedule</a></div></div><div class="brief "><p class="paragraph">Represents the &quot;NoSchedule&quot; effect, which prevents scheduling of workloads on nodes that have the specified taint.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-no-schedule/index.html">NoSchedule</a></div></div><div class="brief "><p class="paragraph">New Pods are not scheduled onto the node; running Pods stay.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -145,7 +145,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-prefer-no-schedule/index.html">PreferNoSchedule</a></div></div><div class="brief "><p class="paragraph">Represents the &quot;PreferNoSchedule&quot; effect, which prefers scheduling of workloads on nodes that have the specified taint, but allows scheduling of workloads on nodes that do not have the taint.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-prefer-no-schedule/index.html">PreferNoSchedule</a></div></div><div class="brief "><p class="paragraph">The scheduler avoids the node but may still use it if nothing else fits.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -162,7 +162,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-no-execute/index.html">NoExecute</a></div></div><div class="brief "><p class="paragraph">Represents the &quot;NoExecute&quot; effect, which prevents scheduling of workloads on nodes that have the specified taint and prevents the pod from being rescheduled on the node.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-no-execute/index.html">NoExecute</a></div></div><div class="brief "><p class="paragraph">New Pods are not scheduled and running Pods are evicted.</p></div></div>                  </div>
                 </div>
               </div>
             </div>

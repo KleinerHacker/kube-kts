@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2236,13 +2238,13 @@
 <h1 id="lint">lint</h1>
 <pre><code class="language-bash">kube-kts lint &lt;REPOSITORY&gt; [TARGET] [OPTIONS]
 </code></pre>
-<p>Renders the repository to a Helm chart and then runs <code>helm lint</code> against it. Linting examines the
-rendered chart for problems and best-practice violations — missing required fields, malformed
-<code>Chart.yaml</code>, templates that do not produce valid YAML, recommended-but-absent metadata, and so on —
-and reports them as information, warnings or errors.</p>
-<p>Because Kube KTS renders first, <code>lint</code> validates the <em>actual</em> chart that Helm would receive, with
-your values already applied. It is the natural next step after <a href="../compile/"><code>compile</code></a>: compile proves
-the scripts run, lint proves the resulting chart is sound.</p>
+<p>Renders the repository to a Helm chart and then runs <code>helm lint</code> against it. Linting examines the rendered chart for
+problems and best-practice violations — missing required fields, malformed
+<code>Chart.yaml</code>, templates that do not produce valid YAML, recommended-but-absent metadata, and so on — and reports them as
+information, warnings or errors.</p>
+<p>Because Kube KTS renders first, <code>lint</code> validates the <em>actual</em> chart that Helm would receive, with your values already
+applied. It is the natural next step after <a href="../compile/"><code>compile</code></a>: compile proves the scripts run, lint proves the
+resulting chart is sound.</p>
 <h2 id="how-it-works">How it works</h2>
 <ol>
 <li>The repository is scanned, compiled and rendered into a (temporary or explicit) chart directory.</li>
@@ -2251,9 +2253,9 @@ the scripts run, lint proves the resulting chart is sound.</p>
 </ol>
 <div class="admonition tip">
 <p class="admonition-title">Fail the build on warnings</p>
-<p>By default <code>helm lint</code> only fails on errors. Add <code>--strict</code> to also fail on warnings, which is
-what you usually want in CI.</p>
 </div>
+<p>By default <code>helm lint</code> only fails on errors. Add <code>--strict</code> to also fail on warnings, which is what you usually want in
+CI.</p>
 <h2 id="parameters">Parameters</h2>
 <table>
 <thead>
@@ -2348,9 +2350,8 @@ what you usually want in CI.</p>
 </tbody>
 </table>
 <h2 id="helm-global-options">Helm global options</h2>
-<p>These configure the connection to the cluster and the Helm environment. They are forwarded to Helm
-unchanged. (For <code>lint</code>, cluster-related options rarely matter because linting is offline, but they
-are accepted for consistency.)</p>
+<p>These configure the connection to the cluster and the Helm environment. They are forwarded to Helm unchanged. (For
+<code>lint</code>, cluster-related options rarely matter because linting is offline, but they are accepted for consistency.)</p>
 <table>
 <thead>
 <tr>
@@ -2478,7 +2479,7 @@ kube-kts lint ./helm --with-subcharts --quiet
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

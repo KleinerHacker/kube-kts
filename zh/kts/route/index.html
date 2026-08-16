@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2249,16 +2251,17 @@
 <p><code>route</code> DSL 用于配置 <strong>OpenShift Route</strong> 资源，它通过外部主机名暴露服务，并可在 OpenShift 路由器上终止 TLS。</p>
 <div class="admonition danger">
 <p class="admonition-title">并非标准 Kubernetes 资源</p>
-<p><code>Route</code>（<code>apiVersion: route.openshift.io/v1</code>）<strong>不是</strong>标准 Kubernetes 的一部分。它是
-<strong>OpenShift / OKD</strong>（或附带 OpenShift 路由器的兼容发行版）专有的资源，无法在原生 Kubernetes 集群上工作。</p>
-<p>在标准 Kubernetes 上请改用 <a href="../ingress/">Ingress DSL</a>。</p>
 </div>
+<p><code>Route</code>（<code>apiVersion: route.openshift.io/v1</code>） <strong>不是</strong>标准 Kubernetes 的一部分。它是 <strong>OpenShift / OKD</strong>（或附带 OpenShift
+路由器的兼容发行版）专有的资源，无法在原生 Kubernetes 集群上工作。</p>
+<pre><code>在标准 Kubernetes 上请改用 [Ingress DSL](ingress.md)。
+</code></pre>
 <div class="admonition warning">
 <p class="admonition-title">安全：导入限制</p>
-<p>默认情况下，KTS 脚本<strong>不允许</strong> <code>import</code> 语句或完全限定的类名（例如 <code>java.lang.Runtime</code>）。
-只能使用通过预配置的默认导入提供的类型。</p>
-<p>使用 <code>--unsafe</code> 标志可解除这些限制。</p>
 </div>
+<p>默认情况下，KTS 脚本 <strong>不允许</strong> <code>import</code> 语句或完全限定的类名（例如 <code>java.lang.Runtime</code>）。 只能使用通过预配置的默认导入提供的类型。</p>
+<pre><code>使用 `--unsafe` 标志可解除这些限制。
+</code></pre>
 <h2 id="_1">基本用法</h2>
 <p>最小的 Route 需要 <code>metadata</code> 以及 <code>spec</code> 中的后端（<code>to</code>）。</p>
 <pre><code class="language-kotlin">route {
@@ -2467,7 +2470,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2236,12 +2238,13 @@
 <h1 id="diff">diff</h1>
 <pre><code class="language-bash">kube-kts diff upgrade &lt;REPOSITORY&gt; [TARGET] --name &lt;RELEASE&gt; [选项]
 </code></pre>
-<p>聚合基于外部 <strong><code>helm-diff</code> 插件</strong> 的 diff 子命令。它们通过渲染 KTS 仓库并将结果与集群对比，预览某操作将应用的变更。每个子命令都<strong>需要仓库</strong>，并先运行完整的 <em>扫描 → 编译 → 渲染</em> 流水线。不带子命令调用 <code>diff</code> 会打印用法列表。</p>
+<p>聚合基于外部 <strong><code>helm-diff</code> 插件</strong> 的 diff 子命令。它们通过渲染 KTS 仓库并将结果与集群对比，预览某操作将应用的变更。每个子命令都
+<strong>需要仓库</strong>，并先运行完整的 <em>扫描 → 编译 → 渲染</em> 流水线。不带子命令调用 <code>diff</code> 会打印用法列表。</p>
 <div class="admonition note">
 <p class="admonition-title">需要 helm-diff 插件</p>
+</div>
 <p>这些命令会调用 <code>helm diff …</code>，由外部插件提供。请使用
 <code>helm plugin install https://github.com/databus23/helm-diff</code> 安装它。</p>
-</div>
 <h2 id="_1">子命令</h2>
 <table>
 <thead>
@@ -2283,8 +2286,9 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title">发布名称通过 <code>--name</code> 传入</p>
-<p>由于 <code>REPOSITORY</code>/<code>TARGET</code> 已占用位置参数，发布名称通过 <code>--name</code> 传入，并作为位置参数 <code>RELEASE</code> 转发给插件。<code>-n</code> 短选项保留给 <code>--namespace</code>。</p>
 </div>
+<p>由于 <code>REPOSITORY</code>/<code>TARGET</code> 已占用位置参数，发布名称通过 <code>--name</code> 传入，并作为位置参数 <code>RELEASE</code> 转发给插件。<code>-n</code> 短选项保留给
+<code>--namespace</code>。</p>
 <h2 id="diff_1">diff 选项</h2>
 <table>
 <thead>
@@ -2343,7 +2347,8 @@
 </tbody>
 </table>
 <h2 id="_3">值</h2>
-<p><code>diff upgrade</code> 接受 <a href="../install/"><code>--set</code> 系列</a> 以及通过 <a href="../#values"><code>-f</code>/<code>--values</code></a> 的值文件，它们同时供 Kotlin 脚本与插件使用。</p>
+<p><code>diff upgrade</code> 接受 <a href="../install/"><code>--set</code> 系列</a> 以及通过 <a href="../#values"><code>-f</code>/<code>--values</code></a> 的值文件，它们同时供 Kotlin
+脚本与插件使用。</p>
 <h2 id="helm">Helm 全局选项</h2>
 <p>所有 <a href="../status/#helm-global-options">Helm 全局选项</a>都会转发给 Helm。</p>
 <h2 id="_4">全局选项</h2>
@@ -2384,7 +2389,7 @@ kube-kts diff upgrade ./my-repo --name my-app --detailed-exitcode
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

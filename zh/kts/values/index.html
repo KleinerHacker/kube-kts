@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2380,26 +2382,30 @@
 <h1 id="_1">值处理</h1>
 <p>在 Kube KTS 中，值的管理方式与 Helm 类似。这使你能够将配置外部化，并使用 overlay 为不同环境定制你的部署。</p>
 <h2 id="overlay">值 Overlay</h2>
-<p>值的 overlay 机制与 Helm 中的工作方式完全相同。
-- <strong>KTS 脚本</strong>：合并由 Kube KTS 内部通过 Helm 兼容的逻辑处理。
-- <strong>传统 YAML</strong>：标准 Helm 命令在处理前执行合并。</p>
+<p>值的 overlay 机制与 Helm 中的工作方式完全相同。</p>
+<ul>
+<li><strong>KTS 脚本</strong>：合并由 Kube KTS 内部通过 Helm 兼容的逻辑处理。</li>
+<li><strong>传统 YAML</strong>：标准 Helm 命令在处理前执行合并。</li>
+</ul>
 <h2 id="kts">在 KTS 中处理值</h2>
-<p>在 Kotlin 脚本中，你可以使用若干内置函数来检索和验证值。这些函数使用<strong>以点分隔的路径</strong>来导航你的值结构。</p>
+<p>在 Kotlin 脚本中，你可以使用若干内置函数来检索和验证值。这些函数使用 <strong>以点分隔的路径</strong>来导航你的值结构。</p>
 <div class="admonition warning">
 <p class="admonition-title">安全性：导入限制</p>
-<p>默认情况下，KTS 脚本<strong>不允许</strong>使用 <code>import</code> 语句或完全限定的类名
-（例如 <code>java.lang.Runtime</code>）。只能使用通过预配置默认导入提供的类型。</p>
-<p>使用 <code>--unsafe</code> 标志可解除这些限制。</p>
 </div>
+<p>默认情况下，KTS 脚本 <strong>不允许</strong>使用 <code>import</code> 语句或完全限定的类名 （例如 <code>java.lang.Runtime</code>）。只能使用通过预配置默认导入提供的类型。</p>
+<pre><code>使用 `--unsafe` 标志可解除这些限制。
+</code></pre>
 <div class="admonition note">
 <p class="admonition-title">重要</p>
-<p>默认情况下，所有路径都相对于 YAML 文件的 <code>values:</code> 根元素。你无需在路径开头包含 <code>values.</code>。</p>
 </div>
+<p>默认情况下，所有路径都相对于 YAML 文件的 <code>values:</code> 根元素。你无需在路径开头包含 <code>values.</code>。</p>
 <h3 id="_2">支持的类型</h3>
-<p>以下原生类型支持直接检索值：
-- <code>String</code>、<code>Boolean</code>
-- <code>Int</code>、<code>Long</code>、<code>Short</code>、<code>Byte</code>
-- <code>Double</code>、<code>Float</code></p>
+<p>以下原生类型支持直接检索值：</p>
+<ul>
+<li><code>String</code>、<code>Boolean</code></li>
+<li><code>Int</code>、<code>Long</code>、<code>Short</code>、<code>Byte</code></li>
+<li><code>Double</code>、<code>Float</code></li>
+</ul>
 <p>如果 YAML 中的某个值与请求的类型不匹配，将抛出异常。</p>
 <hr />
 <h2 id="_3">核心函数</h2>
@@ -2450,7 +2456,8 @@ array(&quot;metadata.tags&quot;) { index, tag -&gt;
 </code></pre>
 <hr />
 <h2 id="_4">复杂结构（嵌套访问）</h2>
-<p>如果你需要访问复杂对象或数组中的嵌套值，可以使用不指定类型的 lambda 变体。这会提供一个新的 <code>ValueAccess</code> 作用域（以 <code>it</code> 形式提供）。</p>
+<p>如果你需要访问复杂对象或数组中的嵌套值，可以使用不指定类型的 lambda 变体。这会提供一个新的 <code>ValueAccess</code> 作用域（以 <code>it</code>
+形式提供）。</p>
 <h3 id="_5">嵌套对象</h3>
 <pre><code class="language-kotlin">value(&quot;spec.resources&quot;) {
     // 'it' now refers to 'spec.resources'
@@ -2500,7 +2507,7 @@ array(&quot;metadata.tags&quot;) { index, tag -&gt;
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

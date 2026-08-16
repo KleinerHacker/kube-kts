@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2236,13 +2238,13 @@
 <h1 id="package">package</h1>
 <pre><code class="language-bash">kube-kts package &lt;REPOSITORY&gt; [TARGET] [OPTIONS]
 </code></pre>
-<p>Renders the KTS repository to a plain Helm chart and then runs <code>helm package .</code> against it to produce
-a versioned chart archive (<code>.tgz</code>). Unlike the release commands, <code>package</code> <strong>needs a repository</strong> and
-runs the full <em>scan → compile → render</em> pipeline first.</p>
+<p>Renders the KTS repository to a plain Helm chart and then runs <code>helm package .</code> against it to produce a versioned chart
+archive (<code>.tgz</code>). Unlike the release commands, <code>package</code> <strong>needs a repository</strong> and runs the full <em>scan → compile →
+render</em> pipeline first.</p>
 <h2 id="how-it-works">How it works</h2>
 <ol>
-<li>The repository is scanned, the Kotlin scripts are compiled and evaluated, and the result is
-   rendered into the <code>TARGET</code> directory (a temporary directory if omitted).</li>
+<li>The repository is scanned, the Kotlin scripts are compiled and evaluated, and the result is rendered into the
+   <code>TARGET</code> directory (a temporary directory if omitted).</li>
 <li><code>helm package .</code> is executed in that directory with all forwarded options appended.</li>
 <li>Helm writes the chart archive; the command's exit code mirrors Helm's result.</li>
 </ol>
@@ -2321,8 +2323,7 @@ runs the full <em>scan → compile → render</em> pipeline first.</p>
 </tbody>
 </table>
 <h2 id="values">Values</h2>
-<p><code>package</code> accepts values files via <a href="../#values"><code>-f</code>/<code>--values</code></a>, which feed the Kotlin scripts
-during rendering.</p>
+<p><code>package</code> accepts values files via <a href="../#values"><code>-f</code>/<code>--values</code></a>, which feed the Kotlin scripts during rendering.</p>
 <h2 id="helm-global-options">Helm global options</h2>
 <p>All <a href="../status/#helm-global-options">Helm global options</a> are forwarded to Helm.</p>
 <h2 id="global-options">Global options</h2>
@@ -2360,7 +2361,7 @@ kube-kts package ./my-repo --version 1.2.3 --app-version 2.0.0 -d ./dist
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

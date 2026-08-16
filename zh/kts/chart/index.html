@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2247,12 +2249,12 @@
 <p><code>chart</code> DSL 用于定义 Helm chart 的元数据和依赖项，类似于传统 Helm chart 中的 <code>Chart.yaml</code> 文件。</p>
 <div class="admonition warning">
 <p class="admonition-title">安全性：导入限制</p>
-<p>默认情况下，KTS 脚本<strong>不允许</strong>使用 <code>import</code> 语句或完全限定的类名
-（例如 <code>java.lang.Runtime</code>）。只能使用通过预配置默认导入提供的类型。</p>
-<p>使用 <code>--unsafe</code> 标志可解除这些限制。</p>
 </div>
+<p>默认情况下，KTS 脚本 <strong>不允许</strong>使用 <code>import</code> 语句或完全限定的类名 （例如 <code>java.lang.Runtime</code>）。只能使用通过预配置默认导入提供的类型。</p>
+<pre><code>使用 `--unsafe` 标志可解除这些限制。
+</code></pre>
 <h2 id="_1">基本用法</h2>
-<p>要定义一个 chart，请使用 <code>chart</code> 函数，它以 chart 的<strong>名称</strong>和<strong>版本</strong>作为主要参数。</p>
+<p>要定义一个 chart，请使用 <code>chart</code> 函数，它以 chart 的 <strong>名称</strong>和 <strong>版本</strong>作为主要参数。</p>
 <pre><code class="language-kotlin">chart(&quot;my-chart&quot;, &quot;1.0.0&quot;) {
     description = &quot;A short description of my chart&quot;
     type = ChartSpec.Type.Application
@@ -2404,7 +2406,8 @@
 <li><code>condition</code>：用于决定是否安装该 chart 的布尔表达式。</li>
 <li><code>tags { tag(String) }</code>：添加用于分组依赖项的标签。（替代方法：<code>addTag</code>）</li>
 <li><code>pathImportValues { pathImportValue(path) }</code>：从子 chart 导入值。（替代方法：<code>addPathImportValue</code>）</li>
-<li><code>mappingImportValues { mappingImportValue(childKey, parentKey) }</code>：将子 chart 中的特定值映射到父 chart。（替代方法：<code>addMappingImportValue</code>）</li>
+<li><code>mappingImportValues { mappingImportValue(childKey, parentKey) }</code>：将子 chart 中的特定值映射到父 chart。（替代方法：
+  <code>addMappingImportValue</code>）</li>
 </ul>
 <h2 id="_7">特殊类型</h2>
 <ul>
@@ -2441,7 +2444,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

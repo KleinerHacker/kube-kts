@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2236,15 +2238,15 @@
 <h1 id="diff">diff</h1>
 <pre><code class="language-bash">kube-kts diff upgrade &lt;REPOSITORY&gt; [TARGET] --name &lt;RELEASE&gt; [OPTIONS]
 </code></pre>
-<p>Groups the diff sub-commands built on the external <strong><code>helm-diff</code> plugin</strong>. They preview the changes
-an operation would apply by rendering the KTS repository and diffing the result against the cluster.
-Each sub-command <strong>needs a repository</strong> and runs the full <em>scan → compile → render</em> pipeline first.
-Invoking <code>diff</code> without a sub-command prints the usage listing.</p>
+<p>Groups the diff sub-commands built on the external <strong><code>helm-diff</code> plugin</strong>. They preview the changes an operation would
+apply by rendering the KTS repository and diffing the result against the cluster. Each sub-command <strong>needs a
+repository</strong> and runs the full <em>scan → compile → render</em> pipeline first. Invoking <code>diff</code> without a sub-command prints
+the usage listing.</p>
 <div class="admonition note">
 <p class="admonition-title">Requires the helm-diff plugin</p>
+</div>
 <p>These commands invoke <code>helm diff …</code>, which is provided by the external plugin. Install it with
 <code>helm plugin install https://github.com/databus23/helm-diff</code>.</p>
-</div>
 <h2 id="sub-commands">Sub-commands</h2>
 <table>
 <thead>
@@ -2286,10 +2288,9 @@ Invoking <code>diff</code> without a sub-command prints the usage listing.</p>
 </table>
 <div class="admonition note">
 <p class="admonition-title">Release name is passed via <code>--name</code></p>
-<p>Because <code>REPOSITORY</code>/<code>TARGET</code> already occupy the positionals, the release name is passed via
-<code>--name</code> and forwarded to the plugin as the positional <code>RELEASE</code>. The <code>-n</code> shorthand stays
-reserved for <code>--namespace</code>.</p>
 </div>
+<p>Because <code>REPOSITORY</code>/<code>TARGET</code> already occupy the positionals, the release name is passed via
+<code>--name</code> and forwarded to the plugin as the positional <code>RELEASE</code>. The <code>-n</code> shorthand stays reserved for <code>--namespace</code>.</p>
 <h2 id="diff-options">Diff options</h2>
 <table>
 <thead>
@@ -2390,7 +2391,7 @@ kube-kts diff upgrade ./my-repo --name my-app --detailed-exitcode
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

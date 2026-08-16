@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2268,15 +2270,15 @@
 
 
 <h1 id="statefulset-dsl">StatefulSet DSL</h1>
-<p><code>statefulSet</code> DSL 用于配置 Kubernetes <strong>StatefulSet</strong> 资源。StatefulSet 管理一组具有稳定且唯一的网络标识
-以及稳定的每 Pod 持久化存储的 Pod —— 适用于数据库或消息代理等有状态应用，而非由
+<p><code>statefulSet</code> DSL 用于配置 Kubernetes <strong>StatefulSet</strong> 资源。StatefulSet 管理一组具有稳定且唯一的网络标识 以及稳定的每 Pod
+持久化存储的 Pod —— 适用于数据库或消息代理等有状态应用，而非由
 <a href="../deployment/">Deployment</a> 管理的可互换 Pod。</p>
 <div class="admonition warning">
 <p class="admonition-title">安全：导入限制</p>
-<p>默认情况下，KTS 脚本<strong>不允许</strong> <code>import</code> 语句或完全限定的类名（例如 <code>java.lang.Runtime</code>）。
-只能使用通过预配置的默认导入提供的类型。</p>
-<p>使用 <code>--unsafe</code> 标志可解除这些限制。</p>
 </div>
+<p>默认情况下，KTS 脚本 <strong>不允许</strong> <code>import</code> 语句或完全限定的类名（例如 <code>java.lang.Runtime</code>）。 只能使用通过预配置的默认导入提供的类型。</p>
+<pre><code>使用 `--unsafe` 标志可解除这些限制。
+</code></pre>
 <h2 id="_1">基本用法</h2>
 <p>最小的 StatefulSet 需要 <code>metadata</code>、<code>serviceName</code>（控制其网络域的无头 Service）、<code>selector</code> 以及
 <code>spec</code> 中的 Pod <code>template</code>。</p>
@@ -2550,9 +2552,9 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title">稳定存储</p>
-<p><code>volumeClaimTemplates</code> 的每个条目都会为<strong>每个 Pod</strong> 制备一个 PersistentVolumeClaim。这些申领在重新
-调度后仍保持其身份，从而为每个副本提供独立的持久化存储。</p>
 </div>
+<p><code>volumeClaimTemplates</code> 的每个条目都会为 <strong>每个 Pod</strong> 制备一个 PersistentVolumeClaim。这些申领在重新
+调度后仍保持其身份，从而为每个副本提供独立的持久化存储。</p>
 
 
 
@@ -2582,7 +2584,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

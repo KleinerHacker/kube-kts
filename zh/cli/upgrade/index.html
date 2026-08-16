@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2291,14 +2293,13 @@
 </ol>
 <div class="admonition note">
 <p class="admonition-title">发布名称是选项，命名空间是 <code>-n</code></p>
-<p>发布名称用 <code>--name</code> 传入，并作为位置参数 <code>NAME</code> 转发给 Helm。<code>-n</code> 短选项保留给 <code>--namespace</code>，
-以与 Helm 保持一致。</p>
 </div>
+<p>发布名称用 <code>--name</code> 传入，并作为位置参数 <code>NAME</code> 转发给 Helm。<code>-n</code> 短选项保留给 <code>--namespace</code>， 以与 Helm 保持一致。</p>
 <div class="admonition tip">
 <p class="admonition-title">升级或安装与值处理</p>
+</div>
 <p>使用 <code>-i</code>/<code>--install</code> 可在发布尚不存在时进行安装。默认情况下升级使用你传入的值；
 <code>--reuse-values</code>、<code>--reset-values</code> 和 <code>--reset-then-reuse-values</code> 控制如何考虑上一次发布的值。</p>
-</div>
 <h2 id="_2">参数</h2>
 <table>
 <thead>
@@ -2722,7 +2723,7 @@ kube-kts upgrade ./helm --name my-app --dry-run
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

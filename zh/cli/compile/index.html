@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2149,16 +2151,14 @@
 <pre><code class="language-bash">kube-kts compile &lt;REPOSITORY&gt; [--unsafe]
 </code></pre>
 <p>将 KTS 仓库编译为对象实例。它比 <a href="../validate/"><code>validate</code></a> 更进一步：实际执行 Kotlin 脚本并构建 Chart
-的内存对象模型（chart、deployment、service 等），渲染器随后会将其转换为 YAML。这是确认脚本能否
-<strong>编译并执行</strong>正确的合适命令——包括类型错误、空安全违规以及脚本内部抛出的运行时异常——同时尚不写入
-任何输出。</p>
-<p>由于编译会运行你的脚本，脚本级问题也会在此最先暴露：无效的值查找、失败的 <code>require(...)</code>，或引用了
-不允许导入的类的脚本。</p>
+的内存对象模型（chart、deployment、service 等），渲染器随后会将其转换为 YAML。这是确认脚本能否 <strong>编译并执行</strong>
+正确的合适命令——包括类型错误、空安全违规以及脚本内部抛出的运行时异常——同时尚不写入 任何输出。</p>
+<p>由于编译会运行你的脚本，脚本级问题也会在此最先暴露：无效的值查找、失败的 <code>require(...)</code>，或引用了 不允许导入的类的脚本。</p>
 <div class="admonition warning">
 <p class="admonition-title"><code>--unsafe</code> 会运行任意代码</p>
+</div>
 <p>默认情况下脚本在受限沙箱中运行，禁止 <code>import</code> 语句和全限定类名。若脚本需要它们，请添加
 <code>--unsafe</code>——但仅对你信任的仓库使用，因为它允许脚本执行任意 JVM 代码。</p>
-</div>
 <h2 id="_1">参数</h2>
 <table>
 <thead>
@@ -2233,7 +2233,7 @@ kube-kts compile ./helm --exception
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

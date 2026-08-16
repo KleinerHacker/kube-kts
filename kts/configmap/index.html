@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2202,21 +2204,21 @@
 
 
 <h1 id="configmap-dsl">ConfigMap DSL</h1>
-<p>The <code>configMap</code> DSL is used to configure Kubernetes ConfigMap resources. A ConfigMap stores
-non-confidential configuration data as key-value pairs that Pods can consume as environment
-variables, command-line arguments, or files mounted through a volume.</p>
+<p>The <code>configMap</code> DSL is used to configure Kubernetes ConfigMap resources. A ConfigMap stores non-confidential
+configuration data as key-value pairs that Pods can consume as environment variables, command-line arguments, or files
+mounted through a volume.</p>
 <div class="admonition warning">
 <p class="admonition-title">Security: Import Restrictions</p>
-<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names
-(e.g. <code>java.lang.Runtime</code>). Only types provided via the pre-configured default imports may
-be used.</p>
-<p>Use the <code>--unsafe</code> flag to lift these restrictions.</p>
 </div>
+<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names (e.g. <code>java.lang.Runtime</code>).
+Only types provided via the pre-configured default imports may be used.</p>
+<pre><code>Use the `--unsafe` flag to lift these restrictions.
+</code></pre>
 <div class="admonition note">
 <p class="admonition-title">ConfigMaps are for non-confidential data</p>
-<p>ConfigMaps are not encrypted and must not be used to store sensitive information such as
-passwords or tokens. Use a Secret for confidential data.</p>
 </div>
+<p>ConfigMaps are not encrypted and must not be used to store sensitive information such as passwords or tokens. Use a
+Secret for confidential data.</p>
 <h2 id="basic-usage">Basic Usage</h2>
 <p>A minimal ConfigMap configuration requires <code>metadata</code> and at least one entry in <code>spec</code>.</p>
 <pre><code class="language-kotlin">configMap {
@@ -2337,10 +2339,9 @@ passwords or tokens. Use a Secret for confidential data.</p>
 </table>
 <div class="admonition note">
 <p class="admonition-title"><code>data</code> vs. <code>binaryData</code></p>
-<p>Use <code>data</code> for UTF-8 string values; they appear directly under <code>data:</code> in the rendered YAML.
-Use <code>binaryData</code> for arbitrary byte content; values are base64-encoded under <code>binaryData:</code>.
-A key must be unique across both maps.</p>
 </div>
+<p>Use <code>data</code> for UTF-8 string values; they appear directly under <code>data:</code> in the rendered YAML. Use <code>binaryData</code> for
+arbitrary byte content; values are base64-encoded under <code>binaryData:</code>. A key must be unique across both maps.</p>
 
 
 
@@ -2370,7 +2371,7 @@ A key must be unique across both maps.</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

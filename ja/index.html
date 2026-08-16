@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2029,8 +2031,8 @@
 
 
 <h1 id="_1">概要</h1>
-<p>Kube KTS は Kubernetes 向けの Helm ラッパーであり、<strong>従来の Helm と完全に互換性があります</strong>。
-Go テンプレートを含む YAML ファイルの代わりに、<strong>Kotlin Script (KTS)</strong> を使って Kubernetes リソースを定義します。</p>
+<p>Kube KTS は Kubernetes 向けの Helm ラッパーであり、 <strong>従来の Helm と完全に互換性があります</strong>。 Go テンプレートを含む YAML
+ファイルの代わりに、 <strong>Kotlin Script (KTS)</strong> を使って Kubernetes リソースを定義します。</p>
 <p>これにより、次のようなモダンな言語機能を利用できます。</p>
 <ul>
 <li>型安全性</li>
@@ -2043,11 +2045,16 @@ Go テンプレートを含む YAML ファイルの代わりに、<strong>Kotlin
 <li>デバッグ機能</li>
 <li>テンプレートベースの手法と比べて優れた開発者体験</li>
 </ul>
+<div class="admonition info">
+<p class="admonition-title">AI 透明性に関する注記（EU AI 法）</p>
+</div>
+<p>本プロジェクトのソースコード、テスト、ドキュメントは、その大部分が生成 AI の支援によって作成されています。生成されたすべての結果は、人間のメンテナーによって確認および保守されています。本注記は、規則 (EU)
+2024/1689（EU AI 法）の透明性義務に従って提供されます。</p>
 <hr />
 <h1 id="_2">はじめに</h1>
 <p>Kube KTS をインストールして <code>PATH</code> に追加すれば、すぐに Kubernetes リソースの開発を始められます。</p>
-<p>Kube KTS は<strong>標準的な Helm リポジトリ構造</strong>で動作します。
-適切な IDE サポートを得るため、すべての <code>.kts</code> ファイルは <code>helm</code> ディレクトリ内に配置する必要があります。</p>
+<p>Kube KTS は <strong>標準的な Helm リポジトリ構造</strong>で動作します。 適切な IDE サポートを得るため、すべての <code>.kts</code> ファイルは
+<code>helm</code> ディレクトリ内に配置する必要があります。</p>
 <hr />
 <h2 id="_3">プロジェクト構造</h2>
 <p>プロジェクト構造は従来の Helm リポジトリと同じです。</p>
@@ -2071,9 +2078,8 @@ Go テンプレートを含む YAML ファイルの代わりに、<strong>Kotlin
 </code></pre>
 <div class="admonition note">
 <p class="admonition-title">ライブラリファイルはレンダリングされません</p>
-<p><code>.lib.kts</code> 拡張子のファイルは YAML にレンダリングされません。その内容は
-コンパイル時にすべての spec ファイルで自動的に利用可能になります。</p>
 </div>
+<p><code>.lib.kts</code> 拡張子のファイルは YAML にレンダリングされません。その内容は コンパイル時にすべての spec ファイルで自動的に利用可能になります。</p>
 <hr />
 <h2 id="kts">KTS ファイルの種類</h2>
 <p>Kube KTS は 2 種類の Kotlin Script ファイルを区別します。</p>
@@ -2096,9 +2102,8 @@ Go テンプレートを含む YAML ファイルの代わりに、<strong>Kotlin
 </tbody>
 </table>
 <h3 id="spec-speckts">Spec ファイル（<code>*.spec.kts</code>）</h3>
-<p>Spec ファイルは KTS DSL を使って Kubernetes リソースを定義します。各 spec ファイルは
-1 つの YAML 出力ファイルを生成します。<code>Chart.spec.kts</code> は <code>Chart.yaml</code> を生成する特別な
-spec ファイルです。</p>
+<p>Spec ファイルは KTS DSL を使って Kubernetes リソースを定義します。各 spec ファイルは 1 つの YAML 出力ファイルを生成します。
+<code>Chart.spec.kts</code> は <code>Chart.yaml</code> を生成する特別な spec ファイルです。</p>
 <pre><code class="language-kotlin">// templates/deployment.spec.kts
 deployment {
     metadata(&quot;my-app&quot;) { }
@@ -2107,15 +2112,16 @@ deployment {
 </code></pre>
 <div class="admonition warning">
 <p class="admonition-title">セキュリティ: インポート制限</p>
-<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名
-（例: <code>java.lang.Runtime</code>）を<strong>許可しません</strong>。事前構成されたデフォルトインポートで
-提供される型のみ使用できます —— 完全な一覧は <a href="kts/lib/#default-imports">デフォルトインポート</a> を参照してください。</p>
-<p><code>--unsafe</code> フラグを使うとこれらの制限を解除できます。</p>
 </div>
+<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名 （例: <code>java.lang.Runtime</code>）を <strong>許可しません</strong>
+。事前構成されたデフォルトインポートで 提供される型のみ使用できます ——
+完全な一覧は <a href="kts/lib/#default-imports">デフォルトインポート</a> を参照してください。</p>
+<pre><code>`--unsafe` フラグを使うとこれらの制限を解除できます。
+</code></pre>
 <h3 id="libkts">ライブラリファイル（<code>*.lib.kts</code>）</h3>
-<p>ライブラリファイルは再利用可能なヘルパー関数を定義し、それらは同じリポジトリ内の
-すべての spec ファイルで自動的に利用可能になります。ライブラリファイルは YAML 出力に
-<strong>レンダリングされず</strong>、他のライブラリファイルからは<strong>アクセスできません</strong>。</p>
+<p>ライブラリファイルは再利用可能なヘルパー関数を定義し、それらは同じリポジトリ内の すべての spec
+ファイルで自動的に利用可能になります。ライブラリファイルは YAML 出力に <strong>レンダリングされず</strong>、他のライブラリファイルからは
+<strong>アクセスできません</strong>。</p>
 <pre><code class="language-kotlin">// templates/helpers.lib.kts
 fun appLabels(name: String) = mapOf(&quot;app&quot; to name, &quot;managed-by&quot; to &quot;kube-kts&quot;)
 </code></pre>
@@ -2132,7 +2138,7 @@ deployment {
 <ul>
 <li>既存の YAML ファイルを <code>.spec.kts</code> ファイルと併用できます</li>
 <li>プレーンな <code>.kts</code> ファイル（<code>.spec.</code> 修飾子なし）も従来の spec ファイルとしてサポートされます</li>
-<li>従来のファイルは最終出力に<strong>変更されずにコピー</strong>されます</li>
+<li>従来のファイルは最終出力に <strong>変更されずにコピー</strong>されます</li>
 <li>混在環境（YAML + KTS）も完全にサポートされます</li>
 </ul>
 <hr />
@@ -2148,8 +2154,7 @@ deployment {
 <p>Kube KTS は Helm リポジトリを処理するコマンドラインツールです。</p>
 <p>次のように実行します。
 <code>kube-kts</code>
-リポジトリを処理するには、Helm プロジェクトのパスを指定します。
-詳しい使い方は <strong>「Kube KTS CLI の使い方」</strong> を参照してください。</p>
+リポジトリを処理するには、Helm プロジェクトのパスを指定します。 詳しい使い方は <strong>「Kube KTS CLI の使い方」</strong> を参照してください。</p>
 
 
 
@@ -2179,7 +2184,7 @@ deployment {
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

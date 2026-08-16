@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2378,29 +2380,36 @@
 
 
 <h1 id="values-handling">Values Handling</h1>
-<p>In Kube KTS, values are managed similarly to Helm. This allows you to externalize configuration and use overlays to customize your deployments for different environments.</p>
+<p>In Kube KTS, values are managed similarly to Helm. This allows you to externalize configuration and use overlays to
+customize your deployments for different environments.</p>
 <h2 id="values-overlay">Values Overlay</h2>
-<p>The values overlay mechanism works just like in Helm.
-- <strong>KTS Scripts</strong>: Merging is handled internally by Kube KTS via Helm-compatible logic.
-- <strong>Legacy YAML</strong>: Standard Helm commands perform the merging before processing.</p>
+<p>The values overlay mechanism works just like in Helm.</p>
+<ul>
+<li><strong>KTS Scripts</strong>: Merging is handled internally by Kube KTS via Helm-compatible logic.</li>
+<li><strong>Legacy YAML</strong>: Standard Helm commands perform the merging before processing.</li>
+</ul>
 <h2 id="working-with-values-in-kts">Working with Values in KTS</h2>
-<p>In Kotlin scripts, you have access to several built-in functions to retrieve and validate values. These functions use a <strong>dot-separated path</strong> to navigate your values structure.</p>
+<p>In Kotlin scripts, you have access to several built-in functions to retrieve and validate values. These functions use a
+<strong>dot-separated path</strong> to navigate your values structure.</p>
 <div class="admonition warning">
 <p class="admonition-title">Security: Import Restrictions</p>
-<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names
-(e.g. <code>java.lang.Runtime</code>). Only types provided via the pre-configured default imports may
-be used.</p>
-<p>Use the <code>--unsafe</code> flag to lift these restrictions.</p>
 </div>
+<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names (e.g. <code>java.lang.Runtime</code>).
+Only types provided via the pre-configured default imports may be used.</p>
+<pre><code>Use the `--unsafe` flag to lift these restrictions.
+</code></pre>
 <div class="admonition note">
 <p class="admonition-title">Important</p>
-<p>By default, all paths are relative to the <code>values:</code> root element of your YAML file. You do not need to include <code>values.</code> at the beginning of your paths.</p>
 </div>
+<p>By default, all paths are relative to the <code>values:</code> root element of your YAML file. You do not need to include <code>values.</code>
+at the beginning of your paths.</p>
 <h3 id="supported-types">Supported Types</h3>
-<p>The following native types are supported for direct value retrieval:
-- <code>String</code>, <code>Boolean</code>
-- <code>Int</code>, <code>Long</code>, <code>Short</code>, <code>Byte</code>
-- <code>Double</code>, <code>Float</code></p>
+<p>The following native types are supported for direct value retrieval:</p>
+<ul>
+<li><code>String</code>, <code>Boolean</code></li>
+<li><code>Int</code>, <code>Long</code>, <code>Short</code>, <code>Byte</code></li>
+<li><code>Double</code>, <code>Float</code></li>
+</ul>
 <p>If a value in the YAML does not match the requested type, an exception will be thrown.</p>
 <hr />
 <h2 id="core-functions">Core Functions</h2>
@@ -2451,7 +2460,8 @@ array(&quot;metadata.tags&quot;) { index, tag -&gt;
 </code></pre>
 <hr />
 <h2 id="complex-structures-nested-access">Complex Structures (Nested Access)</h2>
-<p>If you need to access nested values within a complex object or array, you can use the lambda variants without specifying a type. This provides a new <code>ValueAccess</code> scope (available as <code>it</code>).</p>
+<p>If you need to access nested values within a complex object or array, you can use the lambda variants without specifying
+a type. This provides a new <code>ValueAccess</code> scope (available as <code>it</code>).</p>
 <h3 id="nested-objects">Nested Objects</h3>
 <pre><code class="language-kotlin">value(&quot;spec.resources&quot;) {
     // 'it' now refers to 'spec.resources'
@@ -2501,7 +2511,7 @@ array(&quot;metadata.tags&quot;) { index, tag -&gt;
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

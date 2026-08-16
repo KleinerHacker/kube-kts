@@ -109,7 +109,7 @@
     <h1 class="cover"><span>Access</span><wbr></wbr><span><span>Mode</span></span></h1>
     <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
       <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">enum </span><a href="index.html">AccessMode</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="index.html">VolumeClaimTemplateSpec.AccessMode</a><span class="token operator">&gt; </span></div><p class="paragraph">The access mode describing how a volume can be mounted by nodes.</p></div>    </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">enum </span><a href="index.html">AccessMode</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="index.html">VolumeClaimTemplateSpec.AccessMode</a><span class="token operator">&gt; </span></div><p class="paragraph">How a volume may be mounted by the Pods using it.</p></div>    </div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="ENTRY">Entries</button></div>
@@ -128,7 +128,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-read-write-once/index.html">ReadWriteOnce</a></div></div><div class="brief "><p class="paragraph">The volume can be mounted as read-write by a single node.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-read-write-once/index.html">ReadWriteOnce</a></div></div><div class="brief "><p class="paragraph">Mountable read-write by a single node. The most widely supported mode.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -145,7 +145,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-read-only-many/index.html">ReadOnlyMany</a></div></div><div class="brief "><p class="paragraph">The volume can be mounted as read-only by many nodes.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-read-only-many/index.html">ReadOnlyMany</a></div></div><div class="brief "><p class="paragraph">Mountable read-only by many nodes at once.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -162,7 +162,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-read-write-many/index.html">ReadWriteMany</a></div></div><div class="brief "><p class="paragraph">The volume can be mounted as read-write by many nodes.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-read-write-many/index.html">ReadWriteMany</a></div></div><div class="brief "><p class="paragraph">Mountable read-write by many nodes at once. Requires a shared filesystem such as NFS or CephFS.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -179,7 +179,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-read-write-once-pod/index.html">ReadWriteOncePod</a></div></div><div class="brief "><p class="paragraph">The volume can be mounted as read-write by a single Pod.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-read-write-once-pod/index.html">ReadWriteOncePod</a></div></div><div class="brief "><p class="paragraph">Mountable read-write by a single Pod, even if other Pods run on the same node.</p></div></div>                  </div>
                 </div>
               </div>
             </div>

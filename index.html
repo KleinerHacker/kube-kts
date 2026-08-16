@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2043,6 +2045,12 @@ Instead of using YAML files with Go templates, you define your Kubernetes resour
 <li>Debugging capabilities</li>
 <li>Improved developer ergonomics compared to template-based approaches</li>
 </ul>
+<div class="admonition info">
+<p class="admonition-title">AI transparency notice (EU AI Act)</p>
+</div>
+<p>This project — source code, tests and documentation — was largely created with the help of generative AI. Every
+generated result is reviewed and maintained by a human maintainer. This notice is given in accordance with the
+transparency obligations of Regulation (EU) 2024/1689 (EU AI Act).</p>
 <hr />
 <h1 id="getting-started">Getting Started</h1>
 <p>After installing Kube KTS and adding it to your <code>PATH</code>, you can start developing Kubernetes resources immediately.</p>
@@ -2071,9 +2079,9 @@ For proper IDE support, all <code>.kts</code> files must be located inside the <
 </code></pre>
 <div class="admonition note">
 <p class="admonition-title">Library files are not rendered</p>
-<p>Files with the <code>.lib.kts</code> extension are not rendered to YAML. Their content is
-automatically made available in all spec files at compile time.</p>
 </div>
+<p>Files with the <code>.lib.kts</code> extension are not rendered to YAML. Their content is automatically made available in all spec
+files at compile time.</p>
 <hr />
 <h2 id="kts-file-types">KTS File Types</h2>
 <p>Kube KTS distinguishes between two types of Kotlin Script files:</p>
@@ -2096,8 +2104,8 @@ automatically made available in all spec files at compile time.</p>
 </tbody>
 </table>
 <h3 id="spec-files-speckts">Spec Files (<code>*.spec.kts</code>)</h3>
-<p>Spec files define Kubernetes resources using the KTS DSL. Each spec file produces one YAML
-output file. <code>Chart.spec.kts</code> is a special spec file that produces <code>Chart.yaml</code>.</p>
+<p>Spec files define Kubernetes resources using the KTS DSL. Each spec file produces one YAML output file. <code>Chart.spec.kts</code>
+is a special spec file that produces <code>Chart.yaml</code>.</p>
 <pre><code class="language-kotlin">// templates/deployment.spec.kts
 deployment {
     metadata(&quot;my-app&quot;) { }
@@ -2106,14 +2114,15 @@ deployment {
 </code></pre>
 <div class="admonition warning">
 <p class="admonition-title">Security: Import Restrictions</p>
-<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names
-(e.g. <code>java.lang.Runtime</code>). Only types provided via the pre-configured default imports may
-be used — see <a href="kts/lib/#default-imports">Default Imports</a> for the full list.</p>
-<p>Use the <code>--unsafe</code> flag to lift these restrictions.</p>
 </div>
+<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names (e.g. <code>java.lang.Runtime</code>).
+Only types provided via the pre-configured default imports may be used —
+see <a href="kts/lib/#default-imports">Default Imports</a> for the full list.</p>
+<pre><code>Use the `--unsafe` flag to lift these restrictions.
+</code></pre>
 <h3 id="library-files-libkts">Library Files (<code>*.lib.kts</code>)</h3>
-<p>Library files define reusable helper functions that are automatically available in all spec files
-within the same repository. Library files are <strong>not</strong> rendered to YAML output and are <strong>not</strong>
+<p>Library files define reusable helper functions that are automatically available in all spec files within the same
+repository. Library files are <strong>not</strong> rendered to YAML output and are <strong>not</strong>
 accessible from other library files.</p>
 <pre><code class="language-kotlin">// templates/helpers.lib.kts
 fun appLabels(name: String) = mapOf(&quot;app&quot; to name, &quot;managed-by&quot; to &quot;kube-kts&quot;)
@@ -2178,7 +2187,7 @@ See <strong>"How to Use Kube KTS CLI"</strong> for detailed usage instructions.<
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

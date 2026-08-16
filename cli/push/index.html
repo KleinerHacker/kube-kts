@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2214,9 +2216,8 @@
 <h1 id="push">push</h1>
 <pre><code class="language-bash">kube-kts push &lt;CHART&gt; &lt;REMOTE&gt; [OPTIONS]
 </code></pre>
-<p>Runs <code>helm push</code> to upload a packaged chart to a remote (OCI) registry. It operates on an existing
-chart package, so it needs <strong>neither a repository nor a render step</strong> — the call is forwarded
-directly to Helm.</p>
+<p>Runs <code>helm push</code> to upload a packaged chart to a remote (OCI) registry. It operates on an existing chart package, so it
+needs <strong>neither a repository nor a render step</strong> — the call is forwarded directly to Helm.</p>
 <h2 id="how-it-works">How it works</h2>
 <ol>
 <li>No repository is scanned, compiled or rendered; the KTS scripts are irrelevant here.</li>
@@ -2319,7 +2320,7 @@ kube-kts push my-app-1.0.0.tgz oci://registry.example.com/charts
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

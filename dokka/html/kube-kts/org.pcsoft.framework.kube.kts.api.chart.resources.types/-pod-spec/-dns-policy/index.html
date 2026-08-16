@@ -109,7 +109,7 @@
     <h1 class="cover"><span>Dns</span><wbr></wbr><span><span>Policy</span></span></h1>
     <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
       <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">enum </span><a href="index.html">DnsPolicy</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="index.html">PodSpec.DnsPolicy</a><span class="token operator">&gt; </span></div><p class="paragraph">Specifies the DNS policy for a pod in Kubernetes.</p><p class="paragraph">This enum defines the DNS settings that determine how DNS resolution is handled for the containers within a pod. The DNS policy affects how domain names are resolved and whether certain DNS features like custom DNS settings are applicable.</p></div>    </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">enum </span><a href="index.html">DnsPolicy</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="index.html">PodSpec.DnsPolicy</a><span class="token operator">&gt; </span></div><p class="paragraph">Controls how DNS resolution is configured for a Pod.</p></div>    </div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="ENTRY">Entries</button></div>
@@ -128,7 +128,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-cluster-first/index.html">ClusterFirst</a></div></div><div class="brief "><p class="paragraph">Specifies the DNS policy &quot;ClusterFirst&quot; for a pod in Kubernetes.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-cluster-first/index.html">ClusterFirst</a></div></div><div class="brief "><p class="paragraph">The Pod resolves through the cluster DNS service. This is the default.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -145,7 +145,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-cluster-first-with-host-net/index.html">ClusterFirstWithHostNet</a></div></div><div class="brief "><p class="paragraph">Specifies the DNS policy &quot;ClusterFirstWithHostNet&quot; for a pod in Kubernetes.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-cluster-first-with-host-net/index.html">ClusterFirstWithHostNet</a></div></div><div class="brief "><p class="paragraph">Like <a href="-cluster-first/index.html">ClusterFirst</a>, but also usable when the Pod runs with <code class="lang-kotlin">hostNetwork</code> enabled.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -162,7 +162,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-default/index.html">Default</a></div></div><div class="brief "><p class="paragraph">Specifies the default DNS policy for a pod in Kubernetes.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-default/index.html">Default</a></div></div><div class="brief "><p class="paragraph">The Pod inherits the node's resolver configuration.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -179,7 +179,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-none/index.html">None</a></div></div><div class="brief "><p class="paragraph">Represents the absence of a DNS policy.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-none/index.html">None</a></div></div><div class="brief "><p class="paragraph">No resolver configuration is generated; everything comes from <code class="lang-kotlin">dnsConfig</code>.</p></div></div>                  </div>
                 </div>
               </div>
             </div>

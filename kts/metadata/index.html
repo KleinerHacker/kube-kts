@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2280,9 +2282,11 @@
 
 
 <h1 id="metadata-dsl">Metadata DSL</h1>
-<p>The <code>metadata</code> DSL is used to define the metadata of a Kubernetes resource. Metadata is present in almost all Kubernetes resources (such as Services, Ingresses, Deployments) and serves to identify and organize them.</p>
+<p>The <code>metadata</code> DSL is used to define the metadata of a Kubernetes resource. Metadata is present in almost all Kubernetes
+resources (such as Services, Ingresses, Deployments) and serves to identify and organize them.</p>
 <h2 id="basic-usage">Basic Usage</h2>
-<p>In Kube KTS, the <code>metadata</code> block is defined within a resource (e.g. <code>service</code>, <code>ingress</code>). The <strong>name</strong> of the resource is passed as the first argument to the <code>metadata</code> function.</p>
+<p>In Kube KTS, the <code>metadata</code> block is defined within a resource (e.g. <code>service</code>, <code>ingress</code>). The <strong>name</strong> of the resource
+is passed as the first argument to the <code>metadata</code> function.</p>
 <h3 id="minimal-configuration">Minimal Configuration</h3>
 <p>A minimal configuration only requires the name of the resource.</p>
 <pre><code class="language-kotlin">service {
@@ -2425,9 +2429,11 @@
 <p>Metadata is essential for Kubernetes because it:</p>
 <ol>
 <li><strong>Identifies resources</strong>: Via <code>name</code> and <code>namespace</code>.</li>
-<li><strong>Groups resources</strong>: Via <code>labels</code>, resources can be efficiently filtered and selected (e.g. by Services or NetworkPolicies).</li>
+<li><strong>Groups resources</strong>: Via <code>labels</code>, resources can be efficiently filtered and selected (e.g. by Services or
+   NetworkPolicies).</li>
 <li><strong>Enables extensibility</strong>: Via <code>annotations</code>, additional information can be stored for controllers or external tools.</li>
-<li><strong>Manages lifecycles</strong>: Via <code>finalizers</code> and <code>ownerReferences</code>, resources are deleted in the correct order and cleanly.</li>
+<li><strong>Manages lifecycles</strong>: Via <code>finalizers</code> and <code>ownerReferences</code>, resources are deleted in the correct order and
+   cleanly.</li>
 </ol>
 <p>In Kube KTS, metadata must be set in every template (<code>service</code>, <code>ingress</code>, etc.) to produce a valid Kubernetes resource.</p>
 
@@ -2459,7 +2465,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

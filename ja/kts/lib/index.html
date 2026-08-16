@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2210,7 +2212,8 @@
 
 
 <h1 id="libkts">ライブラリファイル（<code>*.lib.kts</code>）</h1>
-<p>ライブラリファイルを使うと、再利用可能なヘルパー関数や定数を定義でき、それらは Helm リポジトリ内のすべての spec ファイルで自動的に利用可能になります。</p>
+<p>ライブラリファイルを使うと、再利用可能なヘルパー関数や定数を定義でき、それらは Helm リポジトリ内のすべての spec
+ファイルで自動的に利用可能になります。</p>
 <hr />
 <h2 id="_1">概要</h2>
 <table>
@@ -2245,8 +2248,8 @@
 </table>
 <hr />
 <h2 id="_2">ライブラリファイルの作成</h2>
-<p><code>helm/</code> ディレクトリ内の任意の場所に <code>.lib.kts</code> 拡張子のファイルを作成します。
-共有ヘルパーを <code>templates/helpers.lib.kts</code> に置くのが一般的な慣習です。</p>
+<p><code>helm/</code> ディレクトリ内の任意の場所に <code>.lib.kts</code> 拡張子のファイルを作成します。 共有ヘルパーを <code>templates/helpers.lib.kts</code>
+に置くのが一般的な慣習です。</p>
 <pre><code>─ helm
   ├── Chart.spec.kts
   ├── values.yaml
@@ -2269,7 +2272,8 @@ const val DEFAULT_REGISTRY = &quot;registry.example.com&quot;
 </code></pre>
 <hr />
 <h2 id="spec">spec ファイルでのライブラリ関数の使用</h2>
-<p>任意の <code>*.lib.kts</code> ファイルで定義されたすべての関数と定数は、すべての <code>*.spec.kts</code> ファイルから直接呼び出せます —— インポートは不要です。</p>
+<p>任意の <code>*.lib.kts</code> ファイルで定義されたすべての関数と定数は、すべての <code>*.spec.kts</code> ファイルから直接呼び出せます ——
+インポートは不要です。</p>
 <pre><code class="language-kotlin">// templates/deployment.spec.kts
 
 deployment {
@@ -2289,8 +2293,8 @@ deployment {
 </code></pre>
 <hr />
 <h2 id="_3">デフォルトインポート</h2>
-<p>ライブラリファイルは spec ファイルと同じデフォルトインポートにアクセスできるため、明示的な
-import 文なしで、すべての Kube KTS DSL 型、Java 標準ライブラリ型、Kotlin の時間拡張を使用できます。</p>
+<p>ライブラリファイルは spec ファイルと同じデフォルトインポートにアクセスできるため、明示的な import 文なしで、すべての Kube
+KTS DSL 型、Java 標準ライブラリ型、Kotlin の時間拡張を使用できます。</p>
 <table>
 <thead>
 <tr>
@@ -2321,24 +2325,25 @@ import 文なしで、すべての Kube KTS DSL 型、Java 標準ライブラリ
 <h2 id="_4">制約</h2>
 <div class="admonition warning">
 <p class="admonition-title">セキュリティ: インポート制限</p>
-<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名
-（例: <code>java.lang.Runtime</code>）を<strong>許可しません</strong>。上記の事前構成されたデフォルトインポートの型のみ使用できます。</p>
-<p><code>--unsafe</code> フラグを使うとこれらの制限を解除できます。</p>
 </div>
+<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名 （例: <code>java.lang.Runtime</code>）を <strong>許可しません</strong>
+。上記の事前構成されたデフォルトインポートの型のみ使用できます。</p>
+<pre><code>`--unsafe` フラグを使うとこれらの制限を解除できます。
+</code></pre>
 <div class="admonition warning">
 <p class="admonition-title">ライブラリファイルは他のライブラリファイルにアクセスできません</p>
-<p>1 つの <code>*.lib.kts</code> ファイルで定義された関数は、他の <code>*.lib.kts</code> ファイルでは<strong>利用できません</strong>。
-ライブラリ関数を呼び出せるのは <code>*.spec.kts</code> ファイルだけです。それに応じてライブラリを構成し、ライブラリ間の依存を避けてください。</p>
 </div>
+<p>1 つの <code>*.lib.kts</code> ファイルで定義された関数は、他の <code>*.lib.kts</code> ファイルでは <strong>利用できません</strong>。 ライブラリ関数を呼び出せるのは
+<code>*.spec.kts</code> ファイルだけです。それに応じてライブラリを構成し、ライブラリ間の依存を避けてください。</p>
 <div class="admonition note">
 <p class="admonition-title">ライブラリファイルはレンダリングされません</p>
+</div>
 <p><code>*.lib.kts</code> ファイルは、トップレベルのステートメントを含んでいても、YAML 出力ファイルにレンダリングされることはありません。
 出力を生成するのは <code>*.spec.kts</code> ファイルだけです。</p>
-</div>
 <hr />
 <h2 id="_5">複数のライブラリファイル</h2>
-<p><code>*.lib.kts</code> ファイルは好きなだけ作成できます。Kube KTS は <code>helm/</code> ディレクトリツリー内の
-それらすべてを再帰的に検出し、すべての spec ファイルで利用可能にします。</p>
+<p><code>*.lib.kts</code> ファイルは好きなだけ作成できます。Kube KTS は <code>helm/</code> ディレクトリツリー内の それらすべてを再帰的に検出し、すべての
+spec ファイルで利用可能にします。</p>
 <pre><code>─ helm
   └── templates
       ├── helpers.lib.kts         ← general helpers
@@ -2375,7 +2380,7 @@ import 文なしで、すべての Kube KTS DSL 型、Java 標準ライブラリ
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

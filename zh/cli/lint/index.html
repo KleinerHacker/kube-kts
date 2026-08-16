@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2236,10 +2238,9 @@
 <h1 id="lint">lint</h1>
 <pre><code class="language-bash">kube-kts lint &lt;REPOSITORY&gt; [TARGET] [选项]
 </code></pre>
-<p>将仓库渲染为 Helm Chart，然后对其运行 <code>helm lint</code>。Lint 会检查渲染后的 Chart 是否存在问题和违反最佳
-实践之处——缺失的必填字段、格式错误的 <code>Chart.yaml</code>、无法产生有效 YAML 的模板、建议但缺失的元数据
-等等——并以信息、警告或错误的形式报告。</p>
-<p>由于 Kube KTS 先进行渲染，<code>lint</code> 校验的是 Helm 实际将收到的<em>真实</em> Chart，且你的值已经应用。它是
+<p>将仓库渲染为 Helm Chart，然后对其运行 <code>helm lint</code>。Lint 会检查渲染后的 Chart 是否存在问题和违反最佳 实践之处——缺失的必填字段、格式错误的
+<code>Chart.yaml</code>、无法产生有效 YAML 的模板、建议但缺失的元数据 等等——并以信息、警告或错误的形式报告。</p>
+<p>由于 Kube KTS 先进行渲染，<code>lint</code> 校验的是 Helm 实际将收到的 <em>真实</em> Chart，且你的值已经应用。它是
 <a href="../compile/"><code>compile</code></a> 之后的自然下一步：compile 证明脚本可运行，lint 证明生成的 Chart 健全。</p>
 <h2 id="_1">工作原理</h2>
 <ol>
@@ -2249,8 +2250,8 @@
 </ol>
 <div class="admonition tip">
 <p class="admonition-title">让构建在警告时失败</p>
-<p>默认情况下 <code>helm lint</code> 仅在错误时失败。添加 <code>--strict</code> 可使其在警告时也失败，这通常正是 CI 所需。</p>
 </div>
+<p>默认情况下 <code>helm lint</code> 仅在错误时失败。添加 <code>--strict</code> 可使其在警告时也失败，这通常正是 CI 所需。</p>
 <h2 id="_2">参数</h2>
 <table>
 <thead>
@@ -2344,8 +2345,8 @@
 </tbody>
 </table>
 <h2 id="helm">Helm 全局选项</h2>
-<p>这些用于配置与集群的连接和 Helm 环境，并原样转发给 Helm。（对 <code>lint</code> 而言，与集群相关的选项通常无关
-紧要，因为 lint 是离线的，但为保持一致仍可接受。）</p>
+<p>这些用于配置与集群的连接和 Helm 环境，并原样转发给 Helm。（对 <code>lint</code> 而言，与集群相关的选项通常无关 紧要，因为 lint
+是离线的，但为保持一致仍可接受。）</p>
 <table>
 <thead>
 <tr>
@@ -2473,7 +2474,7 @@ kube-kts lint ./helm --with-subcharts --quiet
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

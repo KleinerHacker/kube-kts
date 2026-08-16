@@ -109,65 +109,14 @@
     <h1 class="cover"><span>Volume</span><wbr></wbr><span>Spec</span><wbr></wbr><span><span>Builder</span></span></h1>
     <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
       <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">VolumeSpecBuilder</a></div><p class="paragraph">A builder class for constructing volume specifications to be used in a Kubernetes pod.</p><p class="paragraph">This builder provides methods for configuring various types of volume sources, such as ConfigMaps, Secrets, and HostPaths. The constructed volume specification can be integrated into Kubernetes pod configurations.</p><p class="paragraph">Some values are required.</p><h4 class="tableheader">Parameters</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>name</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The name of the volume being constructed.</p></div></div></div></div></div></div>    </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">VolumeSpecBuilder</a></div><p class="paragraph">Builder for a <a href="../-volume-spec/index.html">VolumeSpec</a>, declaring a named volume on a Pod together with exactly one source.</p><p class="paragraph">Every <code class="lang-kotlin">fromXxx</code> method selects a source; calling a second one replaces the first, since a volume can only ever have a single source. The same set of sources is also reachable through <a href="from.html">from</a> with shorter method names.</p><p class="paragraph">Example:</p><div class="sample-container"><pre><code class="block lang-kotlin" theme="idea">addVolume(&quot;config&quot;) {<br>    fromConfigMap {<br>        name = &quot;app-config&quot;<br>        defaultMode = 0x1A4<br>    }<br>}</code></pre><span class="copy-tooltip"><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div><span class="copy-icon"></span></span></div><h4 class="tableheader">Parameters</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>name</span></span></u></div></span></div><div><div class="title"><p class="paragraph">The name of the volume being constructed.</p></div></div></div></div></div></div>    </div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="TYPE">
         <h2 class="tableheader">Types</h2>
-        <div class="table"><a data-name="-1213094227%2FClasslikes%2F301696402" anchor-label="ConfigMapSourceSpecBuilder" id="-1213094227%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
-          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-config-map-source-spec-builder/index.html"><span>Config</span><wbr></wbr><span>Map</span><wbr></wbr><span>Source</span><wbr></wbr><span>Spec</span><wbr></wbr><span><span>Builder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1213094227%2FClasslikes%2F301696402"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">class </span><a href="-config-map-source-spec-builder/index.html">ConfigMapSourceSpecBuilder</a> : <a href="-file-source-spec-builder/index.html">VolumeSpecBuilder.FileSourceSpecBuilder</a><span class="token operator">&lt;</span><a href="../-volume-spec/-config-map-source-spec/index.html">VolumeSpec.ConfigMapSourceSpec</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A builder class responsible for configuring the source of a <code class="lang-kotlin">Secret</code> volume within a Kubernetes pod.</p></div></div>                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="1725158922%2FClasslikes%2F301696402" anchor-label="EmptyDirSpecBuilder" id="1725158922%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
-          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-empty-dir-spec-builder/index.html"><span>Empty</span><wbr></wbr><span>Dir</span><wbr></wbr><span>Spec</span><wbr></wbr><span><span>Builder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1725158922%2FClasslikes%2F301696402"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">class </span><a href="-empty-dir-spec-builder/index.html">EmptyDirSpecBuilder</a> : <a href="-source-spec-builder/index.html">VolumeSpecBuilder.SourceSpecBuilder</a><span class="token operator">&lt;</span><a href="../-volume-spec/-empty-dir-source-spec/index.html">VolumeSpec.EmptyDirSourceSpec</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A builder class used to configure and construct the specification for an <code class="lang-kotlin">EmptyDir</code> volume.</p></div></div>                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="1938913537%2FClasslikes%2F301696402" anchor-label="FileSourceSpecBuilder" id="1938913537%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
-          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-file-source-spec-builder/index.html"><span>File</span><wbr></wbr><span>Source</span><wbr></wbr><span>Spec</span><wbr></wbr><span><span>Builder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1938913537%2FClasslikes%2F301696402"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-file-source-spec-builder/index.html">FileSourceSpecBuilder</a><span class="token operator">&lt;</span><a href="-file-source-spec-builder/index.html">T</a><span class="token operator"> : </span><a href="../-volume-spec/-file-source-spec/index.html">VolumeSpec.FileSourceSpec</a><span class="token operator">&gt;</span> : <a href="-source-spec-builder/index.html">VolumeSpecBuilder.SourceSpecBuilder</a><span class="token operator">&lt;</span><a href="-file-source-spec-builder/index.html">T</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A base class for building file source specifications for a volume.</p></div></div>                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1285077287%2FClasslikes%2F301696402" anchor-label="FromBuilder" id="-1285077287%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
+        <div class="table"><a data-name="-1285077287%2FClasslikes%2F301696402" anchor-label="FromBuilder" id="-1285077287%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
           <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
@@ -179,75 +128,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">inner </span><span class="token keyword">class </span><a href="-from-builder/index.html">FromBuilder</a></div><div class="brief "><p class="paragraph">Provides a set of methods for defining the source of a volume within the <code class="lang-kotlin">VolumeSpecBuilder</code>.</p></div></div>                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="937298866%2FClasslikes%2F301696402" anchor-label="HostPathSourceSpecBuilder" id="937298866%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
-          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-host-path-source-spec-builder/index.html"><span>Host</span><wbr></wbr><span>Path</span><wbr></wbr><span>Source</span><wbr></wbr><span>Spec</span><wbr></wbr><span><span>Builder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="937298866%2FClasslikes%2F301696402"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">class </span><a href="-host-path-source-spec-builder/index.html">HostPathSourceSpecBuilder</a> : <a href="-source-spec-builder/index.html">VolumeSpecBuilder.SourceSpecBuilder</a><span class="token operator">&lt;</span><a href="../-volume-spec/-host-path-source-spec/index.html">VolumeSpec.HostPathSourceSpec</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Represents a specification for configuring a volume source that is backed by a host path on the filesystem of the node where the pod is running.</p></div></div>                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1417141666%2FClasslikes%2F301696402" anchor-label="PersistentVolumeClaimSourceSpecBuilder" id="-1417141666%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
-          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-persistent-volume-claim-source-spec-builder/index.html"><span>Persistent</span><wbr></wbr><span>Volume</span><wbr></wbr><span>Claim</span><wbr></wbr><span>Source</span><wbr></wbr><span>Spec</span><wbr></wbr><span><span>Builder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1417141666%2FClasslikes%2F301696402"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">class </span><a href="-persistent-volume-claim-source-spec-builder/index.html">PersistentVolumeClaimSourceSpecBuilder</a> : <a href="-source-spec-builder/index.html">VolumeSpecBuilder.SourceSpecBuilder</a><span class="token operator">&lt;</span><a href="../-volume-spec/-persistent-volume-claim-source-spec/index.html">VolumeSpec.PersistentVolumeClaimSourceSpec</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A builder class for constructing a <code class="lang-kotlin">PersistentVolumeClaimSourceSpec</code> instance.</p></div></div>                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="684736245%2FClasslikes%2F301696402" anchor-label="SecretSourceSpecBuilder" id="684736245%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
-          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-secret-source-spec-builder/index.html"><span>Secret</span><wbr></wbr><span>Source</span><wbr></wbr><span>Spec</span><wbr></wbr><span><span>Builder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="684736245%2FClasslikes%2F301696402"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">class </span><a href="-secret-source-spec-builder/index.html">SecretSourceSpecBuilder</a> : <a href="-file-source-spec-builder/index.html">VolumeSpecBuilder.FileSourceSpecBuilder</a><span class="token operator">&lt;</span><a href="../-volume-spec/-secret-source-spec/index.html">VolumeSpec.SecretSourceSpec</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">A builder class responsible for configuring the source of a <code class="lang-kotlin">Secret</code> volume within a Kubernetes pod.</p></div></div>                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="1390089957%2FClasslikes%2F301696402" anchor-label="SourceSpecBuilder" id="1390089957%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
-          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-source-spec-builder/index.html"><span>Source</span><wbr></wbr><span>Spec</span><wbr></wbr><span><span>Builder</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1390089957%2FClasslikes%2F301696402"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-source-spec-builder/index.html">SourceSpecBuilder</a><span class="token operator">&lt;</span><a href="-source-spec-builder/index.html">T</a><span class="token operator"> : </span><a href="../-volume-spec/-source-spec/index.html">VolumeSpec.SourceSpec</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Represents a builder interface for constructing instances of <code class="lang-kotlin">SourceSpec</code>.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">inner </span><span class="token keyword">class </span><a href="-from-builder/index.html">FromBuilder</a></div><div class="brief "><p class="paragraph">Offers every volume source under a short method name.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -256,19 +137,19 @@
       </div>
       <div data-togglable="FUNCTION">
         <h2 class="tableheader">Functions</h2>
-        <div class="table"><a data-name="1832274208%2FFunctions%2F301696402" anchor-label="emptyDir" id="1832274208%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+        <div class="table"><a data-name="-13378515%2FFunctions%2F301696402" anchor-label="emptyDir" id="-13378515%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
           <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="empty-dir.html"><span>empty</span><wbr></wbr><span><span>Dir</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1832274208%2FFunctions%2F301696402"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-13378515%2FFunctions%2F301696402"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="empty-dir.html"><span class="token function">emptyDir</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prepare<span class="token operator">: </span><a href="-empty-dir-spec-builder/index.html">VolumeSpecBuilder.EmptyDirSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Configures the volume specification to use an EmptyDir as its source.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="empty-dir.html"><span class="token function">emptyDir</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prepare<span class="token operator">: </span><a href="../-empty-dir-source-spec-builder/index.html">EmptyDirSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Uses scratch space that is created empty with the Pod and deleted with it.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -285,75 +166,500 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from.html"><span class="token function">from</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prepare<span class="token operator">: </span><a href="-from-builder/index.html">VolumeSpecBuilder.FromBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Configures the source of the volume using the provided builder configuration.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from.html"><span class="token function">from</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prepare<span class="token operator">: </span><a href="-from-builder/index.html">VolumeSpecBuilder.FromBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Configures the volume's source through short method names.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1991290401%2FFunctions%2F301696402" anchor-label="fromConfigMap" id="1991290401%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+<a data-name="-1938417444%2FFunctions%2F301696402" anchor-label="fromAwsElasticBlockStore" id="-1938417444%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-aws-elastic-block-store.html"><span>from</span><wbr></wbr><span>Aws</span><wbr></wbr><span>Elastic</span><wbr></wbr><span>Block</span><wbr></wbr><span><span>Store</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1938417444%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-aws-elastic-block-store.html"><span class="token function">fromAwsElasticBlockStore</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">volumeID<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-aws-elastic-block-store-source-spec-builder/index.html">AwsElasticBlockStoreSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts an AWS Elastic Block Store volume.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1578007349%2FFunctions%2F301696402" anchor-label="fromAzureDisk" id="-1578007349%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-azure-disk.html"><span>from</span><wbr></wbr><span>Azure</span><wbr></wbr><span><span>Disk</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1578007349%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-azure-disk.html"><span class="token function">fromAzureDisk</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">diskName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">diskURI<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-azure-disk-source-spec-builder/index.html">AzureDiskSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts an Azure data disk.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-13164083%2FFunctions%2F301696402" anchor-label="fromAzureFile" id="-13164083%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-azure-file.html"><span>from</span><wbr></wbr><span>Azure</span><wbr></wbr><span><span>File</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-13164083%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-azure-file.html"><span class="token function">fromAzureFile</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">secretName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">shareName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-azure-file-source-spec-builder/index.html">AzureFileSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts an Azure Files share.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1418698921%2FFunctions%2F301696402" anchor-label="fromCephFs" id="-1418698921%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-ceph-fs.html"><span>from</span><wbr></wbr><span>Ceph</span><wbr></wbr><span><span>Fs</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1418698921%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-ceph-fs.html"><span class="token function">fromCephFs</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prepare<span class="token operator">: </span><a href="../-ceph-fs-source-spec-builder/index.html">CephFsSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts a CephFS filesystem.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="516304124%2FFunctions%2F301696402" anchor-label="fromCinder" id="516304124%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-cinder.html"><span>from</span><wbr></wbr><span><span>Cinder</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="516304124%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-cinder.html"><span class="token function">fromCinder</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">volumeID<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-cinder-source-spec-builder/index.html">CinderSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts an OpenStack Cinder volume.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1390488121%2FFunctions%2F301696402" anchor-label="fromConfigMap" id="1390488121%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
           <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="from-config-map.html"><span>from</span><wbr></wbr><span>Config</span><wbr></wbr><span><span>Map</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1991290401%2FFunctions%2F301696402"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1390488121%2FFunctions%2F301696402"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-config-map.html"><span class="token function">fromConfigMap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">preparer<span class="token operator">: </span><a href="-config-map-source-spec-builder/index.html">VolumeSpecBuilder.ConfigMapSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Configures the volume specification to use a ConfigMap as its source.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-config-map.html"><span class="token function">fromConfigMap</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prepare<span class="token operator">: </span><a href="../-config-map-source-spec-builder/index.html">ConfigMapSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Uses the entries of a ConfigMap as the volume's content, one file per key.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="1319342292%2FFunctions%2F301696402" anchor-label="fromHostPath" id="1319342292%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+<a data-name="-179952202%2FFunctions%2F301696402" anchor-label="fromCsi" id="-179952202%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-csi.html"><span>from</span><wbr></wbr><span><span>Csi</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-179952202%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-csi.html"><span class="token function">fromCsi</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">driver<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-csi-source-spec-builder/index.html">CsiSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts storage provided by a CSI driver.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1625263925%2FFunctions%2F301696402" anchor-label="fromDownwardApi" id="1625263925%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-downward-api.html"><span>from</span><wbr></wbr><span>Downward</span><wbr></wbr><span><span>Api</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1625263925%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-downward-api.html"><span class="token function">fromDownwardApi</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prepare<span class="token operator">: </span><a href="../-downward-api-source-spec-builder/index.html">DownwardApiSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Exposes Pod metadata and container resource values as files.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-625355853%2FFunctions%2F301696402" anchor-label="fromEphemeral" id="-625355853%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-ephemeral.html"><span>from</span><wbr></wbr><span><span>Ephemeral</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-625355853%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-ephemeral.html"><span class="token function">fromEphemeral</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prepare<span class="token operator">: </span><a href="../-ephemeral-source-spec-builder/index.html">EphemeralSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Provisions a PersistentVolumeClaim that lives and dies with the Pod.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1510587287%2FFunctions%2F301696402" anchor-label="fromFibreChannel" id="1510587287%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-fibre-channel.html"><span>from</span><wbr></wbr><span>Fibre</span><wbr></wbr><span><span>Channel</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1510587287%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-fibre-channel.html"><span class="token function">fromFibreChannel</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prepare<span class="token operator">: </span><a href="../-fibre-channel-source-spec-builder/index.html">FibreChannelSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts a Fibre Channel logical unit.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1393756092%2FFunctions%2F301696402" anchor-label="fromFlexVolume" id="1393756092%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-flex-volume.html"><span>from</span><wbr></wbr><span>Flex</span><wbr></wbr><span><span>Volume</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1393756092%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-flex-volume.html"><span class="token function"><strike>fromFlexVolume</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">driver<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-flex-volume-source-spec-builder/index.html">FlexVolumeSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts storage through an out-of-tree FlexVolume driver.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1483045361%2FFunctions%2F301696402" anchor-label="fromFlocker" id="1483045361%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-flocker.html"><span>from</span><wbr></wbr><span><span>Flocker</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1483045361%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-flocker.html"><span class="token function"><strike>fromFlocker</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prepare<span class="token operator">: </span><a href="../-flocker-source-spec-builder/index.html">FlockerSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts a Flocker dataset.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1169531502%2FFunctions%2F301696402" anchor-label="fromGcePersistentDisk" id="1169531502%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-gce-persistent-disk.html"><span>from</span><wbr></wbr><span>Gce</span><wbr></wbr><span>Persistent</span><wbr></wbr><span><span>Disk</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1169531502%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-gce-persistent-disk.html"><span class="token function">fromGcePersistentDisk</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">pdName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-gce-persistent-disk-source-spec-builder/index.html">GcePersistentDiskSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts a Google Compute Engine persistent disk.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1043986400%2FFunctions%2F301696402" anchor-label="fromGitRepo" id="-1043986400%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-git-repo.html"><span>from</span><wbr></wbr><span>Git</span><wbr></wbr><span><span>Repo</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1043986400%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-git-repo.html"><span class="token function"><strike>fromGitRepo</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">repository<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-git-repo-source-spec-builder/index.html">GitRepoSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Clones a Git repository into the volume.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="657205837%2FFunctions%2F301696402" anchor-label="fromGlusterFs" id="657205837%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-gluster-fs.html"><span>from</span><wbr></wbr><span>Gluster</span><wbr></wbr><span><span>Fs</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="657205837%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-gluster-fs.html"><span class="token function">fromGlusterFs</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">endpoints<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">path<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-gluster-fs-source-spec-builder/index.html">GlusterFsSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts a GlusterFS volume.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="30632380%2FFunctions%2F301696402" anchor-label="fromHostPath" id="30632380%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
           <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="from-host-path.html"><span>from</span><wbr></wbr><span>Host</span><wbr></wbr><span><span>Path</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1319342292%2FFunctions%2F301696402"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="30632380%2FFunctions%2F301696402"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-host-path.html"><span class="token function">fromHostPath</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">path<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="-host-path-source-spec-builder/index.html">VolumeSpecBuilder.HostPathSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Configures the volume specification to use a host path as its source.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-host-path.html"><span class="token function">fromHostPath</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">path<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-host-path-source-spec-builder/index.html">HostPathSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts a file or directory from the host node's filesystem.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="134013306%2FFunctions%2F301696402" anchor-label="fromPersistentVolumeClaim" id="134013306%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+<a data-name="625237938%2FFunctions%2F301696402" anchor-label="fromImage" id="625237938%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-image.html"><span>from</span><wbr></wbr><span><span>Image</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="625237938%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-image.html"><span class="token function">fromImage</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">reference<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-image-source-spec-builder/index.html">ImageSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts the contents of an OCI image read-only.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="653867542%2FFunctions%2F301696402" anchor-label="fromIscsi" id="653867542%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-iscsi.html"><span>from</span><wbr></wbr><span><span>Iscsi</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="653867542%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-iscsi.html"><span class="token function">fromIscsi</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">targetPortal<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">iqn<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">lun<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-iscsi-source-spec-builder/index.html">IscsiSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts an iSCSI logical unit.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1562029613%2FFunctions%2F301696402" anchor-label="fromNfs" id="1562029613%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-nfs.html"><span>from</span><wbr></wbr><span><span>Nfs</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1562029613%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-nfs.html"><span class="token function">fromNfs</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">server<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">path<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-nfs-source-spec-builder/index.html">NfsSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts an export of an NFS server.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2080575470%2FFunctions%2F301696402" anchor-label="fromPersistentVolumeClaim" id="-2080575470%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
           <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="from-persistent-volume-claim.html"><span>from</span><wbr></wbr><span>Persistent</span><wbr></wbr><span>Volume</span><wbr></wbr><span><span>Claim</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="134013306%2FFunctions%2F301696402"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2080575470%2FFunctions%2F301696402"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-persistent-volume-claim.html"><span class="token function">fromPersistentVolumeClaim</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">claimName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="-persistent-volume-claim-source-spec-builder/index.html">VolumeSpecBuilder.PersistentVolumeClaimSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Configures the volume specification to use a PersistentVolumeClaim as its source.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-persistent-volume-claim.html"><span class="token function">fromPersistentVolumeClaim</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">claimName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-persistent-volume-claim-source-spec-builder/index.html">PersistentVolumeClaimSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts storage bound by an existing PersistentVolumeClaim.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
           </div>
-<a data-name="2109550031%2FFunctions%2F301696402" anchor-label="fromSecret" id="2109550031%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+<a data-name="904259164%2FFunctions%2F301696402" anchor-label="fromPhotonPersistentDisk" id="904259164%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
           <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
-                  <div><a href="from-secret.html"><span>from</span><wbr></wbr><span><span>Secret</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2109550031%2FFunctions%2F301696402"></span>
+                  <div><a href="from-photon-persistent-disk.html"><span>from</span><wbr></wbr><span>Photon</span><wbr></wbr><span>Persistent</span><wbr></wbr><span><span>Disk</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="904259164%2FFunctions%2F301696402"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-secret.html"><span class="token function">fromSecret</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">preparer<span class="token operator">: </span><a href="-secret-source-spec-builder/index.html">VolumeSpecBuilder.SecretSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Configures the volume specification to use a Secret as its source.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-photon-persistent-disk.html"><span class="token function"><strike>fromPhotonPersistentDisk</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">pdID<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-photon-persistent-disk-source-spec-builder/index.html">PhotonPersistentDiskSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts a Photon Controller persistent disk.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1477420542%2FFunctions%2F301696402" anchor-label="fromPortworx" id="-1477420542%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-portworx.html"><span>from</span><wbr></wbr><span><span>Portworx</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1477420542%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-portworx.html"><span class="token function">fromPortworx</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">volumeID<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-portworx-volume-source-spec-builder/index.html">PortworxVolumeSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts a Portworx volume.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-529259203%2FFunctions%2F301696402" anchor-label="fromProjected" id="-529259203%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-projected.html"><span>from</span><wbr></wbr><span><span>Projected</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-529259203%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-projected.html"><span class="token function">fromProjected</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prepare<span class="token operator">: </span><a href="../-projected-source-spec-builder/index.html">ProjectedSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Combines several ConfigMap, Secret, downward API and ServiceAccount token projections into one volume.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-809132547%2FFunctions%2F301696402" anchor-label="fromQuobyte" id="-809132547%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-quobyte.html"><span>from</span><wbr></wbr><span><span>Quobyte</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-809132547%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-quobyte.html"><span class="token function"><strike>fromQuobyte</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">registry<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">volume<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-quobyte-source-spec-builder/index.html">QuobyteSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts a Quobyte volume.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1120679296%2FFunctions%2F301696402" anchor-label="fromRbd" id="1120679296%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-rbd.html"><span>from</span><wbr></wbr><span><span>Rbd</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1120679296%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-rbd.html"><span class="token function">fromRbd</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">image<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-rbd-source-spec-builder/index.html">RbdSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts a Ceph RADOS block device.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="612383742%2FFunctions%2F301696402" anchor-label="fromScaleIo" id="612383742%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-scale-io.html"><span>from</span><wbr></wbr><span>Scale</span><wbr></wbr><span><span>Io</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="612383742%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-scale-io.html"><span class="token function"><strike>fromScaleIo</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">gateway<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">system<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">secretRef<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-scale-io-source-spec-builder/index.html">ScaleIoSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts a Dell EMC ScaleIO volume.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="898419767%2FFunctions%2F301696402" anchor-label="fromSecret" id="898419767%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-secret.html"><span>from</span><wbr></wbr><span><span>Secret</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="898419767%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-secret.html"><span class="token function">fromSecret</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">prepare<span class="token operator">: </span><a href="../-secret-source-spec-builder/index.html">SecretSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Uses the entries of a Secret as the volume's content, one file per key.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1065833322%2FFunctions%2F301696402" anchor-label="fromStorageOs" id="1065833322%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-storage-os.html"><span>from</span><wbr></wbr><span>Storage</span><wbr></wbr><span><span>Os</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1065833322%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-storage-os.html"><span class="token function"><strike>fromStorageOs</strike></span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">volumeName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-storage-os-source-spec-builder/index.html">StorageOsSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts a StorageOS volume.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1475453422%2FFunctions%2F301696402" anchor-label="fromVsphereVolume" id="1475453422%2FFunctions%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="from-vsphere-volume.html"><span>from</span><wbr></wbr><span>Vsphere</span><wbr></wbr><span><span>Volume</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1475453422%2FFunctions%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">fun </span><a href="from-vsphere-volume.html"><span class="token function">fromVsphereVolume</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">volumePath<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">prepare<span class="token operator">: </span><a href="../-vsphere-volume-source-spec-builder/index.html">VsphereVolumeSourceSpecBuilder</a><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span></div><div class="brief "><p class="paragraph">Mounts a vSphere virtual machine disk.</p></div></div>                  </div>
                 </div>
               </div>
             </div>

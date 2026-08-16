@@ -109,7 +109,7 @@
     <h1 class="cover"><span><span>Action</span></span></h1>
     <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
       <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">enum </span><a href="index.html">Action</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="index.html">PodFailurePolicySpec.Action</a><span class="token operator">&gt; </span></div><p class="paragraph">The action a <a href="../-rule/index.html">Rule</a> takes when it matches a failed Pod.</p></div>    </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">enum </span><a href="index.html">Action</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="index.html">PodFailurePolicySpec.Action</a><span class="token operator">&gt; </span></div><p class="paragraph">What a Job does when a failure policy rule matches.</p></div>    </div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="ENTRY">Entries</button></div>
@@ -128,7 +128,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-fail-job/index.html">FailJob</a></div></div><div class="brief "><p class="paragraph">Fail the whole Job.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-fail-job/index.html">FailJob</a></div></div><div class="brief "><p class="paragraph">The Job fails immediately and its remaining Pods are terminated.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -145,7 +145,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-ignore/index.html">Ignore</a></div></div><div class="brief "><p class="paragraph">Ignore the failure; the retry does not count towards <code class="lang-kotlin">backoffLimit</code>.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-ignore/index.html">Ignore</a></div></div><div class="brief "><p class="paragraph">The failure is not counted against the backoff limit and the Pod is replaced.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -162,7 +162,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-count/index.html">Count</a></div></div><div class="brief "><p class="paragraph">Count the failure towards <code class="lang-kotlin">backoffLimit</code> (default behaviour).</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-count/index.html">Count</a></div></div><div class="brief "><p class="paragraph">The failure is counted against the backoff limit, as it would be without a policy.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -179,7 +179,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-fail-index/index.html">FailIndex</a></div></div><div class="brief "><p class="paragraph">Fail the index (only for indexed Jobs).</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-fail-index/index.html">FailIndex</a></div></div><div class="brief "><p class="paragraph">The failed index is marked as failed without failing the whole Job. Indexed Jobs only.</p></div></div>                  </div>
                 </div>
               </div>
             </div>

@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2214,7 +2216,8 @@
 <h1 id="test">test</h1>
 <pre><code class="language-bash">kube-kts test &lt;RELEASE&gt; [选项]
 </code></pre>
-<p>运行 <code>helm test</code> 以执行发布中定义的测试。它作用于已存在的发布，因此<strong>既不需要仓库，也不需要渲染步骤</strong>——调用会直接转发给 Helm。</p>
+<p>运行 <code>helm test</code> 以执行发布中定义的测试。它作用于已存在的发布，因此 <strong>既不需要仓库，也不需要渲染步骤</strong>——调用会直接转发给
+Helm。</p>
 <h2 id="_1">工作原理</h2>
 <ol>
 <li>不扫描、编译或渲染任何仓库；KTS 脚本在此无关。</li>
@@ -2310,7 +2313,7 @@ kube-kts test my-app --filter name=my-test
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2148,19 +2150,17 @@
 <h1 id="compile">compile</h1>
 <pre><code class="language-bash">kube-kts compile &lt;REPOSITORY&gt; [--unsafe]
 </code></pre>
-<p>KTS リポジトリをオブジェクトインスタンスにコンパイルします。<a href="../validate/"><code>validate</code></a> より一歩進み、
-実際に Kotlin スクリプトを実行して、レンダラーが後で YAML に変換する Chart のメモリ上オブジェクト
-モデル（chart、deployment、service など）を構築します。出力をまだ書き出さずに、スクリプトが
-<strong>コンパイル・実行</strong>できるか（型エラー、null 安全違反、スクリプト内で投げられる実行時例外を含む）を
-確認するのに適したコマンドです。</p>
-<p>コンパイルはスクリプトを実行するため、スクリプトレベルの問題が最初にここで表面化します。無効な値参照、
-失敗した <code>require(...)</code>、インポートが許可されていないクラスを参照するスクリプトなどです。</p>
+<p>KTS リポジトリをオブジェクトインスタンスにコンパイルします。<a href="../validate/"><code>validate</code></a> より一歩進み、 実際に Kotlin
+スクリプトを実行して、レンダラーが後で YAML に変換する Chart のメモリ上オブジェクト モデル（chart、deployment、service
+など）を構築します。出力をまだ書き出さずに、スクリプトが <strong>コンパイル・実行</strong>できるか（型エラー、null
+安全違反、スクリプト内で投げられる実行時例外を含む）を 確認するのに適したコマンドです。</p>
+<p>コンパイルはスクリプトを実行するため、スクリプトレベルの問題が最初にここで表面化します。無効な値参照、 失敗した
+<code>require(...)</code>、インポートが許可されていないクラスを参照するスクリプトなどです。</p>
 <div class="admonition warning">
 <p class="admonition-title"><code>--unsafe</code> は任意コードを実行します</p>
-<p>既定ではスクリプトは制限付きサンドボックスで実行され、<code>import</code> 文と完全修飾クラス名が禁止されます。
-必要なら <code>--unsafe</code> を追加してください。ただし、スクリプトが任意の JVM コードを実行できるため、
-信頼できるリポジトリでのみ使用してください。</p>
 </div>
+<p>既定ではスクリプトは制限付きサンドボックスで実行され、<code>import</code> 文と完全修飾クラス名が禁止されます。 必要なら <code>--unsafe</code>
+を追加してください。ただし、スクリプトが任意の JVM コードを実行できるため、 信頼できるリポジトリでのみ使用してください。</p>
 <h2 id="_1">パラメータ</h2>
 <table>
 <thead>
@@ -2236,7 +2236,7 @@ kube-kts compile ./helm --exception
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

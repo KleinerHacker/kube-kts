@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2214,9 +2216,9 @@
 <h1 id="status">status</h1>
 <pre><code class="language-bash">kube-kts status &lt;RELEASE&gt; [オプション]
 </code></pre>
-<p><code>helm status</code> を実行して、すでにインストール済みのリリースの状態を表示します。レンダリング系コマンドと
-異なり、<code>status</code> はクラスター上に存在するリリースを対象とするため、<strong>リポジトリもレンダリング手順も
-不要</strong>で、呼び出しはそのまま Helm に転送されます。</p>
+<p><code>helm status</code> を実行して、すでにインストール済みのリリースの状態を表示します。レンダリング系コマンドと 異なり、<code>status</code>
+はクラスター上に存在するリリースを対象とするため、 <strong>リポジトリもレンダリング手順も 不要</strong>で、呼び出しはそのまま Helm
+に転送されます。</p>
 <h2 id="_1">仕組み</h2>
 <ol>
 <li>リポジトリのスキャン・コンパイル・レンダリングは行いません。KTS スクリプトはここでは無関係です。</li>
@@ -2225,14 +2227,14 @@
 </ol>
 <div class="admonition note">
 <p class="admonition-title">リリース名は位置引数、名前空間は <code>-n</code></p>
+</div>
 <p>リリース名は最初の位置引数（<code>RELEASE</code>）として渡し、そのまま Helm に転送されます。<code>-n</code> は
 <code>--namespace</code> 用に予約されています。</p>
-</div>
 <div class="admonition note">
 <p class="admonition-title">リポジトリは不要</p>
-<p><code>status</code> は何もレンダリングしないため、Kube KTS リポジトリを指定する必要はありません。これは
-レンダリング不要の基底クラス <code>BaseDirectHelmCommand</code> を用いた最初のコマンドです。</p>
 </div>
+<p><code>status</code> は何もレンダリングしないため、Kube KTS リポジトリを指定する必要はありません。これは レンダリング不要の基底クラス
+<code>BaseDirectHelmCommand</code> を用いた最初のコマンドです。</p>
 <h2 id="_2">パラメータ</h2>
 <table>
 <thead>
@@ -2410,7 +2412,7 @@ kube-kts status my-app --show-desc --show-resources
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

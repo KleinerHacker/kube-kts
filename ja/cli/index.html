@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2310,44 +2312,42 @@
 
 
 <h1 id="kube-kts-cli">Kube KTS CLI</h1>
-<p>Kube KTS は <code>kube-kts</code> コマンドで実行するコマンドラインツールです。Helm の型安全なラッパーであり、
-Go テンプレートの代わりに Kotlin スクリプト (KTS) で Kubernetes リソースを記述し、標準的な Helm
-Chart にレンダリングしたうえで、実際のクラスター操作を Helm に委譲します。</p>
+<p>Kube KTS は <code>kube-kts</code> コマンドで実行するコマンドラインツールです。Helm の型安全なラッパーであり、 Go テンプレートの代わりに
+Kotlin スクリプト (KTS) で Kubernetes リソースを記述し、標準的な Helm Chart にレンダリングしたうえで、実際のクラスター操作を
+Helm に委譲します。</p>
 <p>組み込みの <code>--help</code> 出力で足りない場合、本章が最初の参照先です。ヘルプ文は画面に収まるよう意図的に
-短くしています。本章ではさらに踏み込み、各オプションの挙動・既定値・単位・相互作用を詳しく説明します。
-各コマンドには専用ページがあり、その<strong>すべて</strong>のオプションを記載します。</p>
+短くしています。本章ではさらに踏み込み、各オプションの挙動・既定値・単位・相互作用を詳しく説明します。 各コマンドには専用ページがあり、その
+<strong>すべて</strong>のオプションを記載します。</p>
 <h2 id="helm">Helm との関係</h2>
-<p>Kube KTS は Helm を置き換えません。Helm への入力を準備します。典型的なコマンドは 2 つのフェーズで
-動作します。</p>
+<p>Kube KTS は Helm を置き換えません。Helm への入力を準備します。典型的なコマンドは 2 つのフェーズで 動作します。</p>
 <ol>
-<li><strong>レンダリングフェーズ（Kube KTS）:</strong> リポジトリをスキャンし、Kotlin スクリプトをコンパイル・実行
-   して、結果を標準的な Helm Chart としてターゲットディレクトリに書き出します。</li>
-<li><strong>Helm フェーズ（委譲）:</strong> Helm ベースのコマンド（<code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code>）
-   では、Kube KTS がそのレンダリング済み Chart に対して実際の <code>helm</code> を呼び出し、すべての Helm 専用
-   オプションをそのまま転送します。</li>
+<li><strong>レンダリングフェーズ（Kube KTS）:</strong> リポジトリをスキャンし、Kotlin スクリプトをコンパイル・実行 して、結果を標準的な
+   Helm Chart としてターゲットディレクトリに書き出します。</li>
+<li><strong>Helm フェーズ（委譲）:</strong> Helm ベースのコマンド（<code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code>） では、Kube KTS
+   がそのレンダリング済み Chart に対して実際の <code>helm</code> を呼び出し、すべての Helm 専用 オプションをそのまま転送します。</li>
 </ol>
-<p>このため、これらのコマンドは Kube KTS オプション（レンダリングに影響）と Helm オプション（転送される）
-の両方を受け付けます。最終的に Helm に渡るオプションには印が付きます。下記の「オプションマーカーの凡例」を参照してください。</p>
+<p>このため、これらのコマンドは Kube KTS オプション（レンダリングに影響）と Helm オプション（転送される） の両方を受け付けます。最終的に
+Helm に渡るオプションには印が付きます。下記の「オプションマーカーの凡例」を参照してください。</p>
 <div class="admonition note">
 <p class="admonition-title">Helm のインストールが必要</p>
-<p><code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code> には <code>helm</code> 実行ファイルが <code>PATH</code> 上にある必要が
-あります。<code>validate</code>、<code>compile</code>、<code>render</code> は Helm なしで動作します。</p>
 </div>
+<p><code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code> には <code>helm</code> 実行ファイルが <code>PATH</code> 上にある必要が あります。<code>validate</code>、
+<code>compile</code>、<code>render</code> は Helm なしで動作します。</p>
 <h2 id="_1">用法</h2>
 <pre><code class="language-bash">kube-kts [グローバルオプション] &lt;コマンド&gt; &lt;REPOSITORY&gt; [TARGET] [コマンドオプション]
 </code></pre>
 <h3 id="_2">リポジトリとターゲットのパス</h3>
 <ul>
 <li><strong><code>REPOSITORY</code></strong> は最初の位置引数で、Kube KTS リポジトリ（<code>*.spec.kts</code>、<code>*.lib.kts</code>、
-  <code>values.yaml</code> などを含むディレクトリ）を指します。省略するとカレントディレクトリが使われます。
-  パスが存在しない場合、Helm を呼ぶ前に即座に失敗します。</li>
-<li><strong><code>TARGET</code></strong> はレンダリング系コマンド（<code>render</code>、<code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code>）が
-  使う任意の 2 番目の位置引数で、Chart のレンダリング先ディレクトリです。省略すると一時ディレクトリが
-  作成され OS により後始末されます。生成された Chart を確認・再利用したい場合は明示的に指定してください。</li>
+  <code>values.yaml</code> などを含むディレクトリ）を指します。省略するとカレントディレクトリが使われます。 パスが存在しない場合、Helm
+  を呼ぶ前に即座に失敗します。</li>
+<li><strong><code>TARGET</code></strong> はレンダリング系コマンド（<code>render</code>、<code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code>）が 使う任意の 2
+  番目の位置引数で、Chart のレンダリング先ディレクトリです。省略すると一時ディレクトリが 作成され OS により後始末されます。生成された
+  Chart を確認・再利用したい場合は明示的に指定してください。</li>
 </ul>
 <h3 id="_3">終了コード</h3>
-<p>CLI は成功時に <code>0</code>、失敗時に 0 以外の終了コードを返します（無効なリポジトリ、レンダリング失敗、Helm
-からの 0 以外の終了コードなど）。失敗を診断する際は <code>--exception</code> で完全なスタックトレースを確認できます。</p>
+<p>CLI は成功時に <code>0</code>、失敗時に 0 以外の終了コードを返します（無効なリポジトリ、レンダリング失敗、Helm からの 0
+以外の終了コードなど）。失敗を診断する際は <code>--exception</code> で完全なスタックトレースを確認できます。</p>
 <h2 id="_4">コマンド</h2>
 <table>
 <thead>
@@ -2491,23 +2491,22 @@ Chart にレンダリングしたうえで、実際のクラスター操作を H
 </tbody>
 </table>
 <h2 id="kts">これらのコマンドはレンダリングが必要か？（KTS の関連性）</h2>
-<p>コマンドが KTS リポジトリをレンダリングするかどうかで、Kotlin スクリプトがそのコマンドに関係するか —
-つまりそのコマンドに <strong>リポジトリ</strong>（KTS・素の YAML・混在）を渡す必要があるか — が分かります。</p>
+<p>コマンドが KTS リポジトリをレンダリングするかどうかで、Kotlin スクリプトがそのコマンドに関係するか — つまりそのコマンドに
+<strong>リポジトリ</strong>（KTS・素の YAML・混在）を渡す必要があるか — が分かります。</p>
 <ul>
 <li><strong>レンダリングが必要 → リポジトリ必須（KTS 関連）:</strong> <code>validate</code>、<code>compile</code>、<code>render</code>、<code>lint</code>、
-  <code>template</code>、<code>install</code>、<code>upgrade</code>、<code>package</code>、<code>dependency</code>、<code>diff</code> はいずれも
-  <em>スキャン → コンパイル → レンダリング</em> を実行するため、KTS スクリプトに依存し、リポジトリを渡す必要が
-  あります。</li>
-<li><strong>レンダリングと無関係 → リポジトリ不要（KTS 非関連）:</strong> 既存リリース・クラスター・リポジトリに対する
-  操作はレンダリング済み Chart を必要としないため、KTS スクリプトは関係しません：<code>status</code>、<code>list</code>、
+  <code>template</code>、<code>install</code>、<code>upgrade</code>、<code>package</code>、<code>dependency</code>、<code>diff</code> はいずれも <em>スキャン → コンパイル → レンダリング</em>
+  を実行するため、KTS スクリプトに依存し、リポジトリを渡す必要が あります。</li>
+<li><strong>レンダリングと無関係 → リポジトリ不要（KTS 非関連）:</strong> 既存リリース・クラスター・リポジトリに対する 操作はレンダリング済み
+  Chart を必要としないため、KTS スクリプトは関係しません：<code>status</code>、<code>list</code>、
   <code>history</code>、<code>rollback</code>、<code>test</code>、<code>get</code>、<code>repo</code>、<code>search</code>、<code>registry</code>、<code>show</code>、<code>pull</code>、<code>push</code>、<code>verify</code>、
   <code>version</code>、<code>env</code>。これらは引数を位置引数として直接 Helm に転送します。</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title"><code>uninstall</code> は特殊ケース</p>
-<p><code>uninstall</code> は名前だけでリリースを削除し、技術的にはレンダリング済み Chart を必要としません。一貫性の
-ため現在は Helm 呼び出し前にレンダリングしますが、機能的には KTS スクリプトは関係ありません。</p>
 </div>
+<p><code>uninstall</code> は名前だけでリリースを削除し、技術的にはレンダリング済み Chart を必要としません。一貫性の ため現在は Helm
+呼び出し前にレンダリングしますが、機能的には KTS スクリプトは関係ありません。</p>
 <h2 id="_5">オプションマーカーの凡例</h2>
 <p><code>--help</code> 出力では専用の列が各オプションの性質を示します。コマンドページのオプション表でも同じマーカーを
 使い、ドキュメントがヘルプ画面と完全に一致するようにしています。</p>
@@ -2535,7 +2534,7 @@ Chart にレンダリングしたうえで、実際のクラスター操作を H
 </table>
 <p>マーカーのないオプションは Kube KTS の内部でのみ使用され、Helm には届きません。</p>
 <h2 id="_6">グローバルオプション</h2>
-<p>これらはすべてのコマンドで利用でき、通常はコマンド名の<strong>前</strong>に置きます。</p>
+<p>これらはすべてのコマンドで利用でき、通常はコマンド名の <strong>前</strong>に置きます。</p>
 <table>
 <thead>
 <tr>
@@ -2602,8 +2601,8 @@ Chart にレンダリングしたうえで、実際のクラスター操作を H
 </tbody>
 </table>
 <h2 id="values">値 (Values)</h2>
-<p>すべてのレンダリング系コマンド（<code>render</code>、<code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code>）は値ファイルを
-受け付けます。値は 2 つの段階で使われます。レンダリング中に Kotlin スクリプトから利用でき、<strong>かつ</strong>
+<p>すべてのレンダリング系コマンド（<code>render</code>、<code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code>）は値ファイルを 受け付けます。値は
+2 つの段階で使われます。レンダリング中に Kotlin スクリプトから利用でき、 <strong>かつ</strong>
 Helm に渡されます。</p>
 <table>
 <thead>
@@ -2650,7 +2649,7 @@ Helm に渡されます。</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

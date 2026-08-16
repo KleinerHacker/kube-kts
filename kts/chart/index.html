@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2244,14 +2246,15 @@
 
 
 <h1 id="chart-dsl">Chart DSL</h1>
-<p>The <code>chart</code> DSL is used to define the metadata and dependencies of your Helm chart, similar to the <code>Chart.yaml</code> file in traditional Helm charts.</p>
+<p>The <code>chart</code> DSL is used to define the metadata and dependencies of your Helm chart, similar to the <code>Chart.yaml</code> file in
+traditional Helm charts.</p>
 <div class="admonition warning">
 <p class="admonition-title">Security: Import Restrictions</p>
-<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names
-(e.g. <code>java.lang.Runtime</code>). Only types provided via the pre-configured default imports may
-be used.</p>
-<p>Use the <code>--unsafe</code> flag to lift these restrictions.</p>
 </div>
+<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names (e.g. <code>java.lang.Runtime</code>).
+Only types provided via the pre-configured default imports may be used.</p>
+<pre><code>Use the `--unsafe` flag to lift these restrictions.
+</code></pre>
 <h2 id="basic-usage">Basic Usage</h2>
 <p>To define a chart, use the <code>chart</code> function, which takes the chart <strong>name</strong> and <strong>version</strong> as its main arguments.</p>
 <pre><code class="language-kotlin">chart(&quot;my-chart&quot;, &quot;1.0.0&quot;) {
@@ -2405,7 +2408,8 @@ be used.</p>
 <li><code>condition</code>: A boolean expression to decide whether to install the chart.</li>
 <li><code>tags { tag(String) }</code>: Adds a tag to group dependencies. (Alternative: <code>addTag</code>)</li>
 <li><code>pathImportValues { pathImportValue(path) }</code>: Imports values from the sub-chart. (Alternative: <code>addPathImportValue</code>)</li>
-<li><code>mappingImportValues { mappingImportValue(childKey, parentKey) }</code>: Maps a specific value from the sub-chart to the parent chart. (Alternative: <code>addMappingImportValue</code>)</li>
+<li><code>mappingImportValues { mappingImportValue(childKey, parentKey) }</code>: Maps a specific value from the sub-chart to the
+  parent chart. (Alternative: <code>addMappingImportValue</code>)</li>
 </ul>
 <h2 id="special-types">Special Types</h2>
 <ul>
@@ -2442,7 +2446,7 @@ be used.</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

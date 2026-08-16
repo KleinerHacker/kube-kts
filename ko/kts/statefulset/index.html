@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -1940,7 +1942,7 @@
   <a href="#metadata" class="md-nav__link">
     <span class="md-ellipsis">
       
-        메타데이터(metadata)
+        메타데이터 (metadata)
       
     </span>
   </a>
@@ -1951,7 +1953,7 @@
   <a href="#statefulset-spec" class="md-nav__link">
     <span class="md-ellipsis">
       
-        StatefulSet 명세(spec)
+        StatefulSet 명세 (spec)
       
     </span>
   </a>
@@ -1962,7 +1964,7 @@
   <a href="#updatestrategy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        업데이트 전략(updateStrategy)
+        업데이트 전략 (updateStrategy)
       
     </span>
   </a>
@@ -1973,7 +1975,7 @@
   <a href="#volumeclaimtemplates" class="md-nav__link">
     <span class="md-ellipsis">
       
-        볼륨 클레임 템플릿(volumeClaimTemplates)
+        볼륨 클레임 템플릿 (volumeClaimTemplates)
       
     </span>
   </a>
@@ -1984,7 +1986,7 @@
   <a href="#pvc-persistentvolumeclaimretentionpolicy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PVC 보존 정책(persistentVolumeClaimRetentionPolicy)
+        PVC 보존 정책 (persistentVolumeClaimRetentionPolicy)
       
     </span>
   </a>
@@ -2194,7 +2196,7 @@
   <a href="#metadata" class="md-nav__link">
     <span class="md-ellipsis">
       
-        메타데이터(metadata)
+        메타데이터 (metadata)
       
     </span>
   </a>
@@ -2205,7 +2207,7 @@
   <a href="#statefulset-spec" class="md-nav__link">
     <span class="md-ellipsis">
       
-        StatefulSet 명세(spec)
+        StatefulSet 명세 (spec)
       
     </span>
   </a>
@@ -2216,7 +2218,7 @@
   <a href="#updatestrategy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        업데이트 전략(updateStrategy)
+        업데이트 전략 (updateStrategy)
       
     </span>
   </a>
@@ -2227,7 +2229,7 @@
   <a href="#volumeclaimtemplates" class="md-nav__link">
     <span class="md-ellipsis">
       
-        볼륨 클레임 템플릿(volumeClaimTemplates)
+        볼륨 클레임 템플릿 (volumeClaimTemplates)
       
     </span>
   </a>
@@ -2238,7 +2240,7 @@
   <a href="#pvc-persistentvolumeclaimretentionpolicy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        PVC 보존 정책(persistentVolumeClaimRetentionPolicy)
+        PVC 보존 정책 (persistentVolumeClaimRetentionPolicy)
       
     </span>
   </a>
@@ -2268,16 +2270,15 @@
 
 
 <h1 id="statefulset-dsl">StatefulSet DSL</h1>
-<p><code>statefulSet</code> DSL은 Kubernetes <strong>StatefulSet</strong> 리소스를 구성하는 데 사용됩니다. StatefulSet은 안정적이고
-고유한 네트워크 식별자와 Pod별 안정적인 영구 스토리지를 갖는 Pod 집합을 관리합니다.
-<a href="../deployment/">Deployment</a>가 관리하는 교체 가능한 Pod와 달리, 데이터베이스나 메시지 브로커와 같은
-스테이트풀 애플리케이션에 적합합니다.</p>
+<p><code>statefulSet</code> DSL은 Kubernetes <strong>StatefulSet</strong> 리소스를 구성하는 데 사용됩니다. StatefulSet은 안정적이고 고유한 네트워크 식별자와 Pod별 안정적인 영구 스토리지를 갖는
+Pod 집합을 관리합니다.
+<a href="../deployment/">Deployment</a>가 관리하는 교체 가능한 Pod와 달리, 데이터베이스나 메시지 브로커와 같은 스테이트풀 애플리케이션에 적합합니다.</p>
 <div class="admonition warning">
 <p class="admonition-title">보안: 임포트 제한</p>
-<p>기본적으로 KTS 스크립트는 <code>import</code> 문이나 완전한 클래스 이름(예: <code>java.lang.Runtime</code>)을
-<strong>허용하지 않습니다</strong>. 사전 구성된 기본 임포트로 제공되는 타입만 사용할 수 있습니다.</p>
-<p>이러한 제한을 해제하려면 <code>--unsafe</code> 플래그를 사용하세요.</p>
 </div>
+<p>기본적으로 KTS 스크립트는 <code>import</code> 문이나 완전한 클래스 이름 (예: <code>java.lang.Runtime</code>)을 <strong>허용하지 않습니다</strong>. 사전 구성된 기본 임포트로 제공되는 타입만 사용할 수 있습니다.</p>
+<pre><code>이러한 제한을 해제하려면 `--unsafe` 플래그를 사용하세요.
+</code></pre>
 <h2 id="_1">기본 사용법</h2>
 <p>최소한의 StatefulSet에는 <code>metadata</code>, <code>serviceName</code>(네트워크 도메인을 제어하는 헤드리스 Service),
 <code>selector</code>, 그리고 <code>spec</code> 안의 Pod <code>template</code>이 필요합니다.</p>
@@ -2312,8 +2313,7 @@
 }
 </code></pre>
 <h2 id="_2">상세 예제</h2>
-<p>다음은 레플리카 수, 제어 Service, Pod 관리 정책, 업데이트 전략, <code>volumeClaimTemplates</code>를 통한 Pod별 영구
-스토리지, PVC 보존 정책을 보여주는 종합 예제입니다.</p>
+<p>다음은 레플리카 수, 제어 Service, Pod 관리 정책, 업데이트 전략, <code>volumeClaimTemplates</code>를 통한 Pod별 영구 스토리지, PVC 보존 정책을 보여주는 종합 예제입니다.</p>
 <pre><code class="language-kotlin">statefulSet {
     metadata(&quot;full-database&quot;) {
         namespace = &quot;data&quot;
@@ -2378,7 +2378,7 @@
 }
 </code></pre>
 <h2 id="_3">구성 참조</h2>
-<h3 id="metadata">메타데이터(<code>metadata</code>)</h3>
+<h3 id="metadata">메타데이터 (<code>metadata</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2405,7 +2405,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="statefulset-spec">StatefulSet 명세(<code>spec</code>)</h3>
+<h3 id="statefulset-spec">StatefulSet 명세 (<code>spec</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2460,7 +2460,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="updatestrategy">업데이트 전략(<code>updateStrategy</code>)</h3>
+<h3 id="updatestrategy">업데이트 전략 (<code>updateStrategy</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2487,7 +2487,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="volumeclaimtemplates">볼륨 클레임 템플릿(<code>volumeClaimTemplates</code>)</h3>
+<h3 id="volumeclaimtemplates">볼륨 클레임 템플릿 (<code>volumeClaimTemplates</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2530,7 +2530,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="pvc-persistentvolumeclaimretentionpolicy">PVC 보존 정책(<code>persistentVolumeClaimRetentionPolicy</code>)</h3>
+<h3 id="pvc-persistentvolumeclaimretentionpolicy">PVC 보존 정책 (<code>persistentVolumeClaimRetentionPolicy</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2551,9 +2551,9 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title">안정적인 스토리지</p>
-<p><code>volumeClaimTemplates</code>의 각 항목은 <strong>Pod마다</strong> PersistentVolumeClaim을 하나씩 프로비저닝합니다.
-클레임은 재스케줄링 후에도 동일성을 유지하여 각 레플리카에 전용 영구 스토리지를 제공합니다.</p>
 </div>
+<p><code>volumeClaimTemplates</code>의 각 항목은 <strong>Pod마다</strong> PersistentVolumeClaim을 하나씩 프로비저닝합니다. 클레임은 재스케줄링 후에도 동일성을 유지하여 각 레플리카에 전용 영구
+스토리지를 제공합니다.</p>
 
 
 
@@ -2583,7 +2583,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

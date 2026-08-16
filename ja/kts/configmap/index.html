@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2202,21 +2204,20 @@
 
 
 <h1 id="configmap-dsl">ConfigMap DSL</h1>
-<p><code>configMap</code> DSL は、Kubernetes ConfigMap リソースを構成するために使用します。ConfigMap は
-機密でない構成データをキーと値のペアとして保存し、Pod は環境変数、コマンドライン引数、または
-ボリュームでマウントしたファイルとしてそれを利用できます。</p>
+<p><code>configMap</code> DSL は、Kubernetes ConfigMap リソースを構成するために使用します。ConfigMap は 機密でない構成データをキーと値のペアとして保存し、Pod
+は環境変数、コマンドライン引数、または ボリュームでマウントしたファイルとしてそれを利用できます。</p>
 <div class="admonition warning">
 <p class="admonition-title">セキュリティ: インポート制限</p>
-<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名
-（例: <code>java.lang.Runtime</code>）を<strong>許可しません</strong>。事前構成されたデフォルトインポートで
-提供される型のみ使用できます。</p>
-<p><code>--unsafe</code> フラグを使うとこれらの制限を解除できます。</p>
 </div>
+<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名 （例: <code>java.lang.Runtime</code>）を <strong>許可しません</strong>
+。事前構成されたデフォルトインポートで 提供される型のみ使用できます。</p>
+<pre><code>`--unsafe` フラグを使うとこれらの制限を解除できます。
+</code></pre>
 <div class="admonition note">
 <p class="admonition-title">ConfigMap は機密でないデータ用です</p>
-<p>ConfigMap は暗号化されないため、パスワードやトークンなどの機密情報を保存してはいけません。
-機密データには Secret を使用してください。</p>
 </div>
+<p>ConfigMap は暗号化されないため、パスワードやトークンなどの機密情報を保存してはいけません。 機密データには Secret
+を使用してください。</p>
 <h2 id="_1">基本的な使い方</h2>
 <p>最小限の ConfigMap 構成には、<code>metadata</code> と <code>spec</code> 内の少なくとも 1 つのエントリが必要です。</p>
 <pre><code class="language-kotlin">configMap {
@@ -2337,10 +2338,10 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title"><code>data</code> と <code>binaryData</code></p>
+</div>
 <p><code>data</code> は UTF-8 文字列値に使用します。これらはレンダリングされた YAML の <code>data:</code> 配下に直接表示されます。
 <code>binaryData</code> は任意のバイト内容に使用します。値は base64 エンコードされて <code>binaryData:</code> 配下に表示されます。
 キーは両方のマップ全体で一意である必要があります。</p>
-</div>
 
 
 
@@ -2370,7 +2371,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

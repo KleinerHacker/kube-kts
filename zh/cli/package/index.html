@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2236,7 +2238,8 @@
 <h1 id="package">package</h1>
 <pre><code class="language-bash">kube-kts package &lt;REPOSITORY&gt; [TARGET] [选项]
 </code></pre>
-<p>将 KTS 仓库渲染为普通 Helm chart，然后对其运行 <code>helm package .</code> 以生成带版本的 chart 归档（<code>.tgz</code>）。与发布类命令不同，<code>package</code> <strong>需要仓库</strong>，并先运行完整的 <em>扫描 → 编译 → 渲染</em> 流水线。</p>
+<p>将 KTS 仓库渲染为普通 Helm chart，然后对其运行 <code>helm package .</code> 以生成带版本的 chart 归档（<code>.tgz</code>）。与发布类命令不同，
+<code>package</code> <strong>需要仓库</strong>，并先运行完整的 <em>扫描 → 编译 → 渲染</em> 流水线。</p>
 <h2 id="_1">工作原理</h2>
 <ol>
 <li>扫描仓库，编译并执行 Kotlin 脚本，并将结果渲染到 <code>TARGET</code> 目录（省略时使用临时目录）。</li>
@@ -2356,7 +2359,7 @@ kube-kts package ./my-repo --version 1.2.3 --app-version 2.0.0 -d ./dist
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2280,29 +2282,24 @@
 <h1 id="upgrade">upgrade</h1>
 <pre><code class="language-bash">kube-kts upgrade &lt;REPOSITORY&gt; [TARGET] --name &lt;NAME&gt; [옵션]
 </code></pre>
-<p>저장소를 Helm Chart 로 렌더링한 다음 <code>helm upgrade</code> 를 실행하여 Kubernetes 클러스터의 기존 릴리스를
-업데이트합니다(<code>--install</code> 과 함께면 없을 경우 설치). <a href="../install/"><code>install</code></a> 의 자연스러운 대응
-명령으로, 거의 모든 플래그를 공유하며 이전 릴리스의 값을 어떻게 재사용할지 제어하는 업그레이드 전용
-플래그가 몇 가지 더 있습니다.</p>
+<p>저장소를 Helm Chart 로 렌더링한 다음 <code>helm upgrade</code> 를 실행하여 Kubernetes 클러스터의 기존 릴리스를 업데이트합니다 (<code>--install</code> 과 함께면 없을 경우 설치). <a href="../install/">
+<code>install</code></a> 의 자연스러운 대응 명령으로, 거의 모든 플래그를 공유하며 이전 릴리스의 값을 어떻게 재사용할지 제어하는 업그레이드 전용 플래그가 몇 가지 더 있습니다.</p>
 <h2 id="_1">동작 방식</h2>
 <ol>
-<li>저장소를 스캔·컴파일하고 <code>-f</code>/<code>--set*</code> 값을 적용하여 (임시 또는 명시적) Chart 디렉터리로
-   렌더링합니다.</li>
+<li>저장소를 스캔·컴파일하고 <code>-f</code>/<code>--set*</code> 값을 적용하여 (임시 또는 명시적) Chart 디렉터리로 렌더링합니다.</li>
 <li>그 디렉터리에서 <code>helm upgrade &lt;NAME&gt; .</code> 를 실행하고 전달 옵션을 모두 덧붙입니다.</li>
-<li>Helm 이 새 릴리스 리비전을 생성합니다. 종료 코드는 Helm 의 결과를 반영합니다. 실패 시 <code>--atomic</code> 을
-   전달하지 않으면 롤백되지 않습니다.</li>
+<li>Helm 이 새 릴리스 리비전을 생성합니다. 종료 코드는 Helm 의 결과를 반영합니다. 실패 시 <code>--atomic</code> 을 전달하지 않으면 롤백되지 않습니다.</li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">릴리스 이름은 옵션, 네임스페이스는 <code>-n</code></p>
+</div>
 <p>릴리스 이름은 <code>--name</code> 으로 전달하며 위치 인수 <code>NAME</code> 으로 Helm 에 전달됩니다. <code>-n</code> 은 Helm 에 맞춰
 <code>--namespace</code> 용으로 예약되어 있습니다.</p>
-</div>
 <div class="admonition tip">
 <p class="admonition-title">업그레이드 또는 설치와 값 처리</p>
-<p><code>-i</code>/<code>--install</code> 을 사용하면 릴리스가 없을 때 설치합니다. 기본적으로 업그레이드는 전달한 값을
-사용하며, <code>--reuse-values</code>, <code>--reset-values</code>, <code>--reset-then-reuse-values</code> 가 이전 릴리스 값의 처리
-방식을 제어합니다.</p>
 </div>
+<p><code>-i</code>/<code>--install</code> 을 사용하면 릴리스가 없을 때 설치합니다. 기본적으로 업그레이드는 전달한 값을 사용하며, <code>--reuse-values</code>, <code>--reset-values</code>,
+<code>--reset-then-reuse-values</code> 가 이전 릴리스 값의 처리 방식을 제어합니다.</p>
 <h2 id="_2">매개변수</h2>
 <table>
 <thead>
@@ -2726,7 +2723,7 @@ kube-kts upgrade ./helm --name my-app --dry-run
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

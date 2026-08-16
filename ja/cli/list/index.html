@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2192,7 +2194,8 @@
 <h1 id="list">list</h1>
 <pre><code class="language-bash">kube-kts list [オプション]
 </code></pre>
-<p><code>helm list</code> を実行してリリースを一覧表示します。<code>status</code> と同様に <code>list</code> はクラスターに対して動作するため、<strong>リポジトリもレンダリング手順も不要</strong>です——呼び出しは直接 Helm に転送されます。</p>
+<p><code>helm list</code> を実行してリリースを一覧表示します。<code>status</code> と同様に <code>list</code> はクラスターに対して動作するため、
+<strong>リポジトリもレンダリング手順も不要</strong>です——呼び出しは直接 Helm に転送されます。</p>
 <h2 id="_1">動作の仕組み</h2>
 <ol>
 <li>リポジトリのスキャン・コンパイル・レンダリングは行われません。KTS スクリプトはここでは無関係です。</li>
@@ -2302,7 +2305,8 @@
 </tbody>
 </table>
 <h2 id="helm">Helm グローバルオプション</h2>
-<p>すべての <a href="../status/#helm-global-options">Helm グローバルオプション</a>（<code>-n</code>/<code>--namespace</code>、<code>--kube-context</code> など）が Helm に転送されます。</p>
+<p>すべての <a href="../status/#helm-global-options">Helm グローバルオプション</a>（<code>-n</code>/<code>--namespace</code>、<code>--kube-context</code> など）が Helm
+に転送されます。</p>
 <h2 id="_2">グローバルオプション</h2>
 <p>すべての<a href="../">グローバルオプション</a>（<code>--debug</code>、<code>--unsafe</code> など）も利用できます。</p>
 <h2 id="_3">例</h2>
@@ -2344,7 +2348,7 @@ kube-kts list --failed --date --reverse
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

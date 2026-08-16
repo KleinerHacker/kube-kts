@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2246,22 +2248,22 @@
 
 
 <h1 id="route-dsl">Route DSL</h1>
-<p>The <code>route</code> DSL is used to configure <strong>OpenShift Route</strong> resources, which expose a service under an
-external host name and optionally terminate TLS at the OpenShift router.</p>
+<p>The <code>route</code> DSL is used to configure <strong>OpenShift Route</strong> resources, which expose a service under an external host name
+and optionally terminate TLS at the OpenShift router.</p>
 <div class="admonition danger">
 <p class="admonition-title">Not a standard Kubernetes resource</p>
-<p><code>Route</code> (<code>apiVersion: route.openshift.io/v1</code>) is <strong>not</strong> part of standard Kubernetes. It is
-specific to <strong>OpenShift / OKD</strong> (or compatible distributions that ship the OpenShift router) and
-will not work on a vanilla Kubernetes cluster.</p>
-<p>On standard Kubernetes use the <a href="../ingress/">Ingress DSL</a> instead.</p>
 </div>
+<p><code>Route</code> (<code>apiVersion: route.openshift.io/v1</code>) is <strong>not</strong> part of standard Kubernetes. It is specific to <strong>OpenShift /
+OKD</strong> (or compatible distributions that ship the OpenShift router) and will not work on a vanilla Kubernetes cluster.</p>
+<pre><code>On standard Kubernetes use the [Ingress DSL](ingress.md) instead.
+</code></pre>
 <div class="admonition warning">
 <p class="admonition-title">Security: Import Restrictions</p>
-<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names
-(e.g. <code>java.lang.Runtime</code>). Only types provided via the pre-configured default imports may
-be used.</p>
-<p>Use the <code>--unsafe</code> flag to lift these restrictions.</p>
 </div>
+<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names (e.g. <code>java.lang.Runtime</code>).
+Only types provided via the pre-configured default imports may be used.</p>
+<pre><code>Use the `--unsafe` flag to lift these restrictions.
+</code></pre>
 <h2 id="basic-usage">Basic Usage</h2>
 <p>A minimal Route requires <code>metadata</code> and a backend (<code>to</code>) in <code>spec</code>.</p>
 <pre><code class="language-kotlin">route {
@@ -2279,8 +2281,8 @@ be used.</p>
 }
 </code></pre>
 <h2 id="detailed-example">Detailed Example</h2>
-<p>The following is a comprehensive example showing path-based routing, weighted traffic splitting via
-alternate backends, and edge TLS termination.</p>
+<p>The following is a comprehensive example showing path-based routing, weighted traffic splitting via alternate backends,
+and edge TLS termination.</p>
 <pre><code class="language-kotlin">route {
     metadata(&quot;full-route&quot;) {
         namespace = &quot;production&quot;
@@ -2471,7 +2473,7 @@ alternate backends, and edge TLS termination.</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

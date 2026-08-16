@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2256,13 +2258,13 @@
 
 
 <h1 id="kotlin-scripts-kts">Kotlin Scripts (KTS)</h1>
-<p>A Kube KTS repository describes Kubernetes resources with <strong>Kotlin Scripts</strong> instead of Helm's
-Go-templated YAML. Each script is plain Kotlin, evaluated against your <code>values</code>, and turned into a
-normal Helm chart that Helm then consumes. The result is the same Helm workflow you already know —
-but with type safety, null safety, full IDE support and a debuggable, logic-free YAML output.</p>
+<p>A Kube KTS repository describes Kubernetes resources with <strong>Kotlin Scripts</strong> instead of Helm's Go-templated YAML. Each
+script is plain Kotlin, evaluated against your <code>values</code>, and turned into a normal Helm chart that Helm then consumes.
+The result is the same Helm workflow you already know — but with type safety, null safety, full IDE support and a
+debuggable, logic-free YAML output.</p>
 <p>This page explains how the scripts are meant to be understood and what the <strong>safe vs. unsafe</strong>
-distinction is about. The individual resources (Chart, Service, Deployment, …) are documented on
-their own pages in this section.</p>
+distinction is about. The individual resources (Chart, Service, Deployment, …) are documented on their own pages in this
+section.</p>
 <hr />
 <h2 id="how-a-kts-repository-is-understood">How a KTS repository is understood</h2>
 <p>A repository is just a directory tree that mirrors a Helm chart. Kube KTS scans it, replaces the
@@ -2308,8 +2310,8 @@ their own pages in this section.</p>
 </tbody>
 </table>
 <h3 id="what-a-script-actually-is">What a script actually is</h3>
-<p>Every <code>*.spec.kts</code> file is an ordinary Kotlin script. It calls a single top-level DSL function that
-builds the resource, and it can read the chart's values along the way:</p>
+<p>Every <code>*.spec.kts</code> file is an ordinary Kotlin script. It calls a single top-level DSL function that builds the resource,
+and it can read the chart's values along the way:</p>
 <pre><code class="language-kotlin">// templates/deployment.spec.kts
 deployment {
     metadata(&quot;backend&quot;) { }
@@ -2325,19 +2327,18 @@ deployment {
     }
 }
 </code></pre>
-<p>Because this is real Kotlin compiled before it runs, mistakes such as a wrong type, a typo in a
-property name or a missing required value surface <strong>at compile time</strong> instead of producing broken
-YAML at deploy time. Value access (<code>value</code>, <code>valueOrNull</code>, <code>array</code>, <code>map</code>, …) is described under
+<p>Because this is real Kotlin compiled before it runs, mistakes such as a wrong type, a typo in a property name or a
+missing required value surface <strong>at compile time</strong> instead of producing broken YAML at deploy time. Value access
+(<code>value</code>, <code>valueOrNull</code>, <code>array</code>, <code>map</code>, …) is described under
 <a href="values/">Values Handling</a>.</p>
 <hr />
 <h2 id="safe-vs-unsafe">Safe vs. Unsafe</h2>
-<p>To keep rendering predictable and to limit what a script can do on your machine, Kube KTS compiles
-scripts in <strong>safe mode by default</strong>. Safe mode constrains the scripts to the Kube KTS DSL and a
-curated set of pre-imported types; unsafe mode lifts those constraints and lets a script run
-arbitrary JVM code.</p>
+<p>To keep rendering predictable and to limit what a script can do on your machine, Kube KTS compiles scripts in <strong>safe
+mode by default</strong>. Safe mode constrains the scripts to the Kube KTS DSL and a curated set of pre-imported types; unsafe
+mode lifts those constraints and lets a script run arbitrary JVM code.</p>
 <h3 id="what-safe-mode-does">What safe mode does</h3>
-<p>Before a script is compiled, its source is checked (string literals and comments are stripped first,
-so the rules only apply to actual code). Two things are rejected:</p>
+<p>Before a script is compiled, its source is checked (string literals and comments are stripped first, so the rules only
+apply to actual code). Two things are rejected:</p>
 <table>
 <thead>
 <tr>
@@ -2360,8 +2361,8 @@ so the rules only apply to actual code). Two things are rejected:</p>
 </tbody>
 </table>
 <p>If either is found, compilation fails immediately with an explanatory message — no YAML is produced.</p>
-<p>Safe scripts are not "empty", though: a generous set of types is <strong>pre-imported</strong> and usable without
-any <code>import</code>, including the complete Kube KTS DSL plus common standard-library types:</p>
+<p>Safe scripts are not "empty", though: a generous set of types is <strong>pre-imported</strong> and usable without any <code>import</code>,
+including the complete Kube KTS DSL plus common standard-library types:</p>
 <table>
 <thead>
 <tr>
@@ -2390,32 +2391,30 @@ any <code>import</code>, including the complete Kube KTS DSL plus common standar
 </table>
 <p>For the vast majority of charts this is everything you need, so you should stay in safe mode.</p>
 <h3 id="what-unsafe-mode-does">What unsafe mode does</h3>
-<p>Unsafe mode simply <strong>skips</strong> the import/FQN checks above. Scripts may then use <code>import</code> statements
-and fully qualified class names, which means they can call any class on the JVM classpath — read
-files, start processes, open network connections, and so on.</p>
-<p>That power is also the risk: a script is no longer limited to describing Kubernetes resources, it can
-execute arbitrary code on the machine that runs the render. Only enable unsafe mode for repositories
-you fully trust and have reviewed.</p>
+<p>Unsafe mode simply <strong>skips</strong> the import/FQN checks above. Scripts may then use <code>import</code> statements and fully qualified
+class names, which means they can call any class on the JVM classpath — read files, start processes, open network
+connections, and so on.</p>
+<p>That power is also the risk: a script is no longer limited to describing Kubernetes resources, it can execute arbitrary
+code on the machine that runs the render. Only enable unsafe mode for repositories you fully trust and have reviewed.</p>
 <div class="admonition warning">
 <p class="admonition-title">Unsafe mode runs arbitrary code</p>
-<p>With unsafe mode active there is no sandbox: a malicious or buggy script can do anything the
-current user can do. Treat enabling it as running untrusted code.</p>
 </div>
+<p>With unsafe mode active there is no sandbox: a malicious or buggy script can do anything the current user can do. Treat
+enabling it as running untrusted code.</p>
 <hr />
 <h2 id="the-command-line-operator">The command-line operator</h2>
-<p>Safe vs. unsafe is controlled by the global <strong><code>--unsafe</code></strong> flag of the CLI. Without it, every script
-is compiled in safe mode; with it, the import/FQN restrictions are lifted for all scripts in the run.</p>
+<p>Safe vs. unsafe is controlled by the global <strong><code>--unsafe</code></strong> flag of the CLI. Without it, every script is compiled in safe
+mode; with it, the import/FQN restrictions are lifted for all scripts in the run.</p>
 <pre><code class="language-bash"># safe (default) — imports and FQNs are rejected
 kube-kts render ./helm ./out
 
 # unsafe — imports and fully qualified class names are allowed
 kube-kts --unsafe render ./helm ./out
 </code></pre>
-<p><code>--unsafe</code> is a <strong>global</strong> option, so it is placed before the command and applies to any command that
-compiles scripts (<code>validate</code>, <code>compile</code>, <code>render</code>, <code>lint</code>, <code>template</code>, <code>install</code>, …). In the
-<code>--help</code> output and the command pages it carries the <code>!!!</code> marker, which flags it as a
-security-relevant option. See the <a href="../cli/#global-options">CLI overview</a> for the full list of
-global options.</p>
+<p><code>--unsafe</code> is a <strong>global</strong> option, so it is placed before the command and applies to any command that compiles scripts
+(<code>validate</code>, <code>compile</code>, <code>render</code>, <code>lint</code>, <code>template</code>, <code>install</code>, …). In the
+<code>--help</code> output and the command pages it carries the <code>!!!</code> marker, which flags it as a security-relevant option. See
+the <a href="../cli/#global-options">CLI overview</a> for the full list of global options.</p>
 
 
 
@@ -2445,7 +2444,7 @@ global options.</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

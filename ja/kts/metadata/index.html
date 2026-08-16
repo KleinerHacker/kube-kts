@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2280,9 +2282,11 @@
 
 
 <h1 id="metadata-dsl">Metadata DSL</h1>
-<p><code>metadata</code> DSL は、Kubernetes リソースのメタデータを定義するために使用します。メタデータはほぼすべての Kubernetes リソース（Service、Ingress、Deployment など）に存在し、それらを識別・整理するために役立ちます。</p>
+<p><code>metadata</code> DSL は、Kubernetes リソースのメタデータを定義するために使用します。メタデータはほぼすべての Kubernetes
+リソース（Service、Ingress、Deployment など）に存在し、それらを識別・整理するために役立ちます。</p>
 <h2 id="_1">基本的な使い方</h2>
-<p>Kube KTS では、<code>metadata</code> ブロックはリソース内（例: <code>service</code>、<code>ingress</code>）で定義します。リソースの<strong>名前</strong>は <code>metadata</code> 関数の最初の引数として渡します。</p>
+<p>Kube KTS では、<code>metadata</code> ブロックはリソース内（例: <code>service</code>、<code>ingress</code>）で定義します。リソースの <strong>名前</strong>は <code>metadata</code>
+関数の最初の引数として渡します。</p>
 <h3 id="_2">最小構成</h3>
 <p>最小構成では、リソースの名前のみが必要です。</p>
 <pre><code class="language-kotlin">service {
@@ -2425,7 +2429,8 @@
 <p>メタデータは次の理由で Kubernetes にとって不可欠です。</p>
 <ol>
 <li><strong>リソースを識別する</strong>: <code>name</code> と <code>namespace</code> を通じて。</li>
-<li><strong>リソースをグループ化する</strong>: <code>labels</code> により、リソースを効率的にフィルタリング・選択できます（例: Service や NetworkPolicy による）。</li>
+<li><strong>リソースをグループ化する</strong>: <code>labels</code> により、リソースを効率的にフィルタリング・選択できます（例: Service や
+   NetworkPolicy による）。</li>
 <li><strong>拡張性を可能にする</strong>: <code>annotations</code> により、コントローラーや外部ツール向けに追加情報を格納できます。</li>
 <li><strong>ライフサイクルを管理する</strong>: <code>finalizers</code> と <code>ownerReferences</code> により、リソースは正しい順序でクリーンに削除されます。</li>
 </ol>
@@ -2459,7 +2464,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

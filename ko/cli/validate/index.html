@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2148,16 +2150,14 @@
 <h1 id="validate">validate</h1>
 <pre><code class="language-bash">kube-kts validate &lt;REPOSITORY&gt;
 </code></pre>
-<p>KTS 저장소를 검증합니다. 저장소를 스캔하여 모든 <code>*.spec.kts</code>, <code>*.lib.kts</code> 및 기존 YAML/템플릿 파일을
-찾아내고, 저장소가 구조적으로 올바른지와 필요한 파일(예: Chart 정의)이 모두 있는지 확인합니다.
-스크립트를 컴파일하거나 실행하지 <strong>않으며</strong> 출력 산출물도 생성하지 않습니다. 순수하게 빠른 구조 검사입니다.</p>
-<p>CI 파이프라인에서 가장 먼저, 가장 저렴한 관문으로 사용하세요. 더 비싼 컴파일/렌더링 단계 전에 누락되거나
-잘못 배치된 파일을 잡아내며, 클러스터나 Helm 에 전혀 접근하지 않습니다.</p>
+<p>KTS 저장소를 검증합니다. 저장소를 스캔하여 모든 <code>*.spec.kts</code>, <code>*.lib.kts</code> 및 기존 YAML/템플릿 파일을 찾아내고, 저장소가 구조적으로 올바른지와 필요한 파일 (예: Chart 정의)이 모두
+있는지 확인합니다. 스크립트를 컴파일하거나 실행하지 <strong>않으며</strong> 출력 산출물도 생성하지 않습니다. 순수하게 빠른 구조 검사입니다.</p>
+<p>CI 파이프라인에서 가장 먼저, 가장 저렴한 관문으로 사용하세요. 더 비싼 컴파일/렌더링 단계 전에 누락되거나 잘못 배치된 파일을 잡아내며, 클러스터나 Helm 에 전혀 접근하지 않습니다.</p>
 <div class="admonition tip">
 <p class="admonition-title">validate 의 위치</p>
+</div>
 <p><code>validate</code> 는 <em>구조</em>만 확인합니다. Kotlin 스크립트가 컴파일·실행되는지도 확인하려면
 <a href="../compile/"><code>compile</code></a> 을, Helm YAML 도 생성하려면 <a href="../render/"><code>render</code></a> 를 사용하세요.</p>
-</div>
 <h2 id="_1">매개변수</h2>
 <table>
 <thead>
@@ -2176,8 +2176,8 @@
 </tbody>
 </table>
 <h2 id="_2">옵션</h2>
-<p>이 명령은 <a href="../">전역 옵션</a>만 받습니다. 여기서 특히 유용한 것은 <code>--verbose</code>(어떤 파일이 발견되는지
-확인)와 <code>--exception</code>(모호한 이유로 검증이 실패할 때 스택 트레이스 확인)입니다.</p>
+<p>이 명령은 <a href="../">전역 옵션</a>만 받습니다. 여기서 특히 유용한 것은 <code>--verbose</code>(어떤 파일이 발견되는지 확인)와 <code>--exception</code>(모호한 이유로 검증이 실패할 때 스택 트레이스 확인)
+입니다.</p>
 <h2 id="_3">예시</h2>
 <pre><code class="language-bash"># 현재 디렉터리 검증
 kube-kts validate .
@@ -2217,7 +2217,7 @@ kube-kts validate ./helm --exception
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

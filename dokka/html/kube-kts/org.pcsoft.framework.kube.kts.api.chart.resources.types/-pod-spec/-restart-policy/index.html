@@ -109,7 +109,7 @@
     <h1 class="cover"><span>Restart</span><wbr></wbr><span><span>Policy</span></span></h1>
     <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
       <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">enum </span><a href="index.html">RestartPolicy</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="index.html">PodSpec.RestartPolicy</a><span class="token operator">&gt; </span></div><p class="paragraph">Specifies the restart policy for a Pod.</p><p class="paragraph">The restart policy determines under what conditions a container in the Pod should be restarted after it terminates. It is important for controlling the behavior of workloads in scenarios such as failures or updates.</p></div>    </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">enum </span><a href="index.html">RestartPolicy</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="index.html">PodSpec.RestartPolicy</a><span class="token operator">&gt; </span></div><p class="paragraph">Controls whether and when the containers of a Pod are restarted.</p></div>    </div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="ENTRY">Entries</button></div>
@@ -128,7 +128,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-always/index.html">Always</a></div></div><div class="brief "><p class="paragraph">Represents the &quot;Always&quot; restart policy for a Pod.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-always/index.html">Always</a></div></div><div class="brief "><p class="paragraph">Containers are always restarted. The only valid choice for long-running workloads.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -145,7 +145,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-on-failure/index.html">OnFailure</a></div></div><div class="brief "><p class="paragraph">Represents the &quot;OnFailure&quot; restart policy for a Pod.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-on-failure/index.html">OnFailure</a></div></div><div class="brief "><p class="paragraph">Containers are restarted only if they exit with a non-zero status.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -162,7 +162,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-never/index.html">Never</a></div></div><div class="brief "><p class="paragraph">Represents the &quot;Never&quot; restart policy for a Pod.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><div class="block"><a href="-never/index.html">Never</a></div></div><div class="brief "><p class="paragraph">Containers are never restarted.</p></div></div>                  </div>
                 </div>
               </div>
             </div>

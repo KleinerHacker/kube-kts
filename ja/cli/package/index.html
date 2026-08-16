@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2236,7 +2238,9 @@
 <h1 id="package">package</h1>
 <pre><code class="language-bash">kube-kts package &lt;REPOSITORY&gt; [TARGET] [オプション]
 </code></pre>
-<p>KTS リポジトリを通常の Helm チャートにレンダリングし、それに対して <code>helm package .</code> を実行してバージョン付きチャートアーカイブ（<code>.tgz</code>）を生成します。リリース系コマンドと異なり、<code>package</code> は <strong>リポジトリが必要</strong>で、まず <em>スキャン → コンパイル → レンダリング</em> のパイプライン全体を実行します。</p>
+<p>KTS リポジトリを通常の Helm チャートにレンダリングし、それに対して <code>helm package .</code> を実行してバージョン付きチャートアーカイブ（
+<code>.tgz</code>）を生成します。リリース系コマンドと異なり、<code>package</code> は <strong>リポジトリが必要</strong>で、まず <em>スキャン → コンパイル →
+レンダリング</em> のパイプライン全体を実行します。</p>
 <h2 id="_1">動作の仕組み</h2>
 <ol>
 <li>リポジトリをスキャンし、Kotlin スクリプトをコンパイル・評価し、結果を <code>TARGET</code> ディレクトリ（省略時は一時ディレクトリ）にレンダリングします。</li>
@@ -2356,7 +2360,7 @@ kube-kts package ./my-repo --version 1.2.3 --app-version 2.0.0 -d ./dist
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

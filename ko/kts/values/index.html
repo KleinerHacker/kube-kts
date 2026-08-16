@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2068,12 +2070,12 @@
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        복잡한 구조(중첩 접근)
+        복잡한 구조 (중첩 접근)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="복잡한 구조(중첩 접근)">
+    <nav class="md-nav" aria-label="복잡한 구조 (중첩 접근)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2314,12 +2316,12 @@
   <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       
-        복잡한 구조(중첩 접근)
+        복잡한 구조 (중첩 접근)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="복잡한 구조(중첩 접근)">
+    <nav class="md-nav" aria-label="복잡한 구조 (중첩 접근)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2380,26 +2382,30 @@
 <h1 id="_1">값 처리</h1>
 <p>Kube KTS에서 값은 Helm과 유사하게 관리됩니다. 이를 통해 구성을 외부화하고 오버레이를 사용하여 다양한 환경에 맞게 배포를 사용자 정의할 수 있습니다.</p>
 <h2 id="_2">값 오버레이</h2>
-<p>값 오버레이 메커니즘은 Helm과 정확히 동일하게 작동합니다.
-- <strong>KTS 스크립트</strong>: 병합은 Kube KTS가 Helm 호환 로직을 통해 내부적으로 처리합니다.
-- <strong>기존 YAML</strong>: 표준 Helm 명령이 처리 전에 병합을 수행합니다.</p>
+<p>값 오버레이 메커니즘은 Helm과 정확히 동일하게 작동합니다.</p>
+<ul>
+<li><strong>KTS 스크립트</strong>: 병합은 Kube KTS가 Helm 호환 로직을 통해 내부적으로 처리합니다.</li>
+<li><strong>기존 YAML</strong>: 표준 Helm 명령이 처리 전에 병합을 수행합니다.</li>
+</ul>
 <h2 id="kts">KTS에서 값 다루기</h2>
 <p>Kotlin 스크립트에서는 값을 검색하고 검증하기 위한 여러 내장 함수를 사용할 수 있습니다. 이 함수들은 값 구조를 탐색하기 위해 <strong>점으로 구분된 경로</strong>를 사용합니다.</p>
 <div class="admonition warning">
 <p class="admonition-title">보안: 임포트 제한</p>
-<p>기본적으로 KTS 스크립트는 <code>import</code> 문이나 완전 정규화된 클래스 이름
-(예: <code>java.lang.Runtime</code>)을 <strong>허용하지 않습니다</strong>. 사전 구성된 기본 임포트로 제공되는 타입만 사용할 수 있습니다.</p>
-<p><code>--unsafe</code> 플래그를 사용하면 이러한 제한을 해제할 수 있습니다.</p>
 </div>
+<p>기본적으로 KTS 스크립트는 <code>import</code> 문이나 완전 정규화된 클래스 이름 (예: <code>java.lang.Runtime</code>)을 <strong>허용하지 않습니다</strong>. 사전 구성된 기본 임포트로 제공되는 타입만 사용할 수 있습니다.</p>
+<pre><code>`--unsafe` 플래그를 사용하면 이러한 제한을 해제할 수 있습니다.
+</code></pre>
 <div class="admonition note">
 <p class="admonition-title">중요</p>
-<p>기본적으로 모든 경로는 YAML 파일의 <code>values:</code> 루트 요소를 기준으로 합니다. 경로 시작 부분에 <code>values.</code>를 포함할 필요가 없습니다.</p>
 </div>
+<p>기본적으로 모든 경로는 YAML 파일의 <code>values:</code> 루트 요소를 기준으로 합니다. 경로 시작 부분에 <code>values.</code>를 포함할 필요가 없습니다.</p>
 <h3 id="_3">지원되는 타입</h3>
-<p>다음 네이티브 타입은 값의 직접 검색을 지원합니다.
-- <code>String</code>, <code>Boolean</code>
-- <code>Int</code>, <code>Long</code>, <code>Short</code>, <code>Byte</code>
-- <code>Double</code>, <code>Float</code></p>
+<p>다음 네이티브 타입은 값의 직접 검색을 지원합니다.</p>
+<ul>
+<li><code>String</code>, <code>Boolean</code></li>
+<li><code>Int</code>, <code>Long</code>, <code>Short</code>, <code>Byte</code></li>
+<li><code>Double</code>, <code>Float</code></li>
+</ul>
 <p>YAML의 값이 요청한 타입과 일치하지 않으면 예외가 발생합니다.</p>
 <hr />
 <h2 id="_4">핵심 함수</h2>
@@ -2410,17 +2416,17 @@
     // ...
 }
 </code></pre>
-<p><strong>조건부 실행(람다):</strong></p>
+<p><strong>조건부 실행 (람다):</strong></p>
 <pre><code class="language-kotlin">exists(&quot;spec.replicas&quot;) {
     // This block only runs if the path exists
 }
 </code></pre>
 <h3 id="value-valueornull"><code>value</code> 와 <code>valueOrNull</code></h3>
 <p>특정 타입의 단일 값을 검색합니다.</p>
-<p><strong>반드시 존재해야 함(없으면 예외 발생):</strong></p>
+<p><strong>반드시 존재해야 함 (없으면 예외 발생):</strong></p>
 <pre><code class="language-kotlin">val replicas = value&lt;Int&gt;(&quot;spec.replicas&quot;)
 </code></pre>
-<p><strong>선택적 값(없으면 <code>null</code> 반환):</strong></p>
+<p><strong>선택적 값 (없으면 <code>null</code> 반환):</strong></p>
 <pre><code class="language-kotlin">val replicas = valueOrNull&lt;Int&gt;(&quot;spec.replicas&quot;)
 </code></pre>
 <h3 id="array-arrayornull"><code>array</code> 와 <code>arrayOrNull</code></h3>
@@ -2428,7 +2434,7 @@
 <p><strong>직접 검색:</strong></p>
 <pre><code class="language-kotlin">val tags = array&lt;String&gt;(&quot;metadata.tags&quot;)
 </code></pre>
-<p><strong>반복(람다):</strong></p>
+<p><strong>반복 (람다):</strong></p>
 <pre><code class="language-kotlin">array(&quot;metadata.tags&quot;) { tag -&gt;
     println(&quot;Found tag: $tag&quot;)
 }
@@ -2439,18 +2445,18 @@ array(&quot;metadata.tags&quot;) { index, tag -&gt;
 }
 </code></pre>
 <h3 id="map-mapornull"><code>map</code> 와 <code>mapOrNull</code></h3>
-<p>키-값 쌍(딕셔너리)을 처리합니다.</p>
+<p>키-값 쌍 (딕셔너리)을 처리합니다.</p>
 <p><strong>직접 검색:</strong></p>
 <pre><code class="language-kotlin">val labels = map&lt;String&gt;(&quot;metadata.labels&quot;)
 </code></pre>
-<p><strong>반복(람다):</strong></p>
+<p><strong>반복 (람다):</strong></p>
 <pre><code class="language-kotlin">map&lt;String&gt;(&quot;metadata.labels&quot;) { key, value -&gt;
     println(&quot;$key = $value&quot;)
 }
 </code></pre>
 <hr />
-<h2 id="_5">복잡한 구조(중첩 접근)</h2>
-<p>복잡한 객체나 배열 내부의 중첩된 값에 접근해야 하는 경우, 타입을 지정하지 않는 람다 변형을 사용할 수 있습니다. 이는 새로운 <code>ValueAccess</code> 스코프(<code>it</code>로 사용 가능)를 제공합니다.</p>
+<h2 id="_5">복잡한 구조 (중첩 접근)</h2>
+<p>복잡한 객체나 배열 내부의 중첩된 값에 접근해야 하는 경우, 타입을 지정하지 않는 람다 변형을 사용할 수 있습니다. 이는 새로운 <code>ValueAccess</code> 스코프 (<code>it</code>로 사용 가능)를 제공합니다.</p>
 <h3 id="_6">중첩 객체</h3>
 <pre><code class="language-kotlin">value(&quot;spec.resources&quot;) {
     // 'it' now refers to 'spec.resources'
@@ -2500,7 +2506,7 @@ array(&quot;metadata.tags&quot;) { index, tag -&gt;
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

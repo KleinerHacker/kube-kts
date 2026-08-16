@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2268,17 +2270,16 @@
 
 
 <h1 id="statefulset-dsl">StatefulSet DSL</h1>
-<p>The <code>statefulSet</code> DSL is used to configure Kubernetes <strong>StatefulSet</strong> resources. A StatefulSet manages
-a set of Pods with stable, unique network identities and stable, persistent per-Pod storage — suitable
-for stateful applications such as databases or message brokers, as opposed to the interchangeable Pods
-managed by a <a href="../deployment/">Deployment</a>.</p>
+<p>The <code>statefulSet</code> DSL is used to configure Kubernetes <strong>StatefulSet</strong> resources. A StatefulSet manages a set of Pods
+with stable, unique network identities and stable, persistent per-Pod storage — suitable for stateful applications such
+as databases or message brokers, as opposed to the interchangeable Pods managed by a <a href="../deployment/">Deployment</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Security: Import Restrictions</p>
-<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names
-(e.g. <code>java.lang.Runtime</code>). Only types provided via the pre-configured default imports may
-be used.</p>
-<p>Use the <code>--unsafe</code> flag to lift these restrictions.</p>
 </div>
+<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names (e.g. <code>java.lang.Runtime</code>).
+Only types provided via the pre-configured default imports may be used.</p>
+<pre><code>Use the `--unsafe` flag to lift these restrictions.
+</code></pre>
 <h2 id="basic-usage">Basic Usage</h2>
 <p>A minimal StatefulSet requires <code>metadata</code>, a <code>serviceName</code> (the governing headless Service), a
 <code>selector</code> and a Pod <code>template</code> in <code>spec</code>.</p>
@@ -2313,8 +2314,8 @@ be used.</p>
 }
 </code></pre>
 <h2 id="detailed-example">Detailed Example</h2>
-<p>The following is a comprehensive example showing replicas, the governing service, Pod management,
-an update strategy, per-Pod persistent storage via <code>volumeClaimTemplates</code> and a claim retention policy.</p>
+<p>The following is a comprehensive example showing replicas, the governing service, Pod management, an update strategy,
+per-Pod persistent storage via <code>volumeClaimTemplates</code> and a claim retention policy.</p>
 <pre><code class="language-kotlin">statefulSet {
     metadata(&quot;full-database&quot;) {
         namespace = &quot;data&quot;
@@ -2552,9 +2553,9 @@ an update strategy, per-Pod persistent storage via <code>volumeClaimTemplates</c
 </table>
 <div class="admonition note">
 <p class="admonition-title">Stable storage</p>
-<p>Each entry of <code>volumeClaimTemplates</code> provisions one PersistentVolumeClaim <strong>per Pod</strong>. The claims
-keep their identity across rescheduling, giving every replica its own durable storage.</p>
 </div>
+<p>Each entry of <code>volumeClaimTemplates</code> provisions one PersistentVolumeClaim <strong>per Pod</strong>. The claims keep their identity
+across rescheduling, giving every replica its own durable storage.</p>
 
 
 
@@ -2584,7 +2585,7 @@ keep their identity across rescheduling, giving every replica its own durable st
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

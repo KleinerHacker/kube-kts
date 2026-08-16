@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -1682,7 +1684,7 @@
   <a href="#metadata" class="md-nav__link">
     <span class="md-ellipsis">
       
-        메타데이터(metadata)
+        메타데이터 (metadata)
       
     </span>
   </a>
@@ -1693,7 +1695,7 @@
   <a href="#deployment-spec" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deployment 명세(spec)
+        Deployment 명세 (spec)
       
     </span>
   </a>
@@ -1709,7 +1711,7 @@
   <a href="#fragments" class="md-nav__link">
     <span class="md-ellipsis">
       
-        조각(Fragments)
+        조각 (Fragments)
       
     </span>
   </a>
@@ -2174,7 +2176,7 @@
   <a href="#metadata" class="md-nav__link">
     <span class="md-ellipsis">
       
-        메타데이터(metadata)
+        메타데이터 (metadata)
       
     </span>
   </a>
@@ -2185,7 +2187,7 @@
   <a href="#deployment-spec" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Deployment 명세(spec)
+        Deployment 명세 (spec)
       
     </span>
   </a>
@@ -2201,7 +2203,7 @@
   <a href="#fragments" class="md-nav__link">
     <span class="md-ellipsis">
       
-        조각(Fragments)
+        조각 (Fragments)
       
     </span>
   </a>
@@ -2226,14 +2228,14 @@
 
 
 <h1 id="deployment-dsl">Deployment DSL</h1>
-<p><code>deployment</code> DSL은 Kubernetes Deployment 리소스를 구성하는 데 사용됩니다. Deployment는 애플리케이션의 원하는 상태를 기술하고, ReplicaSet을 통해 관련 Pod를 관리하며, 롤아웃, 롤백 및 스케일링을 제어합니다.</p>
+<p><code>deployment</code> DSL은 Kubernetes Deployment 리소스를 구성하는 데 사용됩니다. Deployment는 애플리케이션의 원하는 상태를 기술하고, ReplicaSet을 통해 관련 Pod를
+관리하며, 롤아웃, 롤백 및 스케일링을 제어합니다.</p>
 <div class="admonition warning">
 <p class="admonition-title">보안: 임포트 제한</p>
-<p>기본적으로 KTS 스크립트는 <code>import</code> 문이나 완전 정규화된 클래스 이름
-(예: <code>java.lang.Runtime</code>)을 <strong>허용하지 않습니다</strong>. 사전 구성된 기본 임포트로
-제공되는 타입만 사용할 수 있습니다.</p>
-<p><code>--unsafe</code> 플래그를 사용하면 이러한 제한을 해제할 수 있습니다.</p>
 </div>
+<p>기본적으로 KTS 스크립트는 <code>import</code> 문이나 완전 정규화된 클래스 이름 (예: <code>java.lang.Runtime</code>)을 <strong>허용하지 않습니다</strong>. 사전 구성된 기본 임포트로 제공되는 타입만 사용할 수 있습니다.</p>
+<pre><code>`--unsafe` 플래그를 사용하면 이러한 제한을 해제할 수 있습니다.
+</code></pre>
 <h2 id="_1">기본 사용법</h2>
 <p>최소한의 Deployment 구성에는 <code>metadata</code>, <code>selector</code>, 그리고 컨테이너가 최소 하나 포함된 <code>template</code>이 필요합니다.</p>
 <pre><code class="language-kotlin">deployment {
@@ -2273,8 +2275,8 @@
 </code></pre>
 <div class="admonition warning">
 <p class="admonition-title">Selector와 Template 레이블</p>
-<p><code>selector</code>는 Pod 템플릿의 레이블과 일치해야 합니다. Kubernetes는 이 관계를 사용하여 Deployment가 관리하는 Pod를 찾습니다.</p>
 </div>
+<p><code>selector</code>는 Pod 템플릿의 레이블과 일치해야 합니다. Kubernetes는 이 관계를 사용하여 Deployment가 관리하는 Pod를 찾습니다.</p>
 <h2 id="_2">상세 예제</h2>
 <p>다음 예제는 현실적인 Deployment 구성의 가장 중요한 부분을 보여줍니다. 각 조각은 하위 페이지에서 자세히 설명합니다.</p>
 <pre><code class="language-kotlin">deployment {
@@ -2392,7 +2394,7 @@
 }
 </code></pre>
 <h2 id="_3">구성 참조</h2>
-<h3 id="metadata">메타데이터(<code>metadata</code>)</h3>
+<h3 id="metadata">메타데이터 (<code>metadata</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2429,7 +2431,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="deployment-spec">Deployment 명세(<code>spec</code>)</h3>
+<h3 id="deployment-spec">Deployment 명세 (<code>spec</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2472,7 +2474,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="fragments">조각(Fragments)</h2>
+<h2 id="fragments">조각 (Fragments)</h2>
 <ul>
 <li><a href="selector/">Selector</a></li>
 <li><a href="template/">Pod 템플릿</a></li>
@@ -2511,7 +2513,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

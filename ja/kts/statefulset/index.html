@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2274,13 +2276,14 @@
 ステートフルなアプリケーションに適しています。</p>
 <div class="admonition warning">
 <p class="admonition-title">セキュリティ：インポート制限</p>
-<p>既定では、KTS スクリプトは <code>import</code> 文や完全修飾クラス名（例: <code>java.lang.Runtime</code>）を<strong>許可しません</strong>。
-事前構成された既定インポートで提供される型のみ使用できます。</p>
-<p>これらの制限を解除するには <code>--unsafe</code> フラグを使用してください。</p>
 </div>
+<p>既定では、KTS スクリプトは <code>import</code> 文や完全修飾クラス名（例: <code>java.lang.Runtime</code>）を <strong>許可しません</strong>。
+事前構成された既定インポートで提供される型のみ使用できます。</p>
+<pre><code>これらの制限を解除するには `--unsafe` フラグを使用してください。
+</code></pre>
 <h2 id="_1">基本的な使い方</h2>
-<p>最小構成の StatefulSet には、<code>metadata</code>、<code>serviceName</code>（ネットワークドメインを制御するヘッドレス
-Service）、<code>selector</code>、そして <code>spec</code> 内の Pod <code>template</code> が必要です。</p>
+<p>最小構成の StatefulSet には、<code>metadata</code>、<code>serviceName</code>（ネットワークドメインを制御するヘッドレス Service）、<code>selector</code>、そして
+<code>spec</code> 内の Pod <code>template</code> が必要です。</p>
 <pre><code class="language-kotlin">statefulSet {
     metadata(&quot;my-database&quot;) {
         namespace = &quot;default&quot;
@@ -2312,8 +2315,8 @@ Service）、<code>selector</code>、そして <code>spec</code> 内の Pod <cod
 }
 </code></pre>
 <h2 id="_2">詳細な例</h2>
-<p>以下は、レプリカ数、制御 Service、Pod 管理ポリシー、更新戦略、<code>volumeClaimTemplates</code> による Pod ごとの
-永続ストレージ、PVC 保持ポリシーを示す包括的な例です。</p>
+<p>以下は、レプリカ数、制御 Service、Pod 管理ポリシー、更新戦略、<code>volumeClaimTemplates</code> による Pod ごとの 永続ストレージ、PVC
+保持ポリシーを示す包括的な例です。</p>
 <pre><code class="language-kotlin">statefulSet {
     metadata(&quot;full-database&quot;) {
         namespace = &quot;data&quot;
@@ -2551,10 +2554,9 @@ Service）、<code>selector</code>、そして <code>spec</code> 内の Pod <cod
 </table>
 <div class="admonition note">
 <p class="admonition-title">安定したストレージ</p>
-<p><code>volumeClaimTemplates</code> の各エントリは、<strong>Pod ごとに</strong> 1 つの PersistentVolumeClaim をプロビジョニング
-します。クレームは再スケジューリングをまたいで同一性を保持し、各レプリカに専用の永続ストレージを
-提供します。</p>
 </div>
+<p><code>volumeClaimTemplates</code> の各エントリは、 <strong>Pod ごとに</strong> 1 つの PersistentVolumeClaim をプロビジョニング
+します。クレームは再スケジューリングをまたいで同一性を保持し、各レプリカに専用の永続ストレージを 提供します。</p>
 
 
 
@@ -2584,7 +2586,7 @@ Service）、<code>selector</code>、そして <code>spec</code> 内の Pod <cod
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

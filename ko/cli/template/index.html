@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2280,27 +2282,26 @@
 <h1 id="template">template</h1>
 <pre><code class="language-bash">kube-kts template &lt;REPOSITORY&gt; [TARGET] --name &lt;NAME&gt; [옵션]
 </code></pre>
-<p>저장소를 Helm Chart 로 렌더링한 다음 <code>helm template</code> 을 실행하여 완전히 렌더링된 Kubernetes 매니페스트를
-표준 출력으로 인쇄합니다. <a href="../install/"><code>install</code></a> 과 달리 (<code>--validate</code> 로 명시적으로 선택하지 않는 한)
-클러스터에 연결하거나 변경하지 <strong>않습니다</strong>. 따라서 적용될 내용을 확인하는 가장 안전한 방법입니다. 변경
-차이 비교, 출력을 <code>kubectl apply</code>/GitOps 에 전달, 값이 결과에 미치는 영향 디버깅에 이상적입니다.</p>
+<p>저장소를 Helm Chart 로 렌더링한 다음 <code>helm template</code> 을 실행하여 완전히 렌더링된 Kubernetes 매니페스트를 표준 출력으로 인쇄합니다. <a href="../install/"><code>install</code></a> 과 달리
+(<code>--validate</code> 로 명시적으로 선택하지 않는 한)
+클러스터에 연결하거나 변경하지 <strong>않습니다</strong>. 따라서 적용될 내용을 확인하는 가장 안전한 방법입니다. 변경 차이 비교, 출력을 <code>kubectl apply</code>/GitOps 에 전달, 값이 결과에 미치는 영향 디버깅에
+이상적입니다.</p>
 <h2 id="_1">동작 방식</h2>
 <ol>
-<li>저장소를 스캔·컴파일하고 <code>-f</code>/<code>--set*</code> 값을 적용하여 (임시 또는 명시적) Chart 디렉터리로
-   렌더링합니다.</li>
+<li>저장소를 스캔·컴파일하고 <code>-f</code>/<code>--set*</code> 값을 적용하여 (임시 또는 명시적) Chart 디렉터리로 렌더링합니다.</li>
 <li>그 디렉터리에서 <code>helm template &lt;NAME&gt; .</code> 를 실행하고 전달 옵션을 모두 덧붙입니다.</li>
-<li>렌더링된 매니페스트를 표준 출력(또는 <code>--output-dir</code> 로 파일)에 씁니다.</li>
+<li>렌더링된 매니페스트를 표준 출력 (또는 <code>--output-dir</code> 로 파일)에 씁니다.</li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">릴리스 이름은 옵션, 네임스페이스는 <code>-n</code></p>
+</div>
 <p>릴리스 이름은 <code>--name</code> 으로 전달하며 위치 인수 <code>NAME</code> 으로 Helm 에 전달됩니다. <code>-n</code> 은 Helm 에 맞춰
 <code>--namespace</code> 용으로 예약되어 있습니다. 이름이 중요하지 않으면 <code>--generate-name</code> 을 사용하세요.</p>
-</div>
 <div class="admonition tip">
 <p class="admonition-title">로컬 vs 클러스터 인식 렌더링</p>
-<p>기본적으로 template 은 완전히 오프라인입니다. <code>--validate</code> 를 추가하면 실제 클러스터에 대해 매니페스트를
-검증하고, <code>-a</code>/<code>--kube-version</code> 으로 렌더링 중 사용하는 API 기능을 고정할 수 있습니다.</p>
 </div>
+<p>기본적으로 template 은 완전히 오프라인입니다. <code>--validate</code> 를 추가하면 실제 클러스터에 대해 매니페스트를 검증하고, <code>-a</code>/<code>--kube-version</code> 으로 렌더링 중 사용하는 API 기능을
+고정할 수 있습니다.</p>
 <h2 id="_2">매개변수</h2>
 <table>
 <thead>
@@ -2699,7 +2700,7 @@ kube-kts template ./helm --name my-app --kube-version 1.29 --output-dir ./manife
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

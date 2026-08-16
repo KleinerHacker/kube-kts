@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2249,10 +2251,10 @@
 <p><code>service</code> DSL 用于配置 Kubernetes Service 资源，它定义一组逻辑上的 Pod 以及访问它们的策略。</p>
 <div class="admonition warning">
 <p class="admonition-title">安全性：导入限制</p>
-<p>默认情况下，KTS 脚本<strong>不允许</strong>使用 <code>import</code> 语句或完全限定的类名
-（例如 <code>java.lang.Runtime</code>）。只能使用通过预配置默认导入提供的类型。</p>
-<p>使用 <code>--unsafe</code> 标志可解除这些限制。</p>
 </div>
+<p>默认情况下，KTS 脚本 <strong>不允许</strong>使用 <code>import</code> 语句或完全限定的类名 （例如 <code>java.lang.Runtime</code>）。只能使用通过预配置默认导入提供的类型。</p>
+<pre><code>使用 `--unsafe` 标志可解除这些限制。
+</code></pre>
 <h2 id="_1">基本用法</h2>
 <p>最小的 Service 配置需要 <code>metadata</code> 以及 <code>spec</code> 中至少一个端口。</p>
 <pre><code class="language-kotlin">service {
@@ -2509,7 +2511,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

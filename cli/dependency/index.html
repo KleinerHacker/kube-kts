@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2236,10 +2238,9 @@
 <h1 id="dependency">dependency</h1>
 <pre><code class="language-bash">kube-kts dependency &lt;SUBCOMMAND&gt; &lt;REPOSITORY&gt; [TARGET] [OPTIONS]
 </code></pre>
-<p>Groups the <code>helm dependency …</code> sub-commands (alias <code>dep</code>) that manage a chart's dependencies. Each
-sub-command <strong>needs a repository</strong>: it runs the full <em>scan → compile → render</em> pipeline first and
-then operates on the rendered chart (<code>helm dependency &lt;sub&gt; .</code>). Invoking <code>dependency</code> without a
-sub-command prints the usage listing.</p>
+<p>Groups the <code>helm dependency …</code> sub-commands (alias <code>dep</code>) that manage a chart's dependencies. Each sub-command <strong>needs a
+repository</strong>: it runs the full <em>scan → compile → render</em> pipeline first and then operates on the rendered chart
+(<code>helm dependency &lt;sub&gt; .</code>). Invoking <code>dependency</code> without a sub-command prints the usage listing.</p>
 <h2 id="sub-commands">Sub-commands</h2>
 <table>
 <thead>
@@ -2313,8 +2314,8 @@ sub-command prints the usage listing.</p>
 </tbody>
 </table>
 <h2 id="values">Values</h2>
-<p>These commands accept values files via <a href="../#values"><code>-f</code>/<code>--values</code></a>, which feed the Kotlin
-scripts during rendering.</p>
+<p>These commands accept values files via <a href="../#values"><code>-f</code>/<code>--values</code></a>, which feed the Kotlin scripts during
+rendering.</p>
 <h2 id="helm-global-options">Helm global options</h2>
 <p>All <a href="../status/#helm-global-options">Helm global options</a> are forwarded to Helm.</p>
 <h2 id="global-options">Global options</h2>
@@ -2355,7 +2356,7 @@ kube-kts dependency list ./my-repo
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

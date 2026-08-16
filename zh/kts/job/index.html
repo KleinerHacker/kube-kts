@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2250,10 +2252,10 @@
 运行至完成的工作负载，而非由 <a href="../deployment/">Deployment</a> 管理的长期运行服务。</p>
 <div class="admonition warning">
 <p class="admonition-title">安全：导入限制</p>
-<p>默认情况下，KTS 脚本<strong>不允许</strong> <code>import</code> 语句或完全限定的类名（例如 <code>java.lang.Runtime</code>）。
-只能使用通过预配置的默认导入提供的类型。</p>
-<p>使用 <code>--unsafe</code> 标志可解除这些限制。</p>
 </div>
+<p>默认情况下，KTS 脚本 <strong>不允许</strong> <code>import</code> 语句或完全限定的类名（例如 <code>java.lang.Runtime</code>）。 只能使用通过预配置的默认导入提供的类型。</p>
+<pre><code>使用 `--unsafe` 标志可解除这些限制。
+</code></pre>
 <h2 id="_1">基本用法</h2>
 <p>最小的 Job 需要 <code>metadata</code> 以及 <code>spec</code> 中的 Pod <code>template</code>。Pod 的 <code>restartPolicy</code> 必须为
 <code>Never</code> 或 <code>OnFailure</code>。</p>
@@ -2486,9 +2488,8 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title">restartPolicy</p>
-<p>与 Deployment 不同，Job 的 Pod 模板<strong>必须</strong>将 <code>restartPolicy</code> 设置为 <code>Never</code> 或 <code>OnFailure</code>。
-Job 不允许使用 <code>Always</code>。</p>
 </div>
+<p>与 Deployment 不同，Job 的 Pod 模板 <strong>必须</strong>将 <code>restartPolicy</code> 设置为 <code>Never</code> 或 <code>OnFailure</code>。 Job 不允许使用 <code>Always</code>。</p>
 
 
 
@@ -2518,7 +2519,7 @@ Job 不允许使用 <code>Always</code>。</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

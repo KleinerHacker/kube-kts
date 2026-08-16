@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2236,12 +2238,13 @@
 <h1 id="diff">diff</h1>
 <pre><code class="language-bash">kube-kts diff upgrade &lt;REPOSITORY&gt; [TARGET] --name &lt;RELEASE&gt; [옵션]
 </code></pre>
-<p>외부 <strong><code>helm-diff</code> 플러그인</strong> 위에 구축된 diff 하위 명령을 묶습니다. KTS 저장소를 렌더링하고 그 결과를 클러스터와 비교하여 작업이 적용할 변경 사항을 미리 봅니다. 각 하위 명령은 <strong>저장소가 필요</strong>하며 먼저 전체 <em>스캔 → 컴파일 → 렌더링</em> 파이프라인을 실행합니다. 하위 명령 없이 <code>diff</code>를 호출하면 사용법 목록이 출력됩니다.</p>
+<p>외부 <strong><code>helm-diff</code> 플러그인</strong> 위에 구축된 diff 하위 명령을 묶습니다. KTS 저장소를 렌더링하고 그 결과를 클러스터와 비교하여 작업이 적용할 변경 사항을 미리 봅니다. 각 하위 명령은 <strong>저장소가
+필요</strong>하며 먼저 전체 <em>스캔 → 컴파일 → 렌더링</em> 파이프라인을 실행합니다. 하위 명령 없이 <code>diff</code>를 호출하면 사용법 목록이 출력됩니다.</p>
 <div class="admonition note">
 <p class="admonition-title">helm-diff 플러그인 필요</p>
+</div>
 <p>이 명령들은 외부 플러그인이 제공하는 <code>helm diff …</code>를 호출합니다.
 <code>helm plugin install https://github.com/databus23/helm-diff</code>로 설치하세요.</p>
-</div>
 <h2 id="_1">하위 명령</h2>
 <table>
 <thead>
@@ -2283,8 +2286,9 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title">릴리스 이름은 <code>--name</code>으로 전달</p>
-<p><code>REPOSITORY</code>/<code>TARGET</code>이 이미 위치 인자를 차지하므로 릴리스 이름은 <code>--name</code>으로 전달되며 위치 인자 <code>RELEASE</code>로 플러그인에 전달됩니다. <code>-n</code>은 <code>--namespace</code>용으로 예약되어 있습니다.</p>
 </div>
+<p><code>REPOSITORY</code>/<code>TARGET</code>이 이미 위치 인자를 차지하므로 릴리스 이름은 <code>--name</code>으로 전달되며 위치 인자 <code>RELEASE</code>로 플러그인에 전달됩니다. <code>-n</code>은 <code>--namespace</code>용으로 예약되어
+있습니다.</p>
 <h2 id="diff_1">diff 옵션</h2>
 <table>
 <thead>
@@ -2384,7 +2388,7 @@ kube-kts diff upgrade ./my-repo --name my-app --detailed-exitcode
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

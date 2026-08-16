@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2148,15 +2150,15 @@
 <h1 id="render">render</h1>
 <pre><code class="language-bash">kube-kts render &lt;REPOSITORY&gt; [TARGET] [-f FILE...]
 </code></pre>
-<p>将仓库渲染为磁盘上的标准 Helm Chart。它运行完整流程——扫描、编译、执行——并将结果作为常规 Helm Chart
-（包含 <code>Chart.yaml</code>、<code>values.yaml</code> 以及由纯 YAML 组成的 <code>templates/</code> 目录）写入目标目录。输出不含
-Kotlin，也不含 Go 模板逻辑，因此可直接被 <code>helm</code> 使用、提交、做差异比较或手动查看。</p>
-<p><code>render</code> 是 Kube KTS 世界与标准工具之间的桥梁：Helm 支持的命令在内部所做的一切都从这一步开始。
-显式运行它是<em>查看</em> Kube KTS 产物的最佳方式。</p>
+<p>将仓库渲染为磁盘上的标准 Helm Chart。它运行完整流程——扫描、编译、执行——并将结果作为常规 Helm Chart （包含 <code>Chart.yaml</code>、
+<code>values.yaml</code> 以及由纯 YAML 组成的 <code>templates/</code> 目录）写入目标目录。输出不含 Kotlin，也不含 Go 模板逻辑，因此可直接被 <code>helm</code>
+使用、提交、做差异比较或手动查看。</p>
+<p><code>render</code> 是 Kube KTS 世界与标准工具之间的桥梁：Helm 支持的命令在内部所做的一切都从这一步开始。 显式运行它是 <em>查看</em> Kube
+KTS 产物的最佳方式。</p>
 <div class="admonition tip">
 <p class="admonition-title">查看输出</p>
-<p>传入显式的 <code>TARGET</code>，使 Chart 在命令结束后得以保留。否则 Chart 会写入操作系统可能清理的临时目录。</p>
 </div>
+<p>传入显式的 <code>TARGET</code>，使 Chart 在命令结束后得以保留。否则 Chart 会写入操作系统可能清理的临时目录。</p>
 <h2 id="_1">参数</h2>
 <table>
 <thead>
@@ -2236,7 +2238,7 @@ kube-kts render ./helm
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

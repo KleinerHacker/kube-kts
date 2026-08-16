@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -1912,7 +1914,7 @@
   <a href="#metadata" class="md-nav__link">
     <span class="md-ellipsis">
       
-        메타데이터(metadata)
+        메타데이터 (metadata)
       
     </span>
   </a>
@@ -1923,7 +1925,7 @@
   <a href="#job-spec" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Job 명세(spec)
+        Job 명세 (spec)
       
     </span>
   </a>
@@ -1934,7 +1936,7 @@
   <a href="#pod-podfailurepolicy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pod 실패 정책(podFailurePolicy)
+        Pod 실패 정책 (podFailurePolicy)
       
     </span>
   </a>
@@ -1945,7 +1947,7 @@
   <a href="#successpolicy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        성공 정책(successPolicy)
+        성공 정책 (successPolicy)
       
     </span>
   </a>
@@ -2183,7 +2185,7 @@
   <a href="#metadata" class="md-nav__link">
     <span class="md-ellipsis">
       
-        메타데이터(metadata)
+        메타데이터 (metadata)
       
     </span>
   </a>
@@ -2194,7 +2196,7 @@
   <a href="#job-spec" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Job 명세(spec)
+        Job 명세 (spec)
       
     </span>
   </a>
@@ -2205,7 +2207,7 @@
   <a href="#pod-podfailurepolicy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Pod 실패 정책(podFailurePolicy)
+        Pod 실패 정책 (podFailurePolicy)
       
     </span>
   </a>
@@ -2216,7 +2218,7 @@
   <a href="#successpolicy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        성공 정책(successPolicy)
+        성공 정책 (successPolicy)
       
     </span>
   </a>
@@ -2246,15 +2248,14 @@
 
 
 <h1 id="job-dsl">Job DSL</h1>
-<p><code>job</code> DSL은 Kubernetes <strong>Job</strong> 리소스를 구성하는 데 사용됩니다. Job은 하나 이상의 Pod를 생성하여
-완료될 때까지 실행합니다. <a href="../deployment/">Deployment</a>가 관리하는 장기 실행 서비스와 달리 배치 및
-완료 실행형 워크로드에 적합합니다.</p>
+<p><code>job</code> DSL은 Kubernetes <strong>Job</strong> 리소스를 구성하는 데 사용됩니다. Job은 하나 이상의 Pod를 생성하여 완료될 때까지 실행합니다. <a href="../deployment/">Deployment</a>가 관리하는
+장기 실행 서비스와 달리 배치 및 완료 실행형 워크로드에 적합합니다.</p>
 <div class="admonition warning">
 <p class="admonition-title">보안: 임포트 제한</p>
-<p>기본적으로 KTS 스크립트는 <code>import</code> 문이나 정규화된 클래스 이름(예: <code>java.lang.Runtime</code>)을
-<strong>허용하지 않습니다</strong>. 사전 구성된 기본 임포트를 통해 제공되는 타입만 사용할 수 있습니다.</p>
-<p><code>--unsafe</code> 플래그를 사용하면 이러한 제한을 해제할 수 있습니다.</p>
 </div>
+<p>기본적으로 KTS 스크립트는 <code>import</code> 문이나 정규화된 클래스 이름 (예: <code>java.lang.Runtime</code>)을 <strong>허용하지 않습니다</strong>. 사전 구성된 기본 임포트를 통해 제공되는 타입만 사용할 수 있습니다.</p>
+<pre><code>`--unsafe` 플래그를 사용하면 이러한 제한을 해제할 수 있습니다.
+</code></pre>
 <h2 id="_1">기본 사용법</h2>
 <p>최소한의 Job에는 <code>metadata</code>와 <code>spec</code> 내의 Pod <code>template</code>이 필요합니다. Pod의 <code>restartPolicy</code>는
 <code>Never</code> 또는 <code>OnFailure</code>여야 합니다.</p>
@@ -2276,8 +2277,7 @@
 }
 </code></pre>
 <h2 id="_2">상세 예제</h2>
-<p>다음은 병렬성, 완료 수, 재시도 처리, 자동 정리, 명시적 셀렉터, Pod 실패 정책 및 성공 정책을 보여주는
-종합 예제입니다.</p>
+<p>다음은 병렬성, 완료 수, 재시도 처리, 자동 정리, 명시적 셀렉터, Pod 실패 정책 및 성공 정책을 보여주는 종합 예제입니다.</p>
 <pre><code class="language-kotlin">job {
     metadata(&quot;full-job&quot;) {
         namespace = &quot;batch&quot;
@@ -2342,7 +2342,7 @@
 }
 </code></pre>
 <h2 id="_3">구성 참조</h2>
-<h3 id="metadata">메타데이터(<code>metadata</code>)</h3>
+<h3 id="metadata">메타데이터 (<code>metadata</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2369,7 +2369,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="job-spec">Job 명세(<code>spec</code>)</h3>
+<h3 id="job-spec">Job 명세 (<code>spec</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2440,7 +2440,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="pod-podfailurepolicy">Pod 실패 정책(<code>podFailurePolicy</code>)</h3>
+<h3 id="pod-podfailurepolicy">Pod 실패 정책 (<code>podFailurePolicy</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2463,7 +2463,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="successpolicy">성공 정책(<code>successPolicy</code>)</h3>
+<h3 id="successpolicy">성공 정책 (<code>successPolicy</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2488,9 +2488,8 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title">restartPolicy</p>
-<p>Deployment와 달리 Job의 Pod 템플릿은 <code>restartPolicy</code>를 <code>Never</code> 또는 <code>OnFailure</code>로 설정해야
-<strong>합니다</strong>. Job에서는 <code>Always</code>를 사용할 수 없습니다.</p>
 </div>
+<p>Deployment와 달리 Job의 Pod 템플릿은 <code>restartPolicy</code>를 <code>Never</code> 또는 <code>OnFailure</code>로 설정해야 <strong>합니다</strong>. Job에서는 <code>Always</code>를 사용할 수 없습니다.</p>
 
 
 
@@ -2520,7 +2519,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

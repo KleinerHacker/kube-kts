@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -1878,6 +1880,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        모든 볼륨 소스
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="모든 볼륨 소스">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        예시
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2196,6 +2226,34 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        모든 볼륨 소스
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="모든 볼륨 소스">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        예시
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2280,7 +2338,7 @@
 <pre><code class="language-kotlin">volumes {
     volume(&quot;host-logs&quot;) {
         fromHostPath(&quot;/var/log/demo&quot;) {
-            type = VolumeSpec.HostPathSourceSpec.Type.DirectoryOrCreate
+            type = HostPathSourceSpec.Type.DirectoryOrCreate
         }
     }
 }
@@ -2290,7 +2348,7 @@
 <pre><code class="language-kotlin">volumes {
     volume(&quot;cache&quot;) {
         emptyDir {
-            medium = VolumeSpec.EmptyDirSourceSpec.MediumType.Memory
+            medium = EmptyDirSourceSpec.MediumType.Memory
             sizeLimit = 512.miBytes
         }
     }
@@ -2312,6 +2370,78 @@
 }
 </code></pre>
 <p><code>volumeMounts</code>는 파일 시스템 마운트에 사용합니다. <code>volumeDevices</code>는 블록 디바이스에 사용합니다.</p>
+<h2 id="_3">모든 볼륨 소스</h2>
+<p>위에 소개한 소스 외에도 이 DSL은 Kubernetes의 모든 볼륨 소스를 지원합니다.</p>
+<table>
+<thead>
+<tr>
+<th>Group</th>
+<th>Sources</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Config</td>
+<td><code>configMap</code>, <code>secret</code>, <code>projected</code>, <code>downwardApi</code></td>
+</tr>
+<tr>
+<td>Node-local</td>
+<td><code>emptyDir</code>, <code>hostPath</code>, <code>persistentVolumeClaim</code>, <code>ephemeral</code>, <code>image</code>, <code>csi</code></td>
+</tr>
+<tr>
+<td>Network</td>
+<td><code>nfs</code>, <code>iscsi</code>, <code>fibreChannel</code>, <code>rbd</code>, <code>cephFs</code>, <code>glusterFs</code></td>
+</tr>
+<tr>
+<td>Cloud</td>
+<td><code>awsElasticBlockStore</code>, <code>gcePersistentDisk</code>, <code>azureDisk</code>, <code>azureFile</code>, <code>cinder</code>, <code>portworx</code>, <code>vsphereVolume</code></td>
+</tr>
+</tbody>
+</table>
+<p>Kubernetes에서 제거된 소스 (<code>gitRepo</code>, <code>flexVolume</code>, <code>flocker</code>, <code>quobyte</code>, <code>scaleIo</code>, <code>storageOs</code>, <code>photonPersistentDisk</code>)는 이전
+클러스터를 위해 계속 사용할 수 있지만 더 이상 사용되지 않는 것으로 표시됩니다.</p>
+<h3 id="_4">예시</h3>
+<pre><code class="language-kotlin">volumes {
+    volume(&quot;bundle&quot;) {
+        from {
+            projected {
+                addConfigMap { name = &quot;demo-config&quot; }
+                addSecret { name = &quot;demo-secret&quot; }
+                addServiceAccountToken(&quot;token&quot;)
+            }
+        }
+    }
+
+    volume(&quot;podinfo&quot;) {
+        from {
+            downwardApi {
+                addFieldRef(&quot;labels&quot;, &quot;metadata.labels&quot;)
+                addResourceFieldRef(&quot;cpu_limit&quot;, &quot;limits.cpu&quot;, containerName = &quot;app&quot;)
+            }
+        }
+    }
+
+    volume(&quot;data&quot;) {
+        from {
+            csi(&quot;ebs.csi.aws.com&quot;) {
+                fsType = &quot;ext4&quot;
+                addVolumeAttribute(&quot;encrypted&quot;, &quot;true&quot;)
+            }
+        }
+    }
+
+    volume(&quot;scratch&quot;) {
+        from {
+            ephemeral {
+                spec {
+                    accessModes(VolumeClaimTemplateSpec.AccessMode.ReadWriteOnce)
+                    requests(1.giBytes)
+                }
+            }
+        }
+    }
+}
+</code></pre>
 
 
 
@@ -2341,7 +2471,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

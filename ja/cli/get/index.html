@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2214,7 +2216,9 @@
 <h1 id="get">get</h1>
 <pre><code class="language-bash">kube-kts get &lt;SUBCOMMAND&gt; &lt;RELEASE&gt; [オプション]
 </code></pre>
-<p>インストール済みリリースの拡張情報をダウンロードする <code>helm get …</code> サブコマンドをまとめます。各サブコマンドは既存のリリースに対して動作するため、<strong>リポジトリもレンダリング手順も不要</strong>です——呼び出しは直接 Helm に転送されます。サブコマンドなしで <code>get</code> を呼び出すと使用方法の一覧が表示されます。</p>
+<p>インストール済みリリースの拡張情報をダウンロードする <code>helm get …</code> サブコマンドをまとめます。各サブコマンドは既存のリリースに対して動作するため、
+<strong>リポジトリもレンダリング手順も不要</strong>です——呼び出しは直接 Helm に転送されます。サブコマンドなしで <code>get</code>
+を呼び出すと使用方法の一覧が表示されます。</p>
 <h2 id="_1">サブコマンド</h2>
 <table>
 <thead>
@@ -2309,7 +2313,8 @@
 </tr>
 </tbody>
 </table>
-<p><code>--revision</code> は特定のリビジョンを選択、<code>values</code> の <code>-a</code>/<code>--all</code> は計算済みのすべての値を出力、<code>--template</code> は Go テンプレートを適用、<code>-o</code>/<code>--output</code> は <code>table</code>/<code>json</code>/<code>yaml</code> を選択します。</p>
+<p><code>--revision</code> は特定のリビジョンを選択、<code>values</code> の <code>-a</code>/<code>--all</code> は計算済みのすべての値を出力、<code>--template</code> は Go
+テンプレートを適用、<code>-o</code>/<code>--output</code> は <code>table</code>/<code>json</code>/<code>yaml</code> を選択します。</p>
 <h2 id="helm">Helm グローバルオプション</h2>
 <p>すべての <a href="../status/#helm-global-options">Helm グローバルオプション</a>が Helm に転送されます。</p>
 <h2 id="_4">グローバルオプション</h2>
@@ -2350,7 +2355,7 @@ kube-kts get manifest my-app --revision 2
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

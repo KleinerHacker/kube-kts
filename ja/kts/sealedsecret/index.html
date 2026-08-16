@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2225,25 +2227,22 @@
 
 <h1 id="sealedsecret-dsl">SealedSecret DSL</h1>
 <p><code>sealedSecret</code> DSL は <a href="https://github.com/bitnami-labs/sealed-secrets">Bitnami Sealed Secrets</a>
-（<code>bitnami.com/v1alpha1</code>）を構成するために使用します。SealedSecret は<strong>暗号化された</strong>データを
-保持し、クラスター内のコントローラーのみがそれを通常の Kubernetes <a href="../secret/">Secret</a> に
-復号できます。値が暗号化されているため、SealedSecret はバージョン管理に安全に保存できます。</p>
+（<code>bitnami.com/v1alpha1</code>）を構成するために使用します。SealedSecret は <strong>暗号化された</strong>データを 保持し、クラスター内のコントローラーのみがそれを通常の
+Kubernetes <a href="../secret/">Secret</a> に 復号できます。値が暗号化されているため、SealedSecret はバージョン管理に安全に保存できます。</p>
 <div class="admonition warning">
 <p class="admonition-title">セキュリティ: インポート制限</p>
-<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名
-（例: <code>java.lang.Runtime</code>）の使用を<strong>許可しません</strong>。事前構成されたデフォルトインポート
-で提供される型のみが使用できます。</p>
-<p><code>--unsafe</code> フラグを使用すると、これらの制限を解除できます。</p>
 </div>
+<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名 （例: <code>java.lang.Runtime</code>）の使用を <strong>許可しません</strong>
+。事前構成されたデフォルトインポート で提供される型のみが使用できます。</p>
+<pre><code>`--unsafe` フラグを使用すると、これらの制限を解除できます。
+</code></pre>
 <div class="admonition note">
 <p class="admonition-title">SealedSecrets コントローラーがインストールされている必要があります</p>
-<p>SealedSecret は、対象クラスターで実行されている SealedSecrets コントローラーによってのみ
-復号できます。暗号化された値は、そのコントローラーの公開鍵に対して <code>kubeseal</code> により
-生成されます。</p>
 </div>
+<p>SealedSecret は、対象クラスターで実行されている SealedSecrets コントローラーによってのみ
+復号できます。暗号化された値は、そのコントローラーの公開鍵に対して <code>kubeseal</code> により 生成されます。</p>
 <h2 id="_1">基本的な使い方</h2>
-<p>最小限の SealedSecret 構成には <code>metadata</code> と <code>encryptedData</code> 内の少なくとも 1 つのエントリが
-必要です。</p>
+<p>最小限の SealedSecret 構成には <code>metadata</code> と <code>encryptedData</code> 内の少なくとも 1 つのエントリが 必要です。</p>
 <pre><code class="language-kotlin">sealedSecret {
     metadata(&quot;my-sealed-secret&quot;) {
         namespace = &quot;default&quot;
@@ -2401,7 +2400,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

@@ -109,26 +109,64 @@
     <h1 class="cover"><span>Volume</span><wbr></wbr><span>Mount</span><wbr></wbr><span><span>Spec</span></span></h1>
     <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
       <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">VolumeMountSpec</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>mountPath<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>readOnly<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><p class="paragraph">Describes the specification for mounting a volume onto a container.</p><p class="paragraph">This class is used to configure how a volume should be attached to a specific container, including its mount path and optional read-only access mode. It is typically used in container orchestration scenarios to provide persistent or ephemeral storage to containers.</p></div>    </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">VolumeMountSpec</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>mountPath<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>readOnly<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>subPath<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>subPathExpr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>mountPropagation<span class="token operator">: </span><a href="-mount-propagation-mode/index.html">VolumeMountSpec.MountPropagationMode</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>recursiveReadOnly<span class="token operator">: </span><a href="-recursive-read-only-mode/index.html">VolumeMountSpec.RecursiveReadOnlyMode</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div><p class="paragraph">Describes how a volume declared on the Pod is mounted into a container's filesystem.</p></div>    </div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
     <div class="tabs-section-body">
       <div data-togglable="CONSTRUCTOR">
         <h2 class="tableheader">Constructors</h2>
-        <div class="table"><a data-name="886352351%2FConstructors%2F301696402" anchor-label="VolumeMountSpec" id="886352351%2FConstructors%2F301696402" data-filterable-set=":/api"></a>
+        <div class="table"><a data-name="1278277270%2FConstructors%2F301696402" anchor-label="VolumeMountSpec" id="1278277270%2FConstructors%2F301696402" data-filterable-set=":/api"></a>
           <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":/api" data-filterable-set=":/api">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
                   <div><a href="-volume-mount-spec.html"><span>Volume</span><wbr></wbr><span>Mount</span><wbr></wbr><span><span>Spec</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="886352351%2FConstructors%2F301696402"></span>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1278277270%2FConstructors%2F301696402"></span>
                     <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
                   </span></span></div>
               <div>
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">mountPath<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">readOnly<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">mountPath<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter ">readOnly<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">subPath<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">subPathExpr<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">mountPropagation<span class="token operator">: </span><a href="-mount-propagation-mode/index.html">VolumeMountSpec.MountPropagationMode</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">recursiveReadOnly<span class="token operator">: </span><a href="-recursive-read-only-mode/index.html">VolumeMountSpec.RecursiveReadOnlyMode</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="-634947306%2FClasslikes%2F301696402" anchor-label="MountPropagationMode" id="-634947306%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-mount-propagation-mode/index.html"><span>Mount</span><wbr></wbr><span>Propagation</span><wbr></wbr><span><span>Mode</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-634947306%2FClasslikes%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-mount-propagation-mode/index.html">MountPropagationMode</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-mount-propagation-mode/index.html">VolumeMountSpec.MountPropagationMode</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Controls how mount points are propagated between the host and a container.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1112576671%2FClasslikes%2F301696402" anchor-label="RecursiveReadOnlyMode" id="1112576671%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-recursive-read-only-mode/index.html"><span>Recursive</span><wbr></wbr><span>Read</span><wbr></wbr><span>Only</span><wbr></wbr><span><span>Mode</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1112576671%2FClasslikes%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">enum </span><a href="-recursive-read-only-mode/index.html">RecursiveReadOnlyMode</a> : <a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-enum/index.html">Enum</a><span class="token operator">&lt;</span><a href="-recursive-read-only-mode/index.html">VolumeMountSpec.RecursiveReadOnlyMode</a><span class="token operator">&gt; </span></div><div class="brief "><p class="paragraph">Controls whether a read-only mount is enforced recursively for all of its submounts.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -149,7 +187,24 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="mount-path.html">mountPath</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The file system path inside the container where the volume will be mounted.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="mount-path.html">mountPath</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The absolute path inside the container the volume is mounted at. Must not                             contain <code class="lang-kotlin">:</code>.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="504364100%2FProperties%2F301696402" anchor-label="mountPropagation" id="504364100%2FProperties%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="mount-propagation.html"><span>mount</span><wbr></wbr><span><span>Propagation</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="504364100%2FProperties%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="mount-propagation.html">mountPropagation</a><span class="token operator">: </span><a href="-mount-propagation-mode/index.html">VolumeMountSpec.MountPropagationMode</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Controls how mounts are propagated between the host and this container.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -166,7 +221,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="name.html">name</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The name of the volume to be mounted.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="name.html">name</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The name of the volume to mount. Must match the name of a volume declared                             on the Pod.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -183,7 +238,58 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="read-only.html">readOnly</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Indicates whether the volume should be mounted as read-only. If null,                     the default behavior is determined by the container runtime or orchestrator.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="read-only.html">readOnly</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">If true, the volume is mounted read-only. Defaults to read-write.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="139116463%2FProperties%2F301696402" anchor-label="recursiveReadOnly" id="139116463%2FProperties%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="recursive-read-only.html"><span>recursive</span><wbr></wbr><span>Read</span><wbr></wbr><span><span>Only</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="139116463%2FProperties%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="recursive-read-only.html">recursiveReadOnly</a><span class="token operator">: </span><a href="-recursive-read-only-mode/index.html">VolumeMountSpec.RecursiveReadOnlyMode</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Controls whether a read-only mount is applied recursively to all submounts.                             Only valid together with <span data-unresolved-link="org.pcsoft.framework.kube.kts.api.chart.resources.types/VolumeMountSpec//#kotlin.String#kotlin.String#kotlin.Boolean?#kotlin.String?#kotlin.String?#org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeMountSpec.MountPropagationMode?#org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeMountSpec.RecursiveReadOnlyMode?/PointingToCallableParameters(2)/">readOnly</span> set to true.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1830143614%2FProperties%2F301696402" anchor-label="subPath" id="1830143614%2FProperties%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="sub-path.html"><span>sub</span><wbr></wbr><span><span>Path</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1830143614%2FProperties%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="sub-path.html">subPath</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Mounts only the given sub-directory or file of the volume instead of its                             root. Mutually exclusive with <span data-unresolved-link="org.pcsoft.framework.kube.kts.api.chart.resources.types/VolumeMountSpec//#kotlin.String#kotlin.String#kotlin.Boolean?#kotlin.String?#kotlin.String?#org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeMountSpec.MountPropagationMode?#org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeMountSpec.RecursiveReadOnlyMode?/PointingToCallableParameters(4)/">subPathExpr</span>.</p></div></div>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1922490761%2FProperties%2F301696402" anchor-label="subPathExpr" id="1922490761%2FProperties%2F301696402" data-filterable-set=":/api"></a>
+          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="sub-path-expr.html"><span>sub</span><wbr></wbr><span>Path</span><wbr></wbr><span><span>Expr</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1922490761%2FProperties%2F301696402"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
+                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="sub-path-expr.html">subPathExpr</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Like <span data-unresolved-link="org.pcsoft.framework.kube.kts.api.chart.resources.types/VolumeMountSpec//#kotlin.String#kotlin.String#kotlin.Boolean?#kotlin.String?#kotlin.String?#org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeMountSpec.MountPropagationMode?#org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeMountSpec.RecursiveReadOnlyMode?/PointingToCallableParameters(3)/">subPath</span>, but the value may reference container environment variables                             using <code class="lang-kotlin">$(VAR_NAME)</code> syntax. Mutually exclusive with <span data-unresolved-link="org.pcsoft.framework.kube.kts.api.chart.resources.types/VolumeMountSpec//#kotlin.String#kotlin.String#kotlin.Boolean?#kotlin.String?#kotlin.String?#org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeMountSpec.MountPropagationMode?#org.pcsoft.framework.kube.kts.api.chart.resources.types.VolumeMountSpec.RecursiveReadOnlyMode?/PointingToCallableParameters(3)/">subPath</span>.</p></div></div>                  </div>
                 </div>
               </div>
             </div>

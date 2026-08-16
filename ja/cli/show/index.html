@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2214,7 +2216,9 @@
 <h1 id="show">show</h1>
 <pre><code class="language-bash">kube-kts show &lt;SUBCOMMAND&gt; &lt;CHART&gt; [オプション]
 </code></pre>
-<p>チャートの情報を表示する <code>helm show …</code> サブコマンド（別名 <code>inspect</code>）をまとめます。これらはリモート/ローカルのチャートに対して動作するため、<strong>リポジトリもレンダリング手順も不要</strong>です——呼び出しは直接 Helm に転送されます。サブコマンドなしで <code>show</code> を呼び出すと使用方法の一覧が表示されます。</p>
+<p>チャートの情報を表示する <code>helm show …</code> サブコマンド（別名 <code>inspect</code>）をまとめます。これらはリモート/ローカルのチャートに対して動作するため、
+<strong>リポジトリもレンダリング手順も不要</strong>です——呼び出しは直接 Helm に転送されます。サブコマンドなしで <code>show</code>
+を呼び出すと使用方法の一覧が表示されます。</p>
 <h2 id="_1">サブコマンド</h2>
 <table>
 <thead>
@@ -2270,7 +2274,8 @@
 </tbody>
 </table>
 <h2 id="_3">オプション</h2>
-<p>各サブコマンドは<a href="../pull/#チャートダウンロードオプション">チャートダウンロードオプション</a>（<code>--repo</code>、<code>--version</code>、認証情報、TLS、<code>--verify</code> など）を受け付けます。さらに <code>show values</code> は次を受け付けます：</p>
+<p>各サブコマンドは<a href="../pull/#チャートダウンロードオプション">チャートダウンロードオプション</a>（<code>--repo</code>、<code>--version</code>、認証情報、TLS、
+<code>--verify</code> など）を受け付けます。さらに <code>show values</code> は次を受け付けます：</p>
 <table>
 <thead>
 <tr>
@@ -2327,7 +2332,7 @@ kube-kts show values bitnami/nginx --jsonpath '{.image}'
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

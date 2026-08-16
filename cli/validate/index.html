@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2149,17 +2151,16 @@
 <pre><code class="language-bash">kube-kts validate &lt;REPOSITORY&gt;
 </code></pre>
 <p>Validates a KTS repository. The command scans the repository, discovers every <code>*.spec.kts</code>,
-<code>*.lib.kts</code> and legacy YAML/template file, and checks that the repository is structurally
-well-formed and that all required files (such as the chart definition) are present. It does <strong>not</strong>
-compile or evaluate the scripts and produces no output artifacts — it is purely a fast structural
-check.</p>
-<p>Use it as the first, cheapest gate in a CI pipeline: it catches missing or misplaced files long
-before the more expensive compile/render steps run, and it never touches a cluster or Helm.</p>
+<code>*.lib.kts</code> and legacy YAML/template file, and checks that the repository is structurally well-formed and that all
+required files (such as the chart definition) are present. It does <strong>not</strong>
+compile or evaluate the scripts and produces no output artifacts — it is purely a fast structural check.</p>
+<p>Use it as the first, cheapest gate in a CI pipeline: it catches missing or misplaced files long before the more
+expensive compile/render steps run, and it never touches a cluster or Helm.</p>
 <div class="admonition tip">
 <p class="admonition-title">Where validate fits</p>
-<p><code>validate</code> only checks the <em>structure</em>. To additionally verify that the Kotlin scripts compile
-and evaluate, use <a href="../compile/"><code>compile</code></a>; to also produce Helm YAML, use <a href="../render/"><code>render</code></a>.</p>
 </div>
+<p><code>validate</code> only checks the <em>structure</em>. To additionally verify that the Kotlin scripts compile and evaluate, use <a href="../compile/">
+<code>compile</code></a>; to also produce Helm YAML, use <a href="../render/"><code>render</code></a>.</p>
 <h2 id="parameters">Parameters</h2>
 <table>
 <thead>
@@ -2178,9 +2179,9 @@ and evaluate, use <a href="../compile/"><code>compile</code></a>; to also produc
 </tbody>
 </table>
 <h2 id="options">Options</h2>
-<p>This command only accepts the <a href="../#global-options">global options</a>. The most useful ones here
-are <code>--verbose</code> (to see exactly which files are discovered) and <code>--exception</code> (to get a stack trace
-if validation fails for a non-obvious reason).</p>
+<p>This command only accepts the <a href="../#global-options">global options</a>. The most useful ones here are <code>--verbose</code> (to
+see exactly which files are discovered) and <code>--exception</code> (to get a stack trace if validation fails for a non-obvious
+reason).</p>
 <h2 id="examples">Examples</h2>
 <pre><code class="language-bash"># Validate the current directory
 kube-kts validate .
@@ -2220,7 +2221,7 @@ kube-kts validate ./helm --exception
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

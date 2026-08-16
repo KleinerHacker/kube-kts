@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2149,20 +2151,18 @@
 <pre><code class="language-bash">kube-kts compile &lt;REPOSITORY&gt; [--unsafe]
 </code></pre>
 <p>Compiles the KTS repository into object instances. This goes a step further than
-<a href="../validate/"><code>validate</code></a>: it actually executes the Kotlin scripts and builds the in-memory object
-model of the chart (charts, deployments, services, …) that the renderer later turns into YAML. It is
-the right command to confirm that your scripts <strong>compile and evaluate</strong> correctly — including type
-errors, null-safety violations and runtime exceptions thrown inside the scripts — without yet writing
-any output.</p>
-<p>Because compilation runs your scripts, it is also where script-level problems surface first: an
-invalid value lookup, a failed <code>require(...)</code>, or a script that references a class it is not allowed
-to import.</p>
+<a href="../validate/"><code>validate</code></a>: it actually executes the Kotlin scripts and builds the in-memory object model of the chart
+(charts, deployments, services, …) that the renderer later turns into YAML. It is the right command to confirm that your
+scripts <strong>compile and evaluate</strong> correctly — including type errors, null-safety violations and runtime exceptions thrown
+inside the scripts — without yet writing any output.</p>
+<p>Because compilation runs your scripts, it is also where script-level problems surface first: an invalid value lookup, a
+failed <code>require(...)</code>, or a script that references a class it is not allowed to import.</p>
 <div class="admonition warning">
 <p class="admonition-title"><code>--unsafe</code> runs arbitrary code</p>
-<p>By default the scripts run in a restricted sandbox that forbids <code>import</code> statements and fully
-qualified class names. If your scripts need them, add <code>--unsafe</code> — but only for repositories you
-trust, because it lets the scripts execute arbitrary JVM code.</p>
 </div>
+<p>By default the scripts run in a restricted sandbox that forbids <code>import</code> statements and fully qualified class names. If
+your scripts need them, add <code>--unsafe</code> — but only for repositories you trust, because it lets the scripts execute
+arbitrary JVM code.</p>
 <h2 id="parameters">Parameters</h2>
 <table>
 <thead>
@@ -2238,7 +2238,7 @@ kube-kts compile ./helm --exception
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2210,8 +2212,8 @@
 
 
 <h1 id="library-files-libkts">Library Files (<code>*.lib.kts</code>)</h1>
-<p>Library files allow you to define reusable helper functions and constants that are automatically
-available across all spec files in your Helm repository.</p>
+<p>Library files allow you to define reusable helper functions and constants that are automatically available across all
+spec files in your Helm repository.</p>
 <hr />
 <h2 id="overview">Overview</h2>
 <table>
@@ -2246,8 +2248,8 @@ available across all spec files in your Helm repository.</p>
 </table>
 <hr />
 <h2 id="creating-a-library-file">Creating a Library File</h2>
-<p>Create a file with the <code>.lib.kts</code> extension anywhere inside your <code>helm/</code> directory.
-A common convention is to place shared helpers in <code>templates/helpers.lib.kts</code>.</p>
+<p>Create a file with the <code>.lib.kts</code> extension anywhere inside your <code>helm/</code> directory. A common convention is to place
+shared helpers in <code>templates/helpers.lib.kts</code>.</p>
 <pre><code>─ helm
   ├── Chart.spec.kts
   ├── values.yaml
@@ -2291,9 +2293,8 @@ deployment {
 </code></pre>
 <hr />
 <h2 id="default-imports">Default Imports</h2>
-<p>Library files have access to the same default imports as spec files, so you can use all
-Kube KTS DSL types, Java standard library types, and Kotlin time extensions without explicit
-import statements.</p>
+<p>Library files have access to the same default imports as spec files, so you can use all Kube KTS DSL types, Java
+standard library types, and Kotlin time extensions without explicit import statements.</p>
 <table>
 <thead>
 <tr>
@@ -2324,26 +2325,25 @@ import statements.</p>
 <h2 id="constraints">Constraints</h2>
 <div class="admonition warning">
 <p class="admonition-title">Security: Import Restrictions</p>
-<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names
-(e.g. <code>java.lang.Runtime</code>). Only types from the pre-configured default imports listed above
-may be used.</p>
-<p>Use the <code>--unsafe</code> flag to lift these restrictions.</p>
 </div>
+<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names (e.g. <code>java.lang.Runtime</code>).
+Only types from the pre-configured default imports listed above may be used.</p>
+<pre><code>Use the `--unsafe` flag to lift these restrictions.
+</code></pre>
 <div class="admonition warning">
 <p class="admonition-title">Lib files cannot access other lib files</p>
-<p>Functions defined in one <code>*.lib.kts</code> file are <strong>not</strong> available in other <code>*.lib.kts</code> files.
-Only <code>*.spec.kts</code> files can call lib functions. Structure your libraries accordingly and
-avoid cross-lib dependencies.</p>
 </div>
+<p>Functions defined in one <code>*.lib.kts</code> file are <strong>not</strong> available in other <code>*.lib.kts</code> files. Only <code>*.spec.kts</code> files can
+call lib functions. Structure your libraries accordingly and avoid cross-lib dependencies.</p>
 <div class="admonition note">
 <p class="admonition-title">Library files are not rendered</p>
-<p><code>*.lib.kts</code> files are never rendered to a YAML output file, even if they contain top-level
-statements. Only <code>*.spec.kts</code> files produce output.</p>
 </div>
+<p><code>*.lib.kts</code> files are never rendered to a YAML output file, even if they contain top-level statements. Only <code>*.spec.kts</code>
+files produce output.</p>
 <hr />
 <h2 id="multiple-library-files">Multiple Library Files</h2>
-<p>You can have as many <code>*.lib.kts</code> files as you like. Kube KTS discovers all of them
-recursively within the <code>helm/</code> directory tree and makes them all available to every spec file.</p>
+<p>You can have as many <code>*.lib.kts</code> files as you like. Kube KTS discovers all of them recursively within the <code>helm/</code>
+directory tree and makes them all available to every spec file.</p>
 <pre><code>─ helm
   └── templates
       ├── helpers.lib.kts         ← general helpers
@@ -2380,7 +2380,7 @@ recursively within the <code>helm/</code> directory tree and makes them all avai
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

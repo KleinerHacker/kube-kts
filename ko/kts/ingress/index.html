@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -1491,7 +1493,7 @@
   <a href="#metadata" class="md-nav__link">
     <span class="md-ellipsis">
       
-        메타데이터(metadata)
+        메타데이터 (metadata)
       
     </span>
   </a>
@@ -1502,7 +1504,7 @@
   <a href="#ingress-spec" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ingress 명세(spec)
+        Ingress 명세 (spec)
       
     </span>
   </a>
@@ -1513,7 +1515,7 @@
   <a href="#tls-tls" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TLS 구성(tls)
+        TLS 구성 (tls)
       
     </span>
   </a>
@@ -1524,7 +1526,7 @@
   <a href="#rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        규칙(rule)
+        규칙 (rule)
       
     </span>
   </a>
@@ -1535,7 +1537,7 @@
   <a href="#http-httppath" class="md-nav__link">
     <span class="md-ellipsis">
       
-        HTTP 경로(httpPath)
+        HTTP 경로 (httpPath)
       
     </span>
   </a>
@@ -2205,7 +2207,7 @@
   <a href="#metadata" class="md-nav__link">
     <span class="md-ellipsis">
       
-        메타데이터(metadata)
+        메타데이터 (metadata)
       
     </span>
   </a>
@@ -2216,7 +2218,7 @@
   <a href="#ingress-spec" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Ingress 명세(spec)
+        Ingress 명세 (spec)
       
     </span>
   </a>
@@ -2227,7 +2229,7 @@
   <a href="#tls-tls" class="md-nav__link">
     <span class="md-ellipsis">
       
-        TLS 구성(tls)
+        TLS 구성 (tls)
       
     </span>
   </a>
@@ -2238,7 +2240,7 @@
   <a href="#rule" class="md-nav__link">
     <span class="md-ellipsis">
       
-        규칙(rule)
+        규칙 (rule)
       
     </span>
   </a>
@@ -2249,7 +2251,7 @@
   <a href="#http-httppath" class="md-nav__link">
     <span class="md-ellipsis">
       
-        HTTP 경로(httpPath)
+        HTTP 경로 (httpPath)
       
     </span>
   </a>
@@ -2293,11 +2295,10 @@
 <p><code>ingress</code> DSL은 일반적으로 HTTP를 통해 클러스터 내 서비스에 대한 외부 접근을 관리하는 Kubernetes Ingress 리소스를 구성하는 데 사용됩니다.</p>
 <div class="admonition warning">
 <p class="admonition-title">보안: 임포트 제한</p>
-<p>기본적으로 KTS 스크립트는 <code>import</code> 문이나 완전 정규화된 클래스 이름
-(예: <code>java.lang.Runtime</code>)을 <strong>허용하지 않습니다</strong>. 사전 구성된 기본 임포트로
-제공되는 타입만 사용할 수 있습니다.</p>
-<p><code>--unsafe</code> 플래그를 사용하면 이러한 제한을 해제할 수 있습니다.</p>
 </div>
+<p>기본적으로 KTS 스크립트는 <code>import</code> 문이나 완전 정규화된 클래스 이름 (예: <code>java.lang.Runtime</code>)을 <strong>허용하지 않습니다</strong>. 사전 구성된 기본 임포트로 제공되는 타입만 사용할 수 있습니다.</p>
+<pre><code>`--unsafe` 플래그를 사용하면 이러한 제한을 해제할 수 있습니다.
+</code></pre>
 <h2 id="_1">기본 사용법</h2>
 <p>최소한의 Ingress 구성에는 <code>metadata</code>와 <code>spec</code> 내의 규칙이 최소 하나 필요합니다.</p>
 <pre><code class="language-kotlin">ingress {
@@ -2387,7 +2388,7 @@
 }
 </code></pre>
 <h2 id="_3">구성 참조</h2>
-<h3 id="metadata">메타데이터(<code>metadata</code>)</h3>
+<h3 id="metadata">메타데이터 (<code>metadata</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2414,7 +2415,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="ingress-spec">Ingress 명세(<code>spec</code>)</h3>
+<h3 id="ingress-spec">Ingress 명세 (<code>spec</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2445,7 +2446,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="tls-tls">TLS 구성(<code>tls</code>)</h3>
+<h3 id="tls-tls">TLS 구성 (<code>tls</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2464,7 +2465,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="rule">규칙(<code>rule</code>)</h3>
+<h3 id="rule">규칙 (<code>rule</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2483,7 +2484,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="http-httppath">HTTP 경로(<code>httpPath</code>)</h3>
+<h3 id="http-httppath">HTTP 경로 (<code>httpPath</code>)</h3>
 <table>
 <thead>
 <tr>
@@ -2511,9 +2512,11 @@
 </tbody>
 </table>
 <h3 id="_4">백엔드 구성</h3>
-<p><code>serviceBackend</code>를 사용할 때는 포트를 지정해야 합니다.
-- <code>port(Int)</code>: 숫자 포트를 사용합니다.
-- <code>port(String)</code>: 명명된 포트를 사용합니다.</p>
+<p><code>serviceBackend</code>를 사용할 때는 포트를 지정해야 합니다.</p>
+<ul>
+<li><code>port(Int)</code>: 숫자 포트를 사용합니다.</li>
+<li><code>port(String)</code>: 명명된 포트를 사용합니다.</li>
+</ul>
 
 
 
@@ -2543,7 +2546,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

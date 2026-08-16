@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2310,42 +2312,36 @@
 
 
 <h1 id="kube-kts-cli">Kube KTS 命令行 (CLI)</h1>
-<p>Kube KTS 是通过 <code>kube-kts</code> 命令执行的命令行工具。它是 Helm 的类型安全封装：不使用 Go 模板，而是
-使用 Kotlin 脚本 (KTS) 描述 Kubernetes 资源，将其渲染为标准的 Helm Chart，然后委托给 Helm 执行
-实际的集群操作。</p>
+<p>Kube KTS 是通过 <code>kube-kts</code> 命令执行的命令行工具。它是 Helm 的类型安全封装：不使用 Go 模板，而是 使用 Kotlin 脚本 (KTS) 描述
+Kubernetes 资源，将其渲染为标准的 Helm Chart，然后委托给 Helm 执行 实际的集群操作。</p>
 <p>当内置的 <code>--help</code> 输出不足以解答疑问时，本章是首要参考资料。帮助文本刻意保持简短以便在屏幕上显示；
-本章则更进一步，详细说明每个选项的行为、默认值、单位和相互作用。每个命令都有独立页面，记录其
-<strong>所有</strong>选项。</p>
+本章则更进一步，详细说明每个选项的行为、默认值、单位和相互作用。每个命令都有独立页面，记录其 <strong>所有</strong>选项。</p>
 <h2 id="helm">与 Helm 的关系</h2>
 <p>Kube KTS 从不替代 Helm，而是为其准备输入。一个典型命令分两个阶段运行：</p>
 <ol>
-<li><strong>渲染阶段（Kube KTS）：</strong> 扫描仓库，编译并执行 Kotlin 脚本，将结果作为标准 Helm Chart 写入目标
-   目录。</li>
-<li><strong>Helm 阶段（委托）：</strong> 对于由 Helm 支持的命令（<code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code>），
-   Kube KTS 随后针对渲染出的 Chart 调用真正的 <code>helm</code> 可执行文件，并将所有 Helm 专属选项原样转发。</li>
+<li><strong>渲染阶段（Kube KTS）：</strong> 扫描仓库，编译并执行 Kotlin 脚本，将结果作为标准 Helm Chart 写入目标 目录。</li>
+<li><strong>Helm 阶段（委托）：</strong> 对于由 Helm 支持的命令（<code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code>）， Kube KTS 随后针对渲染出的
+   Chart 调用真正的 <code>helm</code> 可执行文件，并将所有 Helm 专属选项原样转发。</li>
 </ol>
-<p>因此，这些命令同时接受 Kube KTS 选项（影响渲染）和 Helm 选项（被转发）。最终传给 Helm 的选项会被
-相应标记——参见下方的“选项标记说明”。</p>
+<p>因此，这些命令同时接受 Kube KTS 选项（影响渲染）和 Helm 选项（被转发）。最终传给 Helm 的选项会被 相应标记——参见下方的“选项标记说明”。</p>
 <div class="admonition note">
 <p class="admonition-title">必须安装 Helm</p>
+</div>
 <p><code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code> 需要 <code>helm</code> 可执行文件在 <code>PATH</code> 中可用。
 <code>validate</code>、<code>compile</code>、<code>render</code> 无需 Helm 即可工作。</p>
-</div>
 <h2 id="_1">用法</h2>
 <pre><code class="language-bash">kube-kts [全局选项] &lt;命令&gt; &lt;REPOSITORY&gt; [TARGET] [命令选项]
 </code></pre>
 <h3 id="_2">仓库与目标路径</h3>
 <ul>
 <li><strong><code>REPOSITORY</code></strong> 是第一个位置参数，指向 Kube KTS 仓库（包含 <code>*.spec.kts</code>、<code>*.lib.kts</code>、
-  <code>values.yaml</code> 等的目录）。若省略，则使用当前工作目录。若路径不存在，命令会立即失败，根本不会调用
-  Helm。</li>
-<li><strong><code>TARGET</code></strong> 是渲染类命令（<code>render</code>、<code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code>）使用的可选第二个
-  位置参数，即 Chart 渲染到的目录。若省略，会创建一个临时目录并由操作系统清理；当你想查看或复用生成
-  的 Chart 时，请显式传入目标目录。</li>
+  <code>values.yaml</code> 等的目录）。若省略，则使用当前工作目录。若路径不存在，命令会立即失败，根本不会调用 Helm。</li>
+<li><strong><code>TARGET</code></strong> 是渲染类命令（<code>render</code>、<code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code>）使用的可选第二个 位置参数，即
+  Chart 渲染到的目录。若省略，会创建一个临时目录并由操作系统清理；当你想查看或复用生成 的 Chart 时，请显式传入目标目录。</li>
 </ul>
 <h3 id="_3">退出码</h3>
-<p>成功时 CLI 返回 <code>0</code>，失败时返回非零退出码（例如仓库无效、渲染失败，或 Helm 返回非零退出码）。
-诊断失败时可使用 <code>--exception</code> 查看完整堆栈。</p>
+<p>成功时 CLI 返回 <code>0</code>，失败时返回非零退出码（例如仓库无效、渲染失败，或 Helm 返回非零退出码）。 诊断失败时可使用 <code>--exception</code>
+查看完整堆栈。</p>
 <h2 id="_4">命令</h2>
 <table>
 <thead>
@@ -2489,24 +2485,22 @@
 </tbody>
 </table>
 <h2 id="kts">这些命令是否需要渲染？（KTS 相关性）</h2>
-<p>一个命令是否渲染 KTS 仓库，决定了你的 Kotlin 脚本对该命令是否相关——也就决定了是否需要为该命令提供一个
-<strong>仓库</strong>（KTS、纯 YAML 或混合）：</p>
+<p>一个命令是否渲染 KTS 仓库，决定了你的 Kotlin 脚本对该命令是否相关——也就决定了是否需要为该命令提供一个 <strong>仓库</strong>（KTS、纯
+YAML 或混合）：</p>
 <ul>
 <li><strong>需要渲染 → 需要仓库（KTS 相关）：</strong> <code>validate</code>、<code>compile</code>、<code>render</code>、<code>lint</code>、<code>template</code>、<code>install</code>、
-  <code>upgrade</code>、<code>package</code>、<code>dependency</code> 和 <code>diff</code> 都会运行 <em>扫描 → 编译 → 渲染</em> 流程，因此依赖你的 KTS
-  脚本，必须为它们提供仓库。</li>
-<li><strong>与渲染无关 → 无需仓库（KTS 不相关）：</strong> 针对已安装发布、集群或仓库的操作不需要渲染后的 Chart，因此
-  KTS 脚本对它们不起作用：<code>status</code>、<code>list</code>、<code>history</code>、<code>rollback</code>、<code>test</code>、<code>get</code>、<code>repo</code>、<code>search</code>、
+  <code>upgrade</code>、<code>package</code>、<code>dependency</code> 和 <code>diff</code> 都会运行 <em>扫描 → 编译 → 渲染</em> 流程，因此依赖你的 KTS 脚本，必须为它们提供仓库。</li>
+<li><strong>与渲染无关 → 无需仓库（KTS 不相关）：</strong> 针对已安装发布、集群或仓库的操作不需要渲染后的 Chart，因此 KTS 脚本对它们不起作用：
+  <code>status</code>、<code>list</code>、<code>history</code>、<code>rollback</code>、<code>test</code>、<code>get</code>、<code>repo</code>、<code>search</code>、
   <code>registry</code>、<code>show</code>、<code>pull</code>、<code>push</code>、<code>verify</code>、<code>version</code> 和 <code>env</code>。它们将参数作为位置参数直接转发给 Helm。</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title"><code>uninstall</code> 是特例</p>
-<p><code>uninstall</code> 仅按名称移除发布，技术上不需要渲染后的 Chart。出于一致性，它当前在调用 Helm 前仍会
-渲染，但从功能上看 KTS 脚本对它并不相关。</p>
 </div>
+<p><code>uninstall</code> 仅按名称移除发布，技术上不需要渲染后的 Chart。出于一致性，它当前在调用 Helm 前仍会 渲染，但从功能上看 KTS
+脚本对它并不相关。</p>
 <h2 id="_5">选项标记说明</h2>
-<p>在 <code>--help</code> 输出中，有一个专门的列显示每个选项的性质。命令页面的选项表使用相同的标记，使文档与帮助
-屏幕完全一致：</p>
+<p>在 <code>--help</code> 输出中，有一个专门的列显示每个选项的性质。命令页面的选项表使用相同的标记，使文档与帮助 屏幕完全一致：</p>
 <table>
 <thead>
 <tr>
@@ -2531,7 +2525,7 @@
 </table>
 <p>没有标记的选项仅供 Kube KTS 内部使用，绝不会到达 Helm。</p>
 <h2 id="_6">全局选项</h2>
-<p>这些选项对每个命令都可用，通常放在命令名<strong>之前</strong>。</p>
+<p>这些选项对每个命令都可用，通常放在命令名 <strong>之前</strong>。</p>
 <table>
 <thead>
 <tr>
@@ -2597,8 +2591,8 @@
 </tbody>
 </table>
 <h2 id="values">值 (Values)</h2>
-<p>所有渲染类命令（<code>render</code>、<code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code>）都接受值文件。值作用于两个阶段：
-渲染期间供 Kotlin 脚本使用，<strong>并</strong>传递给 Helm。</p>
+<p>所有渲染类命令（<code>render</code>、<code>lint</code>、<code>template</code>、<code>install</code>、<code>upgrade</code>、<code>uninstall</code>）都接受值文件。值作用于两个阶段： 渲染期间供
+Kotlin 脚本使用， <strong>并</strong>传递给 Helm。</p>
 <table>
 <thead>
 <tr>
@@ -2644,7 +2638,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2215,9 +2217,8 @@
 <pre><code class="language-bash">kube-kts uninstall &lt;REPOSITORY&gt; [TARGET] --name &lt;RELEASE&gt; [--name &lt;RELEASE&gt;...] [オプション]
 </code></pre>
 <p>リポジトリをレンダリングし、<code>helm uninstall</code> を実行してクラスターから 1 つ以上のリリースを削除します。
-アンインストールはリリースに属するリソースを削除し、既定ではその履歴も削除します。他の Helm ベースの
-コマンドと同様に kube-context 経由でクラスターと通信し、サポートされるすべての Helm uninstall フラグを
-転送します。</p>
+アンインストールはリリースに属するリソースを削除し、既定ではその履歴も削除します。他の Helm ベースの コマンドと同様に
+kube-context 経由でクラスターと通信し、サポートされるすべての Helm uninstall フラグを 転送します。</p>
 <h2 id="_1">仕組み</h2>
 <ol>
 <li>リポジトリをスキャン・コンパイル・レンダリングします（レンダリング手順は他コマンドとワークフローを
@@ -2227,14 +2228,14 @@
 </ol>
 <div class="admonition note">
 <p class="admonition-title">リリース名はオプション、名前空間は <code>-n</code></p>
+</div>
 <p>リリース名は <code>--name</code>（繰り返し可）で渡し、位置引数 <code>RELEASE</code> として Helm に転送されます。<code>-n</code> は
 <code>--namespace</code> 用に予約されています。少なくとも 1 つの <code>--name</code> が必要です。</p>
-</div>
 <div class="admonition warning">
 <p class="admonition-title">クラスターのリソースを削除します</p>
-<p>アンインストールは破壊的です。まず <code>--dry-run</code> でプレビューし、後で確認やロールバックのために履歴を
-残したい場合は <code>--keep-history</code> を使ってください。</p>
 </div>
+<p>アンインストールは破壊的です。まず <code>--dry-run</code> でプレビューし、後で確認やロールバックのために履歴を 残したい場合は
+<code>--keep-history</code> を使ってください。</p>
 <h2 id="_2">パラメータ</h2>
 <table>
 <thead>
@@ -2442,7 +2443,7 @@ kube-kts uninstall ./helm --name my-app --dry-run --ignore-not-found
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

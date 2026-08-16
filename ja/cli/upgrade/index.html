@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2280,28 +2282,26 @@
 <h1 id="upgrade">upgrade</h1>
 <pre><code class="language-bash">kube-kts upgrade &lt;REPOSITORY&gt; [TARGET] --name &lt;NAME&gt; [オプション]
 </code></pre>
-<p>リポジトリを Helm Chart にレンダリングし、<code>helm upgrade</code> を実行して Kubernetes クラスター内の既存
-リリースを更新します（<code>--install</code> 併用時は、存在しなければインストールします）。<a href="../install/"><code>install</code></a>
-の自然な対応コマンドで、ほぼすべてのフラグを共有し、加えて前回リリースの値の再利用方法を制御する
-アップグレード専用フラグがいくつかあります。</p>
+<p>リポジトリを Helm Chart にレンダリングし、<code>helm upgrade</code> を実行して Kubernetes クラスター内の既存 リリースを更新します（
+<code>--install</code> 併用時は、存在しなければインストールします）。<a href="../install/"><code>install</code></a>
+の自然な対応コマンドで、ほぼすべてのフラグを共有し、加えて前回リリースの値の再利用方法を制御する アップグレード専用フラグがいくつかあります。</p>
 <h2 id="_1">仕組み</h2>
 <ol>
-<li>リポジトリをスキャン・コンパイルし、<code>-f</code>/<code>--set*</code> の値を適用して（一時または明示の）Chart
-   ディレクトリにレンダリングします。</li>
+<li>リポジトリをスキャン・コンパイルし、<code>-f</code>/<code>--set*</code> の値を適用して（一時または明示の）Chart ディレクトリにレンダリングします。</li>
 <li>そのディレクトリで <code>helm upgrade &lt;NAME&gt; .</code> を実行し、転送オプションをすべて付加します。</li>
 <li>Helm が新しいリリースリビジョンを作成します。終了コードは Helm の結果を反映します。失敗時、
    <code>--atomic</code> を渡さない限りロールバックは行われません。</li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">リリース名はオプション、名前空間は <code>-n</code></p>
+</div>
 <p>リリース名は <code>--name</code> で渡し、位置引数 <code>NAME</code> として Helm に転送されます。<code>-n</code> は Helm に合わせて
 <code>--namespace</code> 用に予約されています。</p>
-</div>
 <div class="admonition tip">
 <p class="admonition-title">アップグレード or インストールと値の扱い</p>
+</div>
 <p><code>-i</code>/<code>--install</code> を使うと、リリースが存在しない場合にインストールします。既定では渡した値を使用し、
 <code>--reuse-values</code>、<code>--reset-values</code>、<code>--reset-then-reuse-values</code> で前回リリースの値の扱いを制御します。</p>
-</div>
 <h2 id="_2">パラメータ</h2>
 <table>
 <thead>
@@ -2725,7 +2725,7 @@ kube-kts upgrade ./helm --name my-app --dry-run
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

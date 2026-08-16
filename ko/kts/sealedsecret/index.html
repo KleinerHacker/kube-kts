@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2225,21 +2227,19 @@
 
 <h1 id="sealedsecret-dsl">SealedSecret DSL</h1>
 <p><code>sealedSecret</code> DSL은 <a href="https://github.com/bitnami-labs/sealed-secrets">Bitnami Sealed Secrets</a>
-(<code>bitnami.com/v1alpha1</code>)를 구성하는 데 사용됩니다. SealedSecret은 <strong>암호화된</strong> 데이터를
-보유하며, 클러스터 내 컨트롤러만이 이를 일반 Kubernetes <a href="../secret/">Secret</a>으로 복호화할 수
-있습니다. 값이 암호화되어 있으므로 SealedSecret은 버전 관리에 안전하게 저장할 수 있습니다.</p>
+(<code>bitnami.com/v1alpha1</code>)를 구성하는 데 사용됩니다. SealedSecret은 <strong>암호화된</strong> 데이터를 보유하며, 클러스터 내 컨트롤러만이 이를 일반
+Kubernetes <a href="../secret/">Secret</a>으로 복호화할 수 있습니다. 값이 암호화되어 있으므로 SealedSecret은 버전 관리에 안전하게 저장할 수 있습니다.</p>
 <div class="admonition warning">
 <p class="admonition-title">보안: 임포트 제한</p>
-<p>기본적으로 KTS 스크립트는 <code>import</code> 문이나 정규화된 클래스 이름
-(예: <code>java.lang.Runtime</code>)의 사용을 <strong>허용하지 않습니다</strong>. 사전 구성된 기본 임포트로
-제공되는 타입만 사용할 수 있습니다.</p>
-<p><code>--unsafe</code> 플래그를 사용하면 이러한 제한을 해제할 수 있습니다.</p>
 </div>
+<p>기본적으로 KTS 스크립트는 <code>import</code> 문이나 정규화된 클래스 이름 (예: <code>java.lang.Runtime</code>)의 사용을 <strong>허용하지 않습니다</strong>. 사전 구성된 기본 임포트로 제공되는 타입만 사용할 수
+있습니다.</p>
+<pre><code>`--unsafe` 플래그를 사용하면 이러한 제한을 해제할 수 있습니다.
+</code></pre>
 <div class="admonition note">
 <p class="admonition-title">SealedSecrets 컨트롤러가 설치되어 있어야 합니다</p>
-<p>SealedSecret은 대상 클러스터에서 실행 중인 SealedSecrets 컨트롤러에 의해서만 복호화될 수
-있습니다. 암호화된 값은 해당 컨트롤러의 공개 키에 대해 <code>kubeseal</code>로 생성됩니다.</p>
 </div>
+<p>SealedSecret은 대상 클러스터에서 실행 중인 SealedSecrets 컨트롤러에 의해서만 복호화될 수 있습니다. 암호화된 값은 해당 컨트롤러의 공개 키에 대해 <code>kubeseal</code>로 생성됩니다.</p>
 <h2 id="_1">기본 사용법</h2>
 <p>최소한의 SealedSecret 구성에는 <code>metadata</code>와 <code>encryptedData</code> 내의 항목이 하나 이상 필요합니다.</p>
 <pre><code class="language-kotlin">sealedSecret {
@@ -2253,8 +2253,7 @@
 }
 </code></pre>
 <h2 id="_2">상세 예제</h2>
-<p>다음 예제는 여러 암호화 항목과 컨트롤러가 생성해야 하는 Secret을 설명하는 <code>template</code>을
-보여줍니다.</p>
+<p>다음 예제는 여러 암호화 항목과 컨트롤러가 생성해야 하는 Secret을 설명하는 <code>template</code>을 보여줍니다.</p>
 <pre><code class="language-kotlin">sealedSecret {
     metadata(&quot;full-sealed-secret&quot;) {
         namespace = &quot;production&quot;
@@ -2399,7 +2398,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

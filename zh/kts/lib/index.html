@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2245,8 +2247,8 @@
 </table>
 <hr />
 <h2 id="_2">创建库文件</h2>
-<p>在 <code>helm/</code> 目录中的任意位置创建一个带有 <code>.lib.kts</code> 扩展名的文件。
-一种常见的约定是将共享的辅助函数放在 <code>templates/helpers.lib.kts</code> 中。</p>
+<p>在 <code>helm/</code> 目录中的任意位置创建一个带有 <code>.lib.kts</code> 扩展名的文件。 一种常见的约定是将共享的辅助函数放在
+<code>templates/helpers.lib.kts</code> 中。</p>
 <pre><code>─ helm
   ├── Chart.spec.kts
   ├── values.yaml
@@ -2289,8 +2291,8 @@ deployment {
 </code></pre>
 <hr />
 <h2 id="_3">默认导入</h2>
-<p>库文件可以访问与 spec 文件相同的默认导入，因此你无需显式的 import 语句即可使用所有
-Kube KTS DSL 类型、Java 标准库类型和 Kotlin 时间扩展。</p>
+<p>库文件可以访问与 spec 文件相同的默认导入，因此你无需显式的 import 语句即可使用所有 Kube KTS DSL 类型、Java 标准库类型和
+Kotlin 时间扩展。</p>
 <table>
 <thead>
 <tr>
@@ -2321,24 +2323,23 @@ Kube KTS DSL 类型、Java 标准库类型和 Kotlin 时间扩展。</p>
 <h2 id="_4">约束</h2>
 <div class="admonition warning">
 <p class="admonition-title">安全性：导入限制</p>
-<p>默认情况下，KTS 脚本<strong>不允许</strong>使用 <code>import</code> 语句或完全限定的类名
-（例如 <code>java.lang.Runtime</code>）。只能使用上面列出的预配置默认导入中的类型。</p>
-<p>使用 <code>--unsafe</code> 标志可解除这些限制。</p>
 </div>
+<p>默认情况下，KTS 脚本 <strong>不允许</strong>使用 <code>import</code> 语句或完全限定的类名 （例如 <code>java.lang.Runtime</code>）。只能使用上面列出的预配置默认导入中的类型。</p>
+<pre><code>使用 `--unsafe` 标志可解除这些限制。
+</code></pre>
 <div class="admonition warning">
 <p class="admonition-title">库文件不能访问其他库文件</p>
-<p>在一个 <code>*.lib.kts</code> 文件中定义的函数<strong>不能</strong>在其他 <code>*.lib.kts</code> 文件中使用。
-只有 <code>*.spec.kts</code> 文件才能调用库函数。请相应地组织你的库，并避免跨库依赖。</p>
 </div>
+<p>在一个 <code>*.lib.kts</code> 文件中定义的函数 <strong>不能</strong>在其他 <code>*.lib.kts</code> 文件中使用。 只有 <code>*.spec.kts</code>
+文件才能调用库函数。请相应地组织你的库，并避免跨库依赖。</p>
 <div class="admonition note">
 <p class="admonition-title">库文件不会被渲染</p>
-<p><code>*.lib.kts</code> 文件永远不会被渲染为 YAML 输出文件，即使它们包含顶层语句。
-只有 <code>*.spec.kts</code> 文件才会产生输出。</p>
 </div>
+<p><code>*.lib.kts</code> 文件永远不会被渲染为 YAML 输出文件，即使它们包含顶层语句。 只有 <code>*.spec.kts</code> 文件才会产生输出。</p>
 <hr />
 <h2 id="_5">多个库文件</h2>
-<p>你可以拥有任意数量的 <code>*.lib.kts</code> 文件。Kube KTS 会在 <code>helm/</code> 目录树中
-递归地发现所有这些文件，并将它们全部提供给每个 spec 文件。</p>
+<p>你可以拥有任意数量的 <code>*.lib.kts</code> 文件。Kube KTS 会在 <code>helm/</code> 目录树中 递归地发现所有这些文件，并将它们全部提供给每个 spec
+文件。</p>
 <pre><code>─ helm
   └── templates
       ├── helpers.lib.kts         ← general helpers
@@ -2375,7 +2376,7 @@ Kube KTS DSL 类型、Java 标准库类型和 Kotlin 时间扩展。</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

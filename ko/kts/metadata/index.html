@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -1474,7 +1476,7 @@
   <a href="#ownerreference" class="md-nav__link">
     <span class="md-ellipsis">
       
-        소유자 참조(ownerReference)
+        소유자 참조 (ownerReference)
       
     </span>
   </a>
@@ -2239,7 +2241,7 @@
   <a href="#ownerreference" class="md-nav__link">
     <span class="md-ellipsis">
       
-        소유자 참조(ownerReference)
+        소유자 참조 (ownerReference)
       
     </span>
   </a>
@@ -2280,9 +2282,10 @@
 
 
 <h1 id="metadata-dsl">Metadata DSL</h1>
-<p><code>metadata</code> DSL은 Kubernetes 리소스의 메타데이터를 정의하는 데 사용됩니다. 메타데이터는 거의 모든 Kubernetes 리소스(예: Service, Ingress, Deployment)에 존재하며, 이를 식별하고 정리하는 역할을 합니다.</p>
+<p><code>metadata</code> DSL은 Kubernetes 리소스의 메타데이터를 정의하는 데 사용됩니다. 메타데이터는 거의 모든 Kubernetes 리소스 (예: Service, Ingress, Deployment)에
+존재하며, 이를 식별하고 정리하는 역할을 합니다.</p>
 <h2 id="_1">기본 사용법</h2>
-<p>Kube KTS에서 <code>metadata</code> 블록은 리소스 내부(예: <code>service</code>, <code>ingress</code>)에 정의됩니다. 리소스의 <strong>이름</strong>은 <code>metadata</code> 함수의 첫 번째 인수로 전달됩니다.</p>
+<p>Kube KTS에서 <code>metadata</code> 블록은 리소스 내부 (예: <code>service</code>, <code>ingress</code>)에 정의됩니다. 리소스의 <strong>이름</strong>은 <code>metadata</code> 함수의 첫 번째 인수로 전달됩니다.</p>
 <h3 id="_2">최소 구성</h3>
 <p>최소 구성에는 리소스의 이름만 필요합니다.</p>
 <pre><code class="language-kotlin">service {
@@ -2378,7 +2381,7 @@
 </tr>
 </tbody>
 </table>
-<h3 id="ownerreference">소유자 참조(<code>ownerReference</code>)</h3>
+<h3 id="ownerreference">소유자 참조 (<code>ownerReference</code>)</h3>
 <p><code>ownerReferences</code> 내에서 다음 필드를 설정할 수 있습니다.</p>
 <table>
 <thead>
@@ -2425,11 +2428,11 @@
 <p>메타데이터는 다음과 같은 이유로 Kubernetes에 필수적입니다.</p>
 <ol>
 <li><strong>리소스 식별</strong>: <code>name</code>과 <code>namespace</code>를 통해.</li>
-<li><strong>리소스 그룹화</strong>: <code>labels</code>를 통해 리소스를 효율적으로 필터링하고 선택할 수 있습니다(예: Service 또는 NetworkPolicy에 의해).</li>
+<li><strong>리소스 그룹화</strong>: <code>labels</code>를 통해 리소스를 효율적으로 필터링하고 선택할 수 있습니다 (예: Service 또는 NetworkPolicy에 의해).</li>
 <li><strong>확장성 지원</strong>: <code>annotations</code>를 통해 컨트롤러나 외부 도구를 위한 추가 정보를 저장할 수 있습니다.</li>
 <li><strong>수명 주기 관리</strong>: <code>finalizers</code>와 <code>ownerReferences</code>를 통해 리소스가 올바른 순서로 깔끔하게 삭제됩니다.</li>
 </ol>
-<p>Kube KTS에서는 유효한 Kubernetes 리소스를 생성하려면 모든 템플릿(<code>service</code>, <code>ingress</code> 등)에 메타데이터를 설정해야 합니다.</p>
+<p>Kube KTS에서는 유효한 Kubernetes 리소스를 생성하려면 모든 템플릿 (<code>service</code>, <code>ingress</code> 등)에 메타데이터를 설정해야 합니다.</p>
 
 
 
@@ -2459,7 +2462,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

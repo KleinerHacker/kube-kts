@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2247,14 +2249,14 @@
 
 <h1 id="job-dsl">Job DSL</h1>
 <p><code>job</code> DSL は、Kubernetes <strong>Job</strong> リソースを構成するために使用します。Job は 1 つ以上の Pod を作成し、
-完了するまで実行します。<a href="../deployment/">Deployment</a> が管理する長時間稼働サービスとは異なり、バッチや
-完了実行型のワークロードに適しています。</p>
+完了するまで実行します。<a href="../deployment/">Deployment</a> が管理する長時間稼働サービスとは異なり、バッチや 完了実行型のワークロードに適しています。</p>
 <div class="admonition warning">
 <p class="admonition-title">セキュリティ: インポート制限</p>
-<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名（例: <code>java.lang.Runtime</code>）を
-<strong>許可しません</strong>。事前構成されたデフォルトインポートで提供される型のみ使用できます。</p>
-<p><code>--unsafe</code> フラグを使用すると、これらの制限を解除できます。</p>
 </div>
+<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名（例: <code>java.lang.Runtime</code>）を <strong>許可しません</strong>
+。事前構成されたデフォルトインポートで提供される型のみ使用できます。</p>
+<pre><code>`--unsafe` フラグを使用すると、これらの制限を解除できます。
+</code></pre>
 <h2 id="_1">基本的な使い方</h2>
 <p>最小限の Job には <code>metadata</code> と <code>spec</code> 内の Pod <code>template</code> が必要です。Pod の <code>restartPolicy</code> は
 <code>Never</code> または <code>OnFailure</code> である必要があります。</p>
@@ -2276,8 +2278,7 @@
 }
 </code></pre>
 <h2 id="_2">詳細な例</h2>
-<p>以下は、並列度、完了数、リトライ処理、自動クリーンアップ、明示的なセレクター、Pod 障害ポリシー、成功ポリシーを
-示す包括的な例です。</p>
+<p>以下は、並列度、完了数、リトライ処理、自動クリーンアップ、明示的なセレクター、Pod 障害ポリシー、成功ポリシーを 示す包括的な例です。</p>
 <pre><code class="language-kotlin">job {
     metadata(&quot;full-job&quot;) {
         namespace = &quot;batch&quot;
@@ -2488,9 +2489,9 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title">restartPolicy</p>
-<p>Deployment とは異なり、Job の Pod テンプレートでは <code>restartPolicy</code> を <code>Never</code> または <code>OnFailure</code> に
-設定する<strong>必要があります</strong>。Job では <code>Always</code> は使用できません。</p>
 </div>
+<p>Deployment とは異なり、Job の Pod テンプレートでは <code>restartPolicy</code> を <code>Never</code> または <code>OnFailure</code> に 設定する
+<strong>必要があります</strong>。Job では <code>Always</code> は使用できません。</p>
 
 
 
@@ -2520,7 +2521,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

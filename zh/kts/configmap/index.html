@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2202,19 +2204,18 @@
 
 
 <h1 id="configmap-dsl">ConfigMap DSL</h1>
-<p><code>configMap</code> DSL 用于配置 Kubernetes ConfigMap 资源。ConfigMap 以键值对的形式存储非机密
-配置数据，Pod 可以将其作为环境变量、命令行参数，或通过卷挂载的文件来使用。</p>
+<p><code>configMap</code> DSL 用于配置 Kubernetes ConfigMap 资源。ConfigMap 以键值对的形式存储非机密 配置数据，Pod
+可以将其作为环境变量、命令行参数，或通过卷挂载的文件来使用。</p>
 <div class="admonition warning">
 <p class="admonition-title">安全性：导入限制</p>
-<p>默认情况下，KTS 脚本<strong>不允许</strong>使用 <code>import</code> 语句或完全限定的类名
-（例如 <code>java.lang.Runtime</code>）。只能使用通过预配置默认导入提供的类型。</p>
-<p>使用 <code>--unsafe</code> 标志可解除这些限制。</p>
 </div>
+<p>默认情况下，KTS 脚本 <strong>不允许</strong>使用 <code>import</code> 语句或完全限定的类名 （例如 <code>java.lang.Runtime</code>）。只能使用通过预配置默认导入提供的类型。</p>
+<pre><code>使用 `--unsafe` 标志可解除这些限制。
+</code></pre>
 <div class="admonition note">
 <p class="admonition-title">ConfigMap 用于非机密数据</p>
-<p>ConfigMap 不会被加密，不得用于存储密码或令牌等敏感信息。
-机密数据请使用 Secret。</p>
 </div>
+<p>ConfigMap 不会被加密，不得用于存储密码或令牌等敏感信息。 机密数据请使用 Secret。</p>
 <h2 id="_1">基本用法</h2>
 <p>最小的 ConfigMap 配置需要 <code>metadata</code> 以及 <code>spec</code> 中至少一个条目。</p>
 <pre><code class="language-kotlin">configMap {
@@ -2335,10 +2336,9 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title"><code>data</code> 与 <code>binaryData</code></p>
-<p><code>data</code> 用于 UTF-8 字符串值；它们会直接出现在渲染后 YAML 的 <code>data:</code> 下。
-<code>binaryData</code> 用于任意字节内容；其值会以 base64 编码出现在 <code>binaryData:</code> 下。
-键在这两个 map 之间必须唯一。</p>
 </div>
+<p><code>data</code> 用于 UTF-8 字符串值；它们会直接出现在渲染后 YAML 的 <code>data:</code> 下。
+<code>binaryData</code> 用于任意字节内容；其值会以 base64 编码出现在 <code>binaryData:</code> 下。 键在这两个 map 之间必须唯一。</p>
 
 
 
@@ -2368,7 +2368,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

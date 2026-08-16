@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2214,7 +2216,8 @@
 <h1 id="show">show</h1>
 <pre><code class="language-bash">kube-kts show &lt;SUBCOMMAND&gt; &lt;CHART&gt; [选项]
 </code></pre>
-<p>聚合 <code>helm show …</code> 子命令（别名 <code>inspect</code>），用于显示 chart 信息。它们作用于远程/本地 chart，因此<strong>既不需要仓库，也不需要渲染步骤</strong>——调用会直接转发给 Helm。不带子命令调用 <code>show</code> 会打印用法列表。</p>
+<p>聚合 <code>helm show …</code> 子命令（别名 <code>inspect</code>），用于显示 chart 信息。它们作用于远程/本地 chart，因此
+<strong>既不需要仓库，也不需要渲染步骤</strong>——调用会直接转发给 Helm。不带子命令调用 <code>show</code> 会打印用法列表。</p>
 <h2 id="_1">子命令</h2>
 <table>
 <thead>
@@ -2270,7 +2273,8 @@
 </tbody>
 </table>
 <h2 id="_3">选项</h2>
-<p>每个子命令都接受 <a href="../pull/#chart-下载选项">chart 下载选项</a>（<code>--repo</code>、<code>--version</code>、凭据、TLS、<code>--verify</code> 等）。此外，<code>show values</code> 接受：</p>
+<p>每个子命令都接受 <a href="../pull/#chart-下载选项">chart 下载选项</a>（<code>--repo</code>、<code>--version</code>、凭据、TLS、<code>--verify</code> 等）。此外，
+<code>show values</code> 接受：</p>
 <table>
 <thead>
 <tr>
@@ -2327,7 +2331,7 @@ kube-kts show values bitnami/nginx --jsonpath '{.image}'
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

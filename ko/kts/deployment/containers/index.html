@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -1811,6 +1813,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사이드카와 리사이즈
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2174,6 +2187,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        사이드카와 리사이즈
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2290,18 +2314,30 @@
     env(&quot;SPRING_PROFILES_ACTIVE&quot;) {
         fromValue(&quot;production&quot;)
     }
+    env(&quot;DB_PASSWORD&quot;) {
+        fromSecretKeyReference(&quot;demo-secret&quot;, &quot;password&quot;)
+    }
+
+    envs {
+        variable(&quot;LOG_LEVEL&quot;) {
+            fromValue(&quot;debug&quot;)
+        }
+    }
 
     envFrom {
         configMapRef(&quot;demo-config&quot;) {
             optional = false
         }
+    }
+    envFrom {
         secretRef(&quot;demo-secret&quot;) {
             optional = true
         }
     }
 }
 </code></pre>
-<p><code>env</code>는 개별 변수를 명시적으로 설정합니다. <code>envFrom</code>은 외부 소스에서 여러 변수를 가져옵니다.</p>
+<p><code>env</code>는 여러 번 호출하여 여러 변수를 정의할 수 있으며, <code>envs { }</code>는 이를 하나의 블록으로 묶습니다. <code>envFrom</code>은 호출할 때마다 소스를 하나씩 추가하고, <code>envsFrom { }</code>으로 묶을 수
+있습니다. 둘 다 YAML 목록으로 렌더링됩니다.</p>
 <h2 id="_5">리소스</h2>
 <pre><code class="language-kotlin">container(&quot;app&quot;, &quot;registry.example.com/demo:1.0.0&quot;) {
     resources {
@@ -2321,14 +2357,35 @@
 <h2 id="_6">볼륨 마운트</h2>
 <pre><code class="language-kotlin">container(&quot;app&quot;, &quot;registry.example.com/demo:1.0.0&quot;) {
     volumeMounts {
-        volumeMount(&quot;config&quot;, &quot;/etc/demo&quot;) {
+        volumeMount(&quot;config&quot;, &quot;/etc/demo/application.yaml&quot;) {
             readOnly = true
+            subPath = &quot;application.yaml&quot;
         }
         volumeMount(&quot;data&quot;, &quot;/var/lib/demo&quot;)
     }
 }
 </code></pre>
-<p><code>volumeMount</code>의 이름은 Pod Spec 내의 볼륨과 일치해야 합니다.</p>
+<p><code>volumeMount</code>의 이름은 Pod Spec의 볼륨과 일치해야 합니다. <code>subPath</code>는 볼륨의 루트가 아닌 단일 파일 또는 디렉터리를 마운트하며, <code>subPathExpr</code>도 같은 역할을 하지만 환경 변수를
+참조할 수 있습니다.</p>
+<h2 id="_7">사이드카와 리사이즈</h2>
+<pre><code class="language-kotlin">containers {
+    init(&quot;proxy&quot;, &quot;registry.example.com/envoy:1.0.0&quot;) {
+        restartPolicy = ContainerSpec.RestartPolicy.Always
+    }
+
+    container(&quot;app&quot;, &quot;registry.example.com/demo:1.0.0&quot;) {
+        addResizePolicy(
+            ResourceResizePolicySpec.ResourceName.Cpu,
+            ResourceResizePolicySpec.RestartPolicy.NotRequired
+        )
+        resources {
+            addClaim(&quot;gpu&quot;)
+        }
+    }
+}
+</code></pre>
+<p><code>restartPolicy = Always</code>를 설정한 init 컨테이너는 메인 컨테이너와 함께 계속 실행되는 네이티브 사이드카가 됩니다. <code>addResizePolicy</code>는 리소스를 제자리에서 변경할 때 재시작이
+필요한지 선언하고, <code>addClaim</code>은 Pod에 선언된 리소스 클레임을 참조합니다.</p>
 
 
 
@@ -2358,7 +2415,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

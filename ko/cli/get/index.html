@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2214,7 +2216,8 @@
 <h1 id="get">get</h1>
 <pre><code class="language-bash">kube-kts get &lt;SUBCOMMAND&gt; &lt;RELEASE&gt; [옵션]
 </code></pre>
-<p>설치된 릴리스의 확장 정보를 다운로드하는 <code>helm get …</code> 하위 명령을 묶습니다. 각 하위 명령은 기존 릴리스를 대상으로 동작하므로 <strong>저장소도 렌더링 단계도 필요하지 않습니다</strong> — 호출은 Helm으로 직접 전달됩니다. 하위 명령 없이 <code>get</code>을 호출하면 사용법 목록이 출력됩니다.</p>
+<p>설치된 릴리스의 확장 정보를 다운로드하는 <code>helm get …</code> 하위 명령을 묶습니다. 각 하위 명령은 기존 릴리스를 대상으로 동작하므로 <strong>저장소도 렌더링 단계도 필요하지 않습니다</strong> — 호출은 Helm으로 직접
+전달됩니다. 하위 명령 없이 <code>get</code>을 호출하면 사용법 목록이 출력됩니다.</p>
 <h2 id="_1">하위 명령</h2>
 <table>
 <thead>
@@ -2309,7 +2312,8 @@
 </tr>
 </tbody>
 </table>
-<p><code>--revision</code>은 특정 리비전을 선택하고, <code>values</code>의 <code>-a</code>/<code>--all</code>은 계산된 모든 값을 덤프하며, <code>--template</code>은 Go 템플릿을 적용하고, <code>-o</code>/<code>--output</code>은 <code>table</code>/<code>json</code>/<code>yaml</code>을 선택합니다.</p>
+<p><code>--revision</code>은 특정 리비전을 선택하고, <code>values</code>의 <code>-a</code>/<code>--all</code>은 계산된 모든 값을 덤프하며, <code>--template</code>은 Go 템플릿을 적용하고, <code>-o</code>/<code>--output</code>은
+<code>table</code>/<code>json</code>/<code>yaml</code>을 선택합니다.</p>
 <h2 id="helm">Helm 전역 옵션</h2>
 <p>모든 <a href="../status/#helm-global-options">Helm 전역 옵션</a>이 Helm으로 전달됩니다.</p>
 <h2 id="_4">전역 옵션</h2>
@@ -2350,7 +2354,7 @@ kube-kts get manifest my-app --revision 2
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

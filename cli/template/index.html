@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2280,29 +2282,27 @@
 <h1 id="template">template</h1>
 <pre><code class="language-bash">kube-kts template &lt;REPOSITORY&gt; [TARGET] --name &lt;NAME&gt; [OPTIONS]
 </code></pre>
-<p>Renders the repository to a Helm chart and then runs <code>helm template</code> to print the fully rendered
-Kubernetes manifests to stdout. Unlike <a href="../install/"><code>install</code></a>, it does <strong>not</strong> contact or change a
-cluster (unless you opt in with <code>--validate</code>), which makes it the safest way to see exactly what would
-be applied. It is ideal for diffing changes, feeding the output into <code>kubectl apply</code>/GitOps, or
-debugging how your values affect the result.</p>
+<p>Renders the repository to a Helm chart and then runs <code>helm template</code> to print the fully rendered Kubernetes manifests to
+stdout. Unlike <a href="../install/"><code>install</code></a>, it does <strong>not</strong> contact or change a cluster (unless you opt in with
+<code>--validate</code>), which makes it the safest way to see exactly what would be applied. It is ideal for diffing changes,
+feeding the output into <code>kubectl apply</code>/GitOps, or debugging how your values affect the result.</p>
 <h2 id="how-it-works">How it works</h2>
 <ol>
-<li>The repository is scanned, compiled and rendered into a (temporary or explicit) chart directory,
-   with your <code>-f</code>/<code>--set*</code> values applied.</li>
+<li>The repository is scanned, compiled and rendered into a (temporary or explicit) chart directory, with your <code>-f</code>/
+   <code>--set*</code> values applied.</li>
 <li><code>helm template &lt;NAME&gt; .</code> is executed in that directory with all forwarded options appended.</li>
 <li>The rendered manifests are written to stdout (or to files with <code>--output-dir</code>).</li>
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Release name is an option, namespace is <code>-n</code></p>
-<p>The release name is passed with <code>--name</code> and forwarded to Helm as the positional <code>NAME</code>. The <code>-n</code>
-shorthand is reserved for <code>--namespace</code>, matching Helm. Use <code>--generate-name</code> if you do not care
-about the name.</p>
 </div>
+<p>The release name is passed with <code>--name</code> and forwarded to Helm as the positional <code>NAME</code>. The <code>-n</code>
+shorthand is reserved for <code>--namespace</code>, matching Helm. Use <code>--generate-name</code> if you do not care about the name.</p>
 <div class="admonition tip">
 <p class="admonition-title">Local vs. cluster-aware rendering</p>
-<p>By default templating is fully offline. Add <code>--validate</code> to check the manifests against the live
-cluster, or <code>-a</code>/<code>--kube-version</code> to pin the API capabilities used during rendering.</p>
 </div>
+<p>By default templating is fully offline. Add <code>--validate</code> to check the manifests against the live cluster, or <code>-a</code>/
+<code>--kube-version</code> to pin the API capabilities used during rendering.</p>
 <h2 id="parameters">Parameters</h2>
 <table>
 <thead>
@@ -2701,7 +2701,7 @@ kube-kts template ./helm --name my-app --kube-version 1.29 --output-dir ./manife
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

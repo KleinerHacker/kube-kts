@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2150,15 +2152,14 @@
 </code></pre>
 <p>KTS リポジトリを検証します。リポジトリをスキャンし、すべての <code>*.spec.kts</code>、<code>*.lib.kts</code>、従来の
 YAML/テンプレートファイルを検出し、リポジトリが構造的に正しく、必要なファイル（Chart 定義など）が
-そろっているかを確認します。スクリプトのコンパイルや実行は<strong>行わず</strong>、出力成果物も生成しません。純粋に
-高速な構造チェックです。</p>
-<p>CI パイプラインの最初の、最も安価なゲートとして使えます。より高価なコンパイル/レンダリングの前に、
-欠落や配置ミスのファイルを検出し、クラスターや Helm に一切触れません。</p>
+そろっているかを確認します。スクリプトのコンパイルや実行は <strong>行わず</strong>、出力成果物も生成しません。純粋に 高速な構造チェックです。</p>
+<p>CI パイプラインの最初の、最も安価なゲートとして使えます。より高価なコンパイル/レンダリングの前に、 欠落や配置ミスのファイルを検出し、クラスターや
+Helm に一切触れません。</p>
 <div class="admonition tip">
 <p class="admonition-title">validate の位置づけ</p>
-<p><code>validate</code> は<em>構造</em>のみを確認します。Kotlin スクリプトがコンパイル・実行できるかも確認するには
-<a href="../compile/"><code>compile</code></a> を、Helm YAML も生成するには <a href="../render/"><code>render</code></a> を使ってください。</p>
 </div>
+<p><code>validate</code> は <em>構造</em>のみを確認します。Kotlin スクリプトがコンパイル・実行できるかも確認するには
+<a href="../compile/"><code>compile</code></a> を、Helm YAML も生成するには <a href="../render/"><code>render</code></a> を使ってください。</p>
 <h2 id="_1">パラメータ</h2>
 <table>
 <thead>
@@ -2178,8 +2179,7 @@ YAML/テンプレートファイルを検出し、リポジトリが構造的に
 </table>
 <h2 id="_2">オプション</h2>
 <p>このコマンドは<a href="../">グローバルオプション</a>のみを受け付けます。ここで特に有用なのは <code>--verbose</code>
-（どのファイルが検出されるか確認）と <code>--exception</code>（分かりにくい理由で検証が失敗したときにスタック
-トレースを取得）です。</p>
+（どのファイルが検出されるか確認）と <code>--exception</code>（分かりにくい理由で検証が失敗したときにスタック トレースを取得）です。</p>
 <h2 id="_3">例</h2>
 <pre><code class="language-bash"># カレントディレクトリを検証
 kube-kts validate .
@@ -2219,7 +2219,7 @@ kube-kts validate ./helm --exception
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

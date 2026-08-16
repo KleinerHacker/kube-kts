@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2247,13 +2249,13 @@
 <p><code>chart</code> DSL は、従来の Helm チャートの <code>Chart.yaml</code> ファイルと同様に、Helm チャートのメタデータと依存関係を定義するために使用します。</p>
 <div class="admonition warning">
 <p class="admonition-title">セキュリティ: インポート制限</p>
-<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名
-（例: <code>java.lang.Runtime</code>）を<strong>許可しません</strong>。事前構成されたデフォルトインポートで
-提供される型のみ使用できます。</p>
-<p><code>--unsafe</code> フラグを使うとこれらの制限を解除できます。</p>
 </div>
+<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名 （例: <code>java.lang.Runtime</code>）を <strong>許可しません</strong>
+。事前構成されたデフォルトインポートで 提供される型のみ使用できます。</p>
+<pre><code>`--unsafe` フラグを使うとこれらの制限を解除できます。
+</code></pre>
 <h2 id="_1">基本的な使い方</h2>
-<p>チャートを定義するには、チャートの<strong>名前</strong>と<strong>バージョン</strong>を主な引数として受け取る <code>chart</code> 関数を使用します。</p>
+<p>チャートを定義するには、チャートの <strong>名前</strong>と <strong>バージョン</strong>を主な引数として受け取る <code>chart</code> 関数を使用します。</p>
 <pre><code class="language-kotlin">chart(&quot;my-chart&quot;, &quot;1.0.0&quot;) {
     description = &quot;A short description of my chart&quot;
     type = ChartSpec.Type.Application
@@ -2405,7 +2407,8 @@
 <li><code>condition</code>: チャートをインストールするかどうかを判断するブール式。</li>
 <li><code>tags { tag(String) }</code>: 依存関係をグループ化するためのタグを追加します。（代替: <code>addTag</code>）</li>
 <li><code>pathImportValues { pathImportValue(path) }</code>: サブチャートから値をインポートします。（代替: <code>addPathImportValue</code>）</li>
-<li><code>mappingImportValues { mappingImportValue(childKey, parentKey) }</code>: サブチャートの特定の値を親チャートにマッピングします。（代替: <code>addMappingImportValue</code>）</li>
+<li><code>mappingImportValues { mappingImportValue(childKey, parentKey) }</code>:
+  サブチャートの特定の値を親チャートにマッピングします。（代替: <code>addMappingImportValue</code>）</li>
 </ul>
 <h2 id="_7">特殊な型</h2>
 <ul>
@@ -2442,7 +2445,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

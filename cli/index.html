@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2310,50 +2312,46 @@
 
 
 <h1 id="kube-kts-cli">Kube KTS CLI</h1>
-<p>Kube KTS is a command-line tool that is executed with the <code>kube-kts</code> command. It acts as a
-type-safe wrapper around Helm: instead of Go templates it uses Kotlin Scripts (KTS) to describe
-Kubernetes resources, renders them to plain Helm charts and then delegates to Helm for the actual
-cluster operations.</p>
-<p>This section is the primary reference if the built-in <code>--help</code> output is not enough. The help text
-is intentionally short so that it still fits on screen; the pages here go further and explain the
-behaviour, defaults, units and interactions of every option in detail. Each command has its own
-page that documents <strong>all</strong> of its options.</p>
+<p>Kube KTS is a command-line tool that is executed with the <code>kube-kts</code> command. It acts as a type-safe wrapper around
+Helm: instead of Go templates it uses Kotlin Scripts (KTS) to describe Kubernetes resources, renders them to plain Helm
+charts and then delegates to Helm for the actual cluster operations.</p>
+<p>This section is the primary reference if the built-in <code>--help</code> output is not enough. The help text is intentionally
+short so that it still fits on screen; the pages here go further and explain the behaviour, defaults, units and
+interactions of every option in detail. Each command has its own page that documents <strong>all</strong> of its options.</p>
 <h2 id="how-it-relates-to-helm">How it relates to Helm</h2>
 <p>Kube KTS never replaces Helm — it prepares the input for it. A typical command runs in two phases:</p>
 <ol>
-<li><strong>Render phase (Kube KTS):</strong> the repository is scanned, the Kotlin scripts are compiled and
-   evaluated, and the result is written as a normal Helm chart into a target directory.</li>
+<li><strong>Render phase (Kube KTS):</strong> the repository is scanned, the Kotlin scripts are compiled and evaluated, and the result
+   is written as a normal Helm chart into a target directory.</li>
 <li><strong>Helm phase (delegation):</strong> for the Helm-backed commands (<code>lint</code>, <code>template</code>, <code>install</code>,
-   <code>upgrade</code>, <code>uninstall</code>) Kube KTS then invokes the real <code>helm</code> binary against that rendered chart and forwards
-   all Helm-specific options unchanged. A few Helm-backed commands (<code>status</code>) skip the render phase
-   entirely and call Helm directly, because they operate on an existing release.</li>
+   <code>upgrade</code>, <code>uninstall</code>) Kube KTS then invokes the real <code>helm</code> binary against that rendered chart and forwards all
+   Helm-specific options unchanged. A few Helm-backed commands (<code>status</code>) skip the render phase entirely and call Helm
+   directly, because they operate on an existing release.</li>
 </ol>
 <p>Because of this, the Helm-backed commands accept both Kube KTS options (which influence rendering)
 and Helm options (which are forwarded). Options that end up at Helm are marked accordingly — see the
 <a href="#option-marker-legend">legend</a> below.</p>
 <div class="admonition note">
 <p class="admonition-title">Helm must be installed</p>
+</div>
 <p>The <code>helm</code> executable must be available on your <code>PATH</code> for <code>lint</code>, <code>template</code>, <code>install</code>,
 <code>upgrade</code>, <code>uninstall</code> and <code>status</code>. <code>validate</code>, <code>compile</code> and <code>render</code> work without Helm.</p>
-</div>
 <h2 id="usage">Usage</h2>
 <pre><code class="language-bash">kube-kts [GLOBAL OPTIONS] &lt;command&gt; &lt;REPOSITORY&gt; [TARGET] [COMMAND OPTIONS]
 </code></pre>
 <h3 id="repository-and-target-paths">Repository and target paths</h3>
 <ul>
-<li><strong><code>REPOSITORY</code></strong> is the first positional argument and points to the Kube KTS repository (the
-  directory that contains your <code>*.spec.kts</code>, <code>*.lib.kts</code>, <code>values.yaml</code>, etc.). If you omit it, the
-  current working directory is used. If the path does not exist the command fails immediately,
-  before Helm is ever invoked.</li>
-<li><strong><code>TARGET</code></strong> is the optional second positional argument used by the rendering commands
-  (<code>render</code>, <code>lint</code>, <code>template</code>, <code>install</code>, <code>upgrade</code>, <code>uninstall</code>). It is the directory the chart is rendered
-  into. If you omit it, a temporary directory is created and cleaned up by the operating system; pass
-  an explicit target when you want to inspect or reuse the generated chart.</li>
+<li><strong><code>REPOSITORY</code></strong> is the first positional argument and points to the Kube KTS repository (the directory that contains
+  your <code>*.spec.kts</code>, <code>*.lib.kts</code>, <code>values.yaml</code>, etc.). If you omit it, the current working directory is used. If the
+  path does not exist the command fails immediately, before Helm is ever invoked.</li>
+<li><strong><code>TARGET</code></strong> is the optional second positional argument used by the rendering commands (<code>render</code>, <code>lint</code>, <code>template</code>,
+  <code>install</code>, <code>upgrade</code>, <code>uninstall</code>). It is the directory the chart is rendered into. If you omit it, a temporary
+  directory is created and cleaned up by the operating system; pass an explicit target when you want to inspect or reuse
+  the generated chart.</li>
 </ul>
 <h3 id="exit-codes">Exit codes</h3>
-<p>The CLI returns <code>0</code> on success and a non-zero exit code on failure (for example an invalid
-repository, a failed render, or a non-zero exit code coming back from Helm). Use <code>--exception</code> to see
-the full stack trace when diagnosing a failure.</p>
+<p>The CLI returns <code>0</code> on success and a non-zero exit code on failure (for example an invalid repository, a failed render,
+or a non-zero exit code coming back from Helm). Use <code>--exception</code> to see the full stack trace when diagnosing a failure.</p>
 <h2 id="commands">Commands</h2>
 <table>
 <thead>
@@ -2497,29 +2495,26 @@ the full stack trace when diagnosing a failure.</p>
 </tbody>
 </table>
 <h2 id="do-these-commands-need-rendering-kts-relevance">Do these commands need rendering? (KTS relevance)</h2>
-<p>Whether a command renders the KTS repository tells you whether your Kotlin scripts are relevant for
-that command at all — and therefore whether you need to point it at a repository (KTS, plain YAML, or
-mixed) in the first place:</p>
+<p>Whether a command renders the KTS repository tells you whether your Kotlin scripts are relevant for that command at
+all — and therefore whether you need to point it at a repository (KTS, plain YAML, or mixed) in the first place:</p>
 <ul>
 <li><strong>Needs rendering → repository required (KTS relevant):</strong> <code>validate</code>, <code>compile</code>, <code>render</code>, <code>lint</code>,
-  <code>template</code>, <code>install</code>, <code>upgrade</code>, <code>package</code>, <code>dependency</code> and <code>diff</code> all run the
-  <em>scan → compile → render</em> pipeline and therefore depend on your KTS scripts. You must pass (or
-  stand in) a repository for them.</li>
-<li><strong>Independent of rendering → no repository needed (KTS not relevant):</strong> operations that act on an
-  already installed release, the cluster, or a repository do not need a rendered chart, so the KTS
-  scripts play no role for them: <code>status</code>, <code>list</code>, <code>history</code>, <code>rollback</code>, <code>test</code>, <code>get</code>, <code>repo</code>,
-  <code>search</code>, <code>registry</code>, <code>show</code>, <code>pull</code>, <code>push</code>, <code>verify</code>, <code>version</code> and <code>env</code>. They take their
-  arguments as positionals and forward them straight to Helm.</li>
+  <code>template</code>, <code>install</code>, <code>upgrade</code>, <code>package</code>, <code>dependency</code> and <code>diff</code> all run the <em>scan → compile → render</em> pipeline
+  and therefore depend on your KTS scripts. You must pass (or stand in) a repository for them.</li>
+<li><strong>Independent of rendering → no repository needed (KTS not relevant):</strong> operations that act on an already installed
+  release, the cluster, or a repository do not need a rendered chart, so the KTS scripts play no role for them:
+  <code>status</code>, <code>list</code>, <code>history</code>, <code>rollback</code>, <code>test</code>, <code>get</code>, <code>repo</code>,
+  <code>search</code>, <code>registry</code>, <code>show</code>, <code>pull</code>, <code>push</code>, <code>verify</code>, <code>version</code> and <code>env</code>. They take their arguments as positionals
+  and forward them straight to Helm.</li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title"><code>uninstall</code> is a special case</p>
-<p><code>uninstall</code> removes a release purely by name and does not technically need a rendered chart.
-For consistency it currently still renders before calling Helm, but functionally the KTS scripts
-are not relevant for it.</p>
 </div>
+<p><code>uninstall</code> removes a release purely by name and does not technically need a rendered chart. For consistency it
+currently still renders before calling Helm, but functionally the KTS scripts are not relevant for it.</p>
 <h2 id="option-marker-legend">Option marker legend</h2>
-<p>In the <code>--help</code> output a dedicated column shows the nature of each option. The same markers are used
-in the option tables on the command pages so the documentation matches the help screen exactly:</p>
+<p>In the <code>--help</code> output a dedicated column shows the nature of each option. The same markers are used in the option
+tables on the command pages so the documentation matches the help screen exactly:</p>
 <table>
 <thead>
 <tr>
@@ -2611,9 +2606,8 @@ in the option tables on the command pages so the documentation matches the help 
 </tbody>
 </table>
 <h2 id="values">Values</h2>
-<p>All rendering commands (<code>render</code>, <code>lint</code>, <code>template</code>, <code>install</code>, <code>upgrade</code>, <code>uninstall</code>) accept values files.
-Values feed two stages: they are available to the Kotlin scripts during rendering <strong>and</strong> are passed
-on to Helm.</p>
+<p>All rendering commands (<code>render</code>, <code>lint</code>, <code>template</code>, <code>install</code>, <code>upgrade</code>, <code>uninstall</code>) accept values files. Values
+feed two stages: they are available to the Kotlin scripts during rendering <strong>and</strong> are passed on to Helm.</p>
 <table>
 <thead>
 <tr>
@@ -2659,7 +2653,7 @@ on to Helm.</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2290,14 +2292,15 @@
 
 
 <h1 id="ingress-dsl">Ingress DSL</h1>
-<p>The <code>ingress</code> DSL is used to configure Kubernetes Ingress resources, which manage external access to services in a cluster, typically over HTTP.</p>
+<p>The <code>ingress</code> DSL is used to configure Kubernetes Ingress resources, which manage external access to services in a
+cluster, typically over HTTP.</p>
 <div class="admonition warning">
 <p class="admonition-title">Security: Import Restrictions</p>
-<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names
-(e.g. <code>java.lang.Runtime</code>). Only types provided via the pre-configured default imports may
-be used.</p>
-<p>Use the <code>--unsafe</code> flag to lift these restrictions.</p>
 </div>
+<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names (e.g. <code>java.lang.Runtime</code>).
+Only types provided via the pre-configured default imports may be used.</p>
+<pre><code>Use the `--unsafe` flag to lift these restrictions.
+</code></pre>
 <h2 id="basic-usage">Basic Usage</h2>
 <p>A minimal Ingress configuration requires <code>metadata</code> and at least one rule in <code>spec</code>.</p>
 <pre><code class="language-kotlin">ingress {
@@ -2511,9 +2514,11 @@ be used.</p>
 </tbody>
 </table>
 <h3 id="backend-configuration">Backend Configuration</h3>
-<p>When using <code>serviceBackend</code>, the port must be specified:
-- <code>port(Int)</code>: Uses a numeric port.
-- <code>port(String)</code>: Uses a named port.</p>
+<p>When using <code>serviceBackend</code>, the port must be specified:</p>
+<ul>
+<li><code>port(Int)</code>: Uses a numeric port.</li>
+<li><code>port(String)</code>: Uses a named port.</li>
+</ul>
 
 
 
@@ -2543,7 +2548,7 @@ be used.</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

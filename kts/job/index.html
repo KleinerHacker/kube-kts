@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2246,16 +2248,16 @@
 
 
 <h1 id="job-dsl">Job DSL</h1>
-<p>The <code>job</code> DSL is used to configure Kubernetes <strong>Job</strong> resources. A Job creates one or more Pods and
-runs them to completion — suitable for batch and run-to-completion workloads, as opposed to the
-long-running services managed by a <a href="../deployment/">Deployment</a>.</p>
+<p>The <code>job</code> DSL is used to configure Kubernetes <strong>Job</strong> resources. A Job creates one or more Pods and runs them to
+completion — suitable for batch and run-to-completion workloads, as opposed to the long-running services managed by
+a <a href="../deployment/">Deployment</a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Security: Import Restrictions</p>
-<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names
-(e.g. <code>java.lang.Runtime</code>). Only types provided via the pre-configured default imports may
-be used.</p>
-<p>Use the <code>--unsafe</code> flag to lift these restrictions.</p>
 </div>
+<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names (e.g. <code>java.lang.Runtime</code>).
+Only types provided via the pre-configured default imports may be used.</p>
+<pre><code>Use the `--unsafe` flag to lift these restrictions.
+</code></pre>
 <h2 id="basic-usage">Basic Usage</h2>
 <p>A minimal Job requires <code>metadata</code> and a Pod <code>template</code> in <code>spec</code>. The Pod's <code>restartPolicy</code> must be
 <code>Never</code> or <code>OnFailure</code>.</p>
@@ -2277,8 +2279,8 @@ be used.</p>
 }
 </code></pre>
 <h2 id="detailed-example">Detailed Example</h2>
-<p>The following is a comprehensive example showing parallelism, completions, retry handling,
-automatic cleanup, an explicit selector, a Pod failure policy and a success policy.</p>
+<p>The following is a comprehensive example showing parallelism, completions, retry handling, automatic cleanup, an
+explicit selector, a Pod failure policy and a success policy.</p>
 <pre><code class="language-kotlin">job {
     metadata(&quot;full-job&quot;) {
         namespace = &quot;batch&quot;
@@ -2489,9 +2491,9 @@ automatic cleanup, an explicit selector, a Pod failure policy and a success poli
 </table>
 <div class="admonition note">
 <p class="admonition-title">restartPolicy</p>
+</div>
 <p>Unlike a Deployment, a Job's Pod template <strong>must</strong> set <code>restartPolicy</code> to <code>Never</code> or <code>OnFailure</code>.
 <code>Always</code> is not allowed for Jobs.</p>
-</div>
 
 
 
@@ -2521,7 +2523,7 @@ automatic cleanup, an explicit selector, a Pod failure policy and a success poli
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

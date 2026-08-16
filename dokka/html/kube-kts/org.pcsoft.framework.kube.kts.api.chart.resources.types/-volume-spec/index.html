@@ -109,7 +109,7 @@
     <h1 class="cover"><span>Volume</span><wbr></wbr><span><span>Spec</span></span></h1>
     <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
       <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">VolumeSpec</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>source<span class="token operator">: </span><a href="-source-spec/index.html">VolumeSpec.SourceSpec</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Represents a volume specification for a Kubernetes pod.</p><p class="paragraph">This class defines how a volume is configured, including its name, the source of the volume, and any optional empty directory configuration.</p></div>    </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="index.html">VolumeSpec</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>source<span class="token operator">: </span><a href="-source-spec/index.html">VolumeSpec.SourceSpec</a></span></span><span class="token punctuation">)</span></div><p class="paragraph">Declares a volume on a Pod that its containers can mount.</p><p class="paragraph">A volume pairs a name with exactly one source. The source determines where the data comes from - a ConfigMap, a Secret, a PersistentVolumeClaim, scratch space on the node, or one of the many network and cloud storage backends.</p><p class="paragraph">In the rendered YAML the source is not nested under a <code class="lang-kotlin">source</code> key; instead it becomes a sibling of <code class="lang-kotlin">name</code> whose key identifies the source type, for example:</p><div class="sample-container"><pre><code class="block lang-yaml" theme="idea">- name: config<br>  configMap:<br>    name: my-config</code></pre><span class="copy-tooltip"><div class="copy-popup-wrapper popup-to-left"><span class="copy-popup-icon"></span><span>Content copied to clipboard</span></div><span class="copy-icon"></span></span></div><p class="paragraph">This flattening is performed by <a href="../../org.pcsoft.framework.kube.kts.api.intern.jackson/-volume-spec-serializer/index.html">VolumeSpecSerializer</a>.</p></div>    </div>
   </div>
   <div class="tabbedcontent">
     <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button></div>
@@ -137,109 +137,7 @@
       </div>
       <div data-togglable="TYPE">
         <h2 class="tableheader">Types</h2>
-        <div class="table"><a data-name="-2014882295%2FClasslikes%2F301696402" anchor-label="ConfigMapSourceSpec" id="-2014882295%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
-          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-config-map-source-spec/index.html"><span>Config</span><wbr></wbr><span>Map</span><wbr></wbr><span>Source</span><wbr></wbr><span><span>Spec</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2014882295%2FClasslikes%2F301696402"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">class </span><a href="-config-map-source-spec/index.html">ConfigMapSourceSpec</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">optional<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">defaultMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">items<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-file-source-spec/-key-to-path-spec/index.html">VolumeSpec.FileSourceSpec.KeyToPathSpec</a><span class="token operator">&gt;</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span> : <a href="-file-source-spec/index.html">VolumeSpec.FileSourceSpec</a></div><div class="brief "><p class="paragraph">Defines the specification for a ConfigMap source used in a volume configuration.</p></div></div>                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1507690317%2FClasslikes%2F301696402" anchor-label="EmptyDirSourceSpec" id="-1507690317%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
-          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-empty-dir-source-spec/index.html"><span>Empty</span><wbr></wbr><span>Dir</span><wbr></wbr><span>Source</span><wbr></wbr><span><span>Spec</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1507690317%2FClasslikes%2F301696402"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">class </span><a href="-empty-dir-source-spec/index.html">EmptyDirSourceSpec</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>medium<span class="token operator">: </span><a href="-empty-dir-source-spec/-medium-type/index.html">VolumeSpec.EmptyDirSourceSpec.MediumType</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>sizeLimit<span class="token operator">: </span><a href="../../org.pcsoft.framework.kube.kts.api.types/-memory-value/index.html">MemoryValue</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span> : <a href="-source-spec/index.html">VolumeSpec.SourceSpec</a></div><div class="brief "><p class="paragraph">Specifies the configuration for an EmptyDir volume source.</p></div></div>                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="966002103%2FClasslikes%2F301696402" anchor-label="FileSourceSpec" id="966002103%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
-          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-file-source-spec/index.html"><span>File</span><wbr></wbr><span>Source</span><wbr></wbr><span><span>Spec</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="966002103%2FClasslikes%2F301696402"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">class </span><a href="-file-source-spec/index.html">FileSourceSpec</a> : <a href="-source-spec/index.html">VolumeSpec.SourceSpec</a></div><div class="brief "><p class="paragraph">Represents a specification for a file source within a projected volume.</p></div></div>                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="763606950%2FClasslikes%2F301696402" anchor-label="HostPathSourceSpec" id="763606950%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
-          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-host-path-source-spec/index.html"><span>Host</span><wbr></wbr><span>Path</span><wbr></wbr><span>Source</span><wbr></wbr><span><span>Spec</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="763606950%2FClasslikes%2F301696402"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-host-path-source-spec/index.html">HostPathSourceSpec</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>path<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>type<span class="token operator">: </span><a href="-host-path-source-spec/-type/index.html">VolumeSpec.HostPathSourceSpec.Type</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span> : <a href="-source-spec/index.html">VolumeSpec.SourceSpec</a></div><div class="brief "><p class="paragraph">Specifies the configuration for a HostPath volume source.</p></div></div>                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="1007505656%2FClasslikes%2F301696402" anchor-label="PersistentVolumeClaimSourceSpec" id="1007505656%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
-          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-persistent-volume-claim-source-spec/index.html"><span>Persistent</span><wbr></wbr><span>Volume</span><wbr></wbr><span>Claim</span><wbr></wbr><span>Source</span><wbr></wbr><span><span>Spec</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1007505656%2FClasslikes%2F301696402"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">data </span><span class="token keyword">class </span><a href="-persistent-volume-claim-source-spec/index.html">PersistentVolumeClaimSourceSpec</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">val </span>claimName<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">, </span></span><span class="parameter "><span class="token keyword">val </span>readOnly<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></span></span><span class="token punctuation">)</span> : <a href="-source-spec/index.html">VolumeSpec.SourceSpec</a></div><div class="brief "><p class="paragraph">Represents the source of a volume backed by a PersistentVolumeClaim (PVC).</p></div></div>                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-1772107261%2FClasslikes%2F301696402" anchor-label="SecretSourceSpec" id="-1772107261%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
-          <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
-            <div class="main-subrow keyValue ">
-              <div class=""><span class="inline-flex">
-                  <div><a href="-secret-source-spec/index.html"><span>Secret</span><wbr></wbr><span>Source</span><wbr></wbr><span><span>Spec</span></span></a></div>
-<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1772107261%2FClasslikes%2F301696402"></span>
-                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
-                  </span></span></div>
-              <div>
-                <div class="title">
-                  <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
-                    <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">class </span><a href="-secret-source-spec/index.html">SecretSourceSpec</a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">optional<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">defaultMode<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span><span class="token punctuation">, </span></span><span class="parameter ">items<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="-file-source-spec/-key-to-path-spec/index.html">VolumeSpec.FileSourceSpec.KeyToPathSpec</a><span class="token operator">&gt;</span><span class="token operator">?</span></span></span><span class="token punctuation">)</span> : <a href="-file-source-spec/index.html">VolumeSpec.FileSourceSpec</a></div><div class="brief "><p class="paragraph">Represents a source specification for a secret volume in a Kubernetes-like environment.</p></div></div>                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-<a data-name="-237195053%2FClasslikes%2F301696402" anchor-label="SourceSpec" id="-237195053%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
+        <div class="table"><a data-name="-237195053%2FClasslikes%2F301696402" anchor-label="SourceSpec" id="-237195053%2FClasslikes%2F301696402" data-filterable-set=":/api"></a>
           <div class="table-row table-row_content" data-filterable-current=":/api" data-filterable-set=":/api">
             <div class="main-subrow keyValue ">
               <div class=""><span class="inline-flex">
@@ -251,7 +149,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-source-spec/index.html">SourceSpec</a></div><div class="brief "><p class="paragraph">Represents the source specification for a volume in a Kubernetes pod.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">sealed </span><span class="token keyword">interface </span><a href="-source-spec/index.html">SourceSpec</a></div><div class="brief "><p class="paragraph">The common contract of every volume source.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -272,7 +170,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="name.html">name</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The name of the volume.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="name.html">name</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></div><div class="brief "><p class="paragraph">The name of the volume. Must be unique within the Pod and is what                   <a href="../-volume-mount-spec/name.html">VolumeMountSpec.name</a> refers to.</p></div></div>                  </div>
                 </div>
               </div>
             </div>
@@ -289,7 +187,7 @@
                 <div class="title">
                   <div class="platform-hinted  with-platform-tabs" data-platform-hinted="data-platform-hinted">
                     <div class="platform-bookmarks-row" data-toggle-list="data-toggle-list"><button class="platform-bookmark" data-filterable-current=":/api" data-filterable-set=":/api" data-active="" data-toggle=":/api">api</button></div>
-<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="source.html">source</a><span class="token operator">: </span><a href="-source-spec/index.html">VolumeSpec.SourceSpec</a></div><div class="brief "><p class="paragraph">The source of the volume, represented by a sealed interface that supports multiple specific types.</p></div></div>                  </div>
+<div class="content sourceset-dependent-content" data-active="" data-togglable=":/api"><div class="symbol monospace"><span class="token keyword">val </span><a href="source.html">source</a><span class="token operator">: </span><a href="-source-spec/index.html">VolumeSpec.SourceSpec</a></div><div class="brief "><p class="paragraph">The single source providing this volume's data.</p></div></div>                  </div>
                 </div>
               </div>
             </div>

@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2225,21 +2227,21 @@
 
 <h1 id="sealedsecret-dsl">SealedSecret DSL</h1>
 <p>The <code>sealedSecret</code> DSL is used to configure <a href="https://github.com/bitnami-labs/sealed-secrets">Bitnami Sealed Secrets</a>
-(<code>bitnami.com/v1alpha1</code>). A SealedSecret holds <strong>encrypted</strong> data that only the in-cluster controller
-can decrypt into a regular Kubernetes <a href="../secret/">Secret</a>. Because the values are encrypted, a
-SealedSecret is safe to store in version control.</p>
+(<code>bitnami.com/v1alpha1</code>). A SealedSecret holds <strong>encrypted</strong> data that only the in-cluster controller can decrypt into a
+regular Kubernetes <a href="../secret/">Secret</a>. Because the values are encrypted, a SealedSecret is safe to store in version
+control.</p>
 <div class="admonition warning">
 <p class="admonition-title">Security: Import Restrictions</p>
-<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names
-(e.g. <code>java.lang.Runtime</code>). Only types provided via the pre-configured default imports may
-be used.</p>
-<p>Use the <code>--unsafe</code> flag to lift these restrictions.</p>
 </div>
+<p>By default, KTS scripts <strong>do not allow</strong> <code>import</code> statements or fully qualified class names (e.g. <code>java.lang.Runtime</code>).
+Only types provided via the pre-configured default imports may be used.</p>
+<pre><code>Use the `--unsafe` flag to lift these restrictions.
+</code></pre>
 <div class="admonition note">
 <p class="admonition-title">The SealedSecrets controller must be installed</p>
-<p>A SealedSecret can only be decrypted by the SealedSecrets controller running in the target
-cluster. The encrypted values are produced by <code>kubeseal</code> against that controller's public key.</p>
 </div>
+<p>A SealedSecret can only be decrypted by the SealedSecrets controller running in the target cluster. The encrypted values
+are produced by <code>kubeseal</code> against that controller's public key.</p>
 <h2 id="basic-usage">Basic Usage</h2>
 <p>A minimal SealedSecret configuration requires <code>metadata</code> and at least one entry in <code>encryptedData</code>.</p>
 <pre><code class="language-kotlin">sealedSecret {
@@ -2253,8 +2255,8 @@ cluster. The encrypted values are produced by <code>kubeseal</code> against that
 }
 </code></pre>
 <h2 id="detailed-example">Detailed Example</h2>
-<p>The following example shows multiple encrypted entries and a Secret <code>template</code> describing the
-Secret the controller should produce.</p>
+<p>The following example shows multiple encrypted entries and a Secret <code>template</code> describing the Secret the controller
+should produce.</p>
 <pre><code class="language-kotlin">sealedSecret {
     metadata(&quot;full-sealed-secret&quot;) {
         namespace = &quot;production&quot;
@@ -2399,7 +2401,7 @@ Secret the controller should produce.</p>
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2148,17 +2150,17 @@
 <h1 id="render">render</h1>
 <pre><code class="language-bash">kube-kts render &lt;REPOSITORY&gt; [TARGET] [-f FILE...]
 </code></pre>
-<p>リポジトリをディスク上の標準 Helm Chart にレンダリングします。スキャン・コンパイル・実行の全パイプ
-ラインを走らせ、結果を通常の Helm Chart（<code>Chart.yaml</code>、<code>values.yaml</code>、純粋な YAML から成る
-<code>templates/</code> ディレクトリ）としてターゲットディレクトリに書き出します。出力に Kotlin や Go テンプレート
-ロジックは含まれないため、<code>helm</code> で直接使ったり、コミット・差分比較・手動確認ができます。</p>
+<p>リポジトリをディスク上の標準 Helm Chart にレンダリングします。スキャン・コンパイル・実行の全パイプ ラインを走らせ、結果を通常の
+Helm Chart（<code>Chart.yaml</code>、<code>values.yaml</code>、純粋な YAML から成る
+<code>templates/</code> ディレクトリ）としてターゲットディレクトリに書き出します。出力に Kotlin や Go テンプレート ロジックは含まれないため、
+<code>helm</code> で直接使ったり、コミット・差分比較・手動確認ができます。</p>
 <p><code>render</code> は Kube KTS の世界と標準ツールとの橋渡しです。Helm ベースのコマンドが内部で行うことは、すべて
-このステップから始まります。明示的に実行するのが、Kube KTS の生成物を<em>見る</em>最良の方法です。</p>
+このステップから始まります。明示的に実行するのが、Kube KTS の生成物を <em>見る</em>最良の方法です。</p>
 <div class="admonition tip">
 <p class="admonition-title">出力を確認する</p>
+</div>
 <p>明示的な <code>TARGET</code> を渡すと、コマンド終了後も Chart が保持されます。指定しない場合、Chart は OS が
 後始末する可能性のある一時ディレクトリに書き出されます。</p>
-</div>
 <h2 id="_1">パラメータ</h2>
 <table>
 <thead>
@@ -2238,7 +2240,7 @@ kube-kts render ./helm
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

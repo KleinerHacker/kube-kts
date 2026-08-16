@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2214,9 +2216,8 @@
 <h1 id="uninstall">uninstall</h1>
 <pre><code class="language-bash">kube-kts uninstall &lt;REPOSITORY&gt; [TARGET] --name &lt;RELEASE&gt; [--name &lt;RELEASE&gt;...] [选项]
 </code></pre>
-<p>渲染仓库，然后运行 <code>helm uninstall</code> 从集群中移除一个或多个发布。卸载会删除属于某个发布的资源，并且
-默认连同其历史一起删除。与其他由 Helm 支持的命令一样，它通过你的 kube-context 与集群通信，并转发所有
-受支持的 Helm uninstall 标志。</p>
+<p>渲染仓库，然后运行 <code>helm uninstall</code> 从集群中移除一个或多个发布。卸载会删除属于某个发布的资源，并且 默认连同其历史一起删除。与其他由
+Helm 支持的命令一样，它通过你的 kube-context 与集群通信，并转发所有 受支持的 Helm uninstall 标志。</p>
 <h2 id="_1">工作原理</h2>
 <ol>
 <li>扫描、编译并渲染仓库（渲染步骤使工作流与其他命令保持一致；渲染出的 Chart 用作工作目录）。</li>
@@ -2225,13 +2226,13 @@
 </ol>
 <div class="admonition note">
 <p class="admonition-title">发布名称是选项，命名空间是 <code>-n</code></p>
+</div>
 <p>发布名称用 <code>--name</code>（可重复）传入，并作为位置参数 <code>RELEASE</code> 转发给 Helm。<code>-n</code> 短选项保留给
 <code>--namespace</code>。至少需要一个 <code>--name</code>。</p>
-</div>
 <div class="admonition warning">
 <p class="admonition-title">这会删除集群资源</p>
-<p>卸载具有破坏性。请先用 <code>--dry-run</code> 预览；若想保留发布历史以便日后查看或回滚，请使用 <code>--keep-history</code>。</p>
 </div>
+<p>卸载具有破坏性。请先用 <code>--dry-run</code> 预览；若想保留发布历史以便日后查看或回滚，请使用 <code>--keep-history</code>。</p>
 <h2 id="_2">参数</h2>
 <table>
 <thead>
@@ -2439,7 +2440,7 @@ kube-kts uninstall ./helm --name my-app --dry-run --ignore-not-found
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

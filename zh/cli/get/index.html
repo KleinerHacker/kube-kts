@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2214,7 +2216,8 @@
 <h1 id="get">get</h1>
 <pre><code class="language-bash">kube-kts get &lt;SUBCOMMAND&gt; &lt;RELEASE&gt; [选项]
 </code></pre>
-<p>聚合 <code>helm get …</code> 子命令，用于下载已安装发布的扩展信息。每个子命令都作用于已存在的发布，因此<strong>既不需要仓库，也不需要渲染步骤</strong>——调用会直接转发给 Helm。不带子命令调用 <code>get</code> 会打印用法列表。</p>
+<p>聚合 <code>helm get …</code> 子命令，用于下载已安装发布的扩展信息。每个子命令都作用于已存在的发布，因此
+<strong>既不需要仓库，也不需要渲染步骤</strong>——调用会直接转发给 Helm。不带子命令调用 <code>get</code> 会打印用法列表。</p>
 <h2 id="_1">子命令</h2>
 <table>
 <thead>
@@ -2309,7 +2312,8 @@
 </tr>
 </tbody>
 </table>
-<p><code>--revision</code> 选择特定修订版；<code>values</code> 上的 <code>-a</code>/<code>--all</code> 转储所有计算后的值；<code>--template</code> 应用 Go 模板；<code>-o</code>/<code>--output</code> 选择 <code>table</code>/<code>json</code>/<code>yaml</code>。</p>
+<p><code>--revision</code> 选择特定修订版；<code>values</code> 上的 <code>-a</code>/<code>--all</code> 转储所有计算后的值；<code>--template</code> 应用 Go 模板；<code>-o</code>/<code>--output</code> 选择
+<code>table</code>/<code>json</code>/<code>yaml</code>。</p>
 <h2 id="helm">Helm 全局选项</h2>
 <p>所有 <a href="../status/#helm-global-options">Helm 全局选项</a>都会转发给 Helm。</p>
 <h2 id="_4">全局选项</h2>
@@ -2350,7 +2354,7 @@ kube-kts get manifest my-app --revision 2
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

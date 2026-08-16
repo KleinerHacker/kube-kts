@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2380,26 +2382,32 @@
 <h1 id="_1">値の取り扱い</h1>
 <p>Kube KTS では、値は Helm と同様に管理されます。これにより、構成を外部化し、オーバーレイを使ってさまざまな環境向けにデプロイをカスタマイズできます。</p>
 <h2 id="_2">値のオーバーレイ</h2>
-<p>値のオーバーレイの仕組みは Helm とまったく同じように機能します。
-- <strong>KTS スクリプト</strong>: マージは Kube KTS によって Helm 互換のロジックで内部的に処理されます。
-- <strong>従来の YAML</strong>: 標準の Helm コマンドが処理前にマージを実行します。</p>
+<p>値のオーバーレイの仕組みは Helm とまったく同じように機能します。</p>
+<ul>
+<li><strong>KTS スクリプト</strong>: マージは Kube KTS によって Helm 互換のロジックで内部的に処理されます。</li>
+<li><strong>従来の YAML</strong>: 標準の Helm コマンドが処理前にマージを実行します。</li>
+</ul>
 <h2 id="kts">KTS での値の取り扱い</h2>
-<p>Kotlin スクリプトでは、値を取得・検証するためのいくつかの組み込み関数を利用できます。これらの関数は、値の構造をたどるために<strong>ドット区切りのパス</strong>を使用します。</p>
+<p>Kotlin スクリプトでは、値を取得・検証するためのいくつかの組み込み関数を利用できます。これらの関数は、値の構造をたどるために
+<strong>ドット区切りのパス</strong>を使用します。</p>
 <div class="admonition warning">
 <p class="admonition-title">セキュリティ: インポート制限</p>
-<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名
-（例: <code>java.lang.Runtime</code>）を<strong>許可しません</strong>。事前構成されたデフォルトインポートで提供される型のみ使用できます。</p>
-<p><code>--unsafe</code> フラグを使うとこれらの制限を解除できます。</p>
 </div>
+<p>デフォルトでは、KTS スクリプトは <code>import</code> 文や完全修飾クラス名 （例: <code>java.lang.Runtime</code>）を <strong>許可しません</strong>
+。事前構成されたデフォルトインポートで提供される型のみ使用できます。</p>
+<pre><code>`--unsafe` フラグを使うとこれらの制限を解除できます。
+</code></pre>
 <div class="admonition note">
 <p class="admonition-title">重要</p>
-<p>デフォルトでは、すべてのパスは YAML ファイルの <code>values:</code> ルート要素を基準とします。パスの先頭に <code>values.</code> を含める必要はありません。</p>
 </div>
+<p>デフォルトでは、すべてのパスは YAML ファイルの <code>values:</code> ルート要素を基準とします。パスの先頭に <code>values.</code> を含める必要はありません。</p>
 <h3 id="_3">サポートされる型</h3>
-<p>次のネイティブ型は値の直接取得をサポートしています。
-- <code>String</code>、<code>Boolean</code>
-- <code>Int</code>、<code>Long</code>、<code>Short</code>、<code>Byte</code>
-- <code>Double</code>、<code>Float</code></p>
+<p>次のネイティブ型は値の直接取得をサポートしています。</p>
+<ul>
+<li><code>String</code>、<code>Boolean</code></li>
+<li><code>Int</code>、<code>Long</code>、<code>Short</code>、<code>Byte</code></li>
+<li><code>Double</code>、<code>Float</code></li>
+</ul>
 <p>YAML 内の値が要求された型と一致しない場合、例外がスローされます。</p>
 <hr />
 <h2 id="_4">コア関数</h2>
@@ -2450,7 +2458,8 @@ array(&quot;metadata.tags&quot;) { index, tag -&gt;
 </code></pre>
 <hr />
 <h2 id="_5">複雑な構造（ネストアクセス）</h2>
-<p>複雑なオブジェクトや配列の中のネストされた値にアクセスする必要がある場合は、型を指定しないラムダのバリアントを使用できます。これにより、新しい <code>ValueAccess</code> スコープ（<code>it</code> として利用可能）が提供されます。</p>
+<p>複雑なオブジェクトや配列の中のネストされた値にアクセスする必要がある場合は、型を指定しないラムダのバリアントを使用できます。これにより、新しい
+<code>ValueAccess</code> スコープ（<code>it</code> として利用可能）が提供されます。</p>
 <h3 id="_6">ネストされたオブジェクト</h3>
 <pre><code class="language-kotlin">value(&quot;spec.resources&quot;) {
     // 'it' now refers to 'spec.resources'
@@ -2500,7 +2509,7 @@ array(&quot;metadata.tags&quot;) { index, tag -&gt;
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

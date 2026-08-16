@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -1811,6 +1813,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#sidecars-and-resizing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sidecars and Resizing
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2174,6 +2187,17 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#sidecars-and-resizing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sidecars and Resizing
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -2290,18 +2314,30 @@
     env(&quot;SPRING_PROFILES_ACTIVE&quot;) {
         fromValue(&quot;production&quot;)
     }
+    env(&quot;DB_PASSWORD&quot;) {
+        fromSecretKeyReference(&quot;demo-secret&quot;, &quot;password&quot;)
+    }
+
+    envs {
+        variable(&quot;LOG_LEVEL&quot;) {
+            fromValue(&quot;debug&quot;)
+        }
+    }
 
     envFrom {
         configMapRef(&quot;demo-config&quot;) {
             optional = false
         }
+    }
+    envFrom {
         secretRef(&quot;demo-secret&quot;) {
             optional = true
         }
     }
 }
 </code></pre>
-<p><code>env</code> sets individual variables explicitly. <code>envFrom</code> imports multiple variables from an external source.</p>
+<p><code>env</code> can be called several times to define multiple variables, and <code>envs { }</code> groups them in one block. Each <code>envFrom</code>
+call adds one further source; <code>envsFrom { }</code> groups them. Both are rendered as YAML lists.</p>
 <h2 id="resources">Resources</h2>
 <pre><code class="language-kotlin">container(&quot;app&quot;, &quot;registry.example.com/demo:1.0.0&quot;) {
     resources {
@@ -2317,18 +2353,41 @@
     }
 }
 </code></pre>
-<p><code>requests</code> describes the planned minimum amount of resources. <code>limits</code> describes the upper bound. The DSL validates that limits are not lower than requests.</p>
+<p><code>requests</code> describes the planned minimum amount of resources. <code>limits</code> describes the upper bound. The DSL validates that
+limits are not lower than requests.</p>
 <h2 id="volume-mounts">Volume Mounts</h2>
 <pre><code class="language-kotlin">container(&quot;app&quot;, &quot;registry.example.com/demo:1.0.0&quot;) {
     volumeMounts {
-        volumeMount(&quot;config&quot;, &quot;/etc/demo&quot;) {
+        volumeMount(&quot;config&quot;, &quot;/etc/demo/application.yaml&quot;) {
             readOnly = true
+            subPath = &quot;application.yaml&quot;
         }
         volumeMount(&quot;data&quot;, &quot;/var/lib/demo&quot;)
     }
 }
 </code></pre>
-<p>The name in <code>volumeMount</code> must match a volume in the Pod Spec.</p>
+<p>The name in <code>volumeMount</code> must match a volume in the Pod Spec. <code>subPath</code> mounts a single file or directory of the volume
+instead of its root; <code>subPathExpr</code> does the same but may reference environment variables.</p>
+<h2 id="sidecars-and-resizing">Sidecars and Resizing</h2>
+<pre><code class="language-kotlin">containers {
+    init(&quot;proxy&quot;, &quot;registry.example.com/envoy:1.0.0&quot;) {
+        restartPolicy = ContainerSpec.RestartPolicy.Always
+    }
+
+    container(&quot;app&quot;, &quot;registry.example.com/demo:1.0.0&quot;) {
+        addResizePolicy(
+            ResourceResizePolicySpec.ResourceName.Cpu,
+            ResourceResizePolicySpec.RestartPolicy.NotRequired
+        )
+        resources {
+            addClaim(&quot;gpu&quot;)
+        }
+    }
+}
+</code></pre>
+<p>An init container with <code>restartPolicy = Always</code> becomes a native sidecar that keeps running alongside the main
+containers. <code>addResizePolicy</code> declares whether an in-place resource change requires a restart, and <code>addClaim</code> references
+a resource claim declared on the Pod.</p>
 
 
 
@@ -2358,7 +2417,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2236,12 +2238,12 @@
 <h1 id="lint">lint</h1>
 <pre><code class="language-bash">kube-kts lint &lt;REPOSITORY&gt; [TARGET] [オプション]
 </code></pre>
-<p>リポジトリを Helm Chart にレンダリングし、それに対して <code>helm lint</code> を実行します。lint はレンダリング
-済み Chart の問題やベストプラクティス違反——必須フィールドの欠落、不正な <code>Chart.yaml</code>、有効な YAML を
+<p>リポジトリを Helm Chart にレンダリングし、それに対して <code>helm lint</code> を実行します。lint はレンダリング 済み Chart
+の問題やベストプラクティス違反——必須フィールドの欠落、不正な <code>Chart.yaml</code>、有効な YAML を
 生成しないテンプレート、推奨だが欠けているメタデータなど——を調べ、情報・警告・エラーとして報告します。</p>
-<p>Kube KTS が先にレンダリングするため、<code>lint</code> は値が適用済みの、Helm が実際に受け取る<em>本物の</em> Chart を
-検証します。<a href="../compile/"><code>compile</code></a> の自然な次のステップです。compile はスクリプトが動くことを、lint は
-出来上がった Chart が健全であることを証明します。</p>
+<p>Kube KTS が先にレンダリングするため、<code>lint</code> は値が適用済みの、Helm が実際に受け取る <em>本物の</em> Chart を 検証します。<a href="../compile/">
+<code>compile</code></a> の自然な次のステップです。compile はスクリプトが動くことを、lint は 出来上がった Chart
+が健全であることを証明します。</p>
 <h2 id="_1">仕組み</h2>
 <ol>
 <li>リポジトリをスキャン・コンパイルし、（一時または明示の）Chart ディレクトリにレンダリングします。</li>
@@ -2250,9 +2252,8 @@
 </ol>
 <div class="admonition tip">
 <p class="admonition-title">警告でビルドを失敗させる</p>
-<p>既定では <code>helm lint</code> はエラー時のみ失敗します。<code>--strict</code> を追加すると警告でも失敗し、通常 CI で
-望ましい挙動になります。</p>
 </div>
+<p>既定では <code>helm lint</code> はエラー時のみ失敗します。<code>--strict</code> を追加すると警告でも失敗し、通常 CI で 望ましい挙動になります。</p>
 <h2 id="_2">パラメータ</h2>
 <table>
 <thead>
@@ -2475,7 +2476,7 @@ kube-kts lint ./helm --with-subcharts --quiet
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

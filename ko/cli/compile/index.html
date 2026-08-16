@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2148,18 +2150,16 @@
 <h1 id="compile">compile</h1>
 <pre><code class="language-bash">kube-kts compile &lt;REPOSITORY&gt; [--unsafe]
 </code></pre>
-<p>KTS 저장소를 객체 인스턴스로 컴파일합니다. <a href="../validate/"><code>validate</code></a> 보다 한 단계 더 나아가, 실제로
-Kotlin 스크립트를 실행하여 렌더러가 나중에 YAML 로 변환하는 Chart 의 메모리 내 객체 모델(chart,
-deployment, service 등)을 구성합니다. 아직 출력을 쓰지 않으면서 스크립트가 <strong>컴파일·실행</strong>되는지(타입
-오류, 널 안전 위반, 스크립트 내부에서 던져지는 런타임 예외 포함)를 확인하기에 적합한 명령입니다.</p>
+<p>KTS 저장소를 객체 인스턴스로 컴파일합니다. <a href="../validate/"><code>validate</code></a> 보다 한 단계 더 나아가, 실제로 Kotlin 스크립트를 실행하여 렌더러가 나중에 YAML 로 변환하는 Chart 의
+메모리 내 객체 모델 (chart, deployment, service 등)을 구성합니다. 아직 출력을 쓰지 않으면서 스크립트가 <strong>컴파일·실행</strong>되는지 (타입 오류, 널 안전 위반, 스크립트 내부에서 던져지는
+런타임 예외 포함)를 확인하기에 적합한 명령입니다.</p>
 <p>컴파일은 스크립트를 실행하므로 스크립트 수준의 문제가 여기서 먼저 드러납니다. 잘못된 값 조회, 실패한
 <code>require(...)</code>, 가져오기가 허용되지 않은 클래스를 참조하는 스크립트 등입니다.</p>
 <div class="admonition warning">
 <p class="admonition-title"><code>--unsafe</code> 는 임의 코드를 실행합니다</p>
-<p>기본적으로 스크립트는 <code>import</code> 문과 정규화된 클래스 이름을 금지하는 제한된 샌드박스에서 실행됩니다.
-필요하면 <code>--unsafe</code> 를 추가하되, 스크립트가 임의 JVM 코드를 실행할 수 있으므로 신뢰하는 저장소에서만
-사용하세요.</p>
 </div>
+<p>기본적으로 스크립트는 <code>import</code> 문과 정규화된 클래스 이름을 금지하는 제한된 샌드박스에서 실행됩니다. 필요하면 <code>--unsafe</code> 를 추가하되, 스크립트가 임의 JVM 코드를 실행할 수 있으므로 신뢰하는
+저장소에서만 사용하세요.</p>
 <h2 id="_1">매개변수</h2>
 <table>
 <thead>
@@ -2178,8 +2178,7 @@ deployment, service 등)을 구성합니다. 아직 출력을 쓰지 않으면�
 </tbody>
 </table>
 <h2 id="_2">옵션</h2>
-<p><a href="../">전역 옵션</a> 외에, 컴파일이 스크립트를 실행하는 단계이므로 <a href="../"><code>--unsafe</code></a> 플래그가
-특히 관련됩니다.</p>
+<p><a href="../">전역 옵션</a> 외에, 컴파일이 스크립트를 실행하는 단계이므로 <a href="../"><code>--unsafe</code></a> 플래그가 특히 관련됩니다.</p>
 <table>
 <thead>
 <tr>
@@ -2235,7 +2234,7 @@ kube-kts compile ./helm --exception
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

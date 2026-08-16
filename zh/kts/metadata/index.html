@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2280,9 +2282,11 @@
 
 
 <h1 id="metadata-dsl">Metadata DSL</h1>
-<p><code>metadata</code> DSL 用于定义 Kubernetes 资源的元数据。几乎所有 Kubernetes 资源（如 Service、Ingress、Deployment）都包含元数据，用于标识和组织这些资源。</p>
+<p><code>metadata</code> DSL 用于定义 Kubernetes 资源的元数据。几乎所有 Kubernetes 资源（如
+Service、Ingress、Deployment）都包含元数据，用于标识和组织这些资源。</p>
 <h2 id="_1">基本用法</h2>
-<p>在 Kube KTS 中，<code>metadata</code> 块定义在某个资源内部（例如 <code>service</code>、<code>ingress</code>）。资源的<strong>名称</strong>作为第一个参数传递给 <code>metadata</code> 函数。</p>
+<p>在 Kube KTS 中，<code>metadata</code> 块定义在某个资源内部（例如 <code>service</code>、<code>ingress</code>）。资源的 <strong>名称</strong>作为第一个参数传递给 <code>metadata</code>
+函数。</p>
 <h3 id="_2">最小配置</h3>
 <p>最小配置只需要资源的名称。</p>
 <pre><code class="language-kotlin">service {
@@ -2459,7 +2463,7 @@
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   

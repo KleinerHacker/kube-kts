@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act): this project was largely created with the help of generative AI and is reviewed by a human maintainer.">
+      
       
       
       
@@ -2029,8 +2031,8 @@
 
 
 <h1 id="_1">概览</h1>
-<p>Kube KTS 是一个用于 Kubernetes 的 Helm 封装器，并且<strong>完全兼容传统 Helm</strong>。
-你无需再使用带有 Go 模板的 YAML 文件，而是使用 <strong>Kotlin Script (KTS)</strong> 来定义 Kubernetes 资源。</p>
+<p>Kube KTS 是一个用于 Kubernetes 的 Helm 封装器，并且 <strong>完全兼容传统 Helm</strong>。 你无需再使用带有 Go 模板的 YAML 文件，而是使用
+<strong>Kotlin Script (KTS)</strong> 来定义 Kubernetes 资源。</p>
 <p>这使你能够使用现代语言特性，例如：</p>
 <ul>
 <li>类型安全</li>
@@ -2043,11 +2045,15 @@
 <li>调试能力</li>
 <li>相较于基于模板的方式更佳的开发体验</li>
 </ul>
+<div class="admonition info">
+<p class="admonition-title">人工智能透明度声明（欧盟人工智能法案）</p>
+</div>
+<p>本项目的源代码、测试和文档在很大程度上是借助生成式人工智能创建的。所有生成的结果均由人工维护者审核和维护。本声明依据欧盟第
+2024/1689 号条例（欧盟人工智能法案）的透明度义务提供。</p>
 <hr />
 <h1 id="_2">快速开始</h1>
 <p>在安装 Kube KTS 并将其加入 <code>PATH</code> 之后，你即可立即开始开发 Kubernetes 资源。</p>
-<p>Kube KTS 基于<strong>标准的 Helm 仓库结构</strong>运行。
-为获得正确的 IDE 支持，所有 <code>.kts</code> 文件都必须位于 <code>helm</code> 目录内。</p>
+<p>Kube KTS 基于 <strong>标准的 Helm 仓库结构</strong>运行。 为获得正确的 IDE 支持，所有 <code>.kts</code> 文件都必须位于 <code>helm</code> 目录内。</p>
 <hr />
 <h2 id="_3">项目结构</h2>
 <p>项目结构与传统的 Helm 仓库一致：</p>
@@ -2071,9 +2077,8 @@
 </code></pre>
 <div class="admonition note">
 <p class="admonition-title">库文件不会被渲染</p>
-<p>带有 <code>.lib.kts</code> 扩展名的文件不会被渲染为 YAML。它们的内容会在编译时
-自动提供给所有 spec 文件使用。</p>
 </div>
+<p>带有 <code>.lib.kts</code> 扩展名的文件不会被渲染为 YAML。它们的内容会在编译时 自动提供给所有 spec 文件使用。</p>
 <hr />
 <h2 id="kts">KTS 文件类型</h2>
 <p>Kube KTS 区分两种类型的 Kotlin Script 文件：</p>
@@ -2096,8 +2101,8 @@
 </tbody>
 </table>
 <h3 id="spec-speckts">Spec 文件（<code>*.spec.kts</code>）</h3>
-<p>Spec 文件使用 KTS DSL 定义 Kubernetes 资源。每个 spec 文件生成一个 YAML
-输出文件。<code>Chart.spec.kts</code> 是一个特殊的 spec 文件，它生成 <code>Chart.yaml</code>。</p>
+<p>Spec 文件使用 KTS DSL 定义 Kubernetes 资源。每个 spec 文件生成一个 YAML 输出文件。<code>Chart.spec.kts</code> 是一个特殊的 spec
+文件，它生成 <code>Chart.yaml</code>。</p>
 <pre><code class="language-kotlin">// templates/deployment.spec.kts
 deployment {
     metadata(&quot;my-app&quot;) { }
@@ -2106,14 +2111,14 @@ deployment {
 </code></pre>
 <div class="admonition warning">
 <p class="admonition-title">安全性：导入限制</p>
-<p>默认情况下，KTS 脚本<strong>不允许</strong>使用 <code>import</code> 语句或完全限定的类名
-（例如 <code>java.lang.Runtime</code>）。只能使用通过预配置默认导入提供的类型
-—— 完整列表参见 <a href="kts/lib/#default-imports">默认导入</a>。</p>
-<p>使用 <code>--unsafe</code> 标志可解除这些限制。</p>
 </div>
+<p>默认情况下，KTS 脚本 <strong>不允许</strong>使用 <code>import</code> 语句或完全限定的类名 （例如 <code>java.lang.Runtime</code>
+）。只能使用通过预配置默认导入提供的类型 —— 完整列表参见 <a href="kts/lib/#default-imports">默认导入</a>。</p>
+<pre><code>使用 `--unsafe` 标志可解除这些限制。
+</code></pre>
 <h3 id="libkts">库文件（<code>*.lib.kts</code>）</h3>
-<p>库文件定义可重用的辅助函数，这些函数会自动在同一仓库内的所有 spec 文件中可用。
-库文件<strong>不会</strong>被渲染为 YAML 输出，也<strong>不能</strong>被其他库文件访问。</p>
+<p>库文件定义可重用的辅助函数，这些函数会自动在同一仓库内的所有 spec 文件中可用。 库文件 <strong>不会</strong>被渲染为 YAML 输出，也
+<strong>不能</strong>被其他库文件访问。</p>
 <pre><code class="language-kotlin">// templates/helpers.lib.kts
 fun appLabels(name: String) = mapOf(&quot;app&quot; to name, &quot;managed-by&quot; to &quot;kube-kts&quot;)
 </code></pre>
@@ -2130,7 +2135,7 @@ deployment {
 <ul>
 <li>现有的 YAML 文件可以与 <code>.spec.kts</code> 文件一起使用</li>
 <li>纯 <code>.kts</code> 文件（不带 <code>.spec.</code> 限定符）也作为传统 spec 文件被支持</li>
-<li>传统文件会被<strong>原样复制</strong>到最终输出中</li>
+<li>传统文件会被 <strong>原样复制</strong>到最终输出中</li>
 <li>完全支持混合环境（YAML + KTS）</li>
 </ul>
 <hr />
@@ -2146,8 +2151,7 @@ deployment {
 <p>Kube KTS 是一个用于处理 Helm 仓库的命令行工具。</p>
 <p>通过以下方式运行：
 <code>kube-kts</code>
-要处理一个仓库，请提供你的 Helm 项目路径。
-详细用法说明请参见 <strong>“如何使用 Kube KTS CLI”</strong>。</p>
+要处理一个仓库，请提供你的 Helm 项目路径。 详细用法说明请参见 <strong>“如何使用 Kube KTS CLI”</strong>。</p>
 
 
 
@@ -2177,7 +2181,7 @@ deployment {
       <div class="md-copyright">
   
     <div class="md-copyright__highlight">
-      Copyright (c) KleinerHacker alias pcsoft 2026.
+      Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689).
     </div>
   
   
