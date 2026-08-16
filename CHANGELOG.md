@@ -10,13 +10,9 @@ resources) and the `kube-kts` CLI tool.
 
 ## [Unreleased]
 
+## [0.1.0]
+
 ### Added
-
-#### General
-
-- **AI transparency notice** in accordance with the EU AI Act (Regulation (EU) 2024/1689): the README, the MkDocs
-  documentation (all languages) and the `kube-kts --help` output now state that the project was largely created with the
-  help of generative AI and is reviewed by a human maintainer.
 
 #### KTS DSL
 
