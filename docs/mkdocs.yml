@@ -1,5 +1,8 @@
 site_name: Kube KTS User Guide
-copyright: "Copyright (c) KleinerHacker alias pcsoft 2026."
+site_description: >-
+  Kube KTS — a Helm wrapper that replaces Go templates with Kotlin Scripts. AI transparency notice (EU AI Act):
+  this project was largely created with the help of generative AI and is reviewed by a human maintainer.
+copyright: "Copyright (c) KleinerHacker alias pcsoft 2026. Largely created with the help of generative AI (EU AI Act, Regulation (EU) 2024/1689)."
 
 docs_dir: docs
 site_dir: ../build/docs

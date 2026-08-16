@@ -61,6 +61,9 @@ import picocli.CommandLine.*
     description = [
         "A Helm wrapper for managing Kubernetes deployments using Kotlin-based chart repositories.",
         "Compiles, renders, and executes Kotlin Script (KTS) Helm charts with full Helm compatibility.",
+        "",
+        "AI transparency notice (EU AI Act): this software was largely created with the help of generative AI",
+        "and is reviewed by a human maintainer (Regulation (EU) 2024/1689).",
         ""
     ],
     version = ["Kube KTS 0.1.0"],

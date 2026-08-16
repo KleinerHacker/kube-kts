@@ -16,6 +16,14 @@ via [MK Docs](https://kleinerhacker.github.io/kube-kts/).
 
 ---
 
+**AI transparency notice (EU AI Act)**
+
+This project — source code, tests and documentation — was largely created with the help of generative AI. Every
+generated result is reviewed and maintained by a human maintainer. This notice is given in accordance with the
+transparency obligations of Regulation (EU) 2024/1689 (EU AI Act).
+
+---
+
 ## Overview
 
 ### Motivation
