@@ -31,15 +31,11 @@ name: development
 * Kotlin MUST ALWAYS be used
 * Gradle MUST ALWAYS be used
 
-* All changes to a single file MUST be applied in ONE single tool call
-    * Before editing, ALL required changes to that file MUST be collected and planned completely
-    * The file is then written EXACTLY ONCE - with the `Write` tool (full content) or with a SINGLE `Edit` call
-    * FORBIDDEN: several consecutive `Edit` calls on the same file for the same change
-    * FORBIDDEN: incremental "edit -> read -> edit again" cycles on the same file
-    * If a change to file A reveals a follow-up change in file A, the file MUST NOT be patched again - the complete new
-      content MUST be written in one operation instead
-    * This rule applies per file, NOT per task: several DIFFERENT files MAY be edited in parallel, each with exactly one
-      call
+* All changes to a single file MUST be applied in ONE single tool call: collect ALL required changes first, then write
+  the file EXACTLY ONCE - with `Write` (full content) or a SINGLE `Edit`
+    * FORBIDDEN: consecutive `Edit` calls or "edit -> read -> edit again" cycles on the same file, including for
+      follow-up changes discovered while editing - write the complete new content instead
+    * Applies per file, NOT per task: several DIFFERENT files MAY be edited in parallel, each with exactly one call
 
 ## Building
 

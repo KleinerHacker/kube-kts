@@ -1,5 +1,6 @@
 ---
 name: templates
+description: Rules, structure and reference examples to follow when a Helm template is implemented, explored or extended as a Kotlin Script
 ---
 
 # Templates
@@ -16,3 +17,11 @@ name: templates
     * Each builder MUST be written in its own class file
     * Each sub-builder MUST be written in its own class file
         * Except: if the class assigned to this builder is written as a nested class
+
+# Example
+
+USE THESE EXAMPLES ONLY AS A BASE
+
+* The basics are here: `libs/api/src/main/kotlin/org/pcsoft/framework/kube/kts/api`
+* A simple template example is here:
+  `libs/api/src/main/kotlin/org/pcsoft/framework/kube/kts/api/chart/resources/ServiceSpec.kt`
